@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>test js</title>
+
+<script type="text/javascript" src="data/data.js"></script>
+<script type="text/javascript" src="constant.js"></script>
+<script type="text/javascript" src="testInhert.js"></script>
+<script type="text/javascript" src="action/ActionState.js"></script>
+<script type="text/javascript" src="unit/unit.js"></script>
+<script type="text/javascript" src="service/Util.js"></script>
+<script type="text/javascript" src="service/Gobal.js"></script>
+<script type="text/javascript" src="service/Factory.js"></script>
+<script type="text/javascript" src="service/Service.js"></script>
+
+<script type="text/javascript">
+
+window.onload = function(){
+
+	Service.initUnitConfig();
+	document.getElementById("p").innerHTML = cc.str;
+	//$("p").html("wad");
+}
+
+function iterObj(prop){
+	var str = "";
+	for (var key in prop) {
+        if(typeof prop[key] == "function"){
+        	//str += key + " : " + prop[key] + "\n";
+        }
+        /* else if(typeof prop[key] == "object"){
+        	str += iterObj(prop[key]);
+        } */
+        else{
+        	str += key + " : " + prop[key] + "<br>";
+        }
+	}
+	return str;
+}
+
+function init(){
+	Container.property[data_standFrame1.source] = data_standFrame1;
+	Container.property[data_standFrame2.source] = data_standFrame2;
+	Container.property[data_standFrame3.source] = data_standFrame3;
+	Container.property[data_standAction.name] = data_standAction;
+	Container.property[data_standState.name] = data_standState;
+	
+	Container.property[data_walkFrame1.source] = data_walkFrame1;
+	Container.property[data_walkFrame2.source] = data_walkFrame2;
+	Container.property[data_walkFrame3.source] = data_walkFrame3;
+	Container.property[data_walkFrame4.source] = data_walkFrame4;
+	Container.property[data_walkAction.name] = data_walkAction;
+	Container.property[data_walkState.name] = data_walkState;
+	
+	Container.property[data_attackFrame1.source] = data_attackFrame1;
+	Container.property[data_attackFrame2.source] = data_attackFrame2;
+	Container.property[data_attackAction1.name] = data_attackAction1;
+	Container.property[data_attackAction2.name] = data_attackAction2;
+	Container.property[data_AttackState.name] = data_AttackState;
+	
+	Container.property[character.name] = character;
+	
+	Factory.createFrame("stand_0");
+	Factory.createFrame("stand_1");
+	Factory.createFrame("stand_2");
+	Factory.createAction("standAction");
+	
+	Factory.createFrame("attack_1");
+	Factory.createFrame("attack_2");
+	Factory.createAction("attackAction1");
+	Factory.createAction("attackAction2");
+	
+	Factory.createFrame("walk_0");
+	Factory.createFrame("walk_1");
+	Factory.createFrame("walk_2");
+	Factory.createFrame("walk_3");
+	Factory.createAction("walkAction");
+	
+	var _listener1 = cc.EventListener.create({
+        event: cc.EventListener.CUSTOM,
+        eventName: "unit_hit",
+        callback: function(event){
+            var obj = event.getUserData();
+            //obj处理逻辑:EventData
+        }
+    });
+	cc.eventManager.addListener(this._listener1, 1);
+}
+</script>
+</head>
+<body>
+<p id="p"></p>
+</body>
+</html>
