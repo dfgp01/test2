@@ -3,10 +3,10 @@
  */
 GobalData = {
 	framerate : 0,
-	tick : 0.15.
+	tick : 0.15,
 	
 	//动画帧延迟时间，单位秒
-	game.frameDelayTime = 0.016,
+	frameDelayTime : 0.016,
 	
 	//一般重力，一些单位可设置自定义重力
 	gravity : -2,

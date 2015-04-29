@@ -34,9 +34,9 @@
 		<key>deep_roundCutA_2.png</key>
 		<dict>
 			<key>x</key>
-			<integer>0</integer>
-			<key>y</key>
 			<integer>80</integer>
+			<key>y</key>
+			<integer>0</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>
@@ -54,9 +54,9 @@
 		<key>deep_roundCutA_3.png</key>
 		<dict>
 			<key>x</key>
-			<integer>0</integer>
-			<key>y</key>
 			<integer>160</integer>
+			<key>y</key>
+			<integer>0</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>
@@ -74,9 +74,9 @@
 		<key>deep_roundCutA_4.png</key>
 		<dict>
 			<key>x</key>
-			<integer>0</integer>
-			<key>y</key>
 			<integer>240</integer>
+			<key>y</key>
+			<integer>0</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>
@@ -94,9 +94,9 @@
 		<key>deep_roundCutA_5.png</key>
 		<dict>
 			<key>x</key>
-			<integer>0</integer>
-			<key>y</key>
 			<integer>320</integer>
+			<key>y</key>
+			<integer>0</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>

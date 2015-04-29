@@ -16,13 +16,10 @@ var HelloWorldLayer = cc.Layer.extend({
     _lock : true,
     
     initAct : function(){
-    	Factory.createAction(data_walkAction);
-    	var standAct = Factory.createActionState(data_walkState);
-    	_unit = new Unit();
+    	Service.initCommonUnit();
+    	_unit = Container.unit;
+    	deep = new cc.Sprite("#deep_stand_0.png");
     	_unit.body = deep;
-    	_unit.currAction = standAct;
-    	standAct.owner = _unit;
-    	_unit.frameIndex = 0;
     },
     
     ctor:function () {
@@ -97,50 +94,14 @@ var HelloWorldLayer = cc.Layer.extend({
         }else{
         	cc.log("not touchs");
         }
-        cc.log(bg.getContentSize().width + "," + bg.getContentSize().height + "  " + size.width + "," + size.height);
         
         //标注2：这一句在JSB和chrome下都没问题
         //deep.runAction(cc.animate(animation).repeatForever());
         
         //this.schedule(this.customAnimateRun, 0.2, -1, 0);
         //this.schedule(this.customAnimateRun, 0.12, -1, 0);
-        this.scheduleUpdate();
+        //this.scheduleUpdate();
         return true;
-    },
-    
-    runAnimateInit:function(){
-    	
-    	/**	自定义动画 **/
-    	
-    	var standAnimate = new game.animate({
-    		name:"stand",
-    		isRepeat:true,
-    		frames:["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
-    	});
-    	game.addAnimate(standAnimate);
-    	
-    	var runAnimate = new game.animate({
-    		name:"run",
-    		isRepeat:true,
-    		frames:["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
-    	});
-    	game.addAnimate(runAnimate);
-    	
-    	var attackAnimate = new game.animate({
-    		name:"attack",
-    		isRepeat:true,
-    		frames:["deep_att_1.png","deep_att_2.png","deep_att_2.png"]
-    	});
-    	game.addAnimate(attackAnimate);
-    	
-    	var hurtAnimate = new game.animate({
-    		name:"hurt",
-    		isRepeat:true,
-    		frames:["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png","deep_hurt_5.png","deep_hurt_4.png","deep_hurt_4.png"]
-    	});
-    	game.addAnimate(hurtAnimate);
-    	
-    	return;
     },
     
     update:function(dt){

@@ -14,7 +14,7 @@ Service = {
 		cc.log("正在初始化动画组件");
 		var acts = [normal_att_state1, normal_att_state2, normal_att_state3, skill_1, skill_2, skill_3, skill_4, skill_5];
 		for(var i in acts){
-			Factory.createState(acts[i], unit);
+			Factory.createActionState(acts[i], unit);
 		}
 		
 		cc.log("正在构建动作和技能逻辑列表");
@@ -23,6 +23,8 @@ Service = {
 			this.linkAction(act_groups[i], unit);
 		}
 		
+		Container.unit = unit;
+		
 	},
 	
 	/**
@@ -30,13 +32,17 @@ Service = {
 	 */
 	linkAction : function(data, owner){
 		//链式Action
-		if(Util.checkArrayNull(data.actions)){
-			linkForList(data, owner);
+		if(!Util.checkArrayNull(data.actions)){
+			this.linkForList(data, owner);
+			return;
 		}
 		//树式Action，需要由key控制
 		if(!Util.checkArrayNull(data.actionNodes)){
-			linkForTree(data, owner);
+			this.linkForTree(data, owner);
+			return;
 		}
+		cc.log("linkAction faild~!");
+		return;
 	},
 };
 

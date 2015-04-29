@@ -32,6 +32,7 @@ data_standState = {
 
 
 normal_att_state1 = {
+		state : 1,
 		name : "normal_attack1",
 		type : 1,
 		key : 1,
@@ -45,6 +46,7 @@ normal_att_state1 = {
 },
 
 normal_att_state2 = {
+		state : 1,
 		type : 1,
 		name : "normal_attack2",
 		key : 1,
@@ -58,6 +60,7 @@ normal_att_state2 = {
 },
 
 normal_att_state3 = {
+		state : 1,
 		type : 1,
 		name : "normal_attack3",
 		key : 1,
@@ -81,6 +84,7 @@ normal_att_state_group = {
 }
 
 skill_1 = {
+		state : 1,
 		name : "crossCutA",		//sword-round2类似
 		frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
 		rect : [50,50,150,30],
@@ -92,6 +96,7 @@ skill_1 = {
 }
 
 skill_2 = {
+		state : 1,
 		name : "crossCutB",
 		frames : ["deep_crossCutB_1.png","deep_crossCutB_2.png","deep_crossCutB_3.png","deep_crossCutB_4.png"],
 		rect : [50,50,150,30],
@@ -103,6 +108,7 @@ skill_2 = {
 }
 
 skill_3 = {
+		state : 1,
 		name : "crossCutC",
 		frames : ["deep_crossCutC_1.png","deep_crossCutC_2.png","deep_crossCutC_3.png","deep_crossCutC_4.png","deep_crossCutC_5.png"],
 		type : 3,		//fire sprite
@@ -117,12 +123,14 @@ skill_group = {
 }
 
 skill_4 = {
+		state : 1,
 		name : "roundCutA",
 		frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"],
 		key : 1
 }
 
 skill_5 = {
+		state : 1,
 		name : "roundCutB",
 		frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"],
 		key : 2

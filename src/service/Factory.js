@@ -60,7 +60,7 @@ Factory = {
 		//创建一个动作节点
 		createActionState : function(data, owner){
 			var actionState = null;
-			if(!Util.checkNotNull(data, true) || !Util.checkIsString(data.name, true) || Util.checkIsNum(data.state, true)){
+			if(!Util.checkNotNull(data, true) || !Util.checkIsString(data.name, true) || !Util.checkIsInt(data.state, true)){
 				cc.log("createActionState error, lack of necessary data!");
 				return null;
 			}

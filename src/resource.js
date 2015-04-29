@@ -20,6 +20,7 @@ var deep_2_png = "res/deep_2.png";
 var deep_ball_png = "res/deep_ball.png";
 var deep_0_plist = "res/deep_0.plist";
 var deep_1_plist = "res/deep_1.plist";
+var deep_2_plist = "res/deep_2.plist";
 var background_png = "res/BackGround.png";
 
 var g_resources = [
@@ -31,5 +32,6 @@ var g_resources = [
 	deep_ball_png,
 	deep_0_plist,
 	deep_1_plist,
+	deep_2_plist,
 	background_png
 	];
