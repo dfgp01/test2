@@ -87,10 +87,11 @@
 			<key>originalHeight</key>
 			<integer>-121</integer>
 		</dict>
-		<key>deep_att_1.png</key>
+		
+		<key>deep_attack_1_1.png</key>
 		<dict>
 			<key>x</key>
-			<integer>320</integer>
+			<integer>0</integer>
 			<key>y</key>
 			<integer>80</integer>
 			<key>width</key>
@@ -106,12 +107,173 @@
 			<key>originalHeight</key>
 			<integer>-121</integer>
 		</dict>
-		<key>deep_att_2.png</key>
+		
+		<key>deep_attack_1_2.png</key>
 		<dict>
 			<key>x</key>
-			<integer>400</integer>
+			<integer>640</integer>
 			<key>y</key>
 			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_1_3.png</key>
+		<dict>
+			<key>x</key>
+			<integer>80</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_2_1.png</key>
+		<dict>
+			<key>x</key>
+			<integer>160</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_2_2.png</key>
+		<dict>
+			<key>x</key>
+			<integer>720</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_2_3.png</key>
+		<dict>
+			<key>x</key>
+			<integer>240</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_3_1.png</key>
+		<dict>
+			<key>x</key>
+			<integer>560</integer>
+			<key>y</key>
+			<integer>240</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_3_2.png</key>
+		<dict>
+			<key>x</key>
+			<integer>720</integer>
+			<key>y</key>
+			<integer>160</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_3_3.png</key>
+		<dict>
+			<key>x</key>
+			<integer>640</integer>
+			<key>y</key>
+			<integer>240</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>-0.5</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_attack_3_4.png</key>
+		<dict>
+			<key>x</key>
+			<integer>720</integer>
+			<key>y</key>
+			<integer>240</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>

@@ -35,7 +35,7 @@ normal_att_state1 = {
 		name : "normal_attack1",
 		type : 1,
 		key : 1,
-		frames : ["deep_att_1.png","deep_att_2.png","deep_att_1.png"],
+		frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"],
 		keyFrame : 1,
 		rect : [10,10,50,50],
 		hit : {
@@ -48,7 +48,7 @@ normal_att_state2 = {
 		type : 1,
 		name : "normal_attack2",
 		key : 1,
-		frames : ["deep_att_3.png","deep_att_4.png","deep_att_5.png"],
+		frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"],
 		keyFrame : 2,
 		rect : [10,10,50,50],
 		hit : {
@@ -61,7 +61,7 @@ normal_att_state3 = {
 		type : 1,
 		name : "normal_attack3",
 		key : 1,
-		frames : ["deep_att_4.png","deep_att_5.png","deep_att_6.png","deep_att_7.png"],
+		frames : ["deep_attack_3_1.png","deep_attack_3_2.png","deep_attack_3_3.png","deep_attack_3_4.png"],
 		keyFrame : 2,
 		rect : [10,10,50,50],
 		hit : {
@@ -81,8 +81,19 @@ normal_att_state_group = {
 }
 
 skill_1 = {
-		name : "sword-round1",		//sword-round2类似
-		frames : ["deep_sk_0.png","deep_sk_1.png","deep_sk_2.png","deep_sk_3.png"],
+		name : "crossCutA",		//sword-round2类似
+		frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
+		rect : [50,50,150,30],
+		target : 1,			//目标类型
+		hit : {
+			type : 1,		//击中类型
+			damage : 20,
+		}
+}
+
+skill_2 = {
+		name : "crossCutB",
+		frames : ["deep_crossCutB_1.png","deep_crossCutB_2.png","deep_crossCutB_3.png","deep_crossCutB_4.png"],
 		rect : [50,50,150,30],
 		target : 1,			//目标类型
 		hit : {
@@ -92,61 +103,51 @@ skill_1 = {
 }
 
 skill_3 = {
-		name : "sword-round3",
-		frames : [],
+		name : "crossCutC",
+		frames : ["deep_crossCutC_1.png","deep_crossCutC_2.png","deep_crossCutC_3.png","deep_crossCutC_4.png","deep_crossCutC_5.png"],
 		type : 3,		//fire sprite
 		fire : "sword-shadow",
 }
 
 skill_group = {
-		name : "sword-round",
-		actions : ["sword-round1","sword-round2","sword-round3","sword-round-end"],
+		name : "crossCut",
+		actions : ["crossCutA","crossCutB","crossCutC"],
 		occurType : 1,	//触发
 		fireType : 1,		//施放
 }
 
-wind_cut1 = {
-		name : "wind-cut1",
-		frames : ["deep_sk_6.png","deep_sk_7.png","deep_sk_8.png","deep_sk_9.png"],
+skill_4 = {
+		name : "roundCutA",
+		frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"],
+		key : 1
 }
 
-wind_cut1_1 = {
-		name : "wind-cut1_1",
-		frames : ["deep_sk_6.png","deep_sk_7.png","deep_sk_8.png","deep_sk_9.png"],
-}
-
-wind_cut1_2 = {
-		name : "wind-cut1_2",
-		frames : ["deep_sk_6.png","deep_sk_7.png","deep_sk_8.png","deep_sk_9.png"],
-}
-
-wind_cut1_1_1 = {
-		name : "wind-cut1_1_1",
-		frames : ["deep_sk_6.png","deep_sk_7.png","deep_sk_8.png","deep_sk_9.png"],
-}
-
-wind_cut2 = {
-		name : "wind-cut2",
-		frames : ["deep_sk_6.png","deep_sk_7.png","deep_sk_8.png","deep_sk_9.png"],
+skill_5 = {
+		name : "roundCutB",
+		frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"],
+		key : 2
 }
 
 act_tree = {
 		actionNodes : [{
-			name : "wind_cut1",
+			name : "roundCutA",
 			next : [{
-				name : "wind_cut1_1",
-				next[{
-					name : "wind_cut1_1_1"
-				},{
-					name : "wind_cut2"
-				}]
+				name : "roundCutA"
 			},
 			{
-				name : "wind_cut1_2",
-				next[{
-					name : "wind_cut2"
-				}]
-			}]
+				name : "roundCutB"
+			}
+			]
+		},
+		{
+			name : "roundCutB",
+			next : [{
+				name : "roundCutB"
+			},
+			{
+				name : "roundCutA"
+			}
+			]
 		}]
 }
 

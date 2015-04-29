@@ -11,7 +11,67 @@
 	</dict>
 	<key>frames</key>
 	<dict>
-		<key>deep_crossCutA_1.png</key>
+		<key>deep_roundCutA_1.png</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>0</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>0</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+
+		<key>deep_roundCutA_2.png</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>0</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_roundCutA_3.png</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>160</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>0</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_roundCutA_4.png</key>
 		<dict>
 			<key>x</key>
 			<integer>0</integer>
@@ -31,27 +91,7 @@
 			<integer>-121</integer>
 		</dict>
 		
-		<key>deep_crossCutA_2.png</key>
-		<dict>
-			<key>x</key>
-			<integer>80</integer>
-			<key>y</key>
-			<integer>240</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutA_3.png</key>
+		<key>deep_roundCutA_5.png</key>
 		<dict>
 			<key>x</key>
 			<integer>0</integer>
@@ -71,152 +111,12 @@
 			<integer>-121</integer>
 		</dict>
 		
-		<key>deep_crossCutA_4.png</key>
-		<dict>
-			<key>x</key>
-			<integer>80</integer>
-			<key>y</key>
-			<integer>320</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutB_1.png</key>
-		<dict>
-			<key>x</key>
-			<integer>640</integer>
-			<key>y</key>
-			<integer>0</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutB_2.png</key>
-		<dict>
-			<key>x</key>
-			<integer>720</integer>
-			<key>y</key>
-			<integer>0</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutB_3.png</key>
-		<dict>
-			<key>x</key>
-			<integer>640</integer>
-			<key>y</key>
-			<integer>80</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutB_4.png</key>
-		<dict>
-			<key>x</key>
-			<integer>720</integer>
-			<key>y</key>
-			<integer>80</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutC_1.png</key>
-		<dict>
-			<key>x</key>
-			<integer>400</integer>
-			<key>y</key>
-			<integer>480</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutC_2.png</key>
-		<dict>
-			<key>x</key>
-			<integer>480</integer>
-			<key>y</key>
-			<integer>480</integer>
-			<key>width</key>
-			<integer>80</integer>
-			<key>height</key>
-			<integer>80</integer>
-			<key>offsetX</key>
-			<real>0</real>
-			<key>offsetY</key>
-			<real>-1</real>
-			<key>originalWidth</key>
-			<integer>85</integer>
-			<key>originalHeight</key>
-			<integer>-121</integer>
-		</dict>
-		
-		<key>deep_crossCutC_3.png</key>
+		<key>deep_roundCutA_6.png</key>
 		<dict>
 			<key>x</key>
 			<integer>560</integer>
 			<key>y</key>
-			<integer>480</integer>
+			<integer>80</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>
@@ -231,12 +131,12 @@
 			<integer>-121</integer>
 		</dict>
 		
-		<key>deep_crossCutC_4.png</key>
+		<key>deep_roundCutB_1.png</key>
 		<dict>
 			<key>x</key>
-			<integer>640</integer>
-			<key>y</key>
 			<integer>480</integer>
+			<key>y</key>
+			<integer>80</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>
@@ -251,12 +151,92 @@
 			<integer>-121</integer>
 		</dict>
 		
-		<key>deep_crossCutC_5.png</key>
+		<key>deep_roundCutB_2.png</key>
 		<dict>
 			<key>x</key>
-			<integer>720</integer>
+			<integer>80</integer>
 			<key>y</key>
-			<integer>480</integer>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>0</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_roundCutB_3.png</key>
+		<dict>
+			<key>x</key>
+			<integer>0</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>0</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_roundCutB_4.png</key>
+		<dict>
+			<key>x</key>
+			<integer>160</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>0</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_roundCutB_5.png</key>
+		<dict>
+			<key>x</key>
+			<integer>240</integer>
+			<key>y</key>
+			<integer>80</integer>
+			<key>width</key>
+			<integer>80</integer>
+			<key>height</key>
+			<integer>80</integer>
+			<key>offsetX</key>
+			<real>0</real>
+			<key>offsetY</key>
+			<real>-1</real>
+			<key>originalWidth</key>
+			<integer>85</integer>
+			<key>originalHeight</key>
+			<integer>-121</integer>
+		</dict>
+		
+		<key>deep_roundCutB_6.png</key>
+		<dict>
+			<key>x</key>
+			<integer>320</integer>
+			<key>y</key>
+			<integer>80</integer>
 			<key>width</key>
 			<integer>80</integer>
 			<key>height</key>
