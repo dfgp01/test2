@@ -15,32 +15,21 @@ ActionState = StateNode.extend({
 		this.state = data.state;
 	},
 	//加载时
-	start : function(){
-		this.owner.currAction = this;
-		this.owner.frameIndex = 0;
+	start : function(unit){
+		unit.currAction = this;
+		unit.frameIndex = 0;
 	},
-	run : function(dt){
+	
+	run : function(unit, dt){
+		this.owner.body.setSpriteFrame(this.frames[this.owner.frameIndex]);
+		this.owner.frameIndex++;
 		if(this.owner.frameIndex > this.frames.length-1){
 			//unit.currState.nextAct();
 			this.owner.frameIndex = 0;
 			return;
 		}
-		this.owner.body.setSpriteFrame(this.frames[this.owner.frameIndex]);
-		this.owner.frameIndex++;
 	},
-	startWithUnit : function(unit){
-		unit.currAction = this;
-		unit.frameIndex = 0;
-	},
-	runWithUnit : function(unit){
-		if(unit.frameIndex > unit.length-1){
-			//unit.currState.nextAct();
-			//unit.frameIndex = 0;
-			return;
-		}
-		unit.body.setSpriteFrame(this.frames[unit.frameIndex]);
-		unit.frameIndex++;
-	},
+
 	end : function(){},
 	
 	//增加下级节点，判断是直接下级节点还是通过key进入的节点
