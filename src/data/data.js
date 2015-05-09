@@ -2,6 +2,26 @@
  *  entity
  */
 
+lie_down_act = {
+	name : "lieDown",		//被击倒后躺下的动作
+	frames : ["deep_lieDown_x.png"],
+	keep : 1,					//持续1秒
+	playType : 2				//在最后一帧静止
+};
+
+shieldBuff_release = {
+	name : "shieldBuff-release",			//无敌护盾
+	action : "release",							//施放型的动作，用引用完成
+	keep : 2										//过程持续2秒
+	//etc: mp...
+};
+
+shieldBuff_obj = {			//this is a unit
+	name : "shieldBuff",
+	keep : 7,										//此单位存活7秒
+	value : {}//hp,defence....
+};
+
 data_standAction = {
 		name : "standAction",
 		frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],

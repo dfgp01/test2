@@ -22,22 +22,24 @@ Unit = cc.Class.extend({
 	actionStates : null,		//树结构 状态节点，key为action.key值
 	currAction : null,			//当前action的引用
 	frameIndex : -1,
-	
-	ctor : function(data){
-		data && this.init(data);
-	},
+
 	init : function(data){
 		this.name = data.name;
 		this.res = data.res;
 		this.actionStateNodes = {};
 		this.actions = {};
 	},
+	
 	run : function(dt){
+		// 未来版本可能要把动画播放单独提出来，因为涉及到每个单位的速率问题
+		// this.currAction.play(this);
+		
 		this.currAction.run(dt);
 	},
-	changeAction : function(newAction){
-		this.currAction.end();
-		newAction.start();
+	
+	runAction : function(action){
+		this.currAction.end(this);
+		action.start(this);
 	},
 	
 	addState : function(state){
