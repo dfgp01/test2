@@ -8,6 +8,9 @@ ActionState = StateNode.extend({
 	frames : null,						//动画帧列表
 	//owner : null,						//所有者,类型为Unit
 	children : null,					// 树/图结构的下级状态节点
+	
+	keep : 0,
+	effectList : null,
 
 	init : function(data){
 		this._super(data);
@@ -50,10 +53,8 @@ ActionState = StateNode.extend({
 AttackActionState = ActionState.extend({
 	keyFrame : 0,
 	hitBox : null,
-	hitState : null,
-	ctor : function(data){
-		this._super(data);
-	},
+	//hitActType : 0,
+	//targetType : 0,		数据定义后，然后根据逻辑生产组件，实体不一定要保留这些属性
 	init : function(data){
 		this._super(data);
 		this.hitBox = data.hitBox;
