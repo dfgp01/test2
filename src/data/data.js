@@ -2,6 +2,26 @@
  *  entity
  */
 
+lie_down_act = {
+	name : "lieDown",		//被击倒后躺下的动作
+	frames : ["deep_lieDown_x.png"],
+	keep : 1,					//持续1秒
+	playType : 2				//在最后一帧静止
+};
+
+shieldBuff_release = {
+	name : "shieldBuff-release",			//无敌护盾
+	action : "release",							//施放型的动作，用引用完成
+	keep : 2										//过程持续2秒
+	//etc: mp...
+};
+
+shieldBuff_obj = {			//this is a unit
+	name : "shieldBuff",
+	keep : 7,										//此单位存活7秒
+	value : {}//hp,defence....
+};
+
 data_standAction = {
 		name : "standAction",
 		frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
@@ -35,7 +55,7 @@ normal_att_state1 = {
 		state : 1,
 		name : "normal_attack1",
 		type : 1,
-		key : 1,
+		key : "x",
 		frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"],
 		keyFrame : 1,
 		rect : [10,10,50,50],
@@ -49,7 +69,7 @@ normal_att_state2 = {
 		state : 1,
 		type : 1,
 		name : "normal_attack2",
-		key : 1,
+		key : "x",
 		frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"],
 		keyFrame : 2,
 		rect : [10,10,50,50],
@@ -63,7 +83,7 @@ normal_att_state3 = {
 		state : 1,
 		type : 1,
 		name : "normal_attack3",
-		key : 1,
+		key : "x",
 		frames : ["deep_attack_3_1.png","deep_attack_3_2.png","deep_attack_3_3.png","deep_attack_3_4.png"],
 		keyFrame : 2,
 		rect : [10,10,50,50],
@@ -84,6 +104,7 @@ normal_att_state_group = {
 }
 
 skill_1 = {
+		key : "z",
 		state : 1,
 		name : "crossCutA",		//sword-round2类似
 		frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
@@ -125,15 +146,15 @@ skill_group = {
 skill_4 = {
 		state : 1,
 		name : "roundCutA",
+		key : "c",
 		frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"],
-		key : 1
 }
 
 skill_5 = {
 		state : 1,
 		name : "roundCutB",
-		frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"],
-		key : 2
+		key : "v",
+		frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"]
 }
 
 act_tree = {
@@ -177,24 +198,7 @@ data_walkState = {
 character = {
 		name : "DFL",
 		res : "deep",
-		states : [	//init states_tree
-		   {
-			   name : "standState",
-			   next : [
-			      {
-			    	  name : "attackState"
-			      }
-			   ]
-		   },
-		   {
-			   name : "walkState",
-			   next : [
-			      {
-			    	  name : "attackState"
-			      }
-			   ]
-		   }
-		],
+		baseSkill : ["normal_attack1", "crossCutA", "roundCutA"],
 		property : {
 			life : 1,
 			hp : 200,
