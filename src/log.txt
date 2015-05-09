@@ -16,14 +16,6 @@ unitLoop(){
 }
 cmdClear(){}
 
-#2015.04.16
-
-//使用数据建模
-
-handler和mask:
-handler处理source和target列表的mask关系，unitA->(unitB, unitC)，mask分别为 0001, 0010, 0100
-A和B.C分别做逻辑运算：A|B A|C = 0011, 0101
-Map中存储 0011, 0101 分别对应两种操作。
 
 
 ###	主要逻辑说明		###
@@ -53,21 +45,30 @@ Map中存储 0011, 0101 分别对应两种操作。
 
 
 X(未分类)
-独立公共State的合并，markList建立，Handler，群体Action
+独立公共State的合并，markList建立，Effect，群体Action
 
-StateNode	run()		start()
-	ActionState	run()		run(unit)	start()	start(unit)
-		AttackAction		同上
-		WalkAction		同上
-		JumpAction		同上
+
+###	2015.05.09	###
+
+动作释放类型：瞬发、施放、蓄力、施放后蓄力
+动作播放类型：顺播、循环、最后一帧静止、自定义（需逻辑实现）
+攻击目标检测：敌军、友军、自身、自身及友军
+攻击目标数量：1个、全体(99)、具体数量
+击中后处理：mask定义具体动作
+击中附加处理：函数列表
+
+a punch:
+			攻击方：1. hp - 100	2.中毒5s, 每秒-10hp	3. 2%几率晕眩2s
+			防御方：1. 物理免疫	2.中毒减轻					3. 反伤10%	4. 10%几率放出2只复仇机器人
+		解决方案:
+			1.将中毒晕眩等逻辑先忽略。
+			2.每个attEffect都运行hurtEffect，再运行state
 		
-####	2015.04.22
-
-1.继续逻辑表的编写
-2.对照data.js的数据建模
-3.Factory接口优化，所有组件类的new()内部不要实现，由Factory控制
-4.ActionState默认获取同名的Action，如有定义action域，则拿action域
-5.完善data数据模型。
-6.Factory创建unit方法必须完成。
-7.代码备份至邮箱。
-8.使用GitHub。...
+		att传输到hurt的data参考：
+		{
+			power : 20,
+			晕 : {
+				jilv: 2%,
+				time : 5
+			}
+		}
