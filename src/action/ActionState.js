@@ -24,12 +24,20 @@ ActionState = StateNode.extend({
 	},
 	
 	run : function(unit, dt){
-		this.owner.body.setSpriteFrame(this.frames[this.owner.frameIndex]);
-		this.owner.frameIndex++;
-		if(this.owner.frameIndex > this.frames.length-1){
-			//unit.currState.nextAct();
-			this.owner.frameIndex = 0;
-			return;
+		
+		//播放动画
+		if(this.owner.frameIndex < this.frames.length){
+			this.owner.body.setSpriteFrame(this.frames[this.owner.frameIndex]);
+			this.owner.frameIndex++;
+		}else{
+			//type分析
+			if(this.animateType==0){
+				this.nextAct(unit);
+			}else if(this.animateType==1){
+				this.owner.frameIndex = 0;
+			}else{	//animateType==2
+				
+			}
 		}
 	},
 
