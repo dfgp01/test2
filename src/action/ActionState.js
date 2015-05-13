@@ -10,7 +10,7 @@ ActionState = StateNode.extend({
 	children : null,					// 树/图结构的下级状态节点
 	
 	keep : 0,
-	effectList : null,
+	effect : null,
 
 	init : function(data){
 		this._super(data);
@@ -58,7 +58,7 @@ ActionState = StateNode.extend({
 	}
 });
 
-AttackActionState = ActionState.extend({
+AttackAction = ActionState.extend({
 	keyFrame : 0,
 	hitBox : null,
 	//hitActType : 0,
@@ -67,5 +67,25 @@ AttackActionState = ActionState.extend({
 		this._super(data);
 		this.hitBox = data.hitBox;
 		this.keyFrame = data.keyFrame;
+	},
+	
+	run : function(unit, dt){
+		this._super(unit, dt);
+		if(this.collide(unit)){
+			this.effect.run(unit);
+		}
+	},
+	
+	collide : function(unit){
+		if(this.targetType==1){
+			//.......
+		}else if(this.targetType==2){
+			//.......
+		}
+		return false;
 	}
+});
+
+SkillAction = ActionState.extend({
+	
 });
