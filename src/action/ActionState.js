@@ -10,7 +10,7 @@ ActionState = StateNode.extend({
 	children : null,					// 树/图结构的下级状态节点
 	
 	keep : 0,
-	effectList : null,
+	effect : null,
 
 	init : function(data){
 		this._super(data);
@@ -24,12 +24,20 @@ ActionState = StateNode.extend({
 	},
 	
 	run : function(unit, dt){
-		this.owner.body.setSpriteFrame(this.frames[this.owner.frameIndex]);
-		this.owner.frameIndex++;
-		if(this.owner.frameIndex > this.frames.length-1){
-			//unit.currState.nextAct();
-			this.owner.frameIndex = 0;
-			return;
+		
+		//播放动画
+		if(this.owner.frameIndex < this.frames.length){
+			this.owner.body.setSpriteFrame(this.frames[this.owner.frameIndex]);
+			this.owner.frameIndex++;
+		}else{
+			//type分析
+			if(this.animateType==0){
+				this.nextAct(unit);
+			}else if(this.animateType==1){
+				this.owner.frameIndex = 0;
+			}else{	//animateType==2
+				
+			}
 		}
 	},
 
@@ -50,7 +58,7 @@ ActionState = StateNode.extend({
 	}
 });
 
-AttackActionState = ActionState.extend({
+AttackAction = ActionState.extend({
 	keyFrame : 0,
 	hitBox : null,
 	//hitActType : 0,
@@ -59,5 +67,25 @@ AttackActionState = ActionState.extend({
 		this._super(data);
 		this.hitBox = data.hitBox;
 		this.keyFrame = data.keyFrame;
+	},
+	
+	run : function(unit, dt){
+		this._super(unit, dt);
+		if(this.collide(unit)){
+			this.effect.run(unit);
+		}
+	},
+	
+	collide : function(unit){
+		if(this.targetType==1){
+			//.......
+		}else if(this.targetType==2){
+			//.......
+		}
+		return false;
 	}
+});
+
+SkillAction = ActionState.extend({
+	
 });

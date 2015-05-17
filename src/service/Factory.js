@@ -57,16 +57,18 @@ Factory = {
 			}
 		},
 
-		//创建一个动作节点
+		/**
+		 * 创建一个动作节点
+		 */
 		createActionState : function(data, owner){
 			var actionState = null;
-			if(!Util.checkNotNull(data, true) || !Util.checkIsString(data.name, true) || !Util.checkIsInt(data.state, true)){
+			if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name") || !Util.checkIsInt(data, "state")){
 				cc.log("createActionState error, lack of necessary data!");
 				return null;
 			}
 			actionState = new ActionState();
 			actionState.init(data);
-			if(Util.checkIsString(data.action, "action:")){
+			if(Util.checkIsString(data,"action")){
 				var oldAct = owner.actions[data.action];
 				if(oldAct){
 					actionState.frames = oldAct.frames;
@@ -75,7 +77,7 @@ Factory = {
 					return null;
 				}
 			}else{
-				if(Util.checkArrayNull(data.frames, true)){
+				if(Util.checkArrayNull(data, "frames")){
 					cc.log("createActionState error, frames is null~!");
 					return null;
 				}
@@ -91,15 +93,18 @@ Factory = {
 				}
 				actionState.frames = list;
 				owner.actions[actionState.name] = actionState;
+				actionState.owner = owner;
 			}
 
 			return actionState;
 		},
 
-		//创建一个Unit
+		/**
+		 * 创建一个Unit
+		 */
 		createUnit : function(data){
 			
-			if(!Util.checkNotNull(data, "data")){
+			if(!Util.checkNotNull(data)){
 				cc.log("Factory createUnit error. data is null or undefined.");
 				return null;
 			}

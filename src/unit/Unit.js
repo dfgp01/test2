@@ -35,6 +35,7 @@ Unit = cc.Class.extend({
 		// this.currAction.play(this);
 		
 		this.currAction.run(dt);
+		this.runFuncState();
 	},
 	
 	runAction : function(action){
