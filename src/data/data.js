@@ -226,6 +226,16 @@ character = {
 
 	//以下是 temp data
 
+var skillTemp = {
+	name : "sk",
+	type : 1,				//主动瞬发、主动施放、被动等
+	targetType : 1,
+	collideType : 1,
+	releaseTime : 3,
+	releaseAction : "re-act",
+	mainAction : "main-act"
+}
+
 var actBase = {
 	id : "1",
 	name : "act1",

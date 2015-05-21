@@ -9,10 +9,15 @@ Unit = cc.Class.extend({
 	body:null,				//cc.Sprite类型
 	group : 0,				//hex 0001 or 0010 ...
 	
-	bodyType : 1,		//0无敌，1普通，2伪霸体，3霸体，4不倒地
-	bodyState : 0,
-	actionState : 0,		//动作状态，0=idle
-	value : null,			//base{hp,money...}
+	unitType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
+	bodyState : 0,		//中毒、出血、灼伤等		1010 binary
+	actionState : 0,		//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
+	
+	hp : 0,
+	en : 0,
+	strength : 0,
+	defense : 0,
+	speed : 0,
 
 	isActive:false,		//use for obj-pool
 	isDead:false,			//use for main-logic,dead not eq to non-active
