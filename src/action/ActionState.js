@@ -6,7 +6,7 @@ ActionState = StateNode.extend({
 	type : 0,
 	key : 0,							//通过这个key值来进入这个状态
 	frames : null,						//动画帧列表
-	//owner : null,						//所有者,类型为Unit
+	//owner : null,						//所有者,类型为Unit或UnitGroup
 	children : null,					// 树/图结构的下级状态节点
 	
 	keep : 0,

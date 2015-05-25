@@ -25,6 +25,15 @@ Service = {
 		
 		Container.unit = unit;
 		
+		if(Util.checkArrayNull(character.baseSkill)){
+			return;
+		}
+		for(var i in character.baseSkill){
+			var ac = unit.actions[character.baseSkill[i]];
+			unit.actionStateNodes[ac.key] = ac;
+		}
+		cc.log(Util.iterObj(unit.actionStateNodes));
+		
 	},
 	
 	/**
@@ -32,12 +41,12 @@ Service = {
 	 */
 	linkAction : function(data, owner){
 		//链式Action
-		if(!Util.checkArrayNull(data.actions)){
+		if(!Util.checkArrayNull(data, "actions")){
 			this.linkForList(data, owner);
 			return;
 		}
 		//树式Action，需要由key控制
-		if(!Util.checkArrayNull(data.actionNodes)){
+		if(!Util.checkArrayNull(data, "actionNodes")){
 			this.linkForTree(data, owner);
 			return;
 		}
@@ -66,7 +75,7 @@ Service.linkForList = function(data, owner){
 
 Service.linkForTree = function(data, owner){
 	for(var i in data.actionNodes){
-		if(!Util.checkIsString(data.actionNodes[i].name, true)){
+		if(!Util.checkIsString(data.actionNodes[i], "name")){
 			cc.log("linkAction faild~! actionNodes is wrong.");
 			return;
 		}
@@ -74,25 +83,26 @@ Service.linkForTree = function(data, owner){
 		if(!curr){
 			return;
 		}
-		if(!Util.checkArrayNull(data.actionNodes[i].next)){
-			linkNext(data.actionNodes[i].next, curr);
+		if(!Util.checkArrayNull(data.actionNodes[i], "next")){
+			this.linkNext(data.actionNodes[i].next, curr);
 		}
 	}
 };
 
-Service.linkNext = function(array, parent, owner){
+Service.linkNext = function(array, parent){
 	for(var i in array){
-		if(!Util.checkNotNull(array[i].name, true)){
+		if(!Util.checkNotNull(array[i], "name")){
 			cc.log("linkAction faild~! linkNext is wrong.");
 			return;
 		}
-		var curr = owner.actions[array[i].name];
+		var curr = parent.owner.actions[array[i].name];
 		if(!curr){
+			cc.log("linkAction faild~! linkNext is wrong. action: " + array[i].name + " not found.");
 			return;
 		}
 		parent.addNext(curr);
-		if(!Util.checkArrayNull(curr.next)){
-			linkNext(curr);
+		if(!Util.checkArrayNull(curr, "next")){
+			this.linkNext(curr.next, curr);
 		}
 	}
 };

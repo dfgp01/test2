@@ -55,7 +55,7 @@ normal_att_state1 = {
 		state : 1,
 		name : "normal_attack1",
 		type : 1,
-		key : 1,
+		key : "x",
 		frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"],
 		keyFrame : 1,
 		rect : [10,10,50,50],
@@ -69,7 +69,7 @@ normal_att_state2 = {
 		state : 1,
 		type : 1,
 		name : "normal_attack2",
-		key : 1,
+		key : "x",
 		frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"],
 		keyFrame : 2,
 		rect : [10,10,50,50],
@@ -83,7 +83,7 @@ normal_att_state3 = {
 		state : 1,
 		type : 1,
 		name : "normal_attack3",
-		key : 1,
+		key : "x",
 		frames : ["deep_attack_3_1.png","deep_attack_3_2.png","deep_attack_3_3.png","deep_attack_3_4.png"],
 		keyFrame : 2,
 		rect : [10,10,50,50],
@@ -104,6 +104,7 @@ normal_att_state_group = {
 }
 
 skill_1 = {
+		key : "z",
 		state : 1,
 		name : "crossCutA",		//sword-round2类似
 		frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
@@ -145,15 +146,15 @@ skill_group = {
 skill_4 = {
 		state : 1,
 		name : "roundCutA",
+		key : "c",
 		frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"],
-		key : 1
 }
 
 skill_5 = {
 		state : 1,
 		name : "roundCutB",
-		frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"],
-		key : 2
+		key : "v",
+		frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"]
 }
 
 act_tree = {
@@ -197,24 +198,7 @@ data_walkState = {
 character = {
 		name : "DFL",
 		res : "deep",
-		states : [	//init states_tree
-		   {
-			   name : "standState",
-			   next : [
-			      {
-			    	  name : "attackState"
-			      }
-			   ]
-		   },
-		   {
-			   name : "walkState",
-			   next : [
-			      {
-			    	  name : "attackState"
-			      }
-			   ]
-		   }
-		],
+		baseSkill : ["normal_attack1", "crossCutA", "roundCutA"],
 		property : {
 			life : 1,
 			hp : 200,

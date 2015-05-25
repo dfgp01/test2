@@ -3,19 +3,32 @@
 */
 
 Util = {
+	
+	/**
+	 * 	取得对象数据值
+	 */
+	getValue : function(data, fieldName){
+		var field = 0;
+		if(fieldName){
+			field = data[fieldName];
+		}else{
+			field = data;
+		}
+		return field;
+	},
 		
 	/**
 	 * 对象非空检测
 	 */
-	checkNotNull : function(field, isShow){
+	checkNotNull : function(data, fieldName){
+		var field = this.getValue(data, fieldName);
+		
 		//因为js的0和""是一样的(""==0 为true)，所以要分开判断
 		if(field == 0){
 			return true;
 		}
 		if(field == undefined || field == null || field == ""){
-			if(isShow){
-				cc.log("["+field+"] is undefined or null");
-			}
+			cc.log("data is undefined or null	field: " + fieldName);
 			return false;
 		}
 		return true;
@@ -24,49 +37,14 @@ Util = {
 	/**
 	 * 检测对象是否为字符串
 	 */
-	checkIsString : function(field, isShow){
-		if(!this.checkNotNull(field, isShow)){
+	checkIsString : function(data, fieldName){
+		if(!this.checkNotNull(data, fieldName)){
 			return false;
 		}
+		var field =this.getValue(data, fieldName);
 		if(typeof(field) != "string"){
-			if(isShow){
-				cc.log("["+field+"] is not string");
-			}
+			cc.log("data is not string	field: " + fieldName + " value: " + field);
 			return false;
-		}
-		return true;
-	},
-	
-	/**
-	 * 检测对象是否为数组
-	 */
-	checkIsArray : function(field, isShow){
-		if(!this.checkNotNull(field, isShow)){
-			return false;
-		}
-		if(field instanceof Array){
-			return true;
-		}else{
-			if(isShow){
-				cc.log("["+name+"] is not array");
-			}
-			return false;
-		}
-	},
-	
-	/**
-	 * 检测数组是否为空
-	 */
-	checkArrayNull : function(field, isShow){
-		if(this.checkIsArray(field, isShow)){
-			if(field.length > 0){
-				return false;
-			}else{
-				if(isShow){
-					cc.log("[array:"+field+"] is null");
-				}
-				return true;
-			}
 		}
 		return true;
 	},
@@ -74,16 +52,56 @@ Util = {
 	/**
 	 * 检查对象是否数字（整数）
 	 */
-	checkIsInt : function(field, isShow){
-		if(!this.checkNotNull(field, isShow)){
+	checkIsInt : function(data, fieldName){
+		if(!this.checkNotNull(data, fieldName)){
 			return false;
 		}
+		var field =this.getValue(data, fieldName);
 		if(typeof(field) == "number" && parseInt(field) == field){
 			return true;
 		}else{
-			if(isShow){
-				cc.log("["+name+"] is not number");
+			cc.log("data is not number	field: " + fieldName + " value: " + field);
+			return false;
+		}
+	},
+	
+	/**
+	 * 检测对象是否为数组
+	 */
+	checkIsArray : function(data, fieldName){
+		if(!this.checkNotNull(data, fieldName)){
+			return false;
+		}
+		var field =this.getValue(data, fieldName);
+		if(field instanceof Array){
+			return true;
+		}else{
+			cc.log("data is not array	field: " + fieldName + " value: " + field);
+			return false;
+		}
+	},
+	
+	/**
+	 * 检测数组是否为空
+	 */
+	checkArrayNull : function(data, fieldName){
+		if(this.checkIsArray(data, fieldName)){
+			var field =this.getValue(data, fieldName);
+			if(field.length > 0){
+				return false;
+			}else{
+				cc.log("[array is null	field: " + fieldName + " size: " + field.length);
+				return true;
 			}
 		}
+		return true;
+	},
+	
+	iterObj : function(obj){
+		var str = "";
+		for(var key in obj){
+			str += "key : " + key + ", value : " + obj[key] + "\n";
+		}
+		return str;
 	}
 };
