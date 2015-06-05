@@ -1,12 +1,12 @@
 /**
  * 全局数据
  */
-GobalData = {
-	framerate : 0,
-	tick : 0.15,
+GobalSetting = {
+	framerate : 60,
+	tick : 0.0333,
 	
 	//动画帧延迟时间，单位秒
-	frameDelayTime : 0.016,
+	frameDelayTime : 0.0333,	//fps:30
 	
 	//一般重力，一些单位可设置自定义重力
 	gravity : -2,
@@ -73,13 +73,15 @@ Pool = {
 };
 
 /**
- * 组件管理器，存储单例对象用于复用
+ * 组件管理器，存储所有游戏对象，用于数据共享
  */
 Container = {
 		
 		frames : {},			//存储帧
 		actions : {},			//存储动画
-		property : {},			//存储原始数据
+		data : {},			//存储原始数据
+		unitList : [],		//存储所有单位
+		groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
 		
 		//跟据字符串数组查找对应的实体，并封装成list，不建议直接调用此方法
 		getList : function(names, objName){

@@ -1,9 +1,10 @@
 /**
  * ActionState是独立对象，每个unit对应多个，意为动作状态节点
+ * ECS模式中，我更倾向于将ActionState看成是System
  */
 ActionState = StateNode.extend({
 	state : 0,
-	type : 0,
+	play : 0,
 	key : 0,							//通过这个key值来进入这个状态
 	frames : null,						//动画帧列表
 	//owner : null,						//所有者,类型为Unit或UnitGroup
@@ -25,20 +26,6 @@ ActionState = StateNode.extend({
 	
 	run : function(unit, dt){
 		
-		//播放动画
-		if(this.owner.frameIndex < this.frames.length){
-			this.owner.body.setSpriteFrame(this.frames[this.owner.frameIndex]);
-			this.owner.frameIndex++;
-		}else{
-			//type分析
-			if(this.animateType==0){
-				this.nextAct(unit);
-			}else if(this.animateType==1){
-				this.owner.frameIndex = 0;
-			}else{	//animateType==2
-				
-			}
-		}
 	},
 
 	end : function(){},
