@@ -73,3 +73,45 @@ a punch:
 				time : 5
 			}
 		}
+		
+		
+###	2015.06.08	###
+		
+first, component & sub-component declear:
+
+###	Unit	###
+
+view{sprite}
+motion{vx, vy}
+health{maxHP, currentHp, etc...}
+defence{...reference last...}
+strength{...reference last...}
+*status{}
+
+
+###	ActNode		###
+
+Animate{frames, speedFactor, type}
+collide{x, y, width, height}
+target{type, *num}
+time{cd, keep}
+node{type, key, next, children}
+
+
+###	MultiAct or ActContainer	###
+
+
+second, System declear:
+
+###	SystemManager	###
+
+###	interface System	###
+
+public void update(gameObj, dt);
+
+
+###	HitManager	###
+
+public void update(BA);
+
+		
