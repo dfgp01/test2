@@ -114,4 +114,53 @@ public void update(gameObj, dt);
 
 public void update(BA);
 
-		
+
+
+2015.06.11
+###	data-oriented:
+
+*** common
+
+motion{vx, vy, speed}
+
+timeCom{keep, start, isStart}
+
+
+*** unit:
+
+hurtAvaiable{hp, maxHp, defence}			//可被攻击组件
+
+hitAvaiable{strength, attSpeedFactor}	//可攻击组件
+
+actions{frameIndex, currAction, actions...}		//可执行动作组件
+
+
+*** action:
+
+canCharge{keep, rate, maxAddition}		//可蓄力动作，蓄力时间，释放前比率，最大加成
+
+animate{frames, playType, speedFactor}	//动画组件
+
+next: act
+childrens: acts
+
+
+*** attAction
+
+collide{x, y, width, height}		//碰撞组件，或使用rect类
+
+hitted{effectList}		//击中后的链式处理
+
+
+*** summons 召唤物
+
+actions{}
+timeCom
+
+
+*** bullets 飞行道具
+
+motion{}
+
+###	System
+

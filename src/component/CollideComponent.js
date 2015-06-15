@@ -3,7 +3,7 @@
  */
 
 CollideComponent = Component.extend({
-	update : function(enemyList, dt){
-		
-	}
+	rect : null,
+	target : 0,
+	type : 0
 });
