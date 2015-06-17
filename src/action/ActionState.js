@@ -4,15 +4,9 @@
  */
 ActionState = StateNode.extend({
 	state : 0,
-	play : 0,
-	key : 0,							//通过这个key值来进入这个状态
-	frames : null,						//动画帧列表
-	//owner : null,						//所有者,类型为Unit或UnitGroup
-	children : null,					// 树/图结构的下级状态节点
+	_currUnit : null,
+	comSysList : null,
 	
-	keep : 0,
-	effect : null,
-
 	init : function(data){
 		this._super(data);
 		this.key = data.key;
@@ -25,7 +19,10 @@ ActionState = StateNode.extend({
 	},
 	
 	run : function(unit, dt){
-		
+		this._currUnit = unit;
+		for(var i in this.comSysList){
+			this.comSysList[i].update(dt);
+		}
 	},
 
 	end : function(){},

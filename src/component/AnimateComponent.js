@@ -8,16 +8,14 @@ AnimateComponent = Component.extend({
 	speedFactor : 1
 });
 
-AnimateSystem = System.extend({
+AnimateSystem = ActionSystem.extend({
 	animateCom : null,	//AnimateComponent
 	start : function(){},
-	update : function(dt){		//待定
+	update : function(unit, dt){		//待定
 		//播放动画
 		if(unit.frameIndex < unit.currAction.frames.length){
 			unit.body.setSpriteFrame(unit.currAction.frames[unit.frameIndex]);
 			unit.frameIndex++;
-		}else{
-			unit.currAction.nextAct(unit);
 		}
 	},
 	end : function(){}

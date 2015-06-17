@@ -4,11 +4,18 @@
 
 //动作系统
 ActionSystem = System.extend({
-	start : function(){},
-	update : function(dt){
-		//unitList.currAct.run();
+	unitList : null,
+	start : function(){
+		this.unitList = Container.getUnitList();
 	},
-	end : function(){}
+	update : function(dt){
+		for(var i in  this.unitList){
+			this.unitList[i].currAct.run(this.unitList[i], dt);
+		}
+	},
+	end : function(){
+		//remove from SysManager
+	}
 });
 
 //动画系统

@@ -43,7 +43,7 @@ EventData = cc.Class.extend({
 
 StateNode = cc.Class.extend({
 	name : null,
-	next : null,
+	children : null,
 	
 	//构造器
 	ctor : function(){},
@@ -56,9 +56,12 @@ StateNode = cc.Class.extend({
 	run : function(dt){},
 	end : function(){},
 	
-	//设置直接下一个节点
-	setNext : function(node){
-		this.next = node;
+	//设置直接下一个节点，需要完善
+	addChild : function(node){
+		if(children){
+			this.children = [];
+		}
+		this.children.push(node);
 	}
 });
 

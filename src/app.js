@@ -107,9 +107,7 @@ var HelloWorldLayer = cc.Layer.extend({
     },
     
     update:function(dt){
-    	if(!this._lock){
-    		_unit.run(dt);
-    	}
+    	SystemManager.update(dt);
     }
 });
 
