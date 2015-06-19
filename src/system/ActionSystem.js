@@ -2,8 +2,8 @@
  * 
  */
 
-//动作系统
-ActionSystem = System.extend({
+//运行动作系统
+ActionRunSystem = System.extend({
 	unitList : null,
 	start : function(){
 		this.unitList = Container.getUnitList();
@@ -16,13 +16,4 @@ ActionSystem = System.extend({
 	end : function(){
 		//remove from SysManager
 	}
-});
-
-//动画系统
-AnimateSystem = System.extend({
-	start : function(){},
-	update : function(dt){
-		//unitList.currAct.play.update(dt);
-	},
-	end : function(){}
 });

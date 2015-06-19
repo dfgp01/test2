@@ -27,60 +27,24 @@ Factory = {
 			return frame;
 		},
 
-		//创建一个Action
-		createAction : function(data){
-
-			if(!Util.checkNotNull(data,"data") && !Util.checkIsString(data.name, "name")){
-				cc.log("Factory.createAction error");
-				return;
-			}
-			var action = Container.getAction(data.name);
-			if(action){
-				cc.log("Factory.createAction error. action:"+data.name + " has exists!");
-				return;
-			}
-			if(Util.checkIsNum(data.type, "type") && !Util.checkArrayNull(data.frames, "frames")){
-				var list = [];
-				for(var i in data.frames){
-					var frame = cc.spriteFrameCache.getSpriteFrame(data.frames[i]);
-					if(frame){
-						list.push(frame);
-					}else{
-						cc.log("action:" + data.name + " frame:" + data.frames[i] + " not found");
-					}
-				}
-				//action数据实体的frames列表直接存储cc.SpriteFrame
-				data.frames = list;
-				Container.actions[data.name] = data;
-				cc.log("Container add action:" + data.name);
-				return;
-			}
-		},
-
 		/**
 		 * 创建一个动作节点
 		 */
 		createActionState : function(data, owner){
-			var actionState = null;
-			if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name") || !Util.checkIsInt(data, "state")){
-				cc.log("createActionState error, lack of necessary data!");
+			if(!checkActionRight(data)){
 				return null;
 			}
-			actionState = new ActionState();
+			var actionState = new ActionState();
 			actionState.init(data);
-			if(Util.checkIsString(data,"action")){
-				var oldAct = owner.actions[data.action];
-				if(oldAct){
-					actionState.frames = oldAct.frames;
-				}else{
-					cc.log("createActionState error, action:[" + data.action + "] not found!");
-					return null;
-				}
+			if(Util.checkIsString(data,"action") && Container.actions[data.action]){
+				actionState.frames = Container.actions[data.action].frames;
 			}else{
-				if(Util.checkArrayNull(data, "frames")){
-					cc.log("createActionState error, frames is null~!");
-					return null;
-				}
+				cc.log("createActionState error, action:[" + data.action + "] not found!");
+				return null;
+			}
+
+			if(!Util.checkArrayNull(data, "frames")){
+				//cc.log("createActionState error, frames is null~!");
 				var list = [];
 				for(var i in data.frames){
 					var frame = cc.spriteFrameCache.getSpriteFrame(data.frames[i]);
@@ -92,10 +56,8 @@ Factory = {
 					}
 				}
 				actionState.frames = list;
-				owner.actions[actionState.name] = actionState;
-				actionState.owner = owner;
 			}
-
+			Container.actions[actionState.name] = actionState;
 			return actionState;
 		},
 
@@ -118,3 +80,13 @@ Factory = {
 			return unit;
 		}
 };
+
+/**
+ * 检查action是否满足可构建条件
+ */
+Factory.checkActionRight = function(data){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name") || !Util.checkIsInt(data, "state")){
+		cc.log("createActionState error, lack of necessary data!");
+		return false;
+	}
+}

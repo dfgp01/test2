@@ -7,7 +7,7 @@ Service = {
 	/**
 	 * 初始化单位设置，构建对象
 	 */
-	initCommonUnit : function(data){
+	initUnit : function(characterName){
 		cc.log("正在初始化人物");
 		var unit = Factory.createUnit(character);
 		

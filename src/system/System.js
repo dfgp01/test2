@@ -1,7 +1,6 @@
 /**
- * 
+ * 	定义其他系统接口
  */
-
 System = cc.Class.extend({
 	name : null,
 	priority : 0,
@@ -10,7 +9,21 @@ System = cc.Class.extend({
 	end : function(){}
 });
 
-SystemManager = {
+/**
+ * 定义动作模块专用的系统组件接口
+ */
+ActionComponentSystem = cc.Class.extend({
+	name : null,
+	priority : 0,
+	start : function(dt, unit){},
+	update : function(dt, unit){},
+	end : function(dt, unit){}
+});
+
+/**
+ * 系统管理器
+ */
+SystemManager = System.extend({
 		sysList : null,
 		init : function(){
 			this.sysList = [];
@@ -23,4 +36,4 @@ SystemManager = {
 				this.sysList[i].update(dt);
 			}
 		}
-}
+});

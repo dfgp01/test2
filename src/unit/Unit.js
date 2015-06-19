@@ -1,32 +1,22 @@
 /**
  * edit by Hugo-Fu
- * 2015.03.09
+ * 2015.06.18
  */
 
-Unit = cc.Class.extend({
-	id:null,
+GameObject = cc.Class.extend({
+	id : null,
 	name : null,
-	body:null,				//cc.Sprite类型
-	group : 0,				//hex 0001 or 0010 ...
+	group : 0,
 	
-	unitType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
-	bodyState : 0,		//中毒、出血、灼伤等		1010 binary
-	actionState : 0,		//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
-	
-	hp : 0,
-	en : 0,
-	strength : 0,
-	defense : 0,
-	speed : 0,
+});
 
-	isActive:false,		//use for obj-pool
-	isDead:false,			//use for main-logic,dead not eq to non-active
-	act_tag:null,			//这个不知干嘛的
+Unit = GameObject.extend({
 	
-	actions : null,				//用于索引，key为action.name值
-	actionStates : null,		//树结构 状态节点，key为action.key值
-	currAction : null,			//当前action的引用
-	frameIndex : -1,
+	viewCom : null,
+	hitCom : null,
+	hurtCom : null,
+	speedCom : null,
+	actionsCom : null,	
 
 	init : function(data){
 		this.name = data.name;

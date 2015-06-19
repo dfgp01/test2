@@ -16,7 +16,12 @@ var HelloWorldLayer = cc.Layer.extend({
     _lock : true,
     
     initAct : function(){
-    	Service.initCommonUnit();
+    	//load frames
+    	cc.spriteFrameCache.addSpriteFrames(deep_0_plist);
+        cc.spriteFrameCache.addSpriteFrames(deep_1_plist);
+        cc.spriteFrameCache.addSpriteFrames(deep_2_plist);
+        
+    	Service.initUnit("player1");
     	_unit = Container.unit;
     	_unit.body = deep;
     },
@@ -40,10 +45,6 @@ var HelloWorldLayer = cc.Layer.extend({
         });
         this.addChild(bg, 0);
 
-        cc.spriteFrameCache.addSpriteFrames(deep_0_plist);
-        cc.spriteFrameCache.addSpriteFrames(deep_1_plist);
-        cc.spriteFrameCache.addSpriteFrames(deep_2_plist);
-        
         deep = new cc.Sprite("#deep_stand_0.png");
         deep.attr({
         	x: 150,

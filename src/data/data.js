@@ -1,6 +1,3 @@
-/**
- *  entity
- */
 
 lie_down_act = {
 	name : "lieDown",		//被击倒后躺下的动作
@@ -16,15 +13,13 @@ shieldBuff_release = {
 	//etc: mp...
 };
 
-shieldBuff_obj = {			//this is a unit
-	name : "shieldBuff",
-	keep : 7,										//此单位存活7秒
-	value : {}//hp,defence....
-};
-
+/**
+ * act...
+ */
 data_standAction = {
 		name : "standAction",
 		frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
+		animateType : 1,
 		type : 0
 };
 
@@ -93,6 +88,9 @@ normal_att_state3 = {
 		}
 }
 
+/**
+ * action-chain
+ */
 normal_att_state_group = {
 		name : "normal_attack_group",
 		actions : ["normal_attack1","normal_attack2","normal_attack3"],
@@ -195,18 +193,29 @@ data_walkState = {
 };
 
 //a character
-character = {
+unit_data = {
 		name : "DFL",
 		res : "deep",
-		baseSkill : ["normal_attack1", "crossCutA", "roundCutA"],
-		property : {
-			life : 1,
+		actions : {
+			baseActions : ["idle", "normal_attack1", "crossCutA", "roundCutA"],
+		},
+		hurt : {
 			hp : 200,
+			defense : 20
+		},
+		hit : {
 			strength : 23,
-			defense : 20,
-			speed : 16
+			attackSpeed : 16
+		},
+		move : {
+			moveSpeed : 20
 		}
 };
+
+character_conf = {
+	res : "deep",
+	baseActions : [],
+}
 
 	//以下是 temp data
 
