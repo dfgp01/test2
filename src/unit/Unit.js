@@ -68,10 +68,8 @@ Unit = GameObject.extend({
 	}
 });
 
-Character = Unit.extend({
-	keepFlag : false,		//蓄力标记
+UnitGroup = GameObject.extend({
+	actionsCom : null,	
+	unitList : null
 });
-
-FlyObject = Unit.extend({
-	owner : null
-});
+}

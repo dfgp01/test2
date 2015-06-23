@@ -78,7 +78,7 @@ Pool = {
 Container = {
 		
 		frames : {},			//存储帧
-		actions : {},			//存储动画
+		actions : {},			//存储动作组件
 		data : {},			//存储原始数据
 		unitList : [],		//存储所有单位
 		groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list

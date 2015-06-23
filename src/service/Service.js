@@ -7,17 +7,19 @@ Service = {
 	/**
 	 * 初始化单位设置，构建对象
 	 */
-	initUnit : function(characterName){
-		cc.log("正在初始化人物");
-		var unit = Factory.createUnit(character);
-		
-		cc.log("正在初始化动画组件");
-		var acts = [normal_att_state1, normal_att_state2, normal_att_state3, skill_1, skill_2, skill_3, skill_4, skill_5];
-		for(var i in acts){
-			Factory.createActionState(acts[i], unit);
+	initUnit : function(data){
+		if(!this.checkCharacterDataRight(data)){
+			return;
+		}
+		cc.log("initial animate data......");
+		for(var i in data.actions){
+			Factory.createActionState(data.actions[i], data.characterName);
 		}
 		
-		cc.log("正在构建动作和技能逻辑列表");
+		cc.log("initial character unit......");
+		var unit = Factory.createUnit(data);
+		
+		cc.log("inital action & skill link relationship......");
 		var act_groups = [normal_att_state_group, skill_group, act_tree];
 		for(var i in act_groups){
 			this.linkAction(act_groups[i], unit);
@@ -106,3 +108,17 @@ Service.linkNext = function(array, parent){
 		}
 	}
 };
+
+/**
+ * 检查character是否满足可构建必要条件
+ */
+Service.checkCharacterDataRight = function(data){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "characterName")){
+		cc.log("create Character error, lack of necessary data!");
+		return false;
+	}
+	if(!Util.checkNotNull(data, "actions")){
+		cc.log("create Character error, must has actions!");
+		return false;
+	}
+}

@@ -30,17 +30,23 @@ Factory = {
 		/**
 		 * 创建一个动作节点
 		 */
-		createActionState : function(data, owner){
+		createActionState : function(data, characterName){
 			if(!checkActionRight(data)){
 				return null;
 			}
 			var actionState = new ActionState();
-			actionState.init(data);
-			if(Util.checkIsString(data,"action") && Container.actions[data.action]){
-				actionState.frames = Container.actions[data.action].frames;
-			}else{
-				cc.log("createActionState error, action:[" + data.action + "] not found!");
-				return null;
+			//actionState.init(data);
+			actionState.name = data.name;
+
+			if(Util.checkIsString(data,"action")){
+				//寄存器里面的actions结构举例：DFL_stand, DFL_attack1, 由 角色名_动作名 组成
+				var actRef = Container.actions[characterName + "_" + data.action];
+				if(actRef){
+					actionState.frames = actRef.frames;
+				}else{
+					cc.log("createActionState error, action:[" + characterName + "_" + data.action + "] not found!");
+					return null;
+				}
 			}
 
 			if(!Util.checkArrayNull(data, "frames")){
@@ -66,27 +72,51 @@ Factory = {
 		 */
 		createUnit : function(data){
 			
-			if(!Util.checkNotNull(data)){
-				cc.log("Factory createUnit error. data is null or undefined.");
+			if(!this.checkUnitRight(data)){
 				return null;
 			}
 
 			var unit = new Unit();
-			unit.init(data);
-			
-			unit.actions = {};
-			unit.actionStates = {};
+			//unit.init(data);
+			unit.name = data.name;
+			unit.res = data.res;
+
+			unit.viewCom :  = new ViewComponent();
+			unit.hitCom : new HitPropertiesComponent();
+			unit.hurtCom : new HurtPropertiesComponent();
+			unit.speedCom : new SpeedComponent();
+			unit.actionsCom : new ActionsComponent();	
 
 			return unit;
 		}
 };
 
 /**
- * 检查action是否满足可构建条件
+ * 检查action是否满足可构建必要条件
  */
 Factory.checkActionRight = function(data){
 	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name") || !Util.checkIsInt(data, "state")){
-		cc.log("createActionState error, lack of necessary data!");
+		cc.log("create ActionState error, lack of necessary data!");
+		return false;
+	}
+	
+	if(!Util.checkIsString(data,"action") && Util.checkArrayNull(data, "frames")){
+		cc.log("createActionState:" + data.name + " error, action or frames has one at lease!");
+		return false;
+	}
+}
+
+/**
+ * 检查unit是否满足可构建必要条件
+ */
+Factory.checkUnitRight = function(data){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
+		cc.log("create Unit error, lack of necessary data!");
+		return false;
+	}
+	
+	if(!Util.checkNotNull(data, "actions")){
+		cc.log("create Unit error, must has actions.");
 		return false;
 	}
 }
