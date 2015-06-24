@@ -3,7 +3,8 @@
  * 组件父类
  */
 Component = cc.Class.extend({
-	name : null
+	name : null,
+	clone : function(){}	//克隆对象接口而已
 });
 
 /**

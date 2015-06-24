@@ -68,8 +68,17 @@ Unit = GameObject.extend({
 	}
 });
 
-UnitGroup = GameObject.extend({
+UnitTemplate = cc.Class.extend({
+	name : null,
+	hitCom : null,
+	hurtCom : null,
+	speedCom : null,
 	actionsCom : null,	
-	unitList : null
+	getNewUnit : function(name, group){
+		var unit = Container.pool.getOne(name);
+		unit.hitCom.strength = this.hitCom.strength;
+		unit.hitCom.attSpeedFactor = this.hitCom.attSpeedFactor;
+		//....
+	}
 });
 }

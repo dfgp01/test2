@@ -16,14 +16,16 @@ shieldBuff_release = {
 character_data = {
 	characterName : "DFL",
 	res : "deep",
-	unitType : 1, 
+	unitType : 1,
+	firstFrame : "deep_stand_0.png",
 	actions : {
 		stand : {name : "stand", frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"], animateType : 1},
 		walk : {name : "walk", frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"], animateType : 1},
 		hurt : {name : "hurt", frames : ["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png","deep_hurt_5.png","deep_hurt_4.png","deep_hurt_4.png"]},
 		normalAtk1 : {name : "normalAtk1", frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"], key : "x", keyFrame : 1,},
 		normalAtk2 : {name : "normalAtk2", frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"], key : "x", keyFrame : 2,}
-	}
+	},
+	actLamda : "normalAtk1>normalAtk2"		//lamda表达式：> + - [] () , 随便起的名字 -_-
 };
 
 

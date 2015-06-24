@@ -16,9 +16,9 @@ GobalSetting = {
 };
 
 /**
- *  对象池
+ *  对象管理器
  */
-Pool = {
+GameObjPool = {
 	step : 5,				//create obj num when pool is full
 	count  : 2,
 	
@@ -82,6 +82,16 @@ Container = {
 		data : {},			//存储原始数据
 		unitList : [],		//存储所有单位
 		groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
+		
+		templates : {},	//存储已初始化的原始数据的模板
+		renewObjFromTemplate : function(tempName){
+			var tmp = this.templates[tempName];
+			if(tmp){
+				return tmp.renewObj();		//renewObj是接口
+			}else{
+				c.log("template: " + tempName + " not found!");
+			}
+		},
 		
 		//跟据字符串数组查找对应的实体，并封装成list，不建议直接调用此方法
 		getList : function(names, objName){

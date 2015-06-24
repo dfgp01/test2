@@ -29,21 +29,19 @@
  * Effect：这个是新版本引入的概念，正在研究中。。。
  */
 
+/**
+ * V2.0版
+ * 学习了ECS的模式，加以改造。
+ */
+
 
 /**
  * 		基础组件类
  */
 
-EventData = cc.Class.extend({
-	isActive : false,
-	name : null,
-	source : null,
-	target : null
-});
-
 StateNode = cc.Class.extend({
 	name : null,
-	children : null,
+	children : null,			//子节点，树状结构
 	
 	//构造器
 	ctor : function(){},
@@ -56,12 +54,12 @@ StateNode = cc.Class.extend({
 	run : function(dt){},
 	end : function(){},
 	
-	//设置直接下一个节点，需要完善
+	//设置直接下一个节点，需要改
 	addChild : function(node){
 		if(children){
-			this.children = [];
+			this.children = {};
 		}
-		this.children.push(node);
+		this.children[node.key];
 	}
 });
 
@@ -79,4 +77,11 @@ Frame = cc.Class.extend({		//extend cc.SpriteFrame
 		this.name = data.source;
 		this.position = data.position;
 	}
+});
+
+EventData = cc.Class.extend({
+	isActive : false,
+	name : null,
+	source : null,
+	target : null
 });

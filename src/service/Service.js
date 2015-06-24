@@ -11,21 +11,28 @@ Service = {
 		if(!this.checkCharacterDataRight(data)){
 			return;
 		}
+		
+		cc.log("initial unit template......");
+		var unitTemplate = Factory.createUnitTemplate(data);
+		Container.templates[unitTemplate.name] = unitTemplate;
+		
 		cc.log("initial animate data......");
 		for(var i in data.actions){
-			Factory.createActionState(data.actions[i], data.characterName);
+			Factory.createActionState(data.actions[i], unitTemplate);
 		}
 		
-		cc.log("initial character unit......");
-		var unit = Factory.createUnit(data);
+		if(!Util.checkArrayNull(data, "actLamda")){
+			cc.log("initial action & skill link relationship......");
+			for(var i in data.actLamda){
+				this.tmpLink(data.actLamda[i], unitTemplate);
+			}
+		}
 		
-		cc.log("inital action & skill link relationship......");
+		
 		var act_groups = [normal_att_state_group, skill_group, act_tree];
 		for(var i in act_groups){
 			this.linkAction(act_groups[i], unit);
 		}
-		
-		Container.unit = unit;
 		
 		if(Util.checkArrayNull(character.baseSkill)){
 			return;
@@ -37,6 +44,18 @@ Service = {
 		cc.log(Util.iterObj(unit.actionStateNodes));
 		
 	},
+	
+	tmpLink : function(data, template){
+		var s = data.indexOf(">");
+		var pre = data.substring(0, s-1);
+		var suf = data.substring(s+1);
+		var act = template.actions[pre];
+		if(!act){
+			cc.log("link action error! action: " + pre + " not found!");
+			return;
+		}
+		linkAct(act, suf);
+	}
 	
 	/**
 	 * 构建动作链

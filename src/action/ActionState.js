@@ -5,6 +5,7 @@
 ActionState = StateNode.extend({
 	state : 0,
 	_currUnit : null,
+	//animateComSys : null,		//把动画组件单独提出来
 	comSysList : null,
 	
 	init : function(data){

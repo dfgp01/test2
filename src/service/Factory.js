@@ -28,9 +28,9 @@ Factory = {
 		},
 
 		/**
-		 * 创建一个动作节点
+		 * 创建一个动作节点，并存到模板中
 		 */
-		createActionState : function(data, characterName){
+		createActionState : function(data, template){
 			if(!checkActionRight(data)){
 				return null;
 			}
@@ -39,12 +39,11 @@ Factory = {
 			actionState.name = data.name;
 
 			if(Util.checkIsString(data,"action")){
-				//寄存器里面的actions结构举例：DFL_stand, DFL_attack1, 由 角色名_动作名 组成
-				var actRef = Container.actions[characterName + "_" + data.action];
+				var actRef = template.actions[data.action];
 				if(actRef){
 					actionState.frames = actRef.frames;
 				}else{
-					cc.log("createActionState error, action:[" + characterName + "_" + data.action + "] not found!");
+					cc.log("createActionState error, action:[" + data.action + "] not found!");
 					return null;
 				}
 			}
@@ -63,31 +62,29 @@ Factory = {
 				}
 				actionState.frames = list;
 			}
-			Container.actions[actionState.name] = actionState;
+			template.actions[actionState.name] = actionState;
 			return actionState;
 		},
 
 		/**
 		 * 创建一个Unit
 		 */
-		createUnit : function(data){
+		createUnitTemplate : function(data){
 			
 			if(!this.checkUnitRight(data)){
 				return null;
 			}
 
-			var unit = new Unit();
-			//unit.init(data);
-			unit.name = data.name;
-			unit.res = data.res;
+			var unitTemplate = new UnitTemplate();
+			unitTemplate.name = data.name;
 
-			unit.viewCom :  = new ViewComponent();
-			unit.hitCom : new HitPropertiesComponent();
-			unit.hurtCom : new HurtPropertiesComponent();
-			unit.speedCom : new SpeedComponent();
-			unit.actionsCom : new ActionsComponent();	
+			unitTemplate.viewCom :  = new ViewComponent();
+			unitTemplate.hitCom : new HitPropertiesComponent();
+			unitTemplate.hurtCom : new HurtPropertiesComponent();
+			unitTemplate.speedCom : new SpeedComponent();
+			unitTemplate.actionsCom : new ActionsComponent();
 
-			return unit;
+			return unitTemplate;
 		}
 };
 
