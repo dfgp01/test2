@@ -45,20 +45,32 @@ Service = {
 		
 	},
 	
-	tmpLink : function(data, template){
-		var s = data.indexOf(">");
-		var pre = data.substring(0, s-1);
-		var suf = data.substring(s+1);
-		var act = template.actions[pre];
-		if(!act){
-			cc.log("link action error! action: " + pre + " not found!");
-			return;
+	tmpLink : function(node, strExpress, template){
+		//检查是否含有子表达式"( )"
+		if(strExpress.charAt(0)=="("){
+			
+		}
+		//检查是否含有分支节点表达式"{ }"
+		else if(strExpress.charAt(0)=="{"){
+			
+		}
+		//剩下的就是一个action名了
+		else{
+			var s = strExpress.indexOf(">");
+			var actName = strExpress.substring(0, s-1);
+			var suffixStr = strExpress.substring(s+1);
+			var act = template.actions[actName];
+			if(!act){
+				cc.log("action: " + pre + " not found! please check the lamda express.");
+				return;
+			}
+			
 		}
 		linkAct(act, suf);
 	}
 	
 	/**
-	 * 构建动作链
+	 * 构建动作链（旧）
 	 */
 	linkAction : function(data, owner){
 		//链式Action
@@ -140,4 +152,90 @@ Service.checkCharacterDataRight = function(data){
 		cc.log("create Character error, must has actions!");
 		return false;
 	}
+};
+
+/**
+ * 根据lamda表达式构建动作链
+ */
+Service.linkForExpress = function(node, strExpress, template){
+	//检查是否含有子表达式"( )"
+	if(strExpress.charAt(0)=="("){
+		var end = strExpress.indexOf(")");
+		if(end==-1){
+			cc.log("exp: ')' not found! please check the lamda express.");
+			return;
+		}
+		var subExpress = strExpress.subString(1, end-1);
+		var actNameArr = subExpress..split(">");
+		if(Util.checkArrayNull(actNameArr)){
+			cc.log("exp: ( ) trans error! please check the lamda express.");
+			return;
+		}
+		var actList = [];
+		for(var i in actNameArr){
+			var act = template.actions[actNameArr[i]];
+			if(!act){
+				cc.log("action: " + pre + " not found! please check the lamda express.");
+				return;
+			}
+			//this.linkAct(node, act);
+			actList.push(act);
+		}
+		for(var i=0; i<actList.length-1; i++){
+			this.linkAct(actList[i], actList[i+1]);
+		}
+		//将头节点和上一尾节点连接起来
+		this.linkAct(node, actList[0]);
+	}
+	//检查是否含有分支节点表达式"{ }"
+	else if(strExpress.charAt(0)=="{"){
+		var end = strExpress.indexOf("}");
+		if(end==-1){
+			cc.log("exp: '}' not found! please check the lamda express.");
+			return;
+		}
+		var actNameArr = strExpress.subString(1, end-1).split(",");
+		if(Util.checkArrayNull(actNameArr)){
+			cc.log("exp: {} trans error! please check the lamda express.");
+			return;
+		}
+		for(var i in actNameArr){
+			var act = template.actions[actNameArr[i]];
+			if(!act){
+				cc.log("action: " + pre + " not found! please check the lamda express.");
+				return;
+			}
+			this.linkAct(node, act);
+		}
+		return;
+	}
+	//剩下的就是一个action名了
+	else{
+		var s = strExpress.indexOf(">");
+		if(s==-1){
+			//到达尾部，可以结束了
+			return;
+		}
+		var actName = strExpress.substring(0, s-1);
+		var suffixStr = strExpress.substring(s+1);
+		var act = template.actions[actName];
+		if(!act){
+			cc.log("action: " + pre + " not found! please check the lamda express.");
+			return;
+		}
+		this.linkAct(node , act);
+		this.linkForExpress(act, suffixStr, template);	//继续递归
+	}
+};
+
+Service.linkAct = function(node1, node2){
+	if(node1==null){
+		return;
+	}
+	var key = node2.getKey();
+	if(Util.checkNotNull(node1.children) && node1.children[key]){
+		cc.log("node: " + node1.name + " key: " + key + " has exists, please check the lamda express.");
+		return;
+	}
+	node1.addChild(node2);
 }
