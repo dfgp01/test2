@@ -1,42 +1,9 @@
 /**
- * 公共服务组件，提供大部分常用的业务接口
+ * 服务组件，提供大部分业务公共接口
  * edit by Hugo-Fu 2015.06.26
  */
 
 Service = {
-		
-	unitList : [],		//存储所有单位
-	groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
-	
-	templates : {},	//存储已初始化的原始数据的模板
-	createObj : function(tempName){
-		var tmp = this.templates[tempName];
-		if(tmp){
-			return tmp.getNewInstance();
-		}else{
-			c.log("template: " + tempName + " not found!");
-			return null;
-		}
-	},
-	
-	/**
-	 * 创建一个新单位，指定模板和组号
-	 */
-	createUnit : function(tempName, group){
-		var unit = this.createObj(tempName);
-		if(unit != null){
-			this.unitList.push(unit);
-			unit.group = group;
-		}
-		return unit;
-	},
-	
-	/**
-	 * 从对象池中获得对象引用
-	 */
-	popUnitFromPool : function(){
-		return GameObjPool.popUnit();
-	}
 	
 	/**
 	 * 初始化单位设置，构建对象
@@ -77,8 +44,77 @@ Service = {
 		}
 		cc.log(Util.iterObj(unit.actionStateNodes));
 		
-	}
+	},
+	
+	/**
+	 * 构建动作链（旧）
+	 */
+	linkAction : function(data, owner){
+		//链式Action
+		if(!Util.checkArrayNull(data, "actions")){
+			this.linkForList(data, owner);
+			return;
+		}
+		//树式Action，需要由key控制
+		if(!Util.checkArrayNull(data, "actionNodes")){
+			this.linkForTree(data, owner);
+			return;
+		}
+		cc.log("linkAction faild~!");
+		return;
+	},
+};
 
+Service.linkForList = function(data, owner){
+	var pre = owner.actions[data.actions[0]];
+	if(!pre){
+		cc.log("linkAction faild~! first action is wrong.");
+		return;
+	}
+	for(var i=1; i<data.actions.length; i++){
+		var curr = owner.actions[data.actions[i]];
+		if(!curr){
+			cc.log("linkAction faild~! action is wrong.");
+			return;
+		}
+		//如果有key的，就加到可控制子节点中，否则加到直接子节点。
+		pre.addNext(curr);
+		pre = curr;
+	}
+};
+
+Service.linkForTree = function(data, owner){
+	for(var i in data.actionNodes){
+		if(!Util.checkIsString(data.actionNodes[i], "name")){
+			cc.log("linkAction faild~! actionNodes is wrong.");
+			return;
+		}
+		var curr = owner.actions[data.actionNodes[i].name];
+		if(!curr){
+			return;
+		}
+		if(!Util.checkArrayNull(data.actionNodes[i], "next")){
+			this.linkNext(data.actionNodes[i].next, curr);
+		}
+	}
+};
+
+Service.linkNext = function(array, parent){
+	for(var i in array){
+		if(!Util.checkNotNull(array[i], "name")){
+			cc.log("linkAction faild~! linkNext is wrong.");
+			return;
+		}
+		var curr = parent.owner.actions[array[i].name];
+		if(!curr){
+			cc.log("linkAction faild~! linkNext is wrong. action: " + array[i].name + " not found.");
+			return;
+		}
+		parent.addNext(curr);
+		if(!Util.checkArrayNull(curr, "next")){
+			this.linkNext(curr.next, curr);
+		}
+	}
 };
 
 /**

@@ -74,11 +74,19 @@ UnitTemplate = cc.Class.extend({
 	hurtCom : null,
 	speedCom : null,
 	actionsCom : null,	
-	getNewUnit : function(name, group){
-		var unit = Container.pool.getOne(name);
+	getNewInstance : function(){
+		var unit = Service.popUnitFromPool();
+		if(unit == null){
+			unit = new Unit();
+			unit.viewCom = new ViewComponent();
+			unit.viewCom.sprite = new cc.Sprite("#" + this.actionsCom.firstFrame);
+			//....
+		}
+		unit.viewCom.sprite.setFrame
 		unit.hitCom.strength = this.hitCom.strength;
 		unit.hitCom.attSpeedFactor = this.hitCom.attSpeedFactor;
 		//....
+		return unit;
 	}
 });
 }

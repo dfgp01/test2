@@ -54,6 +54,7 @@ ViewComponent = Component.extend({
  */
 ActionsComponent = Component.extend({
 	frameIndex : 0,
+	firstFrame : null,
 	currAction : null,
 	actions : null,
 	actionStateTree : null,	//树结构 状态节点，key为action.key值

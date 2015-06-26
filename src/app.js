@@ -15,17 +15,6 @@ var HelloWorldLayer = cc.Layer.extend({
     _unit : null,
     _lock : true,
     
-    initAct : function(){
-    	//load frames
-    	cc.spriteFrameCache.addSpriteFrames(deep_0_plist);
-        cc.spriteFrameCache.addSpriteFrames(deep_1_plist);
-        cc.spriteFrameCache.addSpriteFrames(deep_2_plist);
-        
-    	Service.initUnit("player1");
-    	_unit = Container.unit;
-    	_unit.body = deep;
-    },
-    
     ctor:function () {
         //////////////////////////////
         // 1. super init first
@@ -45,16 +34,28 @@ var HelloWorldLayer = cc.Layer.extend({
         });
         this.addChild(bg, 0);
 
-        deep = new cc.Sprite("#deep_stand_0.png");
+        /*deep = new cc.Sprite("#deep_stand_0.png");
         deep.attr({
         	x: 150,
         	y: 250
         });
-        //deep._flippedX = true;
+        deep._flippedX = true;
         deep._scaleX = -1;
-        this.addChild(deep, 1);
+        this.addChild(deep, 1);*/
         
-        this.initAct();
+      //load frames
+    	cc.spriteFrameCache.addSpriteFrames(deep_0_plist);
+        cc.spriteFrameCache.addSpriteFrames(deep_1_plist);
+        cc.spriteFrameCache.addSpriteFrames(deep_2_plist);
+        
+    	Service.initUnit(character_data);
+    	_unit = Service.createUnit(character_data.characterName, 0);
+    	_unit.viewCom.sprite.attr({
+    		x: 150,
+        	y: 250
+    	});
+    	_unit.viewCom.sprite._scaleX = -1;
+    	this.addChild(_unit.viewCom.sprite);
         
         var selfPointer = this;
         var listener = cc.EventListener.create({

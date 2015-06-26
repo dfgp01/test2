@@ -78,11 +78,12 @@ Factory = {
 			var unitTemplate = new UnitTemplate();
 			unitTemplate.name = data.name;
 
-			unitTemplate.viewCom :  = new ViewComponent();
-			unitTemplate.hitCom : new HitPropertiesComponent();
-			unitTemplate.hurtCom : new HurtPropertiesComponent();
-			unitTemplate.speedCom : new SpeedComponent();
-			unitTemplate.actionsCom : new ActionsComponent();
+			//unitTemplate.viewCom :  = new ViewComponent();
+			unitTemplate.hitCom = new HitPropertiesComponent();
+			unitTemplate.hurtCom = new HurtPropertiesComponent();
+			unitTemplate.speedCom = new SpeedComponent();
+			unitTemplate.actionsCom = new ActionsComponent();
+			unitTemplate.actionsCom.firstFrame = data.firstFrame;
 
 			return unitTemplate;
 		}
@@ -112,8 +113,13 @@ Factory.checkUnitRight = function(data){
 		return false;
 	}
 	
+	if(!Util.checkIsString(data, "firstFrame")){
+		cc.log("create UnitTemplate error, must has firstFrame.");
+		return false;
+	}
+	
 	if(!Util.checkNotNull(data, "actions")){
-		cc.log("create Unit error, must has actions.");
+		cc.log("create UnitTemplate error, must has actions.");
 		return false;
 	}
 }
