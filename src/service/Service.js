@@ -36,7 +36,7 @@ Service = {
 	 */
 	popUnitFromPool : function(){
 		return GameObjPool.popUnit();
-	}
+	},
 	
 	/**
 	 * 初始化单位设置，构建对象

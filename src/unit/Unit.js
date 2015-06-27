@@ -89,4 +89,3 @@ UnitTemplate = cc.Class.extend({
 		return unit;
 	}
 });
-}
