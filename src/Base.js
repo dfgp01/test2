@@ -34,6 +34,12 @@
  * 学习了ECS的模式，加以改造。
  */
 
+/**
+ * V2.1版
+ * 大致确定了ECS的架构，为了使结构具有更好的可读性，已将寄存器、全局设定和对象池的操作都由Service提供。
+ * 新建了目录old，里面存放一些旧代码备份。
+ */
+
 
 /**
  * 		基础组件类
@@ -41,6 +47,7 @@
 
 StateNode = cc.Class.extend({
 	name : null,
+	key : null,					//用于存放在父节点children属性中的key
 	children : null,			//子节点，树状结构
 	
 	//构造器
@@ -59,7 +66,19 @@ StateNode = cc.Class.extend({
 		if(children){
 			this.children = {};
 		}
-		this.children[node.key];
+		if(this.children[node.getKey()]){
+			cc.log("key: " + node.getKey + " has exists in parent node.");
+		}
+		this.children[node.getKey()];
+	},
+	
+	//获得key的策略
+	getKey : function(){
+		if(this.key==null || this.key==""){
+			return "-";
+		}else{
+			return this.key;
+		}
 	}
 });
 
