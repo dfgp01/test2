@@ -3,6 +3,30 @@
  */
 Factory = {
 
+		//创建一个Frame，这个方法暂时不用
+		createFrame : function(dataName){
+			var data = Container.getProperty(dataName);
+			if(data == null){
+				log += "createFrame() frame: " + dataName + "not found~! \n";
+				return null;
+			}
+			var frame = Container.frames[data.source];	//Container.getFrame(data.source); 使用这种方法会产生日志
+			if(frame){
+				log += "frame: " + frame.name + " has already create since before~! \n";
+				return frame;
+			}
+			if(Container.checkNull(data.position) && Container.checkNull(data.position.length) && data.position.length==4){
+				log += data.source + " position undefined or not be [x,y,width,height] format";
+				return null;
+			}
+
+			frame = new Frame();
+			frame.init(data);
+			//加入到缓存容器中
+			Container.frames[frame.name] = frame;
+			return frame;
+		},
+
 		/**
 		 * 创建一个动作节点，并存到模板中
 		 */
@@ -14,11 +38,10 @@ Factory = {
 			//actionState.init(data);
 			actionState.name = data.name;
 
-			actionState.animateCom = new AnimateComponent();
 			if(Util.checkIsString(data,"action")){
 				var actRef = template.actions[data.action];
 				if(actRef){
-					actionState.animateCom.frames = actRef.animateCom.frames;
+					actionState.frames = actRef.frames;
 				}else{
 					cc.log("createActionState error, action:[" + data.action + "] not found!");
 					return null;
@@ -37,7 +60,7 @@ Factory = {
 						return null;
 					}
 				}
-				actionState.animateCom.frames = list;
+				actionState.frames = list;
 			}
 			template.actions[actionState.name] = actionState;
 			return actionState;

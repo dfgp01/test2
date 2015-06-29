@@ -12,7 +12,7 @@ System = cc.Class.extend({
 /**
  * 定义动作模块专用的系统组件接口
  */
-ActionComponentSystem = cc.Class.extend({
+ActionSystem = cc.Class.extend({
 	name : null,
 	priority : 0,
 	start : function(dt, unit){},
@@ -36,4 +36,41 @@ SystemManager = System.extend({
 				this.sysList[i].update(dt);
 			}
 		}
+});
+
+/**
+ * 核心系统-单位动作轮询处理
+ */
+MainActionSystem = System.extend({
+	unitList : null,
+	start : function(){
+		this.unitList = Container.getUnitList();
+	},
+	update : function(dt){
+		for(var i in  this.unitList){
+			this.unitList[i].currAct.run(this.unitList[i], dt);
+		}
+	},
+	end : function(){
+		//remove from SysManager
+	}
+});
+
+/**
+ * 核心系统-动画播放
+ */
+AnimateSystem = ActionSystem.extend({
+	//AnimateComponent
+	animateCom : null,
+	start : function(dt, unit){
+		unit.actions.frameIndex = 0;
+	},
+	update : function(unit, dt){		//待定
+		//播放动画
+		if(unit.actions.frameIndex < this.animateCom.frames.length){
+			unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actions.frameIndex]);
+			unit.actions.frameIndex++;
+		}
+	},
+	end : function(dt, unit){}
 });

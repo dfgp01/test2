@@ -1,19 +1,22 @@
 /**
- * 
- */
-
-//运行动作系统
-ActionRunSystem = System.extend({
-	unitList : null,
-	start : function(){
-		this.unitList = Container.getUnitList();
-	},
-	update : function(dt){
-		for(var i in  this.unitList){
-			this.unitList[i].currAct.run(this.unitList[i], dt);
+*
+*/
+IdleActionSystem = ActionSystem.extend({
+	update : function(unit, dt){
+		if(unit.cmd != 0){
+			if(this.moveCheck(unit.cmd)){
+				return;
+			}
+			if(this.attCheck(unit.cmd)){
+				return;
+			}
 		}
 	},
-	end : function(){
-		//remove from SysManager
+	
+	moveCheck : function(unit, cmd){
+		if(cmd == 1){
+			unit.motionCom.vx = 1;
+		}
+		//未完
 	}
 });

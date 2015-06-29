@@ -54,11 +54,11 @@ ViewComponent = Component.extend({
  */
 ActionsComponent = Component.extend({
 	frameIndex : 0,
-	firstFrame : null,
+	firstAct : null,
 	currAction : null,
 	actions : null,
-	actionStateTree : null,	//树结构 状态节点，key为action.key值
-	actionState : 0				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
+	cmdTree : null,	//树结构 状态节点，key为action.key值
+	state : 0				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
 });
 
 /**

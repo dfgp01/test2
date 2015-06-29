@@ -6,7 +6,8 @@ ActionState = StateNode.extend({
 	state : 0,
 	_currUnit : null,
 	//animateComSys : null,		//把动画组件单独提出来
-	comSysList : null,
+	animateCom : null,				//动画组件是必须要有的
+	sysList : null,
 	
 	init : function(data){
 		this._super(data);
@@ -21,8 +22,8 @@ ActionState = StateNode.extend({
 	
 	run : function(unit, dt){
 		this._currUnit = unit;
-		for(var i in this.comSysList){
-			this.comSysList[i].update(dt);
+		for(var i in this.sysList){
+			this.sysList[i].update(dt);
 		}
 	},
 

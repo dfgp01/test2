@@ -2,23 +2,20 @@
  * 用于定义常量的
  */
 
-var constant = {};
-
-constant.state = {
-	//state key
-	IDLE : "0",
-	MOVE : "move",
-	JUMP : "jump",
-	FALL : "fall",
-	ATTACK : "attack",
-	LIE_DOWN : "lieDown",
-	_HURT : "hurt"
+var constant = {
+	ACTION_STATE : {
+		IDLE : 0,
+		WALK : 1,
+		FALL : 2,
+		LIE_DOWN : 3,
+		HITTED : 4,
+		BUSY : 5,
+		DEAD : 6,
+		RELEASE : 7,
+		ATTACK : 8
+	}
 };
 
-constant.actType = {
-	NORMAL : 0,
-	ATTACK : 1
-};
 
 constant.nodeType = {
 	ACTION : "action",

@@ -5,15 +5,8 @@ var HelloWorldLayer = cc.Layer.extend({
     animation: null,
     _runAnima: null,
     _targetPos: null,
-    _frameIndex: 0,
-    _enemy:[],
-    _gravity:0,
-    _currentAction:null,
-    _currentActionIndex:0,
-    _currentFrame:0,
     
     _unit : null,
-    _lock : true,
     
     ctor:function () {
         //////////////////////////////
@@ -50,23 +43,26 @@ var HelloWorldLayer = cc.Layer.extend({
         
     	Service.initUnit(character_data);
     	_unit = Service.createUnit(character_data.characterName, 0);
-    	_unit.viewCom.sprite.attr({
+    	var sprite = _unit.viewCom.sprite;
+    	sprite.attr({
     		x: 150,
         	y: 250
     	});
-    	_unit.viewCom.sprite._scaleX = -1;
-    	this.addChild(_unit.viewCom.sprite);
+    	sprite._scaleX = -1;
+    	this.addChild(sprite);
         
         var selfPointer = this;
+        var lock = false;
         var listener = cc.EventListener.create({
         	event: cc.EventListener.TOUCH_ONE_BY_ONE,
         	//event: cc.EventListener.TOUCH_ALL_AT_ONCE,
         	swallowTouches: true,
         	onTouchBegan: function (touch, event) {
-        		var locationInNode = deep.convertToNodeSpace(touch.getLocation());
-        		var s = deep.getContentSize();
+        		var locationInNode = sprite.convertToNodeSpace(touch.getLocation());
+        		var s = sprite.getContentSize();
         		var rect = cc.rect(0, 0, s.width, s.height);
 
+        		//这个报废，但暂时不删
         		if (cc.rectContainsPoint(rect, locationInNode)) {
         			//cc.log("点中精灵：" + locationInNode.x + "," + locationInNode.y);
         			
@@ -74,12 +70,16 @@ var HelloWorldLayer = cc.Layer.extend({
         			//		网上说action要retain()，估计与内存管理有关
         			//deep.runAction(cc.animate(animation).repeatForever());	
         			cc.log(touch.getID());
-        			selfPointer._lock = false;
         			return true;
         		}
         		
-        		//selfPointer.nextAction();
-        		
+        		//临时操作
+        		if(locationInNode.x < 0){
+        			Controller.cmd = 1;
+        		}else{
+        			Controller.cmd = 2;
+        		}
+        		lock = true;
         		//返回值是true，往下传递，触发onTouchMoved和onTouchEnded，false则不传递
         		cc.log("id:"+touch.getID() + ", pos:[" + touch.getLocation().x + "," + touch.getLocation().y + "]");
         		return false;
@@ -89,6 +89,8 @@ var HelloWorldLayer = cc.Layer.extend({
         	},
         	onTouchEnded: function (touch, event) {
         		cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
+        		Controller.cmd = 0;
+        		lock = false;
         	}
         });
         cc.eventManager.addListener(listener, this);

@@ -4,7 +4,7 @@
 
 Controller = {
 
-	key : 0,					//当前指令
+	cmd : 0,					//当前指令
 	interval : 1000,		//有效间隔
 	comboKey : 0,		//组合键
 	_keyArr : [],
