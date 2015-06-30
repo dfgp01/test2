@@ -39,10 +39,27 @@ Factory = {
 				}
 				actionState.animateCom.frames = list;
 			}
+			
+			switch(data.type){
+			case Constant.ACTION_TYPE.IDLE:
+				this.buildIdleAction(data, actionState);
+				break;
+			default:
+				break;
+			}
+			
 			template.actions[actionState.name] = actionState;
 			return actionState;
 		},
-
+		
+		/**
+		 * 组建idle动作
+		 */
+		buildIdleAction : function(data, action){
+			var idle = new IdleActionSystem();
+			action.addSystem(idle);
+		},
+		
 		/**
 		 * 创建一个Unit
 		 */
@@ -70,7 +87,7 @@ Factory = {
  * 检查action是否满足可构建必要条件
  */
 Factory.checkActionRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name") || !Util.checkIsInt(data, "state")){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name", true) || !Util.checkIsInt(data, "state", true) || !Util.checkIsInt(data, "type", true)){
 		cc.log("create ActionState error, lack of necessary data!");
 		return false;
 	}

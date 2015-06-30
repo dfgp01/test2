@@ -2,7 +2,12 @@
  * 用于定义常量的
  */
 
-var constant = {
+var Constant = {
+	ACTION_TYPE : {
+		IDLE : 0,
+		WALK : 1,
+		ATTACK : 8
+	},
 	ACTION_STATE : {
 		IDLE : 0,
 		WALK : 1,
@@ -17,7 +22,7 @@ var constant = {
 };
 
 
-constant.nodeType = {
+Constant.nodeType = {
 	ACTION : "action",
 	FUNC : "func",
 	STATE : "state"

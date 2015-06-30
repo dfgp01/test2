@@ -62,7 +62,6 @@ Service = {
 			}
 		}
 		
-		
 		/*var act_groups = [normal_att_state_group, skill_group, act_tree];
 		for(var i in act_groups){
 			this.linkAction(act_groups[i], unit);
