@@ -4,8 +4,9 @@
 
 var Constant = {
 	ACTION_TYPE : {
-		IDLE : 0,
-		WALK : 1,
+		CUSTOM : 0,
+		IDLE : 1,
+		WALK : 2,
 		ATTACK : 8
 	},
 	ACTION_STATE : {

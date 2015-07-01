@@ -1,7 +1,7 @@
 /**
-*
+* 站立时的动作
 */
-IdleActionSystem = ActionSystem.extend({
+StandActionSystem = ActionSystem.extend({
 	update : function(unit, dt){
 		if(unit.cmd != 0){
 			if(this.moveCheck(unit.cmd)){

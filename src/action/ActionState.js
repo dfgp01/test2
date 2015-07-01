@@ -5,8 +5,8 @@
 ActionState = StateNode.extend({
 	state : 0,
 	_currUnit : null,
-	//animateComSys : null,		//把动画组件单独提出来
 	animateCom : null,				//动画组件是必须要有的
+	animateSys : null,
 	sysList : null,
 	
 	init : function(data){

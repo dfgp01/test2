@@ -40,24 +40,56 @@ Factory = {
 				actionState.animateCom.frames = list;
 			}
 			
-			switch(data.type){
-			case Constant.ACTION_TYPE.IDLE:
-				this.buildIdleAction(data, actionState);
-				break;
-			default:
-				break;
-			}
-			
+			this.buildAnimateSys(data, actionState);
+			this.buildActionSys(data, actionState);
 			template.actions[actionState.name] = actionState;
 			return actionState;
 		},
 		
 		/**
-		 * 组建idle动作
+		 * 动画逻辑组件
 		 */
-		buildIdleAction : function(data, action){
-			var idle = new IdleActionSystem();
-			action.addSystem(idle);
+		buildAnimateSys : function(action){
+			if(Util.checkIsInt(data, "animateType")){
+				actionState.animateCom.type = data.animateType;
+			}else{
+				actionState.animateCom.type = 0;
+			}
+			switch(actionState.animateCom.type){
+			case 0:
+				var sys = new AnimateSystem();
+				sys.animateCom = action.animateCom;
+				action.animateSys = sys;
+				break;
+			case 1:
+				var sys = new LoopAnimateSystem();
+				sys.animateCom = action.animateCom;
+				action.animateSys = sys;
+				break;
+			}
+		},
+		
+		/**
+		 * 动作逻辑组件
+		 */
+		buildActionSys : function(data, action){
+			if(Util.checkIsInt(data, "type")){
+				actionState.type = data.type;
+			}else{
+				actionState.type = 0;
+			}
+			switch(data.type){
+			case Constant.ACTION_TYPE.IDLE:
+				var idle = new IdleActionSystem();
+				action.addSystem(idle);
+				break;
+			case Constant.ACTION_TYPE.WALK:
+				var walk = new WalkActionSystem();
+				action.addSystem(walk);
+				break;
+			default:
+				break;
+			}
 		},
 		
 		/**

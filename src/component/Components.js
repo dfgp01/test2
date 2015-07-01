@@ -12,7 +12,7 @@ Component = cc.Class.extend({
  */
 AnimateComponent = Component.extend({
 	frames : null,
-	animateType : 0,
+	type : 0,
 	speedFactor : 1
 });
 
