@@ -4,11 +4,10 @@
  */
 
 Service = {
-		
-	unitList : [],		//存储所有单位
-	groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
-	
-	templates : {},	//存储已初始化的原始数据的模板
+
+	/**
+	 * 	从指定模板中创建新对象
+	 */
 	createObj : function(tempName){
 		var tmp = this.templates[tempName];
 		if(tmp){
@@ -25,7 +24,7 @@ Service = {
 	createUnit : function(tempName, group){
 		var unit = this.createObj(tempName);
 		if(unit != null){
-			this.unitList.push(unit);
+			Container.unitList.push(unit);
 			unit.group = group;
 		}
 		return unit;

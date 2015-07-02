@@ -50,9 +50,14 @@ var HelloWorldLayer = cc.Layer.extend({
     	});
     	sprite._scaleX = -1;
     	this.addChild(sprite);
+        Controller.target = _unit;
         
+        var mas = new MainActionSystem();
+        SystemManager.init();
+        SystemManager.addSystem(mas);
+        SystemManager.start();
+    	
         var selfPointer = this;
-        var lock = false;
         var listener = cc.EventListener.create({
         	event: cc.EventListener.TOUCH_ONE_BY_ONE,
         	//event: cc.EventListener.TOUCH_ALL_AT_ONCE,
@@ -70,19 +75,20 @@ var HelloWorldLayer = cc.Layer.extend({
         			//		网上说action要retain()，估计与内存管理有关
         			//deep.runAction(cc.animate(animation).repeatForever());	
         			cc.log(touch.getID());
-        			return true;
+        			Controller.cmd = Controller.cmd | Constant.CMD.ATTACK;
         		}
         		
         		//临时操作
-        		if(locationInNode.x < 0){
-        			Controller.cmd = 1;
+        		else if(locationInNode.x < 0){
+        			Controller.cmd = Controller.cmd | Constant.CMD.LEFT;
         		}else{
-        			Controller.cmd = 2;
+        			Controller.cmd = Controller.cmd | Constant.CMD.RIGHT;
         		}
-        		lock = true;
+        		Controller.target.cmd = Controller.cmd;
+        		
         		//返回值是true，往下传递，触发onTouchMoved和onTouchEnded，false则不传递
         		cc.log("id:"+touch.getID() + ", pos:[" + touch.getLocation().x + "," + touch.getLocation().y + "]");
-        		return false;
+        		return true;
         	},
         	onTouchMoved: function (touch, event) {
         		cc.log("移动:" + touch.getLocation().x + "," + touch.getLocation().y );
@@ -90,7 +96,6 @@ var HelloWorldLayer = cc.Layer.extend({
         	onTouchEnded: function (touch, event) {
         		cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
         		Controller.cmd = 0;
-        		lock = false;
         	}
         });
         cc.eventManager.addListener(listener, this);

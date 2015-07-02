@@ -4,7 +4,6 @@
  */
 ActionState = StateNode.extend({
 	state : 0,
-	_currUnit : null,
 	animateCom : null,				//动画组件是必须要有的
 	animateSys : null,
 	sysList : null,
@@ -17,13 +16,12 @@ ActionState = StateNode.extend({
 	//加载时
 	start : function(unit){
 		unit.currAction = this;
-		unit.frameIndex = 0;
+		unit.actionsCom.frameIndex = 0;
 	},
 	
 	run : function(unit, dt){
-		this._currUnit = unit;
 		for(var i in this.sysList){
-			this.sysList[i].update(dt);
+			this.sysList[i].update(unit, dt);
 		}
 	},
 

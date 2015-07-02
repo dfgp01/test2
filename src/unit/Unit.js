@@ -6,8 +6,7 @@
 GameObject = cc.Class.extend({
 	id : null,
 	name : null,
-	group : 0,
-	
+	group : 0
 });
 
 Unit = GameObject.extend({
@@ -16,6 +15,7 @@ Unit = GameObject.extend({
 	hitCom : null,
 	hurtCom : null,
 	speedCom : null,
+	motionCom : null,
 	actionsCom : null,	
 
 	init : function(data){
@@ -25,17 +25,10 @@ Unit = GameObject.extend({
 		this.actions = {};
 	},
 	
-	run : function(dt){
-		// 未来版本可能要把动画播放单独提出来，因为涉及到每个单位的速率问题
-		// this.currAction.play(this);
-		
-		this.currAction.run(dt);
-		this.runFuncState();
-	},
-	
-	runAction : function(action){
+	changeAction : function(name){
 		this.currAction.end(this);
-		action.start(this);
+		this.actionsCom.actions[name].start(this);
+		return;
 	},
 	
 	addState : function(state){

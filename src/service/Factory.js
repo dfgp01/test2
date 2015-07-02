@@ -56,12 +56,12 @@ Factory = {
 				actionState.animateCom.type = 0;
 			}
 			switch(actionState.animateCom.type){
-			case 0:
+			case Constant.ANIMATE_TYPE.NORMAL:
 				var sys = new AnimateSystem();
 				sys.animateCom = action.animateCom;
 				action.animateSys = sys;
 				break;
-			case 1:
+			case Constant.ANIMATE_TYPE.LOOP:
 				var sys = new LoopAnimateSystem();
 				sys.animateCom = action.animateCom;
 				action.animateSys = sys;

@@ -15,18 +15,23 @@ System = cc.Class.extend({
 ActionSystem = cc.Class.extend({
 	name : null,
 	priority : 0,
-	start : function(dt, unit){},
+	start : function(unit){},
 	update : function(dt, unit){},
-	end : function(dt, unit){}
+	end : function(unit){}
 });
 
 /**
  * 系统管理器
  */
-SystemManager = System.extend({
+SystemManager = {
 		sysList : null,
 		init : function(){
 			this.sysList = [];
+		},
+		start : function(){
+			for(var i in this.sysList){
+				this.sysList[i].start();
+			}
 		},
 		addSystem : function(system){
 			this.sysList.push(system);
@@ -36,7 +41,7 @@ SystemManager = System.extend({
 				this.sysList[i].update(dt);
 			}
 		}
-});
+};
 
 /**
  * 核心系统-单位动作轮询处理
@@ -44,10 +49,10 @@ SystemManager = System.extend({
 MainActionSystem = System.extend({
 	unitList : null,
 	start : function(){
-		this.unitList = Container.getUnitList();
+		this.unitList = Container.unitList;
 	},
 	update : function(dt){
-		for(var i in  this.unitList){
+		for(var i in this.unitList){
 			this.unitList[i].currAct.run(this.unitList[i], dt);
 		}
 	},

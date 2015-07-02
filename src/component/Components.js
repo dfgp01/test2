@@ -78,15 +78,15 @@ HurtPropertiesComponent = Component.extend({
 	defence : 0,
 	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
 	bodyState : 0,		//中毒、出血、灼伤等		1010 binary
-	isDead:false
+	isDead : 0				//0=未死，1=已死
 });
 
 /**
- * 速度控制组件
+ * 速度属性组件
  */
-SpeedComponent = Component.extend({
-	speed : 0,
-	currSpeed : 0,
+SpeedPropertiesComponent = Component.extend({
+	speed : 1,
+	currSpeed : 2,
 	maxSpeed : 10
 });
 
@@ -95,9 +95,10 @@ SpeedComponent = Component.extend({
  * 可移动组件
  */
 MotionComponent = Component.extend({
-	vx : 0,
+	vx : 0,	//vx,vy 代表方向向量
 	vy : 0,
-	speedFactor : 1
+	dx : 0,	//dx,dy 代表移动增量
+	dy : 0
 });
 
 /**

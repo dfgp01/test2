@@ -24,7 +24,7 @@ character_data = {
 			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
 		},
 		{
-			name : "walk", animateType : 1,
+			name : "walk", animateType : 1, dx : 5, dy : 3,
 			frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
 		},
 		{

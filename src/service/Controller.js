@@ -11,6 +11,7 @@ Controller = {
 	_maxLength : 6,		//最大组合数
 	_lastTime : 0,
 	_currTime : 0,
+	target : null,
 	
 	pressKey : function(key){
 		this.key | key;
@@ -37,13 +38,3 @@ Controller = {
 		this._lastTime = this._currTime;
 	}
 };
-
-var onTouchBegin = function(touch, event){
-	//加上if event.getSource 判断
-	Controller.pressKey(8);
-	Controller.addCombo(8);
-}
-
-var onTouchEnd = function(touch, event){
-	
-}
