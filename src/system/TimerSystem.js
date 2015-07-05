@@ -1,7 +1,7 @@
 /**
  * 动作中需要用到计时功能的系统组件
  */
-ActionTimerSystem = ActionComponentSystem.extend({
+ActionTimerSystem = ActionSystem.extend({
 	timerCom : null,
 
 	start : function(dt, unit){

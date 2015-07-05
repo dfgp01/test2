@@ -6,7 +6,7 @@ var Constant = {
 	ANIMATE_TYPE : {
 		NORMAL : 0,
 		LOOP : 1
-	}
+	},
 	ACTION_TYPE : {
 		CUSTOM : 0,
 		IDLE : 1,
@@ -14,7 +14,7 @@ var Constant = {
 		ATTACK : 8
 	},
 	ACTION_STATE : {
-		IDLE : 0,
+		STAND : 0,
 		WALK : 1,
 		FALL : 2,
 		LIE_DOWN : 3,

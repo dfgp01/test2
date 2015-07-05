@@ -41,7 +41,7 @@ var HelloWorldLayer = cc.Layer.extend({
         cc.spriteFrameCache.addSpriteFrames(deep_1_plist);
         cc.spriteFrameCache.addSpriteFrames(deep_2_plist);
         
-    	Service.initUnit(character_data);
+        Service.initUnitTemplate(character_data);
     	_unit = Service.createUnit(character_data.characterName, 0);
     	var sprite = _unit.viewCom.sprite;
     	sprite.attr({

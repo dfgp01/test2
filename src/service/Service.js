@@ -9,11 +9,11 @@ Service = {
 	 * 	从指定模板中创建新对象
 	 */
 	createObj : function(tempName){
-		var tmp = this.templates[tempName];
+		var tmp = Container.templates[tempName];
 		if(tmp){
 			return tmp.getNewInstance();
 		}else{
-			c.log("template: " + tempName + " not found!");
+			cc.log("template: " + tempName + " not found!");
 			return null;
 		}
 	},
@@ -91,6 +91,7 @@ Service.checkCharacterDataRight = function(data){
 		cc.log("create Character error, must has actions!");
 		return false;
 	}
+	return true;
 };
 
 /**

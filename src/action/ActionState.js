@@ -4,6 +4,7 @@
  */
 ActionState = StateNode.extend({
 	state : 0,
+	type : 0,
 	animateCom : null,				//动画组件是必须要有的
 	animateSys : null,
 	sysList : null,

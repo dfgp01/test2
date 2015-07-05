@@ -64,7 +64,7 @@ ActionsComponent = Component.extend({
 /**
  * 可攻击属性组件
  */
-HitPropertiesComponent = Component.exend({
+HitPropertiesComponent = Component.extend({
 	strength : 0,
 	attSpeedFactor : 0
 });

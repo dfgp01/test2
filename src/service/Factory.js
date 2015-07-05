@@ -7,7 +7,7 @@ Factory = {
 		 * 创建一个动作节点，并存到模板中
 		 */
 		createActionState : function(data, template){
-			if(!checkActionRight(data)){
+			if(!this.checkActionRight(data)){
 				return null;
 			}
 			var actionState = new ActionState();
@@ -107,7 +107,7 @@ Factory = {
 			//unitTemplate.viewCom :  = new ViewComponent();
 			unitTemplate.hitCom = new HitPropertiesComponent();
 			unitTemplate.hurtCom = new HurtPropertiesComponent();
-			unitTemplate.speedCom = new SpeedComponent();
+			unitTemplate.speedCom = new SpeedPropertiesComponent();
 			unitTemplate.actionsCom = new ActionsComponent();
 			unitTemplate.actionsCom.firstFrame = data.firstFrame;
 
@@ -119,7 +119,7 @@ Factory = {
  * 检查action是否满足可构建必要条件
  */
 Factory.checkActionRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name", true) || !Util.checkIsInt(data, "state", true) || !Util.checkIsInt(data, "type", true)){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name", true)){
 		cc.log("create ActionState error, lack of necessary data!");
 		return false;
 	}
@@ -134,7 +134,7 @@ Factory.checkActionRight = function(data){
  * 检查unit是否满足可构建必要条件
  */
 Factory.checkUnitRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "res")){
 		cc.log("create Unit error, lack of necessary data!");
 		return false;
 	}
@@ -148,4 +148,5 @@ Factory.checkUnitRight = function(data){
 		cc.log("create UnitTemplate error, must has actions.");
 		return false;
 	}
+	return true;
 }
