@@ -57,6 +57,7 @@ Service = {
 		if(!Util.checkArrayNull(data, "actLamda")){
 			cc.log("initial action & skill link relationship......");
 			for(var i in data.actLamda){
+				cc.log("  initial : " + data.actLamda[i]);
 				this.linkForExpress(data.actLamda[i], unitTemplate);
 			}
 		}
@@ -100,20 +101,18 @@ Service.checkCharacterDataRight = function(data){
  * { }花括号=分支，里面只能填多个act名，不支持嵌套表达式，不支持后续，意味着只能做表达式终点
  */
 Service.linkForExpress = function(node, strExpress, template){
-	//检查是否含有子表达式"( )"
-	if(strExpress.charAt(0)=="("){
-		var end = strExpress.indexOf(")");
-		if(end==-1){
-			cc.log("exp: ')' not found! please check the lamda express.");
-			return;
-		}
-		//抽取括号内的子表达式
-		var subExpress = strExpress.subString(1, end-1);
+	//检查是否含有子表达式"[ ]"
+	if(strExpress.charAt(0)=="["){
+		var end = strExpress.indexOf("]");
+		//分离子表达式和重复计数器，例如：[normalAtk1>normalAtk2,3]
+		var prefix = strExpress.substring(1, end).split(",");
+		var subExpress = "";
+		var repeatCount = 0;
+		subExpress = prefix[0];
+		repeatCount = prefix[1];
+
+		//子表达式内链处理
 		var actNameArr = subExpress.split(">");
-		if(Util.checkArrayNull(actNameArr)){
-			cc.log("exp: ( ) trans error! please check the lamda express.");
-			return;
-		}
 		var actList = [];
 		for(var i in actNameArr){
 			var act = template.actions[actNameArr[i]];
@@ -128,33 +127,23 @@ Service.linkForExpress = function(node, strExpress, template){
 			this.linkNode(actList[i], actList[i+1]);
 		}
 		
-		//以后这里要加上重复数量判断。。。
-		//........()[n]
-		
 		//将子表达式内的头节点和上一尾节点连接起来
 		this.linkNode(node, actList[0]);
 		
-		//截取 ">" 后的表达式
-		var suffixStr = strExpress.subString(end);
-		if(suffixStr.charAt(0) != ">"){
-			cc.log(" '>' not found! please check the lamda express.");
-			return;
+		//重复计数器处理
+		if(repeatCount > 0){
+			alert(repeatCount);
 		}
+		
+		//截取子表达式外 ">" 后的表达式
+		var suffix = strExpress.substring(end+2);
 		//将尾节点作为下一次连接的头节点
-		this.linkForExpress(actList[actList.length-1], suffixStr.subString(1));
+		this.linkForExpress(actList[actList.length-1], suffix);
 	}
 	//检查是否含有分支节点表达式"{ }"
 	else if(strExpress.charAt(0)=="{"){
 		var end = strExpress.indexOf("}");
-		if(end==-1){
-			cc.log("exp: '}' not found! please check the lamda express.");
-			return;
-		}
-		var actNameArr = strExpress.subString(1, end-1).split(",");
-		if(Util.checkArrayNull(actNameArr)){
-			cc.log("exp: {} trans error! please check the lamda express.");
-			return;
-		}
+		var actNameArr = strExpress.subString(1, end).split(",");
 		for(var i in actNameArr){
 			var act = template.actions[actNameArr[i]];
 			if(!act){
@@ -168,18 +157,24 @@ Service.linkForExpress = function(node, strExpress, template){
 	//剩下的就是一个action名了
 	else{
 		var s = strExpress.indexOf(">");
+		var act;
 		if(s==-1){
-			//到达尾部，可以结束了
+			//到达结尾
+			act = template.actions[strExpress];
+			if(!act){
+				cc.log("action: " + pre + " not found! please check the lamda express.");
+				return;
+			}
+			this.linkNode(node, act);
 			return;
 		}
-		var actName = strExpress.substring(0, s-1);
-		var suffixStr = strExpress.substring(s+1);
-		var act = template.actions[actName];
+		act = template.actions[strExpress.substring(0, s)];
 		if(!act){
 			cc.log("action: " + pre + " not found! please check the lamda express.");
 			return;
 		}
-		this.linkAct(node , act);
+		this.linkNode(node, act);
+		var suffixStr = strExpress.substring(s+1);
 		this.linkForExpress(act, suffixStr, template);	//继续递归
 	}
 };

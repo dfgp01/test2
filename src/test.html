@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <title>test js</title>
 
-<script type="text/javascript" src="data/data.js"></script>
+<!-- <script type="text/javascript" src="data/data.js"></script>
 <script type="text/javascript" src="constant.js"></script>
 <script type="text/javascript" src="testInhert.js"></script>
 <script type="text/javascript" src="action/ActionState.js"></script>
@@ -11,16 +11,83 @@
 <script type="text/javascript" src="service/Util.js"></script>
 <script type="text/javascript" src="service/Gobal.js"></script>
 <script type="text/javascript" src="service/Factory.js"></script>
-<script type="text/javascript" src="service/Service.js"></script>
-
+<script type="text/javascript" src="service/Service.js"></script> -->
+<script type="text/javascript" src="service/Util.js"></script>
 <script type="text/javascript">
 
 window.onload = function(){
 
-	Service.initUnitConfig();
-	document.getElementById("p").innerHTML = cc.str;
+	var str = [
+	 //"[normalAtk1>normalAtk2,3]>normalAtk3"
+     //"crossCutA>crossCutB>crossCutC"
+     "roundCutA>{roundCutA,roundCutB}"
+     //"roundCutB>{roundCutA,roundCutB}"
+     ];
+	for(var i in str){
+		var s = str[i];
+		alert("init : " + s);
+		linkForExpress(s);
+	}
+	document.getElementById("p").innerHTML = str;
 	//$("p").html("wad");
 }
+
+var linkForExpress = function(strExpress){
+	//检查是否含有子表达式"[ ]"
+	if(strExpress.charAt(0)=="["){
+		var end = strExpress.indexOf("]");
+		//分离子表达式和重复计数器，例如：[normalAtk1>normalAtk2,3]
+		var prefix = strExpress.substring(1, end).split(",");
+		var subExpress = "";
+		var repeatCount = 0;
+		if(Util.checkArrayNull(prefix)){
+			alert("wrong");
+			return;
+		}
+		subExpress = prefix[0];
+		repeatCount = prefix[1];
+		
+		//子表达式内链处理
+		var actNameArr = subExpress.split(">");
+		for(var i in actNameArr){
+			alert(actNameArr[i]);
+		}
+		//重复计数器处理
+		if(repeatCount > 0){
+			alert(repeatCount);
+		}
+		
+		//截取子表达式外 ">" 后的表达式
+		var suffix = strExpress.substring(end+2);
+		//将尾节点作为下一次连接的头节点
+		this.linkForExpress(suffix);
+	}
+	//检查是否含有分支节点表达式"{ }"
+	else if(strExpress.charAt(0)=="{"){
+		var end = strExpress.indexOf("}");
+		var actNameArr = strExpress.substring(1, end).split(",");
+		for(var i in actNameArr){
+			alert(actNameArr[i]);
+		}
+		return;
+	}
+	//剩下的就是一个action名了
+	else{
+		var s = strExpress.indexOf(">");
+		var actName;
+		if(s==-1){
+			actName = strExpress;
+			alert(actName + " end");
+			//到达尾部，可以结束了
+			//return;
+		}else{
+			actName = strExpress.substring(0, s);
+			alert(actName);
+			var suffixStr = strExpress.substring(s+1);
+			this.linkForExpress(suffixStr);	//继续递归
+		}
+	}
+};
 
 function iterObj(prop){
 	var str = "";
