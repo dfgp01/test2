@@ -58,24 +58,9 @@ Service = {
 			cc.log("initial action & skill link relationship......");
 			for(var i in data.actLamda){
 				cc.log("  initial : " + data.actLamda[i]);
-				this.linkForExpress(data.actLamda[i], unitTemplate);
+				this.linkForExpress(null, data.actLamda[i], unitTemplate);
 			}
 		}
-		
-		/*var act_groups = [normal_att_state_group, skill_group, act_tree];
-		for(var i in act_groups){
-			this.linkAction(act_groups[i], unit);
-		}*/
-		
-		if(Util.checkArrayNull(character.baseSkill)){
-			return;
-		}
-		for(var i in character.baseSkill){
-			var ac = unit.actions[character.baseSkill[i]];
-			unit.actionStateNodes[ac.key] = ac;
-		}
-		cc.log(Util.iterObj(unit.actionStateNodes));
-		
 	}
 
 };
@@ -115,9 +100,9 @@ Service.linkForExpress = function(node, strExpress, template){
 		var actNameArr = subExpress.split(">");
 		var actList = [];
 		for(var i in actNameArr){
-			var act = template.actions[actNameArr[i]];
+			var act = template.actionsCom.actions[actNameArr[i]];
 			if(!act){
-				cc.log("action: " + pre + " not found! please check the lamda express.");
+				cc.log("action: " + actNameArr[i] + " not found! please check the lamda express.");
 				return;
 			}
 			actList.push(act);
@@ -132,22 +117,22 @@ Service.linkForExpress = function(node, strExpress, template){
 		
 		//重复计数器处理
 		if(repeatCount > 0){
-			alert(repeatCount);
+			//alert(repeatCount);
 		}
 		
 		//截取子表达式外 ">" 后的表达式
 		var suffix = strExpress.substring(end+2);
 		//将尾节点作为下一次连接的头节点
-		this.linkForExpress(actList[actList.length-1], suffix);
+		this.linkForExpress(actList[actList.length-1], suffix, template);
 	}
 	//检查是否含有分支节点表达式"{ }"
 	else if(strExpress.charAt(0)=="{"){
 		var end = strExpress.indexOf("}");
-		var actNameArr = strExpress.subString(1, end).split(",");
+		var actNameArr = strExpress.substring(1, end).split(",");
 		for(var i in actNameArr){
-			var act = template.actions[actNameArr[i]];
+			var act = template.actionsCom.actions[actNameArr[i]];
 			if(!act){
-				cc.log("action: " + pre + " not found! please check the lamda express.");
+				cc.log("action: " + actNameArr[i] + " not found! please check the lamda express.");
 				return;
 			}
 			this.linkNode(node, act);
@@ -160,17 +145,18 @@ Service.linkForExpress = function(node, strExpress, template){
 		var act;
 		if(s==-1){
 			//到达结尾
-			act = template.actions[strExpress];
+			act = template.actionsCom.actions[strExpress];
 			if(!act){
-				cc.log("action: " + pre + " not found! please check the lamda express.");
+				cc.log("action: " + strExpress + " not found! please check the lamda express.");
 				return;
 			}
 			this.linkNode(node, act);
 			return;
 		}
-		act = template.actions[strExpress.substring(0, s)];
+		var actName = strExpress.substring(0, s);
+		act = template.actionsCom.actions[actName];
 		if(!act){
-			cc.log("action: " + pre + " not found! please check the lamda express.");
+			cc.log("action: " + actName + " not found! please check the lamda express.");
 			return;
 		}
 		this.linkNode(node, act);

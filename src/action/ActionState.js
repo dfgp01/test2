@@ -7,7 +7,6 @@ ActionState = StateNode.extend({
 	type : 0,
 	animateCom : null,				//动画组件是必须要有的
 	animateSys : null,
-	sysList : null,
 	
 	init : function(data){
 		this._super(data);
@@ -69,8 +68,4 @@ AttackAction = ActionState.extend({
 		}
 		return false;
 	}
-});
-
-SkillAction = ActionState.extend({
-	
 });

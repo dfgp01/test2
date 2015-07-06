@@ -2,7 +2,7 @@
  * 用于定义常量的
  */
 
-var Constant = {
+Constant = {
 	ANIMATE_TYPE : {
 		NORMAL : 0,
 		LOOP : 1
@@ -41,7 +41,7 @@ Constant.nodeType = {
 	STATE : "state"
 };
 
-constant.eventType = {
+Constant.eventType = {
 	ATTACK : "attack",
 	HIT : "hit",
 	HURT : "hurt",
@@ -49,7 +49,7 @@ constant.eventType = {
 	DEAD : "dead"
 };
 
-constant.eventPriority = {
+Constant.eventPriority = {
 		HIGHEST_PRIORITY : 0,
 		LOWEST_PRIORITY : 99
 };

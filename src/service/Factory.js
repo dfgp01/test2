@@ -13,10 +13,15 @@ Factory = {
 			var actionState = new ActionState();
 			//actionState.init(data);
 			actionState.name = data.name;
-
+			//设置key和默认key
+			if(Util.checkIsString(data,"key")){
+				actionState.key = data.key;
+			}else{
+				actionState.key = "-";
+			}
 			actionState.animateCom = new AnimateComponent();
 			if(Util.checkIsString(data,"action")){
-				var actRef = template.actions[data.action];
+				var actRef = template.actionsCom.actions[data.action];
 				if(actRef){
 					actionState.animateCom.frames = actRef.animateCom.frames;
 				}else{
@@ -42,20 +47,20 @@ Factory = {
 			
 			this.buildAnimateSys(data, actionState);
 			this.buildActionSys(data, actionState);
-			template.actions[actionState.name] = actionState;
+			template.actionsCom.actions[actionState.name] = actionState;
 			return actionState;
 		},
 		
 		/**
 		 * 动画逻辑组件
 		 */
-		buildAnimateSys : function(action){
+		buildAnimateSys : function(data, action){
 			if(Util.checkIsInt(data, "animateType")){
-				actionState.animateCom.type = data.animateType;
+				action.animateCom.type = data.animateType;
 			}else{
-				actionState.animateCom.type = 0;
+				action.animateCom.type = 0;
 			}
-			switch(actionState.animateCom.type){
+			switch(action.animateCom.type){
 			case Constant.ANIMATE_TYPE.NORMAL:
 				var sys = new AnimateSystem();
 				sys.animateCom = action.animateCom;
@@ -74,13 +79,13 @@ Factory = {
 		 */
 		buildActionSys : function(data, action){
 			if(Util.checkIsInt(data, "type")){
-				actionState.type = data.type;
+				action.type = data.type;
 			}else{
-				actionState.type = 0;
+				action.type = 0;
 			}
 			switch(data.type){
-			case Constant.ACTION_TYPE.IDLE:
-				var idle = new IdleActionSystem();
+			case Constant.ACTION_TYPE.STAND:
+				var idle = new StandActionSystem();
 				action.addSystem(idle);
 				break;
 			case Constant.ACTION_TYPE.WALK:
@@ -102,13 +107,16 @@ Factory = {
 			}
 
 			var unitTemplate = new UnitTemplate();
-			unitTemplate.name = data.name;
+			unitTemplate.name = data.characterName;
 
 			//unitTemplate.viewCom :  = new ViewComponent();
 			unitTemplate.hitCom = new HitPropertiesComponent();
 			unitTemplate.hurtCom = new HurtPropertiesComponent();
 			unitTemplate.speedCom = new SpeedPropertiesComponent();
+			
 			unitTemplate.actionsCom = new ActionsComponent();
+			unitTemplate.actionsCom.actions = {};
+			
 			unitTemplate.actionsCom.firstFrame = data.firstFrame;
 
 			return unitTemplate;
@@ -128,13 +136,15 @@ Factory.checkActionRight = function(data){
 		cc.log("createActionState:" + data.name + " error, action or frames has one at lease!");
 		return false;
 	}
+	//一定要返回啊，被这个坑死了。
+	return true;
 }
 
 /**
  * 检查unit是否满足可构建必要条件
  */
 Factory.checkUnitRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "res")){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "res") || !Util.checkIsString(data, "characterName")){
 		cc.log("create Unit error, lack of necessary data!");
 		return false;
 	}

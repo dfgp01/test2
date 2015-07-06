@@ -65,8 +65,8 @@ character_data = {
 		}
 	],
 	actLamda : [	//lamda表达式：> + - [] () , 随便起的名字 -_-
-	        "(normalAtk1>normalAtk2)[1]>normalAtk3",
-	        "crossCutA>(crossCutB>crossCutC)",
+	        "[normalAtk1>normalAtk2,1]>normalAtk3",
+	        "crossCutA>crossCutB>crossCutC",
 	        "roundCutA>{roundCutA,roundCutB}",
 	        "roundCutB>{roundCutA,roundCutB}"
 	]

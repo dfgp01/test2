@@ -75,7 +75,7 @@ UnitTemplate = cc.Class.extend({
 			unit.viewCom.sprite = new cc.Sprite("#" + this.actionsCom.firstFrame);
 			//....
 		}
-		unit.viewCom.sprite.setFrame
+		unit.viewCom.sprite.setSpriteFrame("#"+unit.actionsCom.firstFrame);
 		unit.hitCom.strength = this.hitCom.strength;
 		unit.hitCom.attSpeedFactor = this.hitCom.attSpeedFactor;
 		//....

@@ -49,11 +49,19 @@ StateNode = cc.Class.extend({
 	name : null,
 	key : null,					//用于存放在父节点children属性中的key
 	children : null,			//子节点，树状结构
+	sysList : null,				//系统列表
 	
 	//构造器
 	ctor : function(){},
 	init : function(data){
 		this.name = data.name;
+	},
+	
+	addSystem : function(system){
+		if(this.sysList == null){
+			this.sysList = [];
+		}
+		this.sysList.push(system);
 	},
 	
 	//定义主接口
@@ -63,22 +71,13 @@ StateNode = cc.Class.extend({
 	
 	//设置直接下一个节点，需要改
 	addChild : function(node){
-		if(children){
+		if(this.children==null){
 			this.children = {};
 		}
 		if(this.children[node.getKey()]){
 			cc.log("key: " + node.getKey + " has exists in parent node.");
 		}
-		this.children[node.getKey()];
-	},
-	
-	//获得key的策略
-	getKey : function(){
-		if(this.key==null || this.key==""){
-			return "-";
-		}else{
-			return this.key;
-		}
+		this.children[node.getKey()] = node;
 	}
 });
 
