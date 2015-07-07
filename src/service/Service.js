@@ -69,7 +69,7 @@ Service = {
  * 检查character是否满足可构建必要条件
  */
 Service.checkCharacterDataRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "characterName")){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
 		cc.log("create Character error, lack of necessary data!");
 		return false;
 	}
@@ -169,7 +169,7 @@ Service.linkNode = function(node1, node2){
 	if(node1==null){
 		return;
 	}
-	var key = node2.getKey();
+	var key = node2.key;
 	if(Util.checkNotNull(node1.children) && node1.children[key]){
 		cc.log("node: " + node1.name + " key: " + key + " has exists, please check the lamda express.");
 		return;

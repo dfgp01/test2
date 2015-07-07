@@ -65,7 +65,7 @@ MainActionSystem = System.extend({
 *	player控制系统（暂定）
 */
 PlayerSystem = System.extend({
-	key : [0, 0];
+	key : [0, 0],
 	combo : [],
 	maxLength : 6,
 	comboTimeCount : 0,
