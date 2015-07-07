@@ -62,37 +62,68 @@ MainActionSystem = System.extend({
 });
 
 /**
- * 核心系统-动画播放
- */
-AnimateSystem = ActionSystem.extend({
-	//AnimateComponent
-	animateCom : null,
-	start : function(unit, dt){
-		unit.actions.frameIndex = 0;
-	},
-	update : function(unit, dt){		//待定
-		//播放动画
-		if(unit.actions.frameIndex < this.animateCom.frames.length){
-			unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actions.frameIndex]);
-			unit.actions.frameIndex++;
-		}
-	}
-});
-
-/**
-* 核心系统-动画循环播放
+*	player控制系统（暂定）
 */
-LoopAnimateSystem = ActionSystem.extend({
-	animateCom : null,
-	start : function(unit, dt){
-		unit.actions.frameIndex = 0;
+PlayerSystem = System.extend({
+	key : [0, 0];
+	combo : [],
+	maxLength : 6,
+	comboTimeCount : 0,
+	comboTimeInteval : 1.5,
+	fowardFlag : "X",				//X是默认值，代表目前还没有左右键被按下
+	target : null,
+
+	start : function(){
 	},
-	update : function(unit, dt){
-		//播放动画
-		if(unit.actions.frameIndex >= this.animateCom.frames.length){
-			unit.actions.frameIndex = 0;
+	
+	update : function(dt){
+		if(this.key[0] != 0){
+			
 		}
-		unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actions.frameIndex]);
-		unit.actions.frameIndex++;
-	}
+		//连按系统时效判断
+		if(this.combo.length>0){
+			this.comboTimeCount += dt;
+			if(this.comboTimeCount > this.comboTimeInteval){
+				this.combo.length = 0;
+				this.fowardFlag = "X";
+			}
+		}
+	},
+	
+	pressKey : function(key){
+		
+	},
+	
+	pressDirection : function(key){
+		this.key[0] = this.key[0] | key;
+		if(key==8){
+			this.addCombo("U");
+		}
+		else if(key==4){
+			this.addCombo("D");
+		}
+		else if(key==2){
+			this.addCombo("L");
+		}else{
+			this.addCombo("R");
+		}
+	},
+	
+	addCombo : function(keyStr){
+		if(this.combo.length >= 6){
+			this.combo.shift();
+		}
+		//像DNF那样，左右方向是可以反过来的
+		if(keyStr=="L" || keyStr == "R"){
+			if(this.fowardFlag == "X"){
+				this.fowardFlag = keyStr;
+			}
+			keyStr = this.fowardFlag==keyStr ? "F" : "T";
+		}
+		
+		//shift是删除第一个，pop是删除最后一个
+		this.combo.push(keyStr);
+		//重新计时
+		this.comboTimeCount = 0;
+	},
 });

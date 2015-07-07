@@ -2,11 +2,6 @@
 var HelloWorldLayer = cc.Layer.extend({
     sprite:null,
     deep: null,
-    animation: null,
-    _runAnima: null,
-    _targetPos: null,
-    
-    _unit : null,
     
     ctor:function () {
         //////////////////////////////
@@ -42,7 +37,7 @@ var HelloWorldLayer = cc.Layer.extend({
         cc.spriteFrameCache.addSpriteFrames(deep_2_plist);
         
         Service.initUnitTemplate(character_data);
-    	_unit = Service.createUnit(character_data.characterName, 0);
+    	var unit = Service.createUnit(character_data.name, 0);
     	var sprite = _unit.viewCom.sprite;
     	sprite.attr({
     		x: 150,
@@ -53,10 +48,16 @@ var HelloWorldLayer = cc.Layer.extend({
         Controller.target = _unit;
         
         var mas = new MainActionSystem();
+        var pla = new PlayerSystem();
         SystemManager.init();
+        SystemManager.addSystem(pla);
         SystemManager.addSystem(mas);
         SystemManager.start();
     	
+        //别忘了这里是gl坐标系
+        var leftRect = cc.rect(0, size*0.5, size*0.5, size*0.5);				//左上
+        var rightRect = cc.rect(size*0.5, size*0.5, size*0.5, size*0.5);		//右上
+        var attRect = cc.rect(size*0.5, 0, size*0.5, size*0.5);					//右下
         var selfPointer = this;
         var listener = cc.EventListener.create({
         	event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -66,25 +67,31 @@ var HelloWorldLayer = cc.Layer.extend({
         		var locationInNode = sprite.convertToNodeSpace(touch.getLocation());
         		var s = sprite.getContentSize();
         		var rect = cc.rect(0, 0, s.width, s.height);
-
+        		
         		//这个报废，但暂时不删
-        		if (cc.rectContainsPoint(rect, locationInNode)) {
-        			//cc.log("点中精灵：" + locationInNode.x + "," + locationInNode.y);
+        		/*if (cc.rectContainsPoint(rect, locationInNode)) {
+        			cc.log("点中精灵：" + locationInNode.x + "," + locationInNode.y);
         			
         			//标注1：这一句在JSB中报错：Invail Native Object，在chrome中没问题
         			//		网上说action要retain()，估计与内存管理有关
-        			//deep.runAction(cc.animate(animation).repeatForever());	
+        			deep.runAction(cc.animate(animation).repeatForever());	
         			cc.log(touch.getID());
         			Controller.cmd = Controller.cmd | Constant.CMD.ATTACK;
-        		}
+        		}*/
         		
+        		var point = touch.getLocation();
         		//临时操作
-        		else if(locationInNode.x < 0){
-        			Controller.cmd = Controller.cmd | Constant.CMD.LEFT;
-        		}else{
-        			Controller.cmd = Controller.cmd | Constant.CMD.RIGHT;
+        		if(cc.rectContainsPoint(leftRect, point)){
+        			pla.pressDirection(Constant.CMD.LEFT);
         		}
-        		Controller.target.cmd = Controller.cmd;
+        		else if(cc.rectContainsPoint(rightRect, point)){
+        			pla.pressDirection(Constant.CMD.RIGHT);
+        		}
+        		else if(cc.rectContainsPoint(attRect, point)){
+        			
+        		}else{
+        			cc.log("click what? " + point.x + "," + point.y);
+        		}
         		
         		//返回值是true，往下传递，触发onTouchMoved和onTouchEnded，false则不传递
         		cc.log("id:"+touch.getID() + ", pos:[" + touch.getLocation().x + "," + touch.getLocation().y + "]");
@@ -95,7 +102,7 @@ var HelloWorldLayer = cc.Layer.extend({
         	},
         	onTouchEnded: function (touch, event) {
         		cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
-        		Controller.cmd = 0;
+        		Controller.releaseKey(0);
         	}
         });
         cc.eventManager.addListener(listener, this);

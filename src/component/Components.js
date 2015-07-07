@@ -86,8 +86,8 @@ HurtPropertiesComponent = Component.extend({
  */
 SpeedPropertiesComponent = Component.extend({
 	speed : 1,
-	currSpeed : 2,
-	maxSpeed : 10
+	currSpeed : 1,
+	maxSpeed : 1
 });
 
 //--------------------- 公共层 --------------------
@@ -107,5 +107,5 @@ MotionComponent = Component.extend({
 TimerComponent = Component.extend({
 	second : 0,
 	currTime : 0,
-	isStart : false
+	//isStart : false
 });

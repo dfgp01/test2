@@ -4,7 +4,7 @@
 
 Controller = {
 
-	cmd : 0,					//当前指令
+	key : 0,					//当前指令
 	interval : 1000,		//有效间隔
 	comboKey : 0,		//组合键
 	_keyArr : [],
@@ -14,10 +14,13 @@ Controller = {
 	target : null,
 	
 	pressKey : function(key){
-		this.key | key;
+		//this.key | key;		暂不支持多命令
+		this.key = key;
+		this.target.cmd = this.key;
 	},
 	releaseKey : function(key){
-		this.key & (~key);
+		//this.key & (~key);
+		this.target.cmd = 0;
 	},
 	getKey : function(){
 		return this.key;

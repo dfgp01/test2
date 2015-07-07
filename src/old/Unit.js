@@ -17,6 +17,13 @@ Unit = GameObject.extend({
 	speedCom : null,
 	motionCom : null,
 	actionsCom : null,
+
+	init : function(data){
+		this.name = data.name;
+		this.res = data.res;
+		this.actionStateNodes = {};
+		this.actions = {};
+	},
 	
 	changeAction : function(name){
 		this.currAction.end(this);
@@ -24,8 +31,20 @@ Unit = GameObject.extend({
 		return;
 	},
 	
+	addState : function(state){
+		this.actionStates[state.key] = state;
+		this.addToNodes(state);
+	},
+	
+	//添加到索引，方便查找，主逻辑一般不会用到nodes节点处理
+	addToNodes : function(state){
+		this.actions[state.name] = state;
+	},
+	
 	//重置状态，在一个状态结束后调用
-	resetAction : function(){
+	updateState : function(){
+		this.currAction.end();
+		this.currAction = this.actionStateNodes[constant.state.IDLE];
 	},
 	
 	//击中时调用
@@ -47,48 +66,19 @@ UnitTemplate = cc.Class.extend({
 	hitCom : null,
 	hurtCom : null,
 	speedCom : null,
-	actionsCom : null,
-	
+	actionsCom : null,	
 	getNewInstance : function(){
 		var unit = Service.popUnitFromPool();
 		if(unit == null){
 			unit = new Unit();
 			unit.viewCom = new ViewComponent();
 			unit.viewCom.sprite = new cc.Sprite("#" + this.actionsCom.firstFrame);
-			unit.hitCom = new HitPropertiesComponent();
-			unit.hurtCom = new HurtPropertiesComponent();
-			unit.speedCom = new SpeedPropertiesComponent();
-			unit.motionCom = new MotionComponent();
-			unit.actionsCom = new ActionsComponent();
+			//....
 		}
-		this.initCom(unit);
-		return unit;
-	},
-	
-	initCom : function(unit){
 		unit.viewCom.sprite.setSpriteFrame("#"+unit.actionsCom.firstFrame);
-		
 		unit.hitCom.strength = this.hitCom.strength;
 		unit.hitCom.attSpeedFactor = this.hitCom.attSpeedFactor;
-		
-		unit.hurtCom.healthPoint = this.hurtCom.healthPoint;
-		unit.hurtCom.maxHealthPoint = this.hurtCom.maxHealthPoint;
-		unit.hurtCom.defence = this.hurtCom.defence;
-		unit.hurtCom.bodyType = this.hurtCom.bodyType;
-		unit.hurtCom.bodyState = this.hurtCom.bodyState;
-		unit.hurtCom.isDead = this.hurtCom.isDead;
-		
-		unit.speedCom.speed = this.speedCom.speed;
-		unit.speedCom.currSpeed = this.speedCom.currSpeed;
-		unit.speedCom.maxSpeed = this.speedCom.maxSpeed;
-		
-		unit.motionCom.vx = 0;
-		unit.motionCom.vy = 0;
-		unit.motionCom.dx = 0;
-		unit.motionCom.dy = 0;
-		
-		unit.actionsCom.actions = this.actionsCom.actions;
-		unit.actionsCom.frameIndex = 0;
-		unit.actionsCom.state = this.actionsCom.state;
+		//....
+		return unit;
 	}
 });

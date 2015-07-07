@@ -14,7 +14,7 @@ shieldBuff_release = {
 };
 
 character_data = {
-	characterName : "DFL",
+	name : "DFL",
 	res : "deep",
 	unitType : 1,
 	firstFrame : "deep_stand_0.png",

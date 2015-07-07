@@ -107,7 +107,7 @@ Factory = {
 			}
 
 			var unitTemplate = new UnitTemplate();
-			unitTemplate.name = data.characterName;
+			unitTemplate.name = data.name;
 
 			//unitTemplate.viewCom :  = new ViewComponent();
 			unitTemplate.hitCom = new HitPropertiesComponent();
@@ -144,7 +144,7 @@ Factory.checkActionRight = function(data){
  * 检查unit是否满足可构建必要条件
  */
 Factory.checkUnitRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "res") || !Util.checkIsString(data, "characterName")){
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "res") || !Util.checkIsString(data, "name")){
 		cc.log("create Unit error, lack of necessary data!");
 		return false;
 	}
