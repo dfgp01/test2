@@ -75,7 +75,7 @@ StateNode = cc.Class.extend({
 			this.children = {};
 		}
 		if(this.children[node.key]){
-			cc.log("key: " + node.key + " has exists in parent node.");
+			cc.log("key: " + node.key + " has exists in parent node. parent:"+this.name+" child:"+node.name);
 		}
 		this.children[node.key] = node;
 	}

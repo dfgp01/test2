@@ -116,8 +116,6 @@ Factory = {
 			
 			unitTemplate.actionsCom = new ActionsComponent();
 			unitTemplate.actionsCom.actions = {};
-			
-			unitTemplate.actionsCom.firstFrame = data.firstFrame;
 
 			return unitTemplate;
 		}
@@ -146,11 +144,6 @@ Factory.checkActionRight = function(data){
 Factory.checkUnitRight = function(data){
 	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "res") || !Util.checkIsString(data, "name")){
 		cc.log("create Unit error, lack of necessary data!");
-		return false;
-	}
-	
-	if(!Util.checkIsString(data, "firstFrame")){
-		cc.log("create UnitTemplate error, must has firstFrame.");
 		return false;
 	}
 	

@@ -26,20 +26,6 @@ ActionState = StateNode.extend({
 	},
 
 	end : function(){},
-	
-	//增加下级节点，判断是直接下级节点还是通过key进入的节点
-	addNext : function(state){
-		if(Util.checkIsInt(state.key, true) && state.key != 0){
-			if(!this.children){
-				this.children = {};
-			}
-			this.children[state.key] = state;
-		}
-		else{
-			this.next = state;
-		}
-		//this.owner.addToNodes(state);
-	}
 });
 
 AttackAction = ActionState.extend({

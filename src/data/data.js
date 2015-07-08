@@ -13,11 +13,11 @@ shieldBuff_release = {
 	//etc: mp...
 };
 
+//stand is first act for all unit
 character_data = {
 	name : "DFL",
 	res : "deep",
 	unitType : 1,
-	firstFrame : "deep_stand_0.png",
 	actions : [
 		{
 			name : "stand", animateType : 1, type : 1,

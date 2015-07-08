@@ -169,10 +169,5 @@ Service.linkNode = function(node1, node2){
 	if(node1==null){
 		return;
 	}
-	var key = node2.key;
-	if(Util.checkNotNull(node1.children) && node1.children[key]){
-		cc.log("node: " + node1.name + " key: " + key + " has exists, please check the lamda express.");
-		return;
-	}
 	node1.addChild(node2);
 }

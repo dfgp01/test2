@@ -54,7 +54,8 @@ UnitTemplate = cc.Class.extend({
 		if(unit == null){
 			unit = new Unit();
 			unit.viewCom = new ViewComponent();
-			unit.viewCom.sprite = new cc.Sprite("#" + this.actionsCom.firstFrame);
+			//unit.viewCom.sprite = new cc.Sprite("#" + this.actionsCom.firstFrame);
+			unit.viewCom.sprite = new cc.Sprite();
 			unit.hitCom = new HitPropertiesComponent();
 			unit.hurtCom = new HurtPropertiesComponent();
 			unit.speedCom = new SpeedPropertiesComponent();
@@ -66,7 +67,6 @@ UnitTemplate = cc.Class.extend({
 	},
 	
 	initCom : function(unit){
-		unit.viewCom.sprite.setSpriteFrame("#"+unit.actionsCom.firstFrame);
 		
 		unit.hitCom.strength = this.hitCom.strength;
 		unit.hitCom.attSpeedFactor = this.hitCom.attSpeedFactor;
@@ -90,5 +90,7 @@ UnitTemplate = cc.Class.extend({
 		unit.actionsCom.actions = this.actionsCom.actions;
 		unit.actionsCom.frameIndex = 0;
 		unit.actionsCom.state = this.actionsCom.state;
+		
+		unit.viewCom.sprite.setSpriteFrame("#"+unit.actionsCom.actions.stand.frames[0]);
 	}
 });
