@@ -53,12 +53,21 @@ MainActionSystem = System.extend({
 	},
 	update : function(dt){
 		for(var i in this.unitList){
-			this.unitList[i].currAct.run(this.unitList[i], dt);
+			this.unitList[i].actionsCom.currAction.run(this.unitList[i], dt);
+			//动画暂时放这
+			this.unitList[i].actionsCom.currAction.animateSys.run(this.unitList[i], dt);
 		}
 	},
 	end : function(){
 		//remove from SysManager
 	}
+});
+
+/**
+ * 单位动画轮询
+ */
+MainAnimateSystem = System.extend({
+	
 });
 
 /**

@@ -38,20 +38,19 @@ var HelloWorldLayer = cc.Layer.extend({
         
         Service.initUnitTemplate(character_data);
     	var unit = Service.createUnit(character_data.name, 0);
-    	var sprite = _unit.viewCom.sprite;
+    	var sprite = unit.viewCom.sprite;
     	sprite.attr({
     		x: 150,
         	y: 250
     	});
     	sprite._scaleX = -1;
     	this.addChild(sprite);
-        Controller.target = _unit;
         
         var mas = new MainActionSystem();
         var pla = new PlayerSystem();
         SystemManager.init();
-        SystemManager.addSystem(pla);
         SystemManager.addSystem(mas);
+        SystemManager.addSystem(pla);
         SystemManager.start();
     	
         //别忘了这里是gl坐标系
@@ -98,7 +97,7 @@ var HelloWorldLayer = cc.Layer.extend({
         		return true;
         	},
         	onTouchMoved: function (touch, event) {
-        		cc.log("移动:" + touch.getLocation().x + "," + touch.getLocation().y );
+        		//cc.log("移动:" + touch.getLocation().x + "," + touch.getLocation().y );
         	},
         	onTouchEnded: function (touch, event) {
         		cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
@@ -118,7 +117,7 @@ var HelloWorldLayer = cc.Layer.extend({
         
         //this.schedule(this.customAnimateRun, 0.2, -1, 0);
         //this.schedule(this.customAnimateRun, 0.12, -1, 0);
-        //this.scheduleUpdate();
+        this.scheduleUpdate();
         return true;
     },
     
