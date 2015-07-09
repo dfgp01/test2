@@ -10,6 +10,7 @@ StandActionSystem = ActionSystem.extend({
 				return;
 			}
 			if(unit.cmd & Constant.CMD.ATTACK){
+				unit.changeAct("normalAtk1");
 				return;
 			}
 		}

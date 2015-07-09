@@ -2,16 +2,19 @@
  * 核心系统-动画播放
  */
 AnimateSystem = ActionSystem.extend({
-	//AnimateComponent
+	
+	//引用对应action的animateCom
 	animateCom : null,
+	
+	//这个方法暂时用不上
 	start : function(unit, dt){
-		unit.actions.frameIndex = 0;
+		unit.actionsCom.actions.frameIndex = 0;
 	},
-	update : function(unit, dt){		//待定
+	update : function(unit, dt){
 		//播放动画
-		if(unit.actions.frameIndex < this.animateCom.frames.length){
-			unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actions.frameIndex]);
-			unit.actions.frameIndex++;
+		if(unit.actionsCom.frameIndex < this.animateCom.frames.length){
+			unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actionsCom.frameIndex]);
+			unit.actionsCom.frameIndex++;
 		}
 	}
 });
@@ -26,10 +29,10 @@ LoopAnimateSystem = ActionSystem.extend({
 	},
 	update : function(unit, dt){
 		//播放动画
-		if(unit.actions.frameIndex >= this.animateCom.frames.length){
-			unit.actions.frameIndex = 0;
+		if(unit.actionsCom.frameIndex >= this.animateCom.frames.length){
+			unit.actionsCom.frameIndex = 0;
 		}
-		unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actions.frameIndex]);
-		unit.actions.frameIndex++;
+		unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actionsCom.frameIndex]);
+		unit.actionsCom.frameIndex++;
 	}
 });

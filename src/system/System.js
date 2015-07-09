@@ -1,5 +1,27 @@
 /**
- * 	定义其他系统接口
+ * 系统管理器
+ */
+SystemManager = {
+		sysList : [],
+		init : function(){
+		},
+		start : function(){
+			for(var i in this.sysList){
+				this.sysList[i].start();
+			}
+		},
+		addSystem : function(system){
+			this.sysList.push(system);
+		},
+		update : function(dt){
+			for(var i in this.sysList){
+				this.sysList[i].update(dt);
+			}
+		}
+};
+
+/**
+ * 	定义游戏其他系统接口
  */
 System = cc.Class.extend({
 	name : null,
@@ -21,40 +43,33 @@ ActionSystem = cc.Class.extend({
 });
 
 /**
- * 系统管理器
- */
-SystemManager = {
-		sysList : null,
-		init : function(){
-			this.sysList = [];
-		},
-		start : function(){
-			for(var i in this.sysList){
-				this.sysList[i].start();
-			}
-		},
-		addSystem : function(system){
-			this.sysList.push(system);
-		},
-		update : function(dt){
-			for(var i in this.sysList){
-				this.sysList[i].update(dt);
-			}
-		}
-};
-
-/**
  * 核心系统-单位动作轮询处理
  */
 MainActionSystem = System.extend({
 	unitList : null,
 	start : function(){
-		this.unitList = Container.unitList;
+		this.unitList = Service.getAllUnits();
 	},
 	update : function(dt){
 		for(var i in this.unitList){
 			this.unitList[i].actionsCom.currAction.run(this.unitList[i], dt);
-			//动画暂时放这
+		}
+	},
+	end : function(){
+		//remove from SysManager
+	}
+});
+
+/**
+ * 单位动画轮询，目前用独立系统处理，如果性能不佳，可尝试加到动作处理系统中
+ */
+MainAnimateSystem = System.extend({
+	unitList : null,
+	start : function(){
+		this.unitList = Service.getAllUnits();
+	},
+	update : function(dt){
+		for(var i in this.unitList){
 			this.unitList[i].actionsCom.currAction.animateSys.run(this.unitList[i], dt);
 		}
 	},
@@ -64,29 +79,31 @@ MainActionSystem = System.extend({
 });
 
 /**
- * 单位动画轮询
- */
-MainAnimateSystem = System.extend({
-	
-});
-
-/**
 *	player控制系统（暂定）
 */
 PlayerSystem = System.extend({
-	key : [0, 0],
+	key : 0,
 	combo : [],
 	maxLength : 6,
+	
+	//用于计算连续按键的时间间隔的
 	comboTimeCount : 0,
+	
+	//连续按键的最大时间间隔(秒)
 	comboTimeInteval : 1.5,
-	fowardFlag : "X",				//X是默认值，代表目前还没有左右键被按下
+	
+	//X是默认值，代表目前还没有左右方向键被按下。
+	//本来想设为null的，就怕频繁设为null，会引起垃圾回收器不满。
+	fowardFlag : "X",
+	
+	//被控制的目标，Unit类型
 	target : null,
 
 	start : function(){
 	},
 	
 	update : function(dt){
-		if(this.key[0] != 0){
+		if(this.key != 0){
 			
 		}
 		//连按系统时效判断
@@ -95,23 +112,33 @@ PlayerSystem = System.extend({
 			if(this.comboTimeCount > this.comboTimeInteval){
 				this.combo.length = 0;
 				this.fowardFlag = "X";
+				this.comboTimeCount;
 			}
 		}
 	},
 	
+	releaseKey : function(key){
+		this.key = this.key & (~key);
+	},
+	
 	pressKey : function(key){
-		
+		//暂时支持单击
+		this.key = key;
+		if(key==Constant.CMD.ATTACK){
+			this.addCombo("A");
+		}
 	},
 	
 	pressDirection : function(key){
-		this.key[0] = this.key[0] | key;
-		if(key==8){
+		//暂时支持单击
+		this.key = key;
+		if(key==Constant.CMD.UP){
 			this.addCombo("U");
 		}
-		else if(key==4){
+		else if(key==Constant.CMD.DOWN){
 			this.addCombo("D");
 		}
-		else if(key==2){
+		else if(key==Constant.CMD.LEFT){
 			this.addCombo("L");
 		}else{
 			this.addCombo("R");
@@ -134,5 +161,6 @@ PlayerSystem = System.extend({
 		this.combo.push(keyStr);
 		//重新计时
 		this.comboTimeCount = 0;
+		//this.combo.join("");
 	},
 });

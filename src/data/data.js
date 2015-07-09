@@ -32,19 +32,19 @@ character_data = {
 			frames : ["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png","deep_hurt_5.png","deep_hurt_4.png","deep_hurt_4.png"]
 		},
 		{
-			name : "normalAtk1",  key : "x", keyFrame : 1,
+			name : "normalAtk1",  key : "A", keyFrame : 1,
 			frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"]
 		},
 		{
-			name : "normalAtk2", key : "x", keyFrame : 2, 
+			name : "normalAtk2", key : "A", keyFrame : 2, 
 			frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"]
 		},
 		{
-			name : "normalAtk3", key : "x", keyFrame : 2,
+			name : "normalAtk3", key : "A", keyFrame : 2,
 			frames : ["deep_attack_3_1.png","deep_attack_3_2.png","deep_attack_3_3.png","deep_attack_3_4.png"]
 		},
 		{
-			name : "crossCutA", key : "z", 
+			name : "crossCutA", key : "FTA", 
 			frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"]
 		},
 		{
@@ -56,11 +56,11 @@ character_data = {
 			frames : ["deep_crossCutC_1.png","deep_crossCutC_2.png","deep_crossCutC_3.png","deep_crossCutC_4.png","deep_crossCutC_5.png"]
 		},
 		{
-			name : "roundCutA", key : "c",
+			name : "roundCutA", key : "DUA",
 			frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"]
 		},
 		{
-			name : "roundCutB", key : "v",
+			name : "roundCutB", key : "FFA",
 			frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"]
 		}
 	],

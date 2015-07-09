@@ -48,15 +48,17 @@ var HelloWorldLayer = cc.Layer.extend({
         
         var mas = new MainActionSystem();
         var pla = new PlayerSystem();
-        SystemManager.init();
         SystemManager.addSystem(mas);
         SystemManager.addSystem(pla);
         SystemManager.start();
     	
         //别忘了这里是gl坐标系
-        var leftRect = cc.rect(0, size*0.5, size*0.5, size*0.5);				//左上
-        var rightRect = cc.rect(size*0.5, size*0.5, size*0.5, size*0.5);		//右上
-        var attRect = cc.rect(size*0.5, 0, size*0.5, size*0.5);					//右下
+        var leftTopRect = cc.rect(0, size*0.5, size*0.5, size*0.5);					//左上
+        var leftBottomRect = cc.rect(0, 0, size*0.5, size*0.5);						//左下
+        var rightTopRect = cc.rect(size*0.5, size*0.5, size*0.5, size*0.5);		//右上
+        var rightBottomRect = cc.rect(size*0.5, 0, size*0.5, size*0.5);			//右下
+        var s = sprite.getContentSize();
+        var attRect = cc.rect(0, 0, s.width, s.height);									//单位内
         var selfPointer = this;
         var listener = cc.EventListener.create({
         	event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -64,8 +66,6 @@ var HelloWorldLayer = cc.Layer.extend({
         	swallowTouches: true,
         	onTouchBegan: function (touch, event) {
         		var locationInNode = sprite.convertToNodeSpace(touch.getLocation());
-        		var s = sprite.getContentSize();
-        		var rect = cc.rect(0, 0, s.width, s.height);
         		
         		//这个报废，但暂时不删
         		/*if (cc.rectContainsPoint(rect, locationInNode)) {
@@ -80,6 +80,9 @@ var HelloWorldLayer = cc.Layer.extend({
         		
         		var point = touch.getLocation();
         		//临时操作
+        		if(cc.rectContainsPoint(attRect, locationInNode)){
+        			pla.pressKey(Constant.CMD.ATTACK);
+        		}
         		if(cc.rectContainsPoint(leftRect, point)){
         			pla.pressDirection(Constant.CMD.LEFT);
         		}
@@ -101,7 +104,7 @@ var HelloWorldLayer = cc.Layer.extend({
         	},
         	onTouchEnded: function (touch, event) {
         		cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
-        		Controller.releaseKey(0);
+        		//pla.releaseKey();//暂时的
         	}
         });
         cc.eventManager.addListener(listener, this);

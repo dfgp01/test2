@@ -6,6 +6,13 @@
 Service = {
 
 	/**
+	 * 得到所有单位列表
+	 */
+	getAllUnits : function(){
+		return Container.unitList;
+	},
+	
+	/**
 	 * 	从指定模板中创建新对象
 	 */
 	createObj : function(tempName){

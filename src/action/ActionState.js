@@ -15,8 +15,9 @@ ActionState = StateNode.extend({
 	},
 	//加载时
 	start : function(unit){
-		unit.currAction = this;
+		unit.actionsCom.currAction = this;
 		unit.actionsCom.frameIndex = 0;
+		unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[0]);
 	},
 	
 	run : function(unit, dt){
@@ -28,6 +29,9 @@ ActionState = StateNode.extend({
 	end : function(){},
 });
 
+/**
+ * 暂时废弃，改用ECS模式
+ */
 AttackAction = ActionState.extend({
 	keyFrame : 0,
 	hitBox : null,
