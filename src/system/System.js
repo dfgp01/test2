@@ -70,7 +70,7 @@ MainAnimateSystem = System.extend({
 	},
 	update : function(dt){
 		for(var i in this.unitList){
-			this.unitList[i].actionsCom.currAction.animateSys.run(this.unitList[i], dt);
+			this.unitList[i].actionsCom.currAction.animateSys.update(this.unitList[i], dt);
 		}
 	},
 	end : function(){

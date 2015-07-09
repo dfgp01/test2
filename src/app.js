@@ -47,8 +47,10 @@ var HelloWorldLayer = cc.Layer.extend({
     	this.addChild(sprite);
         
         var mas = new MainActionSystem();
+        var anims = new MainAnimateSystem();
         var pla = new PlayerSystem();
         SystemManager.addSystem(mas);
+        SystemManager.addSystem(anims);
         SystemManager.addSystem(pla);
         SystemManager.start();
     	
@@ -75,7 +77,6 @@ var HelloWorldLayer = cc.Layer.extend({
         			//		网上说action要retain()，估计与内存管理有关
         			deep.runAction(cc.animate(animation).repeatForever());	
         			cc.log(touch.getID());
-        			Controller.cmd = Controller.cmd | Constant.CMD.ATTACK;
         		}*/
         		
         		var point = touch.getLocation();
@@ -83,14 +84,17 @@ var HelloWorldLayer = cc.Layer.extend({
         		if(cc.rectContainsPoint(attRect, locationInNode)){
         			pla.pressKey(Constant.CMD.ATTACK);
         		}
-        		if(cc.rectContainsPoint(leftRect, point)){
+        		if(cc.rectContainsPoint(leftBottomRect, point)){
         			pla.pressDirection(Constant.CMD.LEFT);
         		}
-        		else if(cc.rectContainsPoint(rightRect, point)){
+        		else if(cc.rectContainsPoint(righBottomRect, point)){
         			pla.pressDirection(Constant.CMD.RIGHT);
         		}
-        		else if(cc.rectContainsPoint(attRect, point)){
-        			
+        		else if(cc.rectContainsPoint(leftTopRect, point)){
+        			pla.pressDirection(Constant.CMD.UP);
+        		}
+        		else if(cc.rectContainsPoint(righToptRect, point)){
+        			pla.pressDirection(Constant.CMD.DOWN);
         		}else{
         			cc.log("click what? " + point.x + "," + point.y);
         		}

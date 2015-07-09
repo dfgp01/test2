@@ -28,6 +28,7 @@ LoopAnimateSystem = ActionSystem.extend({
 		unit.actions.frameIndex = 0;
 	},
 	update : function(unit, dt){
+		cc.log(unit.actionsCom.frameIndex + "," + dt);
 		//播放动画
 		if(unit.actionsCom.frameIndex >= this.animateCom.frames.length){
 			unit.actionsCom.frameIndex = 0;
