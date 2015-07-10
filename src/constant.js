@@ -30,7 +30,9 @@ Constant = {
 		LEFT : 32,
 		RIGHT : 16,
 		ALL_DIRECTION : 240,	//用于判断是否按下了任一方向键，不用每次判断都用 "|"运算
-		ATTACK : 8
+		ATTACK_ONCE : 1,		//按一下攻击
+		ATTACK_HOLD_ON : 2,	//按住攻击（比如蓄力）
+		JUMP : 4
 	}
 };
 

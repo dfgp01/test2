@@ -1,22 +1,30 @@
 /**
-* 站立时的动作
+* 站立时的动作主系统
 */
 StandActionSystem = ActionSystem.extend({
 	update : function(unit, dt){
 		if(unit.cmd != 0){
 			//检测是否按下方向键
 			if(unit.cmd & Constant.CMD.ALL_DIRECTION){
-				unit.changeAct("walk");
+				unit.preparedChangeAction("walk");
+				//这里return是保证代码不会跑到下面的if语句中，不然就乱套了
 				return;
 			}
 			if(unit.cmd & Constant.CMD.ATTACK){
-				unit.changeAct("normalAtk1");
+				unit.preparedChangeAction("normalAtk1");
+				//同上
+				return;
+			}
+			if(unit.cmd & Constant.CMD.JUMP){
 				return;
 			}
 		}
 	}
 });
 
+/**
+ * 行走时的动作主系统
+ */
 WalkActionSystem = ActionSystem.extend({
 	motionCom : null,
 	start : function(unit, dt){
@@ -45,7 +53,7 @@ WalkActionSystem = ActionSystem.extend({
 	update : function(unit, dt){
 		
 		if(!(unit.cmd & Constant.CMD.ALL_DIRECTION)){
-			unit.changeAct("stand");
+			unit.preparedChangeAction("stand");
 			return;
 		}
 		//行走中改变左右方向的(逻辑可能是错的)

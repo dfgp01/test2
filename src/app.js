@@ -108,7 +108,26 @@ var HelloWorldLayer = cc.Layer.extend({
         	},
         	onTouchEnded: function (touch, event) {
         		cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
-        		//pla.releaseKey();//暂时的
+        		var point = touch.getLocation();
+        		var locationInNode = sprite.convertToNodeSpace(touch.getLocation());
+        		//临时操作
+        		if(cc.rectContainsPoint(attRect, locationInNode)){
+        			pla.releaseKey(Constant.CMD.ATTACK);
+        		}
+        		if(cc.rectContainsPoint(leftBottomRect, point)){
+        			pla.releaseKey(Constant.CMD.LEFT);
+        		}
+        		else if(cc.rectContainsPoint(righBottomRect, point)){
+        			pla.releaseKey(Constant.CMD.RIGHT);
+        		}
+        		else if(cc.rectContainsPoint(leftTopRect, point)){
+        			pla.releaseKey(Constant.CMD.UP);
+        		}
+        		else if(cc.rectContainsPoint(righToptRect, point)){
+        			pla.releaseKey(Constant.CMD.DOWN);
+        		}else{
+        			cc.log("click what? " + point.x + "," + point.y);
+        		}
         	}
         });
         cc.eventManager.addListener(listener, this);

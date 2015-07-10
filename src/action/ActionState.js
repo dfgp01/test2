@@ -13,6 +13,7 @@ ActionState = StateNode.extend({
 		this.key = data.key;
 		this.state = data.state;
 	},
+	
 	//加载时
 	start : function(unit){
 		unit.actionsCom.currAction = this;

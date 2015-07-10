@@ -18,9 +18,16 @@ Unit = GameObject.extend({
 	motionCom : null,
 	actionsCom : null,
 	
-	changeAction : function(name){
+	/**
+	 * 准备切换动作，在action.run运行完毕后
+	 */
+	preparedChangeAction : function(name){
+		this.actionsCom.nextAction = this.actionsCom.actions[name];
+	}
+
+	changeAction : function(action){
 		this.currAction.end(this);
-		this.actionsCom.actions[name].start(this);
+		action.start(this);
 		return;
 	},
 	

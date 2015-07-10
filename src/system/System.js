@@ -47,12 +47,19 @@ ActionSystem = cc.Class.extend({
  */
 MainActionSystem = System.extend({
 	unitList : null,
+	_currUnit : null,
 	start : function(){
 		this.unitList = Service.getAllUnits();
 	},
 	update : function(dt){
 		for(var i in this.unitList){
-			this.unitList[i].actionsCom.currAction.run(this.unitList[i], dt);
+			this._currUnit = this.unitList[i];
+			this._currUnit.actionsCom.currAction.run(this._currUnit, dt);
+			if(this._currUnit.actionsCom.nextAction != null){
+				this._currUnit.changeAction(this._currUnit.actionsCom.nextAction);
+				//还原为空状态，原因你懂
+				this._currUnit.actionsCom.nextAction = null;
+			}
 		}
 	},
 	end : function(){
@@ -103,17 +110,22 @@ PlayerSystem = System.extend({
 	},
 	
 	update : function(dt){
-		if(this.key != 0){
-			
+		
+		this.target.cmd = 0;
+		
+		//如果按下了攻击键，从单击状态变为持续按住状态，以后可能加个缓冲计时
+		//方向键暂时不用判断单击还是按住的状态
+		if(this.key & Constant.CMD.ATTACK_ONCE){
+			//把二进制最后两位变成10，暂时没想到更好的办法
+			this.key = this.key & (~Constant.CMD.ATTACK_ONCE) | Constant.CMD.ATTACK_HOLD_ON;
 		}
-		//连按系统时效判断
+		//连按系统时间间隔叠加
 		if(this.combo.length>0){
 			this.comboTimeCount += dt;
-			if(this.comboTimeCount > this.comboTimeInteval){
-				this.combo.length = 0;
-				this.fowardFlag = "X";
-				this.comboTimeCount;
-			}
+		}
+		
+		if(this.key > 0){
+			this.target.cmd = this.key;
 		}
 	},
 	
@@ -122,9 +134,8 @@ PlayerSystem = System.extend({
 	},
 	
 	pressKey : function(key){
-		//暂时支持单击
-		this.key = key;
-		if(key==Constant.CMD.ATTACK){
+		this.key = this.key & key;
+		if(key==Constant.CMD.ATTACK_ONCE){
 			this.addCombo("A");
 		}
 	},
@@ -145,8 +156,18 @@ PlayerSystem = System.extend({
 		}
 	},
 	
+	checkCombo : function(){
+		if(this.comboTimeCount > this.comboTimeInteval){
+			this.combo.length = 0;
+			this.fowardFlag = "X";
+			this.comboTimeCount = 0;
+			return false;
+		}
+		return true;
+	},
+	
 	addCombo : function(keyStr){
-		if(this.combo.length >= 6){
+		if(this.checkCombo() && this.combo.length >= this.maxLength){
 			this.combo.shift();
 		}
 		//像DNF那样，左右方向是可以反过来的
@@ -161,6 +182,12 @@ PlayerSystem = System.extend({
 		this.combo.push(keyStr);
 		//重新计时
 		this.comboTimeCount = 0;
-		//this.combo.join("");
 	},
+	
+	getComboStr : function(){
+		if(this.checkCombo()){
+			return this.combo.join("");
+		}
+		return null;
+	}
 });
