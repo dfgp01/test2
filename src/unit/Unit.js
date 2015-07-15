@@ -23,10 +23,10 @@ Unit = GameObject.extend({
 	 */
 	preparedChangeAction : function(name){
 		this.actionsCom.nextAction = this.actionsCom.actions[name];
-	}
+	},
 
 	changeAction : function(action){
-		this.currAction.end(this);
+		this.actionsCom.currAction.end(this);
 		action.start(this);
 		return;
 	},

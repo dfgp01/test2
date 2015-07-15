@@ -49,18 +49,21 @@ var HelloWorldLayer = cc.Layer.extend({
         var mas = new MainActionSystem();
         var anims = new MainAnimateSystem();
         var pla = new PlayerSystem();
+        pla.target = unit;
         SystemManager.addSystem(mas);
         SystemManager.addSystem(anims);
         SystemManager.addSystem(pla);
         SystemManager.start();
     	
         //别忘了这里是gl坐标系
-        var leftTopRect = cc.rect(0, size*0.5, size*0.5, size*0.5);					//左上
-        var leftBottomRect = cc.rect(0, 0, size*0.5, size*0.5);						//左下
-        var rightTopRect = cc.rect(size*0.5, size*0.5, size*0.5, size*0.5);		//右上
-        var rightBottomRect = cc.rect(size*0.5, 0, size*0.5, size*0.5);			//右下
+        var width = size.width * 0.5;
+        var height = size.height * 0.5;
+        var leftTopRect = cc.rect(0, height, width, height);					//左上
+        var leftBottomRect = cc.rect(0, 0, width, height);					//左下
+        var rightTopRect = cc.rect(width, height, width, height);		//右上
+        var rightBottomRect = cc.rect(width, 0, width, height);			//右下
         var s = sprite.getContentSize();
-        var attRect = cc.rect(0, 0, s.width, s.height);									//单位内
+        var attRect = cc.rect(0, 0, s.width, s.height);							//单位内
         var selfPointer = this;
         var listener = cc.EventListener.create({
         	event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -82,32 +85,32 @@ var HelloWorldLayer = cc.Layer.extend({
         		var point = touch.getLocation();
         		//临时操作
         		if(cc.rectContainsPoint(attRect, locationInNode)){
-        			pla.pressKey(Constant.CMD.ATTACK);
+        			pla.pressKey(Constant.CMD.ATTACK_ONCE);
         		}
-        		if(cc.rectContainsPoint(leftBottomRect, point)){
+        		else if(cc.rectContainsPoint(leftBottomRect, point)){
         			pla.pressDirection(Constant.CMD.LEFT);
         		}
-        		else if(cc.rectContainsPoint(righBottomRect, point)){
+        		else if(cc.rectContainsPoint(rightBottomRect, point)){
         			pla.pressDirection(Constant.CMD.RIGHT);
         		}
         		else if(cc.rectContainsPoint(leftTopRect, point)){
         			pla.pressDirection(Constant.CMD.UP);
         		}
-        		else if(cc.rectContainsPoint(righToptRect, point)){
+        		else if(cc.rectContainsPoint(rightTopRect, point)){
         			pla.pressDirection(Constant.CMD.DOWN);
         		}else{
         			cc.log("click what? " + point.x + "," + point.y);
         		}
         		
         		//返回值是true，往下传递，触发onTouchMoved和onTouchEnded，false则不传递
-        		cc.log("id:"+touch.getID() + ", pos:[" + touch.getLocation().x + "," + touch.getLocation().y + "]");
+        		//cc.log("id:"+touch.getID() + ", pos:[" + touch.getLocation().x + "," + touch.getLocation().y + "]");
         		return true;
         	},
         	onTouchMoved: function (touch, event) {
         		//cc.log("移动:" + touch.getLocation().x + "," + touch.getLocation().y );
         	},
         	onTouchEnded: function (touch, event) {
-        		cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
+        		//cc.log("释放:" + touch.getLocation().x + "," + touch.getLocation().y );
         		var point = touch.getLocation();
         		var locationInNode = sprite.convertToNodeSpace(touch.getLocation());
         		//临时操作
@@ -117,13 +120,13 @@ var HelloWorldLayer = cc.Layer.extend({
         		if(cc.rectContainsPoint(leftBottomRect, point)){
         			pla.releaseKey(Constant.CMD.LEFT);
         		}
-        		else if(cc.rectContainsPoint(righBottomRect, point)){
+        		else if(cc.rectContainsPoint(rightBottomRect, point)){
         			pla.releaseKey(Constant.CMD.RIGHT);
         		}
         		else if(cc.rectContainsPoint(leftTopRect, point)){
         			pla.releaseKey(Constant.CMD.UP);
         		}
-        		else if(cc.rectContainsPoint(righToptRect, point)){
+        		else if(cc.rectContainsPoint(rightTopRect, point)){
         			pla.releaseKey(Constant.CMD.DOWN);
         		}else{
         			cc.log("click what? " + point.x + "," + point.y);
@@ -135,19 +138,22 @@ var HelloWorldLayer = cc.Layer.extend({
         if ('touches' in cc.sys.capabilities) {
         	cc.log("touchs");
         }else{
-        	cc.log("not touchs");
+        	//cc.log("not touchs");
         }
         
         //标注2：这一句在JSB和chrome下都没问题
         //deep.runAction(cc.animate(animation).repeatForever());
         
-        //this.schedule(this.customAnimateRun, 0.2, -1, 0);
-        //this.schedule(this.customAnimateRun, 0.12, -1, 0);
-        this.scheduleUpdate();
+        this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
+        //this.scheduleUpdate();
         return true;
     },
     
-    update:function(dt){
+    update : function(dt){
+    	SystemManager.update(dt);
+    },
+    
+    updateCustom : function(dt){
     	SystemManager.update(dt);
     }
 });

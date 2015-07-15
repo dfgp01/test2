@@ -134,15 +134,14 @@ PlayerSystem = System.extend({
 	},
 	
 	pressKey : function(key){
-		this.key = this.key & key;
+		this.key = this.key | key;
 		if(key==Constant.CMD.ATTACK_ONCE){
 			this.addCombo("A");
 		}
 	},
 	
 	pressDirection : function(key){
-		//暂时支持单击
-		this.key = key;
+		this.key = this.key | key;
 		if(key==Constant.CMD.UP){
 			this.addCombo("U");
 		}

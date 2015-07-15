@@ -2,6 +2,7 @@
 * 站立时的动作主系统
 */
 StandActionSystem = ActionSystem.extend({
+	name : "standActionSystem",
 	update : function(unit, dt){
 		if(unit.cmd != 0){
 			//检测是否按下方向键
@@ -10,7 +11,7 @@ StandActionSystem = ActionSystem.extend({
 				//这里return是保证代码不会跑到下面的if语句中，不然就乱套了
 				return;
 			}
-			if(unit.cmd & Constant.CMD.ATTACK){
+			if(unit.cmd & Constant.CMD.ATTACK_ALL){
 				unit.preparedChangeAction("normalAtk1");
 				//同上
 				return;
@@ -26,6 +27,7 @@ StandActionSystem = ActionSystem.extend({
  * 行走时的动作主系统
  */
 WalkActionSystem = ActionSystem.extend({
+	name : "walkActionSystem",
 	motionCom : null,
 	start : function(unit, dt){
 		//左右方向不共存

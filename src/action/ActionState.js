@@ -1,6 +1,6 @@
 /**
  * ActionState是独立对象，每个unit对应多个，意为动作状态节点
- * ECS模式中，我更倾向于将ActionState看成是System
+ * ECS模式中，我更倾向于将ActionState看成是System容器
  */
 ActionState = StateNode.extend({
 	state : 0,
