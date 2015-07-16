@@ -18,12 +18,16 @@ ActionState = StateNode.extend({
 	start : function(unit){
 		unit.actionsCom.currAction = this;
 		unit.actionsCom.frameIndex = 0;
+		unit.actionsCom.endFlag = false;
 		unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[0]);
 	},
 	
 	run : function(unit, dt){
 		for(var i in this.sysList){
 			this.sysList[i].update(unit, dt);
+		}
+		if(unit.endFlag){
+			unit.nextAction();
 		}
 	},
 

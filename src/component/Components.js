@@ -55,6 +55,7 @@ ViewComponent = Component.extend({
 ActionsComponent = Component.extend({
 	frameIndex : 0,
 	repeatFlag : 0,
+	endFlag : false,
 	firstAct : null,
 	currAction : null,
 	actions : null,

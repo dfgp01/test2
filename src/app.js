@@ -1,7 +1,73 @@
 
 var HelloWorldLayer = cc.Layer.extend({
-    sprite:null,
-    deep: null,
+    winSize : null,
+    ui : {
+    	dirBottons : {
+    		rects : [],
+    		cmds : []
+    	}
+    },
+    
+    initUI : function(){
+    	
+    },
+    
+    initUI_1 : function(){
+    	//方向控制器
+    	var dir = new cc.Sprite(deep_ball_png);
+    	dir.attr({
+            x: 100,
+            y: 100
+        });
+        this.addChild(dir, 5);
+        
+        var dirSize = dir.getContentSize();
+        var width = dirSize.width / 3;
+        var height = dirSize.height / 3;
+        var leftTopRect = cc.rect(0, dirSize.height * 2 / 3, width, height);
+        var leftMiddleRect = cc.rect(0, dirSize.height / 3, width, height);
+        var leftBottomRect = cc.rect(0, 0, width, height);
+        var topRect = cc.rect(dirSize.width / 3, dirSize.height * 2 / 3, width, height);
+        var bottomRect = cc.rect(dirSize.width / 3, 0, width, height);
+        var rightTopRect = cc.rect(dirSize.width *2 / 3, dirSize.height * 2 / 3, width, height);
+        var rightMiddleRect = cc.rect(dirSize.width *2 / 3, dirSize.height / 3, width, height);
+        var rightBottomRect = cc.rect(dirSize.width *2 / 3, 0, width, height);
+        var rects = [];
+        rects.push(leftTopRect);
+        rects.push(leftMiddleRect);
+        rects.push(leftBottomRect);
+        rects.push(topRect);
+        rects.push(bottomRect);
+        rects.push(rightTopRect);
+        rects.push(rightMiddleRect);
+        rects.push(rightBottomRect);
+        this.ui.dirButtons = rects;
+    },
+    
+    initUI_2 : function(){
+    	//方向控制器
+    	var dir = new cc.Sprite(deep_ball_png);
+    	dir.attr({
+            x: 100,
+            y: 100
+        });
+        this.addChild(dir, 5);
+        var rects = [];
+        var dirSize = dir.getContentSize();
+        //左边矩形
+        var rect = cc.rect(0, 0, dirSize.width / 3, dirSize.height);
+        rects.push(rect);
+        //上边矩形
+        rect = cc.rect(0, dirSize.height * 2 / 3, dirSize.width, dirSize.height / 3);
+        rects.push(rect);
+        //右边矩形
+        rect = cc.rect(dirSize.width * 2 / 3, 0, dirSize.width / 3, dirSize.height);
+        rects.push(rect);
+        //下边矩形
+        rect = cc.rect(0, 0, dirSize.width, dirSize.height / 3);
+        rects.push(rect);
+        this.ui.dirButtons = rects;
+    },
     
     ctor:function () {
         //////////////////////////////
@@ -55,6 +121,8 @@ var HelloWorldLayer = cc.Layer.extend({
         SystemManager.addSystem(pla);
         SystemManager.start();
     	
+        this.initUI();
+        
         //别忘了这里是gl坐标系
         var width = size.width * 0.5;
         var height = size.height * 0.5;

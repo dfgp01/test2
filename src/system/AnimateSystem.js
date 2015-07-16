@@ -16,6 +16,9 @@ AnimateSystem = ActionSystem.extend({
 			unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actionsCom.frameIndex]);
 			unit.actionsCom.frameIndex++;
 		}
+		else{
+			unit.actionsCom.endFlag = true;
+		}
 	}
 });
 

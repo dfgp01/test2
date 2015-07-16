@@ -36,6 +36,14 @@ Unit = GameObject.extend({
 		this.actionsCom.actions.stand.start(this);
 	},
 	
+	nextAction : function(action){
+		if(action.children && action.children[Constant.DIRECT_CHILDNODE]){
+			this.changeAction(action.children[Constant.DIRECT_CHILDNODE]);
+		}else{
+			this.resetActionState();
+		}
+	},
+	
 	//击中时调用
 	hit : function(){
 		

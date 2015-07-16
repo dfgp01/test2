@@ -58,15 +58,21 @@ WalkActionSystem = ActionSystem.extend({
 			unit.preparedChangeAction("stand");
 			return;
 		}
-		//行走中改变左右方向的(逻辑可能是错的)
-		if((unit.motionCom.vx = 1 && unit.cmd & Constant.CMD.LEFT) || (unit.motionCom.vx = -1 && unit.cmd & Constant.CMD.RIGHT)){
-			unit.motionCom.vx *= -1;
-			unit.viewCom.sprite._scaleX *= -1;
+		
+		//行走中改变左右方向的
+		if(unit.motionCom.vx = 1 && unit.cmd & Constant.CMD.LEFT){
+			unit.motionCom.vx = -1;
+			unit.viewCom.sprite._scaleX = -1;
 		}
+		else if(unit.motionCom.vx = -1 && unit.cmd & Constant.CMD.RIGHT){
+			unit.motionCom.vx = 1;
+			unit.viewCom.sprite._scaleX = 1;
+		}
+		
 		if(unit.cmd & Constant.CMD.UP){
 			unit.motionCom.vy = 1;
 		}
-		if(unit.cmd & Constant.CMD.DOWN){
+		else if(unit.cmd & Constant.CMD.DOWN){
 			unit.motionCom.vy = -1;
 		}
 		
