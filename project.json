@@ -27,6 +27,7 @@
         "src/action/ActionState.js",
         "src/unit/Unit.js",
         "src/unit/UnitTemplate.js",
+        "src/ui/Arrows.js",
         "src/resource.js",
         "src/app.js"
     ]
