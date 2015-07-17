@@ -1,6 +1,33 @@
 
 var HelloWorldLayer = cc.Layer.extend({
 
+	playerSys : null,
+	
+	initUI : function(){
+		//close button
+		 var closeItem = new cc.MenuItemImage(
+	        		res.CloseNormal_png,
+	        		res.CloseSelected_png,
+	        		function () {
+	        			cc.log("closeItem is clicked!");
+	        		}, this);
+	        closeItem.attr({
+	        	x: size.width - 20,
+	        	y: 20,
+	        	anchorX: 0.5,
+	        	anchorY: 0.5
+	        });
+
+	        var menu = new cc.Menu(closeItem);
+	        menu.x = 0;
+	        menu.y = 0;
+	        this.addChild(menu, 1);
+	        
+	        //arrows
+	        Arrows.init(100, 100, this.playerSys);
+	        this.addChild(Arrows.sprite, 5);
+	},
+	
     ctor:function () {
         //////////////////////////////
         // 1. super init first
@@ -20,26 +47,6 @@ var HelloWorldLayer = cc.Layer.extend({
         });
         this.addChild(bg, 0);
         
-        var closeItem = new cc.MenuItemImage(
-        		res.CloseNormal_png,
-        		res.CloseSelected_png,
-        		function () {
-        			cc.log("closeItem is clicked!");
-        		}, this);
-        closeItem.attr({
-        	x: size.width - 20,
-        	y: 20,
-        	anchorX: 0.5,
-        	anchorY: 0.5
-        });
-
-        var menu = new cc.Menu(closeItem);
-        menu.x = 0;
-        menu.y = 0;
-        this.addChild(menu, 1);
-        
-        Arrows.init(this, 100, 100);
-        
       //load frames
     	cc.spriteFrameCache.addSpriteFrames(res.deep_0_plist);
         cc.spriteFrameCache.addSpriteFrames(res.deep_1_plist);
@@ -57,12 +64,14 @@ var HelloWorldLayer = cc.Layer.extend({
         
         var mas = new MainActionSystem();
         var anims = new MainAnimateSystem();
-        var pla = new PlayerSystem();
-        pla.target = unit;
+        this.playerSys = new PlayerSystem();
+        this.playerSys.target = unit;
         SystemManager.addSystem(mas);
         SystemManager.addSystem(anims);
-        SystemManager.addSystem(pla);
+        SystemManager.addSystem(this.playerSys);
         SystemManager.start();
+        
+        this.initUI();
         
         //别忘了这里是gl坐标系
         var width = size.width * 0.5;
@@ -164,38 +173,6 @@ var HelloWorldLayer = cc.Layer.extend({
     
     updateCustom : function(dt){
     	SystemManager.update(dt);
-    },
-    
-    initUI_1 : function(){
-    	//方向控制器
-    	var dir = new cc.Sprite(deep_ball_png);
-    	dir.attr({
-    		x: 100,
-    		y: 100
-    	});
-    	this.addChild(dir, 5);
-
-    	var dirSize = dir.getContentSize();
-    	var width = dirSize.width / 3;
-    	var height = dirSize.height / 3;
-    	var leftTopRect = cc.rect(0, dirSize.height * 2 / 3, width, height);
-    	var leftMiddleRect = cc.rect(0, dirSize.height / 3, width, height);
-    	var leftBottomRect = cc.rect(0, 0, width, height);
-    	var topRect = cc.rect(dirSize.width / 3, dirSize.height * 2 / 3, width, height);
-    	var bottomRect = cc.rect(dirSize.width / 3, 0, width, height);
-    	var rightTopRect = cc.rect(dirSize.width *2 / 3, dirSize.height * 2 / 3, width, height);
-    	var rightMiddleRect = cc.rect(dirSize.width *2 / 3, dirSize.height / 3, width, height);
-    	var rightBottomRect = cc.rect(dirSize.width *2 / 3, 0, width, height);
-    	var rects = [];
-    	rects.push(leftTopRect);
-    	rects.push(leftMiddleRect);
-    	rects.push(leftBottomRect);
-    	rects.push(topRect);
-    	rects.push(bottomRect);
-    	rects.push(rightTopRect);
-    	rects.push(rightMiddleRect);
-    	rects.push(rightBottomRect);
-    	this.ui.dirButtons = rects;
     }
 });
 

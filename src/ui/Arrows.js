@@ -7,20 +7,23 @@ Button = cc.Class.extend({
 });
 
 Arrows = {
+	playerSys : null,
 	sprite : null,
 	buttons : [],
 	cmd : 0,
 	
-	init : function(layer, posX, posY){
+	init : function(posX, posY, plaSys){
+		
+		this.playerSys = plaSys;
 
 		this.sprite = new cc.Sprite(res.arrows);
 		this.sprite.attr({
 			x: posX,
 			y: posY
 		});
-		layer.addChild(this.sprite, 5);
 		
 		this.initButtons_1(this.sprite.getContentSize().width, this.sprite.getContentSize().height);
+		//this.initButtons_2(this.sprite.getContentSize().width, this.sprite.getContentSize().height);
 		
 		var selfPointer = this;
 		var listener = cc.EventListener.create({
@@ -28,11 +31,13 @@ Arrows = {
 			swallowTouches: true,
 			onTouchBegan: function (touch, event) {
 				var locationInNode = selfPointer.sprite.convertToNodeSpace(touch.getLocation());
+				//四矩形模式
 				for(var i in selfPointer.buttons){
 					if(cc.rectContainsPoint(selfPointer.buttons[i].rect, locationInNode)){
 						selfPointer.cmd = selfPointer.cmd | selfPointer.buttons[i].cmd;
 					}
 				}
+				selfPointer.playerSys.pressDirection(selfPointer.cmd);
 				return true;
 			},
 			onTouchMoved: function (touch, event) {
@@ -40,14 +45,17 @@ Arrows = {
 			},
 			onTouchEnded: function (touch, event) {
 				selfPointer.cmd = 0;
+				selfPointer.playerSys.releaseKey(Constant.CMD.ALL_DIRECTION);
 			}
 		});
 		cc.eventManager.addListener(listener, this.sprite);
 	},
 	
-	//别忘了这里是gl坐标系
+	/**
+	 * 四矩形模式
+	 */
 	initButtons_1 : function(width, height){
-		
+		//别忘了这里是gl坐标系
 		var bt = new Button();
 		//左边矩形
 		bt.rect = cc.rect(0, 0, width / 3, height);
@@ -72,5 +80,59 @@ Arrows = {
 		bt.cmd = Constant.CMD.DOWN;
 		this.buttons.push(bt);
 		
+	},
+	
+	/**
+	 * 八矩形模式
+	 */
+	initButtons_2 : function(width, height){
+		//别忘了这里是gl坐标系
+		var bt = new Button();
+		//左上矩形
+		bt.rect = cc.rect(0, height *2 / 3, width / 3, height / 3);
+		bt.cmd = Constant.CMD.LEFT | Constant.CMD.UP;
+		this.buttons.push(bt);
+		
+		//左中矩形
+		bt = new Button();
+		bt.rect = cc.rect(0, height / 3, width / 3, height / 3);
+		bt.cmd = Constant.CMD.LEFT;
+		this.buttons.push(bt);
+		
+		//左下矩形
+		bt = new Button();
+		bt.rect = cc.rect(0, 0, width / 3, height / 3);
+		bt.cmd = Constant.CMD.LEFT | Constant.CMD.DOWN;
+		this.buttons.push(bt);
+		
+		//中上矩形
+		bt = new Button();
+		bt.rect = cc.rect(width / 3, height *2 / 3, width / 3, height / 3);
+		bt.cmd = Constant.CMD.UP;
+		this.buttons.push(bt);
+		
+		//中下矩形
+		bt = new Button();
+		bt.rect = cc.rect(width / 3, 0, width / 3, height / 3);
+		bt.cmd = Constant.CMD.DOWN;
+		this.buttons.push(bt);
+		
+		//右上矩形
+		bt = new Button();
+		bt.rect = cc.rect(width *2 / 3, height *2 / 3, width / 3, height / 3);
+		bt.cmd = Constant.CMD.RIGHT | Constant.CMD.UP;
+		this.buttons.push(bt);
+		
+		//右中矩形
+		bt = new Button();
+		bt.rect = cc.rect(width *2 / 3, height / 3, width / 3, height / 3);
+		bt.cmd = Constant.CMD.RIGHT;
+		this.buttons.push(bt);
+		
+		//右下矩形
+		bt = new Button();
+		bt.rect = cc.rect(width *2 / 3, 0, width / 3, height / 3);
+		bt.cmd = Constant.CMD.RIGHT | Constant.CMD.DOWN;
+		this.buttons.push(bt);
 	}
 };
