@@ -1,6 +1,7 @@
 
 var HelloWorldLayer = cc.Layer.extend({
 
+	winSize : 0,
 	playerSys : null,
 	
 	initUI : function(){
@@ -10,9 +11,10 @@ var HelloWorldLayer = cc.Layer.extend({
 	        		res.CloseSelected_png,
 	        		function () {
 	        			cc.log("closeItem is clicked!");
+	        			cc.director.popScene();
 	        		}, this);
 	        closeItem.attr({
-	        	x: size.width - 20,
+	        	x: this.winSize.width - 20,
 	        	y: 20,
 	        	anchorX: 0.5,
 	        	anchorY: 0.5
@@ -21,7 +23,7 @@ var HelloWorldLayer = cc.Layer.extend({
 	        var menu = new cc.Menu(closeItem);
 	        menu.x = 0;
 	        menu.y = 0;
-	        this.addChild(menu, 1);
+	        this.addChild(menu, 9);
 	        
 	        //arrows
 	        Arrows.init(100, 100, this.playerSys);
@@ -37,20 +39,17 @@ var HelloWorldLayer = cc.Layer.extend({
         // 2. add a menu item with "X" image, which is clicked to quit the program
         //    you may modify it.
         // ask the window size
-        var size = cc.winSize;
+        this.winSize = cc.winSize;
 
         // add background
         var bg = new cc.Sprite(res.background_png);
         bg.attr({
-            x: size.width / 2,
-            y: size.height / 2
+        	x: this.winSize.width / 2,
+        	y: this.winSize.height / 2
         });
         this.addChild(bg, 0);
         
-      //load frames
-    	cc.spriteFrameCache.addSpriteFrames(res.deep_0_plist);
-        cc.spriteFrameCache.addSpriteFrames(res.deep_1_plist);
-        cc.spriteFrameCache.addSpriteFrames(res.deep_2_plist);
+      
         
         Service.initUnitTemplate(character_data);
     	var unit = Service.createUnit(character_data.name, 0);
@@ -72,16 +71,8 @@ var HelloWorldLayer = cc.Layer.extend({
         SystemManager.start();
         
         this.initUI();
-        
-        //别忘了这里是gl坐标系
-        var width = size.width * 0.5;
-        var height = size.height * 0.5;
-        var leftTopRect = cc.rect(0, height, width, height);					//左上
-        var leftBottomRect = cc.rect(0, 0, width, height);					//左下
-        var rightTopRect = cc.rect(width, height, width, height);		//右上
-        var rightBottomRect = cc.rect(width, 0, width, height);			//右下
-        var s = sprite.getContentSize();
-        var attRect = cc.rect(0, 0, s.width, s.height);							//单位内
+
+        var attRect = cc.rect(0, 0, sprite.width, sprite.height);							//单位内
         var selfPointer = this;
         var listener = cc.EventListener.create({
         	event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -162,8 +153,8 @@ var HelloWorldLayer = cc.Layer.extend({
         //标注2：这一句在JSB和chrome下都没问题
         //deep.runAction(cc.animate(animation).repeatForever());
         
-        this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
-        //this.scheduleUpdate();
+        //this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
+        this.scheduleUpdate();
         return true;
     },
     
@@ -176,22 +167,15 @@ var HelloWorldLayer = cc.Layer.extend({
     }
 });
 
+/**
+ * 本来想放在main.js中的，但不行，因为不认识cc.Scene.extend，估计是加载顺序问题
+ */
 var HelloWorldScene = cc.Scene.extend({
-    onEnter:function () {
-        this._super();
-        var layer = new HelloWorldLayer();
-        this.addChild(layer);
-    }
-});
-
-var iterObj = function(attr){
-	var str = "";
-	for(var i in attr){
-		if(typeof(attr[i]) != 'function'){
-			str += i + ":" + attr[i] + "\n\r";
-		}else{
-			str += i + ":" + attr[i] + "\n";
-		}
+	onEnter:function () {
+		this._super();
+		var layer = new HelloWorldLayer();
+		this.addChild(layer);
+		layer = new ControllerLayer();
+		this.addChild(layer);
 	}
-	return str;
-}
+});

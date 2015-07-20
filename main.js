@@ -53,6 +53,10 @@ cc.game.onStart = function(){
     cc.view.resizeWithBrowserSize(true);
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
+    	//load frames
+    	cc.spriteFrameCache.addSpriteFrames(res.deep_0_plist);
+    	cc.spriteFrameCache.addSpriteFrames(res.deep_1_plist);
+    	cc.spriteFrameCache.addSpriteFrames(res.deep_2_plist);
         cc.director.runScene(new HelloWorldScene());
     }, this);
 };
