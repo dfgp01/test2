@@ -12,10 +12,8 @@ Arrows = {
 	buttons : [],
 	cmd : 0,
 	
-	init : function(posX, posY, plaSys){
-		
-		this.playerSys = plaSys;
-
+	init : function(posX, posY){
+		this.playerSys = SystemManager.sysIndex.playerSystem;
 		this.sprite = new cc.Sprite(res.arrows);
 		this.sprite.attr({
 			x: posX,
@@ -25,6 +23,33 @@ Arrows = {
 		this.initButtons_1(this.sprite.getContentSize().width, this.sprite.getContentSize().height);
 		//this.initButtons_2(this.sprite.getContentSize().width, this.sprite.getContentSize().height);
 		
+	},
+	
+	/**
+	 * 按下任一方向键
+	 */
+	press : function(touch){
+		var locationInNode = this.sprite.convertToNodeSpace(touch.getLocation());
+		for(var i in this.buttons){
+			if(cc.rectContainsPoint(this.buttons[i].rect, locationInNode)){
+				this.cmd = this.cmd | this.buttons[i].cmd;
+			}
+		}
+		this.playerSys.pressDirection(this.cmd);
+	},
+	
+	/**
+	 * 放开按键
+	 */
+	release : function(){
+		this.cmd = 0;
+		this.playerSys.releaseKey(Constant.CMD.ALL_DIRECTION);
+	},
+	
+	/**
+	 * 暂时不用这个方法
+	 */
+	initListener : function(){
 		var selfPointer = this;
 		var listener = cc.EventListener.create({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,

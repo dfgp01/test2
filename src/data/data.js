@@ -13,6 +13,10 @@ shieldBuff_release = {
 	//etc: mp...
 };
 
+playerData = {
+	characterName : "DFL"
+};
+
 //stand is first act for all unit
 character_data = {
 	name : "DFL",

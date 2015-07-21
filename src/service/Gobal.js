@@ -84,10 +84,14 @@ GameObjPool = {
 };
 
 /**
- * 全局数据管理器，存储所有游戏对象，用于数据共享
+ * 全局数据容器，存储所有游戏对象，用于数据共享
  */
 Container = {
-		
+		//玩家数据
+		player : {
+			unit : null,
+			score : 0
+		},
 		frames : {},			//存储帧
 		actions : {},			//存储动作组件
 		data : {},			//存储原始数据

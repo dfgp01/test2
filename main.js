@@ -57,7 +57,28 @@ cc.game.onStart = function(){
     	cc.spriteFrameCache.addSpriteFrames(res.deep_0_plist);
     	cc.spriteFrameCache.addSpriteFrames(res.deep_1_plist);
     	cc.spriteFrameCache.addSpriteFrames(res.deep_2_plist);
-        cc.director.runScene(new HelloWorldScene());
+    	
+    	//system init
+    	Service.initUnitTemplate(character_data);
+    	Service.initPlayer();
+    	var mas = new MainActionSystem();
+        var anims = new MainAnimateSystem();
+        var playerSys = new PlayerSystem();
+        var motionSys = new MotionSystem();
+        playerSys.target = Service.getPlayer().unit;
+        SystemManager.addSystem(playerSys);
+        SystemManager.addSystem(mas);
+        SystemManager.addSystem(anims);
+        SystemManager.addSystem(motionSys);
+        SystemManager.start();
+        
+        var scene = new cc.Scene();
+        var mainLayer = new HelloWorldLayer();
+        var controllerLayer = new ControllerLayer();
+        scene.addChild(mainLayer);
+        scene.addChild(controllerLayer);
+        cc.director.runScene(scene);
+        //cc.director.runScene(new HelloWorldScene());
     }, this);
 };
 cc.game.run();

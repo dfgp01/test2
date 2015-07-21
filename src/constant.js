@@ -35,6 +35,12 @@ Constant = {
 		ATTACK_HOLD_ON : 2,	//按住攻击（比如蓄力）
 		ATTACK_ALL : 3,			//单击或按住
 		JUMP : 4
+	},
+	UnitGroup : {
+		NONE : 0,
+		PLAYER : 1,
+		FRIEND : 2,
+		ENEMY : 3
 	}
 };
 

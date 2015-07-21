@@ -3,6 +3,7 @@
  */
 SystemManager = {
 		sysList : [],
+		sysIndex : {},
 		init : function(){
 		},
 		start : function(){
@@ -11,7 +12,12 @@ SystemManager = {
 			}
 		},
 		addSystem : function(system){
+			if(this.sysIndex[system.name]){
+				cc.log("SystemManager addSystem error. system-name: " + system.name + " exists~!");
+				return;
+			}
 			this.sysList.push(system);
+			this.sysIndex[system.name] = system;
 		},
 		update : function(dt){
 			for(var i in this.sysList){
@@ -46,6 +52,7 @@ ActionSystem = cc.Class.extend({
  * 核心系统-单位动作轮询处理
  */
 MainActionSystem = System.extend({
+	name : "mainActionSystem",
 	unitList : null,
 	_currUnit : null,
 	start : function(){
@@ -71,6 +78,7 @@ MainActionSystem = System.extend({
  * 单位动画轮询，目前用独立系统处理，如果性能不佳，可尝试加到动作处理系统中
  */
 MainAnimateSystem = System.extend({
+	name : "mainAnimateSystem",
 	unitList : null,
 	start : function(){
 		this.unitList = Service.getAllUnits();
@@ -86,9 +94,32 @@ MainAnimateSystem = System.extend({
 });
 
 /**
+ * 更新坐标的系统，因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
+ */
+MotionSystem = System.extend({
+	name : "motionSystem",
+	unitList : null,
+	dx : 0,
+	dy : 0,
+	start : function(){
+		this.unitList = Service.getAllUnits();
+	},
+	update : function(dt){
+		for(var i in this.unitList){
+			this.dx = this.unitList[i].motionCom.dx;
+			this.dy = this.unitList[i].motionCom.dy;
+			if(this.dx != 0 || this.dy != 0){
+				this.unitList[i].viewCom.sprite.setPosition(.......);
+			}
+		}
+	}
+});
+
+/**
 *	player控制系统（暂定）
 */
 PlayerSystem = System.extend({
+	name : "playerSystem",
 	key : 0,
 	combo : [],
 	maxLength : 6,

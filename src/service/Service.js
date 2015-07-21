@@ -68,6 +68,23 @@ Service = {
 				this.linkForExpress(null, data.actLamda[i], unitTemplate);
 			}
 		}
+	},
+	
+	/**
+	 * 初始化玩家配置
+	 */
+	initPlayer : function(){
+		if(!Util.checkIsString(playerData, "characterName")){
+			return;
+		}
+		Container.player.unit = Service.createUnit(playerData.characterName, Constant.UnitGroup.PLAYER);
+	},
+	
+	/**
+	 * 获取玩家信息
+	 */
+	getPlayer : function(){
+		return Container.player;
 	}
 
 };
