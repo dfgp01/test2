@@ -102,19 +102,25 @@ MotionSystem = System.extend({
 	dx : 0,
 	dy : 0,
 	unit : null,
+	sprite : null,
 	start : function(){
 		this.unitList = Service.getAllUnits();
 	},
 	update : function(dt){
 		for(var i in this.unitList){
+
 			this.unit = this.unitList[i];
+			this.sprite = this.unit.viewCom.sprite;
+			
 			this.dx = this.unit.motionCom.dx;
 			this.dy = this.unit.motionCom.dy;
 			if(this.dx != 0 || this.dy != 0){
+			cc.log(this.dx + "..." + this.dy);
 				//setPosition()里面有绘制命令
 				//这里要使用getPositionX()而不是getPosition().x这种，因为翻查源码发现，getPosition()是会有new操作的。
-				this.unit.viewCom.sprite.setPosition(
-						this.unit.getPositionX(), this.unit.getPositionY());
+				this.sprite.setPosition(
+						this.sprite.getPositionX() + this.unit.motionCom.dx,
+						this.sprite.getPositionY() + this.unit.motionCom.dy);
 			}
 		}
 	}

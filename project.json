@@ -28,6 +28,7 @@
         "src/unit/Unit.js",
         "src/unit/UnitTemplate.js",
         "src/ui/Arrows.js",
+        "src/ui/ControllerLayer.js",
         "src/resource.js",
         "src/app.js"
     ]

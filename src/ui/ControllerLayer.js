@@ -2,6 +2,7 @@
  * 玩家控制器图层
  */
 ControllerLayer = cc.Layer.extend({
+	arrowsRect : null,
 	arrowsSprite : null,
 	closeSprite : null,
 	ctor : function(){
@@ -17,7 +18,7 @@ ControllerLayer = cc.Layer.extend({
 	        			cc.director.popScene();
 	        		}, this);
 	        closeItem.attr({
-	        	x: this.winSize.width - 20,
+	        	x: winSize.width - 20,
 	        	y: 20,
 	        	anchorX: 0.5,
 	        	anchorY: 0.5
@@ -32,6 +33,12 @@ ControllerLayer = cc.Layer.extend({
         Arrows.init(100, 100);
         this.addChild(Arrows.sprite, 5);
         
+        //因为sprite的注册点在中间，但矩形的起始点从左下角开始算，被这个坑得很惨
+        this.arrowsRect = cc.rect(
+        		Arrows.sprite.getPositionX() - Arrows.sprite.width * 0.5,
+        		Arrows.sprite.getPositionY() - Arrows.sprite.height * 0.5,
+        		Arrows.sprite.width, Arrows.sprite.height);	
+        
         this.initListener();
 	},
 	
@@ -43,7 +50,7 @@ ControllerLayer = cc.Layer.extend({
         	swallowTouches: true,
         	onTouchBegan: function (touch, event) {
         		var location = touch.getLocation();
-        		if(cc.rectContainsPoint(,location)){
+        		if(cc.rectContainsPoint(selfPointer.arrowsRect,location)){
         			Arrows.press(touch);
         			return true;
         		}

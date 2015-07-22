@@ -19,7 +19,7 @@ Arrows = {
 			x: posX,
 			y: posY
 		});
-		
+
 		this.initButtons_1(this.sprite.getContentSize().width, this.sprite.getContentSize().height);
 		//this.initButtons_2(this.sprite.getContentSize().width, this.sprite.getContentSize().height);
 		

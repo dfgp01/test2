@@ -29,7 +29,7 @@ StandActionSystem = ActionSystem.extend({
 WalkActionSystem = ActionSystem.extend({
 	name : "walkActionSystem",
 	motionCom : null,
-	start : function(unit, dt){
+	start : function(unit){
 		//左右方向不共存
 		if(unit.cmd & Constant.CMD.RIGHT){
 			unit.motionCom.vx = 1;
@@ -47,8 +47,10 @@ WalkActionSystem = ActionSystem.extend({
 			unit.motionCom.vx = -1;	//同理，Y负轴是向下的
 		}
 		//行走速度公式：单位速率 x 动作具体增量 x 方向向量
-		unit.motionCom.dx = unit.walkSpeedCom.currSpeed * this.motionCom.dx * unit.motionCom.vx;
-		unit.motionCom.dy = unit.walkSpeedCom.currSpeed * this.motionCom.dy * unit.motionCom.vy;
+		//unit.motionCom.dx = unit.walkSpeedCom.currSpeed * this.motionCom.dx * unit.motionCom.vx;
+		//unit.motionCom.dy = unit.walkSpeedCom.currSpeed * this.motionCom.dy * unit.motionCom.vy;
+		unit.motionCom.dx = 1.2 * unit.motionCom.vx;
+		unit.motionCom.dy = 1.2 * unit.motionCom.vy;
 	},
 	
 	//这一部分应该要更完善 2015.07.02
@@ -75,8 +77,12 @@ WalkActionSystem = ActionSystem.extend({
 		else if(unit.cmd & Constant.CMD.DOWN){
 			unit.motionCom.vy = -1;
 		}
-		
-		unit.viewCom.sprite.x += unit.motionCom.dx * unit.motionCom.vx;
-		unit.viewCom.sprite.y += unit.motionCom.dy * unit.motionCom.vy;
+	},
+	
+	end : function(unit){
+		unit.motionCom.dx = 0;
+		unit.motionCom.dy = 0;
+		unit.motionCom.vx = 0;
+		unit.motionCom.vy = 0;
 	}
 });

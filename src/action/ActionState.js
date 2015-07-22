@@ -20,6 +20,9 @@ ActionState = StateNode.extend({
 		unit.actionsCom.frameIndex = 0;
 		unit.actionsCom.endFlag = false;
 		unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[0]);
+		for(var i in this.sysList){
+			this.sysList[i].start(unit);
+		}
 	},
 	
 	run : function(unit, dt){
@@ -31,7 +34,11 @@ ActionState = StateNode.extend({
 		}
 	},
 
-	end : function(){},
+	end : function(unit){
+		for(var i in this.sysList){
+			this.sysList[i].end(unit);
+		}
+	},
 });
 
 /**
