@@ -33,18 +33,19 @@ WalkActionSystem = ActionSystem.extend({
 		//左右方向不共存
 		if(unit.cmd & Constant.CMD.RIGHT){
 			unit.motionCom.vx = 1;
-			unit.viewCom.sprite._scaleX = 1;
+			//unit.viewCom.sprite._scaleX = 1;
+			unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
 		}
 		else if(unit.cmd & Constant.CMD.LEFT){
 			unit.motionCom.vx = -1;
-			unit.viewCom.sprite._scaleX = -1;
+			unit.viewCom.sprite.setFlippedX(true);
 		}
 		//上下方向也不共存
 		if(unit.cmd & Constant.CMD.UP){
 			unit.motionCom.vy = 1;	//注意，在openGL坐标系中，起点在屏幕左下角，Y正轴是向上的
 		}
 		else if(unit.cmd & Constant.CMD.DOWN){
-			unit.motionCom.vx = -1;	//同理，Y负轴是向下的
+			unit.motionCom.vy = -1;	//同理，Y负轴是向下的
 		}
 		//行走速度公式：单位速率 x 动作具体增量 x 方向向量
 		//unit.motionCom.dx = unit.walkSpeedCom.currSpeed * this.motionCom.dx * unit.motionCom.vx;
