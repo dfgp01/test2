@@ -118,8 +118,8 @@ MotionSystem = System.extend({
 				//setPosition()里面有绘制命令
 				//这里要使用getPositionX()而不是getPosition().x这种，因为翻查源码发现，getPosition()是会有new操作的。
 				this.sprite.setPosition(
-						this.sprite.getPositionX() + this.unit.motionCom.dx,
-						this.sprite.getPositionY() + this.unit.motionCom.dy);
+						this.sprite.getPositionX() + this.dx,
+						this.sprite.getPositionY() + this.dy);
 			}
 		}
 	}

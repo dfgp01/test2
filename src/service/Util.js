@@ -54,7 +54,7 @@ Util = {
 		},
 
 		/**
-		 * 检查对象是否数字（整数）
+		 * 检查对象是否整数
 		 */
 		checkIsInt : function(data, fieldName, isShowLog){
 			if(!this.checkNotNull(data, fieldName, isShowLog)){
@@ -62,6 +62,24 @@ Util = {
 			}
 			var field =this.getValue(data, fieldName);
 			if(typeof(field) == "number" && parseInt(field) == field){
+				return true;
+			}else{
+				if(isShowLog){
+					cc.log("data is not int	field: " + fieldName + " value: " + field);
+				}
+				return false;
+			}
+		},
+		
+		/**
+		 * 检查对象是否数字
+		 */
+		checkIsNumber : function(data, fieldName, isShowLog){
+			if(!this.checkNotNull(data, fieldName, isShowLog)){
+				return false;
+			}
+			var field =this.getValue(data, fieldName);
+			if(typeof(field) == "number"){
 				return true;
 			}else{
 				if(isShowLog){

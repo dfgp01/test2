@@ -28,17 +28,16 @@ StandActionSystem = ActionSystem.extend({
  */
 WalkActionSystem = ActionSystem.extend({
 	name : "walkActionSystem",
-	motionCom : null,
 	start : function(unit){
 		//左右方向不共存
 		if(unit.cmd & Constant.CMD.RIGHT){
 			unit.motionCom.vx = 1;
 			//unit.viewCom.sprite._scaleX = 1;
-			unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
+			//unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
 		}
 		else if(unit.cmd & Constant.CMD.LEFT){
 			unit.motionCom.vx = -1;
-			unit.viewCom.sprite.setFlippedX(true);
+			//unit.viewCom.sprite.setFlippedX(true);
 		}
 		//上下方向也不共存
 		if(unit.cmd & Constant.CMD.UP){
@@ -48,8 +47,8 @@ WalkActionSystem = ActionSystem.extend({
 			unit.motionCom.vy = -1;	//同理，Y负轴是向下的
 		}
 		//行走速度公式：单位速率 x 动作具体增量 x 方向向量
-		unit.motionCom.dx = unit.speedCom.factorX * unit.motionCom.dx * unit.motionCom.vx;
-		unit.motionCom.dy = unit.speedCom.factory * unit.motionCom.dy * unit.motionCom.vy;
+		unit.motionCom.dx = unit.speedCom.dx * unit.motionCom.vx;
+		unit.motionCom.dy = unit.speedCom.dy * unit.motionCom.vy;
 	},
 	
 	//这一部分应该要更完善 2015.07.02

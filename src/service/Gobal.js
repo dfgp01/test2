@@ -16,7 +16,7 @@ GameSetting = {
 	
 	unitSpeedFactor : {
 		walkX : 1,
-		walkY : 0.8,
+		walkY : 0.35,
 		//runX : 2,
 		//runY : 1.6,
 		airX : 0.9,

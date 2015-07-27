@@ -1,18 +1,3 @@
-
-lie_down_act = {
-	name : "lieDown",		//被击倒后躺下的动作
-	frames : ["deep_lieDown_x.png"],
-	keep : 1,					//持续1秒
-	playType : 2				//在最后一帧静止
-};
-
-shieldBuff_release = {
-	name : "shieldBuff-release",			//无敌护盾
-	action : "release",							//施放型的动作
-	keep : 2										//过程持续2秒
-	//etc: mp...
-};
-
 playerData = {
 	characterName : "DFL"
 };
@@ -22,13 +7,14 @@ character_data = {
 	name : "DFL",
 	res : "deep",
 	unitType : 1,
+	walkSpeed : 3,
 	actions : [
 		{
 			name : "stand", animateType : 1, type : 1,
 			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
 		},
 		{
-			name : "walk", animateType : 1, type : 2, dx : 5, dy : 3,
+			name : "walk", animateType : 1, type : 2,
 			frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
 		},
 		{

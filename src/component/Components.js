@@ -46,6 +46,8 @@ HittedComponent = Component.extend({
  * 
  */
 ViewComponent = Component.extend({
+	animaDelay : 0.1,
+	animaDelayCount : 0,
 	sprite : null,
 	groundY : 0			//在地上的Y值，用于空中状态落地判断
 });
@@ -89,13 +91,13 @@ HurtPropertiesComponent = Component.extend({
  * 所有属性值为系数，基础数在action中的motionCom中定义
  */
 SpeedPropertiesComponent = Component.extend({
-	factorX : 1,			//x,y,h 这三个都是基础系数
-	factorY : 1,			//此数值受speedX影响
-	factorH : 1,			//高度，在显示中以改变Y值实现
-	currFactorX : 1,
-	currFactorY : 1,
-	currFactorH : 1,
-	maxFactor : 1
+	dx : 0,			//x,y,h 这三个都是基础系数
+	dy : 0,			//此数值受speedX影响
+	dh : 0,			//高度，在显示中以改变Y值实现
+	currDx : 0,
+	currDy : 0,
+	currDh : 0,
+	maxSpd : 0
 });
 
 //--------------------- 公共层 --------------------

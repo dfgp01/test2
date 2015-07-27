@@ -8,6 +8,24 @@ UnitTemplate = cc.Class.extend({
 	speedCom : null,
 	actionsCom : null,
 	
+	init : function(data){
+		this.name = data.name;
+
+		this.hitCom = new HitPropertiesComponent();
+		this.hurtCom = new HurtPropertiesComponent();
+		this.speedCom = new SpeedPropertiesComponent();
+
+		this.actionsCom = new ActionsComponent();
+		this.actionsCom.actions = {};
+		
+		//数据上配置的速度指的是x轴的速度，y轴速度一般比x轴要小一些百分比
+		//这些通用设置可以在GameSetting类中找到
+		if(Util.checkIsNumber(data, "walkSpeed", true)){
+			this.speedCom.dx = data.walkSpeed * GameSetting.unitSpeedFactor.walkX;
+			this.speedCom.dy = data.walkSpeed * GameSetting.unitSpeedFactor.walkY;
+		}
+	},
+	
 	getNewInstance : function(){
 		var unit = Service.popUnitFromPool();
 		if(unit == null){
@@ -36,9 +54,9 @@ UnitTemplate = cc.Class.extend({
 		unit.hurtCom.bodyState = this.hurtCom.bodyState;
 		unit.hurtCom.isDead = this.hurtCom.isDead;
 		
-		unit.speedCom.speed = this.speedCom.speed;
-		unit.speedCom.currSpeed = this.speedCom.currSpeed;
-		unit.speedCom.maxSpeed = this.speedCom.maxSpeed;
+		unit.speedCom.dx = this.speedCom.dx;
+		unit.speedCom.dy = this.speedCom.dy;
+		//unit.speedCom.maxSpeed = this.speedCom.maxSpeed;
 		
 		unit.motionCom.vx = 0;
 		unit.motionCom.vy = 0;

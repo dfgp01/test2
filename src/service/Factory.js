@@ -107,15 +107,7 @@ Factory = {
 			}
 
 			var unitTemplate = new UnitTemplate();
-			unitTemplate.name = data.name;
-
-			//unitTemplate.viewCom :  = new ViewComponent();
-			unitTemplate.hitCom = new HitPropertiesComponent();
-			unitTemplate.hurtCom = new HurtPropertiesComponent();
-			unitTemplate.speedCom = new SpeedPropertiesComponent();
-			
-			unitTemplate.actionsCom = new ActionsComponent();
-			unitTemplate.actionsCom.actions = {};
+			unitTemplate.init(data);
 
 			return unitTemplate;
 		}
