@@ -2,7 +2,11 @@
  * ActionState是独立对象，每个unit对应多个，意为动作状态节点
  * ECS模式中，我更倾向于将ActionState看成是System容器
  */
-ActionState = StateNode.extend({
+ActionState = cc.Class.extend({
+	name : null,
+	key : null,					//用于存放在父节点children属性中的key
+	children : null,			//子节点，树状结构
+	sysList : null,				//系统列表
 	state : 0,
 	type : 0,
 	animateCom : null,				//动画组件是必须要有的
@@ -12,6 +16,24 @@ ActionState = StateNode.extend({
 		this._super(data);
 		this.key = data.key;
 		this.state = data.state;
+	},
+	
+	addSystem : function(system){
+		if(this.sysList == null){
+			this.sysList = [];
+		}
+		this.sysList.push(system);
+	},
+	
+	//设置直接下一个节点，需要改
+	addChild : function(node){
+		if(this.children==null){
+			this.children = {};
+		}
+		if(this.children[node.key]){
+			cc.log("key: " + node.key + " has exists in parent node. parent:"+this.name+" child:"+node.name);
+		}
+		this.children[node.key] = node;
 	},
 	
 	//加载时
@@ -29,7 +51,7 @@ ActionState = StateNode.extend({
 		for(var i in this.sysList){
 			this.sysList[i].update(unit, dt);
 		}
-		if(unit.endFlag){
+		if(unit.actionsCom.endFlag){
 			unit.nextAction();
 		}
 	},
@@ -38,7 +60,7 @@ ActionState = StateNode.extend({
 		for(var i in this.sysList){
 			this.sysList[i].end(unit);
 		}
-	},
+	}
 });
 
 /**

@@ -1,7 +1,7 @@
 /**
  * 全局设置
  */
-GobalSetting = {
+GameSetting = {
 	framerate : 60,
 	tick : 0.0333,
 	
@@ -11,8 +11,17 @@ GobalSetting = {
 	//一般重力，一些单位可设置自定义重力
 	gravity : -2,
 	
-	//最大下落速度
-	maxGravity : -10
+	//最大引力
+	maxGravity : -10,
+	
+	unitSpeedFactor : {
+		walkX : 1,
+		walkY : 0.8,
+		//runX : 2,
+		//runY : 1.6,
+		airX : 0.9,
+		airY : 0.8
+	}
 };
 
 /**

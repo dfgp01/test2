@@ -40,11 +40,46 @@
  * 新建了目录old，里面存放一些旧代码备份。
  */
 
+
 /**
- * V2.2版
- * ActionState现在是一个基础Node了，不在继承StateNode，原来的StateNode已删除
- * 改善了移动逻辑，增加了跳跃的逻辑，未完成
+ * 		基础组件类
  */
+
+StateNode = cc.Class.extend({
+	name : null,
+	key : null,					//用于存放在父节点children属性中的key
+	children : null,			//子节点，树状结构
+	sysList : null,				//系统列表
+	
+	//构造器
+	ctor : function(){},
+	init : function(data){
+		this.name = data.name;
+	},
+	
+	addSystem : function(system){
+		if(this.sysList == null){
+			this.sysList = [];
+		}
+		this.sysList.push(system);
+	},
+	
+	//定义主接口
+	start: function(){},
+	run : function(dt){},
+	end : function(){},
+	
+	//设置直接下一个节点，需要改
+	addChild : function(node){
+		if(this.children==null){
+			this.children = {};
+		}
+		if(this.children[node.key]){
+			cc.log("key: " + node.key + " has exists in parent node. parent:"+this.name+" child:"+node.name);
+		}
+		this.children[node.key] = node;
+	}
+});
 
 /**
  * Frame

@@ -17,7 +17,7 @@ Constant = {
 	ACTION_STATE : {
 		STAND : 0,
 		WALK : 1,
-		FALL : 2,
+		AIR : 2,
 		LIE_DOWN : 3,
 		HITTED : 4,
 		BUSY : 5,

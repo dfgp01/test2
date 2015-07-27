@@ -1,5 +1,5 @@
 /**
-* 站立时的动作主系统
+* 一般单位站立时的动作主系统
 */
 StandActionSystem = ActionSystem.extend({
 	name : "standActionSystem",
@@ -48,10 +48,8 @@ WalkActionSystem = ActionSystem.extend({
 			unit.motionCom.vy = -1;	//同理，Y负轴是向下的
 		}
 		//行走速度公式：单位速率 x 动作具体增量 x 方向向量
-		//unit.motionCom.dx = unit.walkSpeedCom.currSpeed * this.motionCom.dx * unit.motionCom.vx;
-		//unit.motionCom.dy = unit.walkSpeedCom.currSpeed * this.motionCom.dy * unit.motionCom.vy;
-		unit.motionCom.dx = 1.2 * unit.motionCom.vx;
-		unit.motionCom.dy = 1.2 * unit.motionCom.vy;
+		unit.motionCom.dx = unit.speedCom.factorX * unit.motionCom.dx * unit.motionCom.vx;
+		unit.motionCom.dy = unit.speedCom.factory * unit.motionCom.dy * unit.motionCom.vy;
 	},
 	
 	//这一部分应该要更完善 2015.07.02
@@ -62,7 +60,7 @@ WalkActionSystem = ActionSystem.extend({
 			return;
 		}
 		
-		//行走中改变左右方向的
+		//行走中改变左右方向的，虽然现在不支持，但以后肯定会有的
 		if(unit.motionCom.vx = 1 && unit.cmd & Constant.CMD.LEFT){
 			unit.motionCom.vx = -1;
 			unit.viewCom.sprite._scaleX = -1;
@@ -72,10 +70,10 @@ WalkActionSystem = ActionSystem.extend({
 			unit.viewCom.sprite._scaleX = 1;
 		}
 		
-		if(unit.cmd & Constant.CMD.UP){
+		if(unit.motionCom.vy = -1 && unit.cmd & Constant.CMD.UP){
 			unit.motionCom.vy = 1;
 		}
-		else if(unit.cmd & Constant.CMD.DOWN){
+		else if(unit.motionCom.vy = 1 && unit.cmd & Constant.CMD.DOWN){
 			unit.motionCom.vy = -1;
 		}
 	},
@@ -85,5 +83,27 @@ WalkActionSystem = ActionSystem.extend({
 		unit.motionCom.dy = 0;
 		unit.motionCom.vx = 0;
 		unit.motionCom.vy = 0;
+	}
+});
+
+/**
+*	跳跃动作系统
+*/
+JumpActionSystem = ActionSystem.extend({
+	name : "jumpActionSystem",
+	motionCom : null,
+	
+	start : function(unit){
+		unit.motionCom.dy = this.speedCom.factorH * this.motionCom.dh;
+		unit.viewCom.groundY = unit.viewCom.sprite.getPositionY();
+		unit.actionsCom.state = unit.actionsCom.state | Constant.ACTION_STATE.AIR;
+	},
+	
+	update : function(unit, dt){
+		
+	},
+	
+	end : function(unit){
+		unit.actionsCom.state = unit.actionsCom.state & ~(Constant.ACTION_STATE.AIR);
 	}
 });
