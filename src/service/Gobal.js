@@ -1,28 +1,4 @@
-/**
- * 全局设置
- */
-GameSetting = {
-	framerate : 60,
-	tick : 0.0333,
-	
-	//动画帧延迟时间，单位秒
-	frameDelayTime : 0.0333,	//fps:30
-	
-	//一般重力，一些单位可设置自定义重力
-	gravity : -2,
-	
-	//最大引力
-	maxGravity : -10,
-	
-	unitSpeedFactor : {
-		walkX : 1,
-		walkY : 0.35,
-		//runX : 2,
-		//runY : 1.6,
-		airX : 0.9,
-		airY : 0.8
-	}
-};
+
 
 /**
  *  对象管理器
@@ -92,21 +68,3 @@ GameObjPool = {
 	}
 };
 
-/**
- * 全局数据容器，存储所有游戏对象，用于数据共享
- */
-Container = {
-		//玩家数据
-		player : {
-			unit : null,
-			score : 0
-		},
-		frames : {},			//存储帧
-		actions : {},			//存储动作组件
-		data : {},			//存储原始数据
-		
-		unitList : [],		//存储所有单位
-		groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
-		
-		templates : {}	//存储已初始化的原始数据的模板
-};

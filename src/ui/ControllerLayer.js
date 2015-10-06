@@ -5,6 +5,7 @@ ControllerLayer = cc.Layer.extend({
 	arrowsRect : null,
 	arrowsSprite : null,
 	closeSprite : null,
+	attSpRect : null,
 	ctor : function(){
 		this._super();
 		var winSize = cc.winSize;
@@ -37,7 +38,18 @@ ControllerLayer = cc.Layer.extend({
         this.arrowsRect = cc.rect(
         		Arrows.sprite.getPositionX() - Arrows.sprite.width * 0.5,
         		Arrows.sprite.getPositionY() - Arrows.sprite.height * 0.5,
-        		Arrows.sprite.width, Arrows.sprite.height);	
+        		Arrows.sprite.width, Arrows.sprite.height);
+        
+        var attButton = new cc.Sprite(res.button);
+        attButton.attr({
+        	x: winSize.width - 100,
+        	y: 100
+        });
+        this.addChild(attButton, 5);
+        this.attSpRect = cc.rect(
+        		attButton.getPositionX() - attButton.width * 0.5,
+        		attButton.getPositionY() - attButton.height * 0.5,
+        		attButton.width, attButton.height);
         
         this.initListener();
 	},
@@ -50,8 +62,11 @@ ControllerLayer = cc.Layer.extend({
         	swallowTouches: true,
         	onTouchBegan: function (touch, event) {
         		var location = touch.getLocation();
-        		if(cc.rectContainsPoint(selfPointer.arrowsRect,location)){
+        		if(cc.rectContainsPoint(selfPointer.arrowsRect, location)){
         			Arrows.press(touch);
+        			return true;
+        		}
+        		else if(cc.rectContainsPoint(selfPointer.attSpRect, location)){
         			return true;
         		}
         		return false;

@@ -9,8 +9,7 @@ ActionState = cc.Class.extend({
 	sysList : null,				//系统列表
 	state : 0,
 	type : 0,
-	animateCom : null,				//动画组件是必须要有的
-	animateSys : null,
+	animateSystem : null,	//动画组件是必须有的
 	
 	init : function(data){
 		this._super(data);

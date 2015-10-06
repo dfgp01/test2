@@ -6,52 +6,81 @@ playerData = {
 character_data = {
 	name : "DFL",
 	res : "deep",
-	unitType : 1,
-	walkSpeed : 3,
+	featureCode : 29,
+	speedFactor : 1,
 	actions : [
 		{
-			name : "stand", animateType : 1, type : 1,
-			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
+			name : "stand",
+			type : 1,
+			animate :{
+				type : 1,
+				speedFactor : 2,
+				frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
+			}
 		},
 		{
-			name : "walk", animateType : 1, type : 2,
-			frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
+			name : "walk",
+			type : 2,
+			animate : {
+				type : 1,
+				speedFactor : 1,
+				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
+			}
 		},
 		{
-			name : "hurt", 
-			frames : ["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png","deep_hurt_5.png","deep_hurt_4.png","deep_hurt_4.png"]
+			name : "hurt",
+			type : 1,
+			animate : {
+				frames : ["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png","deep_hurt_5.png","deep_hurt_4.png","deep_hurt_4.png"]
+			}
 		},
 		{
 			name : "normalAtk1",  key : "A", keyFrame : 1,
-			frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"]
+			animate : {
+				frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"]
+			}
 		},
 		{
-			name : "normalAtk2", key : "A", keyFrame : 2, 
-			frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"]
+			name : "normalAtk2", key : "A", keyFrame : 2,
+			animate : {
+				frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"]
+			}
 		},
 		{
 			name : "normalAtk3", key : "A", keyFrame : 2,
-			frames : ["deep_attack_3_1.png","deep_attack_3_2.png","deep_attack_3_3.png","deep_attack_3_4.png"]
+			animate : {
+				frames : ["deep_attack_3_1.png","deep_attack_3_2.png","deep_attack_3_3.png","deep_attack_3_4.png"]
+			}
 		},
 		{
-			name : "crossCutA", key : "FTA", 
-			frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"]
+			name : "crossCutA", key : "FTA",
+			animate : {
+				frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"]
+			}
 		},
 		{
 			name : "crossCutB",
-			frames : ["deep_crossCutB_1.png","deep_crossCutB_2.png","deep_crossCutB_3.png","deep_crossCutB_4.png"]
+			animate : {
+				frames : ["deep_crossCutB_1.png","deep_crossCutB_2.png","deep_crossCutB_3.png","deep_crossCutB_4.png"]
+			}
 		},
 		{
 			name : "crossCutC",
-			frames : ["deep_crossCutC_1.png","deep_crossCutC_2.png","deep_crossCutC_3.png","deep_crossCutC_4.png","deep_crossCutC_5.png"]
+			animate : {
+				frames : ["deep_crossCutC_1.png","deep_crossCutC_2.png","deep_crossCutC_3.png","deep_crossCutC_4.png","deep_crossCutC_5.png"]
+			}
 		},
 		{
 			name : "roundCutA", key : "DUA",
-			frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"]
+			animate : {
+				frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"]
+			}
 		},
 		{
 			name : "roundCutB", key : "FFA",
-			frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"]
+			animate : {
+				frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"]
+			}
 		}
 	],
 	actLamda : [	//lamda表达式：> + - [] () , 随便起的名字 -_-

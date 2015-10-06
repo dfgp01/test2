@@ -15,7 +15,7 @@ var HelloWorldLayer = cc.Layer.extend({
         var winSize = cc.winSize;
 
         // add background
-        var bg = new cc.Sprite(res.background_png);
+        var bg = new cc.Sprite(res.background2_jpg);
         bg.attr({
         	x: winSize.width / 2,
         	y: winSize.height / 2

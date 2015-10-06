@@ -1,13 +1,7 @@
 /**
  * edit by Hugo-Fu
- * 2015.06.18
+ * 2015.10.04
  */
-
-GameObject = cc.Class.extend({
-	id : null,
-	name : null,
-	group : 0
-});
 
 Unit = GameObject.extend({
 	

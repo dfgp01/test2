@@ -1,57 +1,101 @@
 /**
- * 系统管理器
- */
-SystemManager = {
-		sysList : [],
-		sysIndex : {},
-		init : function(){
-		},
-		start : function(){
-			for(var i in this.sysList){
-				this.sysList[i].start();
-			}
-		},
-		addSystem : function(system){
-			if(this.sysIndex[system.name]){
-				cc.log("SystemManager addSystem error. system-name: " + system.name + " exists~!");
-				return;
-			}
-			this.sysList.push(system);
-			this.sysIndex[system.name] = system;
-		},
-		update : function(dt){
-			for(var i in this.sysList){
-				this.sysList[i].update(dt);
-			}
-		}
-};
-
-/**
- * 	定义游戏其他系统接口
+ * 	定义游戏主要系统接口
  */
 System = cc.Class.extend({
 	name : null,
 	priority : 0,
+	prep : null,
+	next : null,
 	start : function(){},
 	update : function(dt){},
 	end : function(){}
 });
 
 /**
- * 定义动作模块专用的系统组件接口
+ * 系统管理器
  */
-ActionSystem = cc.Class.extend({
-	name : null,
-	priority : 0,
-	start : function(unit){},
-	update : function(dt, unit){},
-	end : function(unit){}
+MainSystem = {
+		actionRunSystem : null,
+		animateRunSystem : null,
+		systemList : [],						//其他子系统
+
+		addSystem : function(system){
+			this.systemList.push(system);
+		},
+
+		start : function(){
+			actionRunSystem.start(dt);
+			animateRunSystem.start(dt);
+			for(var i in this.systemList){
+				this.systemList[i].start();
+			}
+		},
+
+		update : function(dt){
+			Service.gameTimeAfter(dt);
+			actionRunSystem.update(dt);
+			animateRunSystem.update(dt);
+			for(var i in this.systemList){
+				this.systemList[i].update(dt);
+			}
+		},
+
+		end : function(){
+			actionRunSystem.end();
+			animateRunSystem.end();
+			for(var i in this.systemList){
+				this.systemList[i].end();
+			}
+		}
+};
+
+/**
+ * 主循环中的动作系统
+ */
+ActionRunSystem = SystemNode.extend({
+	name : "ActionRunSystem",
+	objList : null,
+	_currObj : null,
+	start : function(){
+		this.objList = Service.interactObjs();
+	},
+	update : function(dt){
+		for(var i in this.objList){
+			this._currObj = this.objList[i];
+			this._currObj.coms.actions.currAction.run(this._currObj, dt);
+			if(this._currObj.coms.actions.nextAction != null){
+				this._currObj.changeAction(this._currUnit.actionsCom.nextAction);
+				//还原为空状态，原因你懂
+				this._currUnit.actionsCom.nextAction = null;
+			}
+		}
+	},
+	end : function(){
+		//remove
+	}
 });
 
 /**
+ * 主循环中的动画系统
+ */
+AnimateRunSystem = SystemNode.extend({
+	lastTime : 0,
+	tick : 0,
+	name : "animateRunSystem",
+	objList : null,
+	_currObj : null,
+	update : function(dt){
+		for(var i in this.objList){
+			this._currObj = this.objList[i];
+			this._currObj.actionsCom.currAction.animateSys.update(this._currObj, dt);
+		}
+	}
+});
+
+/**	暂时废弃 2015.10.04
  * 核心系统-单位动作轮询处理
  */
-MainActionSystem = System.extend({
+/*MainActionSystem = System.extend({
 	name : "mainActionSystem",
 	unitList : null,
 	_currUnit : null,
@@ -72,12 +116,12 @@ MainActionSystem = System.extend({
 	end : function(){
 		//remove from SysManager
 	}
-});
+});*/
 
-/**
+/**	暂时废弃 2015.10.04
  * 单位动画轮询，目前用独立系统处理，如果性能不佳，可尝试加到动作处理系统中
  */
-MainAnimateSystem = System.extend({
+/*MainAnimateSystem = System.extend({
 	name : "mainAnimateSystem",
 	unitList : null,
 	start : function(){
@@ -91,7 +135,7 @@ MainAnimateSystem = System.extend({
 	end : function(){
 		//remove from SysManager
 	}
-});
+});*/
 
 /**
  * 更新坐标的系统，因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition

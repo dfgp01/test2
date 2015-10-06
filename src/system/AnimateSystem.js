@@ -7,10 +7,10 @@ AnimateSystem = ActionSystem.extend({
 	animateCom : null,
 	
 	//这个方法暂时用不上
-	start : function(unit, dt){
+	start : function(gameObj){
 		unit.actionsCom.actions.frameIndex = 0;
 	},
-	update : function(unit, dt){
+	update : function(dt, gameObj){
 		//冷却计时
 		if(unit.viewCom.animaDelayCount < unit.viewCom.animaDelay){
 			unit.viewCom.animaDelayCount += dt;
@@ -36,7 +36,7 @@ LoopAnimateSystem = ActionSystem.extend({
 	start : function(unit, dt){
 		unit.actions.frameIndex = 0;
 	},
-	update : function(unit, dt){
+	update : function(dt, gameObj){
 		//冷却计时
 		if(unit.viewCom.animaDelayCount < unit.viewCom.animaDelay){
 			unit.viewCom.animaDelayCount += dt;

@@ -12,7 +12,9 @@ var res = {
 		deep_1_plist : "res/deep_1.plist",
 		deep_2_plist : "res/deep_2.plist",
 		arrows : "res/arrows.png",
-		background_png : "res/BackGround.png",
+		button : "res/button.png",
+		//background_png : "res/BackGround.png",
+		background2_jpg : "res/BackGround2.jpg",
 		CloseNormal_png : "res/CloseNormal.png",
 		CloseSelected_png : "res/CloseSelected.png"
 };

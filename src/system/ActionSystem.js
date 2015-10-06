@@ -1,9 +1,20 @@
 /**
+ * 定义动作模块专用的系统组件接口
+ */
+ActionSystem = cc.Class.extend({
+	name : null,
+	priority : 0,
+	start : function(gameObject){},
+	update : function(dt, gameObject){},
+	end : function(gameObject){}
+});
+
+/**
 * 一般单位站立时的动作主系统
 */
 StandActionSystem = ActionSystem.extend({
 	name : "standActionSystem",
-	update : function(unit, dt){
+	update : function(dt, gameObj){
 		if(unit.cmd != 0){
 			//检测是否按下方向键
 			if(unit.cmd & Constant.CMD.ALL_DIRECTION){
@@ -26,12 +37,12 @@ StandActionSystem = ActionSystem.extend({
 /**
  * 行走时的动作主系统
  */
-WalkActionSystem = ActionSystem.extend({
-	name : "walkActionSystem",
-	start : function(unit){
+WalkSystem = ActionSystem.extend({
+	name : "walkSystem",
+	start : function(gameObj){
 		//左右方向不共存
-		if(unit.cmd & Constant.CMD.RIGHT){
-			unit.motionCom.vx = 1;
+		if(gameObj.cmd & Constant.CMD.RIGHT){
+			gameObj.motionCom.vx = 1;
 			//unit.viewCom.sprite._scaleX = 1;
 			//unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
 		}
@@ -52,7 +63,7 @@ WalkActionSystem = ActionSystem.extend({
 	},
 	
 	//这一部分应该要更完善 2015.07.02
-	update : function(unit, dt){
+	update : function(dt, gameObj){
 		
 		if(!(unit.cmd & Constant.CMD.ALL_DIRECTION)){
 			unit.preparedChangeAction("stand");
@@ -82,6 +93,32 @@ WalkActionSystem = ActionSystem.extend({
 		unit.motionCom.dy = 0;
 		unit.motionCom.vx = 0;
 		unit.motionCom.vy = 0;
+	}
+});
+
+/**
+ * 通常移动逻辑
+ */
+MotionSystem = ActionSystem.extend({
+	name : "motionSystem",
+	motionCom : null,
+	
+	start : function(gameObj){
+		gameObj.motionCom.dx = this.motionCom.dx;
+		gameObj.motionCom.dy = this.motionCom.dy;
+	},
+	
+	// 每帧移动公式：
+	// 单位的dx = action的dx * (此帧延时+上次延时) / 系统设置的帧频
+	// 例如 dx = 3 * (0.033 + 0.031) / 0.032 = 6px
+	update : function(dt, gameObj){
+		gameObj.motionCom.dx = this.motionCom.dx * (dt + gameObj.motionCom.lastDT) / GameSetting.logicTick;
+		gameObj.motionCom.dy = this.motionCom.dy * (dt + gameObj.motionCom.lastDT) / GameSetting.logicTick;
+	},
+	
+	end : function(gameObj){
+		gameObj.motionCom.dx = 0;
+		gameObj.motionCom.dy = 0;
 	}
 });
 

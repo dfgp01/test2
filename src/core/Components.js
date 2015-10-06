@@ -4,16 +4,9 @@
  */
 Component = cc.Class.extend({
 	name : null,
-	clone : function(){}	//克隆对象接口而已
-});
-
-/**
- * 	动画组件
- */
-AnimateComponent = Component.extend({
-	frames : null,
-	type : 0,
-	speedFactor : 1
+	ownerId : 0,
+	clone : function(){},	//克隆对象接口而已
+	reset : function(){}		//重置数据
 });
 
 /**
@@ -46,24 +39,36 @@ HittedComponent = Component.extend({
  * 
  */
 ViewComponent = Component.extend({
-	animaDelay : 0.1,
-	animaDelayCount : 0,
-	sprite : null,
-	groundY : 0			//在地上的Y值，用于空中状态落地判断
+	//animaDelay : 0.1,
+	//animaDelayCount : 0,
+	groundY : 0,			//在地上的Y值，用于空中状态落地判断
+	sprite : null
 });
 
 /**
  * 动作管理组件
  */
 ActionsComponent = Component.extend({
+	name : "actions",
 	frameIndex : 0,
 	repeatFlag : 0,
 	endFlag : false,
 	firstAct : null,
 	currAction : null,
 	actions : null,
-	cmdTree : null,	//树结构 状态节点，key为action.key值
-	state : 0				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
+	nodes : null,			//动作状态节点，树状存储，key为action.key值
+	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
+	clone : function(){
+		var com = new ActionsComponent();
+		com.frameIndex = this.frameIndex;
+		com.repeatFlag = this.repeatFlag;
+		com.endFlag = this.endFlag;
+		com.firstAct = this.firstAct;
+		com.currAction = this.currAction;
+		com.actions = this.actions;
+		com.nodes = this.nodes;
+		com.state = this.state;
+	}
 });
 
 /**
@@ -91,29 +96,42 @@ HurtPropertiesComponent = Component.extend({
  * 所有属性值为系数，基础数在action中的motionCom中定义
  */
 SpeedPropertiesComponent = Component.extend({
-	dx : 0,			//x,y,h 这三个都是基础系数
-	dy : 0,			//此数值受speedX影响
-	dh : 0,			//高度，在显示中以改变Y值实现
-	currDx : 0,
-	currDy : 0,
-	currDh : 0,
-	maxSpd : 0
+	factor : 0,
+	currFactor : 0,
+	maxFactor : 3,
 });
 
 //--------------------- 公共层 --------------------
+
 /**
  * 物体运动组件
  */
 MotionComponent = Component.extend({
-	vx : 0,	//vx,vy,vh 代表方向向量
+	name : "motion",
+	speedFactor : 1,	//速度系数
+	vx : 0,					//vx,vy,vh 代表方向向量
 	vy : 0,
 	vh : 0,
-	dx : 0,	//dx,dy,dh 代表移动增量
+	dx : 0,					//dx,dy,dh 代表移动增量
 	dy : 0,
 	dh : 0,
 	maxDx : 0,
 	maxDy : 0,
-	maxDh : 0
+	maxDh : 0,
+	clone : function(){
+		var com = new MotionComponent();
+		com.speedFactor = this.speedFactor;
+		com.vx = this.vx;
+		com.vy = this.vy;
+		com.vh = this.vh;
+		com.dx = this.dx;
+		com.dy = this.dy;
+		com.dh = this.dh;
+		com.maxDx = this.maxDx;
+		com.maxDy = this.maxDy;
+		com.maxDh = this.maxDh;
+		return com;
+	}
 });
 
 /**
@@ -121,6 +139,20 @@ MotionComponent = Component.extend({
  */
 TimerComponent = Component.extend({
 	second : 0,
-	currTime : 0,
-	//isStart : false
+	currTime : 0
+});
+
+/**
+ * 	动画组件
+ */
+AnimateComponent = Component.extend({
+	name : "animate",
+	frames : null,
+	type : 0,
+	clone : function(){
+		var com = new AnimateComponent();
+		com.frames = this.frames;
+		com.type = this.type;
+		return com;
+	}
 });

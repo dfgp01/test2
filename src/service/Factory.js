@@ -19,44 +19,58 @@ Factory = {
 			}else{
 				actionState.key = "-";
 			}
-			actionState.animateCom = new AnimateComponent();
-			if(Util.checkIsString(data,"action")){
-				var actRef = template.actionsCom.actions[data.action];
-				if(actRef){
-					actionState.animateCom.frames = actRef.animateCom.frames;
-				}else{
-					cc.log("createActionState error, action:[" + data.action + "] not found!");
-					return null;
-				}
-			}
-
-			if(!Util.checkArrayNull(data, "frames")){
-				//cc.log("createActionState error, frames is null~!");
-				var list = [];
-				for(var i in data.frames){
-					var frame = cc.spriteFrameCache.getSpriteFrame(data.frames[i]);
-					if(frame){
-						list.push(frame);
+			
+			//初始化动画组件
+			if(Util.checkNotNull(data,"animate", false)){
+				actionState.animateCom = new AnimateComponent();
+				var ani_data = data.animate;
+				if(Util.checkIsString(ani_data,"action")){
+					var actRef = template.actionsCom.actions[ani_data.action];
+					if(actRef){
+						actionState.animateCom.frames = actRef.animateCom.frames;
 					}else{
-						cc.log("action:" + data.name + " frame:" + data.frames[i] + " not found");
+						cc.log("createActionState error, action:[" + ani_data.action + "] not found!");
 						return null;
 					}
 				}
-				actionState.animateCom.frames = list;
+				else if(!Util.checkArrayNull(ani_data, "frames")){
+					var list = [];
+					for(var i in ani_data.frames){
+						var frame = cc.spriteFrameCache.getSpriteFrame(ani_data.frames[i]);
+						if(frame){
+							list.push(frame);
+						}else{
+							cc.log("action:" + ani_data.name + " frame:" + ani_data.frames[i] + " not found");
+							return null;
+						}
+					}
+					actionState.animateCom.frames = list;
+				}
+				else{
+					cc.log("createActionState:" + ani_data.name + " error, action or frames has one at lease!");
+					return null;
+				}
+				//初始化动画系统
+				this.buildAnimateSys(ani_data, actionState);
 			}
 			
-			this.buildAnimateSys(data, actionState);
+			//初始化动作组件
+			if(Util.checkNotNull(data, "properties", false)){
+				
+			}
+			
+			//初始化动作系统
 			this.buildActionSys(data, actionState);
 			template.actionsCom.actions[actionState.name] = actionState;
 			return actionState;
 		},
 		
 		/**
-		 * 动画逻辑组件
+		 * 动画逻辑系统组件
 		 */
 		buildAnimateSys : function(data, action){
-			if(Util.checkIsInt(data, "animateType")){
-				action.animateCom.type = data.animateType;
+			if(Util.checkIsInt(data, "type")){
+				action.animateCom.type = data.type;
 			}else{
 				action.animateCom.type = 0;
 			}
@@ -75,7 +89,7 @@ Factory = {
 		},
 		
 		/**
-		 * 动作逻辑组件
+		 * 动作逻辑系统组件
 		 */
 		buildActionSys : function(data, action){
 			if(Util.checkIsInt(data, "type")){
@@ -122,10 +136,6 @@ Factory.checkActionRight = function(data){
 		return false;
 	}
 	
-	if(!Util.checkIsString(data,"action") && Util.checkArrayNull(data, "frames")){
-		cc.log("createActionState:" + data.name + " error, action or frames has one at lease!");
-		return false;
-	}
 	//一定要返回啊，被这个坑死了。
 	return true;
 }

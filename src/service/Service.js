@@ -6,10 +6,17 @@
 Service = {
 
 	/**
+	 * 游戏经过时间递增
+	 */
+	gameTimeAfter : function(dt){
+		Container.gameTime += dt;
+	},
+	
+	/**
 	 * 得到所有单位列表
 	 */
-	getAllUnits : function(){
-		return Container.unitList;
+	getAllObjects : function(){
+		return Container.objList;
 	},
 	
 	/**
@@ -56,10 +63,12 @@ Service = {
 		var unitTemplate = Factory.createUnitTemplate(data);
 		Container.templates[unitTemplate.name] = unitTemplate;
 		
-		cc.log("initial animate data......");
+		cc.log("initial actions data......");
 		for(var i in data.actions){
 			Factory.createActionState(data.actions[i], unitTemplate);
 		}
+		var firstActName = data.actions[0].name;
+		unitTemplate.actionsCom.firstAct = unitTemplate.actionsCom.actions[firstActName];
 		
 		if(!Util.checkArrayNull(data, "actLamda")){
 			cc.log("initial action & skill link relationship......");
@@ -85,6 +94,52 @@ Service = {
 	 */
 	getPlayer : function(){
 		return Container.player;
+	},
+	
+	/**
+	 * 全局数据容器，存储所有游戏对象，用于数据共享
+	 */
+	Container : {
+
+			gameTime : 0,	//游戏时间
+
+			//玩家数据
+			player : {
+				character : null,
+				score : 0
+			},
+
+			frames : {},		//存储帧
+			actions : {},		//存储动作组件
+			data : {},			//存储原始数据
+
+			objList : [],			//存储所有单位
+			groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
+
+			templates : {}		//存储已初始化的原始数据的模板
+	},
+	
+	/**
+	 * 全局游戏设置
+	 */
+	GameSetting : {
+
+			framerate : 60,				//cocos2d默认fps是60
+			logicTick : 0.033,			//逻辑帧fps:30
+			animateTick : 0.041,		//动画帧fps:24
+
+			gravity : -2,					//一般重力，一些单位可设置自定义重力
+			maxGravity : -10,			//最大引力
+
+			//单位移动时，Y轴与X轴的相对速度比
+			unitSpeedFactor : {
+				walkX : 1,
+				walkY : 0.618,
+				//runX : 2,
+				//runY : 1.6,
+				airX : 0.9,
+				airY : 0.8
+			}
 	}
 
 };
@@ -97,7 +152,7 @@ Service.checkCharacterDataRight = function(data){
 		cc.log("create Character error, lack of necessary data!");
 		return false;
 	}
-	if(!Util.checkNotNull(data, "actions")){
+	if(!Util.checkIsArray(data, "actions")){
 		cc.log("create Character error, must has actions!");
 		return false;
 	}
