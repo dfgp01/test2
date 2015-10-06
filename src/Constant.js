@@ -53,19 +53,19 @@ Constant = {
 		AREA : 7				//区域
 	},
 	GameObjectFeature : {		//对象特征码，用二进制表示
-		animate : 1,
-		livetime : 2,
-		hit : 4,
-		hurt : 8,
-		motion : 16,
+		ANIMATE : 1,
+		LIVETIME : 2,
+		HIT : 4,
+		HURT : 8,
+		MOTION : 16,
 	},
 	ActionFeature : {
-		motion : 1,
-		time : 2,
-		attack : 4,
-		summon : 8,			//会放出其他单位的，如子弹、召唤物、魔法阵等
-		consume : 16,		//消耗MP、HP之类的，或组合式，用二进制就对了
-		etc : 32
+		MOTION : 1,
+		TIME : 2,
+		HIT : 4,
+		SUMMON : 8,			//会放出其他单位的，如子弹、召唤物、魔法阵等
+		CONSUME : 16,			//消耗MP、HP之类的，或组合式，用二进制就对了
+		ETC : 32
 	}
 };
 

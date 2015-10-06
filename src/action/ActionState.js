@@ -9,7 +9,7 @@ ActionState = cc.Class.extend({
 	sysList : null,				//系统列表
 	state : 0,
 	type : 0,
-	animateSystem : null,	//动画组件是必须有的
+	animateSystem : null,	//动画系统组件是必须有的，通常在动画主系统中调用
 	
 	init : function(data){
 		this._super(data);
@@ -22,6 +22,40 @@ ActionState = cc.Class.extend({
 			this.sysList = [];
 		}
 		this.sysList.push(system);
+	},
+	
+	/**
+	 * 将一个新系统添加到指定系统的前面（通过系统名称指定）
+	 * @param systemName
+	 * @param newSystem
+	 */
+	addSystemBefore : function(systemName, newSystem){
+		for(var i in this.sysList){
+			if(systemName == this.sysList[i].name){
+				newSystem.priority = this.sysList[i].priority + 1;
+				//this.sysList.slice(i, 1);	未经测试
+				return;
+			}
+		}
+		cc.log("action addSystemBefore error! [" + systemName + "] not found");
+		return;
+	},
+	
+	/**
+	 * 将一个新系统添加到指定系统的后面（通过系统名称指定）
+	 * @param systemName
+	 * @param newSystem
+	 */
+	addSystemAfter : function(systemName, newSystem){
+		for(var i in this.sysList){
+			if(systemName == this.sysList[i].name){
+				newSystem.priority = this.sysList[i].priority - 1;
+				//this.sysList.slice(i, 1);	未经测试
+				return;
+			}
+		}
+		cc.log("action addSystemAfter error! [" + systemName + "] not found");
+		return;
 	},
 	
 	//设置直接下一个节点，需要改

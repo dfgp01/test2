@@ -61,16 +61,16 @@ cc.game.onStart = function(){
     	//system init
     	Service.initUnitTemplate(character_data);
     	Service.initPlayer();
-    	var mas = new MainActionSystem();
-        var anims = new MainAnimateSystem();
+    	var actSys = new ActionRunSystem();
+    	var aniSys = new AnimateRunSystem();
         var playerSys = new PlayerSystem();
-        var motionSys = new MotionSystem();
+        var motionRunSys = new MotionRunSystem();
         playerSys.target = Service.getPlayer().unit;
-        SystemManager.addSystem(playerSys);
-        SystemManager.addSystem(mas);
-        SystemManager.addSystem(anims);
-        SystemManager.addSystem(motionSys);
-        SystemManager.start();
+        MainSystem.addSystem(playerSys);
+        MainSystem.addSystem(actSys);
+        MainSystem.addSystem(aniSys);
+        MainSystem.addSystem(motionRunSys);
+        MainSystem.start();
         
         var scene = new cc.Scene();
         var mainLayer = new HelloWorldLayer();

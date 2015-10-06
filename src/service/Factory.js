@@ -17,47 +17,28 @@ Factory = {
 			if(Util.checkIsString(data,"key")){
 				actionState.key = data.key;
 			}else{
-				actionState.key = "-";
+				actionState.key = Constant.DIRECT_CHILDNODE;
 			}
 			
 			//初始化动画组件
-			if(Util.checkNotNull(data,"animate", false)){
-				actionState.animateCom = new AnimateComponent();
-				var ani_data = data.animate;
-				if(Util.checkIsString(ani_data,"action")){
-					var actRef = template.actionsCom.actions[ani_data.action];
-					if(actRef){
-						actionState.animateCom.frames = actRef.animateCom.frames;
-					}else{
-						cc.log("createActionState error, action:[" + ani_data.action + "] not found!");
-						return null;
-					}
-				}
-				else if(!Util.checkArrayNull(ani_data, "frames")){
-					var list = [];
-					for(var i in ani_data.frames){
-						var frame = cc.spriteFrameCache.getSpriteFrame(ani_data.frames[i]);
-						if(frame){
-							list.push(frame);
-						}else{
-							cc.log("action:" + ani_data.name + " frame:" + ani_data.frames[i] + " not found");
-							return null;
-						}
-					}
-					actionState.animateCom.frames = list;
-				}
-				else{
-					cc.log("createActionState:" + ani_data.name + " error, action or frames has one at lease!");
+			var animateComponent = new AnimateComponent();
+			var list = [];
+			for(var i in data.animate.frames){
+				var frame = cc.spriteFrameCache.getSpriteFrame(data.animate.frames[i]);
+				if(frame){
+					list.push(frame);
+				}else{
+					cc.log("action:" + data.name + " frame:" + data.animate.frames[i] + " not found");
 					return null;
 				}
-				//初始化动画系统
-				this.buildAnimateSys(ani_data, actionState);
 			}
-			
-			//初始化动作组件
-			if(Util.checkNotNull(data, "properties", false)){
-				
+			animateComponent.frames = list;
+			if(Util.checkIsInt(data, "type")){
+				animateComponent.type = parseInt(data.animate.type);
+			}else{
+				animateComponent.type = 0;
 			}
+			this.buildAnimateSys(animateComponent, actionState);
 			
 			//初始化动作系统
 			this.buildActionSys(data, actionState);
@@ -68,51 +49,41 @@ Factory = {
 		/**
 		 * 动画逻辑系统组件
 		 */
-		buildAnimateSys : function(data, action){
-			if(Util.checkIsInt(data, "type")){
-				action.animateCom.type = data.type;
-			}else{
-				action.animateCom.type = 0;
-			}
-			switch(action.animateCom.type){
+		buildAnimateSys : function(animateComponent, action){
+			var animateSystem = null;
+			switch(animateComponent.type){
 			case Constant.ANIMATE_TYPE.NORMAL:
-				var sys = new AnimateSystem();
-				sys.animateCom = action.animateCom;
-				action.animateSys = sys;
+				animateSystem = new AnimateSystem();
 				break;
 			case Constant.ANIMATE_TYPE.LOOP:
-				var sys = new LoopAnimateSystem();
-				sys.animateCom = action.animateCom;
-				action.animateSys = sys;
+				animateSystem = new LoopAnimateSystem();
+				break;
+			default :
+				animateSystem = new AnimateSystem();
 				break;
 			}
+			animateSystem.animateCom = animateComponent;
+			action.animateSystem = animateSystem;
 		},
 		
 		/**
 		 * 动作逻辑系统组件
 		 */
 		buildActionSys : function(data, action){
-			if(Util.checkIsInt(data, "type")){
-				action.type = data.type;
-			}else{
-				action.type = 0;
-			}
-			switch(data.type){
-			case Constant.ACTION_TYPE.STAND:
-				var idle = new StandActionSystem();
-				action.addSystem(idle);
-				break;
-			case Constant.ACTION_TYPE.WALK:
-				var walk = new WalkActionSystem();
-				action.addSystem(walk);
-				break;
-			default:
-				break;
+			var code = data.featureCode;
+			if(code & Constant.ActionFeature.MOTION && Util.checkNotNull(data, "motion", true)){
+				var motionCom = new MotionComponent();
+				//数据上的增量是每秒移动的距离，这里要换算成每帧移动的距离
+				motionCom.dx = data.motion.dx * Service.GameSetting.logicTick;
+				motionCom.dy = data.motion.dy * Service.GameSetting.logicTick;
+				var motionSystem = new MotionSystem();
+				motionSystem.motionCom = motionCom;
+				action.addSystem(motionSystem);
 			}
 		},
 		
 		/**
-		 * 创建一个Unit
+		 * 创建一个单位模板
 		 */
 		createUnitTemplate : function(data){
 			
@@ -124,6 +95,27 @@ Factory = {
 			unitTemplate.init(data);
 
 			return unitTemplate;
+		},
+		
+		/**
+		 * 补充人物的动作系统
+		 */
+		buildCharacterActionSys : function(template){
+			var standAct = template.actionsCom.actions.stand;
+			if(standAct){
+				//增加人物空闲时的控制系统
+				var idle = new StandActionSystem();
+				standAct.addSystem(standAct);
+			}
+			var walkAct = template.actionsCom.actions.walk;
+			if(walkAct){
+				//增加人物走路时的控制系统和速度系统
+				var walkSys = new WalkSystem();
+				var walkingMotion = WalkingMotionSystem();
+				walkAct.addSystem(walkSys);
+				walkAct.addSystemAfter("motionSystem", walkingMotion);
+			}
+			return;
 		}
 };
 
@@ -131,8 +123,14 @@ Factory = {
  * 检查action是否满足可构建必要条件
  */
 Factory.checkActionRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name", true)){
+	
+	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name", true) || !Util.checkIsInt(data, "featureCode", true)){
 		cc.log("create ActionState error, lack of necessary data!");
+		return false;
+	}
+	
+	if(!Util.checkNotNull(data, "animate") && Util.checkArrayNull(data.animate, "frames")){
+		cc.log("createActionState:" + data.name + " error, animate or animate.frames not found!");
 		return false;
 	}
 	
@@ -153,5 +151,7 @@ Factory.checkUnitRight = function(data){
 		cc.log("create UnitTemplate error, must has actions.");
 		return false;
 	}
+	
+	//一定要返回啊，被这个坑死了。
 	return true;
 }

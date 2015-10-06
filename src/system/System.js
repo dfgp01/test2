@@ -1,17 +1,4 @@
 /**
- * 	定义游戏主要系统接口
- */
-System = cc.Class.extend({
-	name : null,
-	priority : 0,
-	prep : null,
-	next : null,
-	start : function(){},
-	update : function(dt){},
-	end : function(){}
-});
-
-/**
  * 系统管理器
  */
 MainSystem = {
@@ -20,12 +7,34 @@ MainSystem = {
 		systemList : [],						//其他子系统
 
 		addSystem : function(system){
+			for(var i in this.systemList){
+				if(system.priority > this.systemList[i].priority){
+					//this.sysList.slice(i, 1);	未经测试
+					return;
+				}
+			}
+			//上面的循环未return时，说明system的优先级是最小的，要补加到列表尾
 			this.systemList.push(system);
+		},
+		
+		/**
+		 * 将一个新系统添加到指定系统的前面（通过系统名称指定）
+		 * @param systemName
+		 * @param newSystem
+		 */
+		addSystemBefore : function(systemName, newSystem){
+			for(var i in this.systemList){
+				if(systemName == this.systemList[i].name){
+					newSystem.priority = this.systemList[i].priority + 1;
+					//this.sysList.slice(i, 1);	未经测试
+					break;
+				}
+			}
 		},
 
 		start : function(){
-			actionRunSystem.start(dt);
-			animateRunSystem.start(dt);
+			actionRunSystem.start();
+			animateRunSystem.start();
 			for(var i in this.systemList){
 				this.systemList[i].start();
 			}
@@ -50,9 +59,22 @@ MainSystem = {
 };
 
 /**
+ * 	定义游戏主要系统接口
+ */
+System = cc.Class.extend({
+	name : null,
+	priority : 0,
+	prep : null,
+	next : null,
+	start : function(){},
+	update : function(dt){},
+	end : function(){}
+});
+
+/**
  * 主循环中的动作系统
  */
-ActionRunSystem = SystemNode.extend({
+ActionRunSystem = System.extend({
 	name : "ActionRunSystem",
 	objList : null,
 	_currObj : null,
@@ -78,12 +100,16 @@ ActionRunSystem = SystemNode.extend({
 /**
  * 主循环中的动画系统
  */
-AnimateRunSystem = SystemNode.extend({
+AnimateRunSystem = System.extend({
 	lastTime : 0,
 	tick : 0,
 	name : "animateRunSystem",
 	objList : null,
 	_currObj : null,
+	
+	start : function(){
+		
+	},
 	update : function(dt){
 		for(var i in this.objList){
 			this._currObj = this.objList[i];
@@ -140,8 +166,8 @@ AnimateRunSystem = SystemNode.extend({
 /**
  * 更新坐标的系统，因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
  */
-MotionSystem = System.extend({
-	name : "motionSystem",
+MotionRunSystem = System.extend({
+	name : "motionRunSystem",
 	unitList : null,
 	dx : 0,
 	dy : 0,

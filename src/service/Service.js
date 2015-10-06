@@ -9,21 +9,21 @@ Service = {
 	 * 游戏经过时间递增
 	 */
 	gameTimeAfter : function(dt){
-		Container.gameTime += dt;
+		this.Container.gameTime += dt;
 	},
 	
 	/**
 	 * 得到所有单位列表
 	 */
 	getAllObjects : function(){
-		return Container.objList;
+		return this.Container.objList;
 	},
 	
 	/**
 	 * 	从指定模板中创建新对象
 	 */
 	createObj : function(tempName){
-		var tmp = Container.templates[tempName];
+		var tmp = this.Container.templates[tempName];
 		if(tmp){
 			return tmp.getNewInstance();
 		}else{
@@ -38,7 +38,7 @@ Service = {
 	createUnit : function(tempName, group){
 		var unit = this.createObj(tempName);
 		if(unit != null){
-			Container.unitList.push(unit);
+			this.Container.unitList.push(unit);
 			unit.group = group;
 		}
 		return unit;
@@ -61,7 +61,7 @@ Service = {
 		
 		cc.log("initial unit template......");
 		var unitTemplate = Factory.createUnitTemplate(data);
-		Container.templates[unitTemplate.name] = unitTemplate;
+		this.Container.templates[unitTemplate.name] = unitTemplate;
 		
 		cc.log("initial actions data......");
 		for(var i in data.actions){
@@ -77,6 +77,15 @@ Service = {
 				this.linkForExpress(null, data.actLamda[i], unitTemplate);
 			}
 		}
+		
+		switch(unitTemplate.type){
+		case Constant.GameObjectType.MONSTER :
+		case Constant.GameObjectType.HERO :
+			Factory.buildCharacterActionSys(unitTemplate);
+			break;
+		default:
+			break;
+		}
 	},
 	
 	/**
@@ -86,14 +95,14 @@ Service = {
 		if(!Util.checkIsString(playerData, "characterName")){
 			return;
 		}
-		Container.player.unit = Service.createUnit(playerData.characterName, Constant.UnitGroup.PLAYER);
+		this.Container.player.unit = Service.createUnit(playerData.characterName, Constant.UnitGroup.PLAYER);
 	},
 	
 	/**
 	 * 获取玩家信息
 	 */
 	getPlayer : function(){
-		return Container.player;
+		return this.Container.player;
 	},
 	
 	/**

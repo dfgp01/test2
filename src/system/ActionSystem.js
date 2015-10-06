@@ -35,7 +35,7 @@ StandActionSystem = ActionSystem.extend({
 });
 
 /**
- * 行走时的动作主系统
+ * 人物行走动作的操作系统
  */
 WalkSystem = ActionSystem.extend({
 	name : "walkSystem",
@@ -97,7 +97,30 @@ WalkSystem = ActionSystem.extend({
 });
 
 /**
- * 通常移动逻辑
+ * 人物行走动作中的移动系统（补充自通常移动逻辑系统）
+ * 这个系统是加在MotionSystem后面的
+ */
+WalkingMotionSystem = ActionSystem.extend({
+	name : "walkingMotionSystem",
+	motionCom : null,
+	
+	start : function(gameObj){
+		gameObj.motionCom.dx = this.motionCom.dx;
+		gameObj.motionCom.dy = this.motionCom.dy;
+	},
+	
+	// 每帧移动公式：
+	// 单位的dx = 单位速度系数 * action的dx  ***要注意的是，gameObj.motionCom的值已经在MotionSystem里计算过了
+	// 例如 dx = 0.8 * 6 = 4.8px
+	// 这个跟通常移动逻辑的公式区别是多了一个单位速度系数
+	update : function(dt, gameObj){
+		gameObj.motionCom.dx *= gameObj.motionCom.speedFactor;
+		gameObj.motionCom.dy *= gameObj.motionCom.speedFactor;
+	},
+});
+
+/**
+ * 通常移动逻辑系统
  */
 MotionSystem = ActionSystem.extend({
 	name : "motionSystem",
