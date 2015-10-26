@@ -6,6 +6,7 @@
 UnitTemplate = cc.Class.extend({
 	
 	name : null,
+	type : 0,
 	featureCode : 0,
 	availableList : null,		//对象池
 	comList : null,			//此单位具有的组件
@@ -14,8 +15,10 @@ UnitTemplate = cc.Class.extend({
 
 	init : function(data){
 		this.name = data.name;
+		this.type = data.type;
 		this.featureCode = data.featureCode;
 		this.availableList = [];
+		this.comList = [];
 		
 		this.actionsCom = new ActionsComponent();
 		this.actionsCom.actions = {};
@@ -26,7 +29,7 @@ UnitTemplate = cc.Class.extend({
 		}*/
 		
 		//运动组件
-		if(this.featureCode & Constant.GameObjectType.motion){
+		if(this.featureCode & Constant.GameObjectFeature.MOTION){
 			var motionCom = new MotionComponent();
 			if(Util.checkIsInt(data, "speedFactor", false)){
 				motionCom.speedFactor = data.speedFactor;
@@ -48,6 +51,10 @@ UnitTemplate = cc.Class.extend({
 		}*/
 	},
 	
+	/**
+	 * 从模板中获取一个新对象
+	 * @returns unit
+	 */
 	getNewInstance : function(){
 		var unit = this.availableList.pop();
 		if(unit == null){
@@ -55,11 +62,12 @@ UnitTemplate = cc.Class.extend({
 			unit.name = this.name;
 			unit.viewCom = new ViewComponent();
 			unit.viewCom.sprite = new cc.Sprite();
-			unit.actionsCom = new ActionsComponent();
+			unit.coms = {};
 			for(var i in this.comList){
 				var name = this.comList[i].name;
 				unit.coms[name] = this.comList[i].clone();
 			}
+			unit.actionsCom = this.actionsCom.clone();
 		}else{
 			//重置所有组件内的数值
 			for(var i in unit.coms){

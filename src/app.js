@@ -21,9 +21,8 @@ var HelloWorldLayer = cc.Layer.extend({
         	y: winSize.height / 2
         });
         this.addChild(bg, 0);
-        
-    	var unit = Service.getPlayer().unit;
-    	var sprite = unit.viewCom.sprite;
+
+    	var sprite = Service.getPlayer().character.viewCom.sprite;
     	sprite.attr({
     		x: 150,
         	y: 250
@@ -79,11 +78,11 @@ var HelloWorldLayer = cc.Layer.extend({
     },
     
     update : function(dt){
-    	SystemManager.update(dt);
+    	Service.mainSystem.update(dt);
     },
     
     updateCustom : function(dt){
-    	SystemManager.update(dt);
+    	MainSystem.update(dt);
     }
 });
 

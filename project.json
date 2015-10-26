@@ -10,6 +10,7 @@
     "cocos2d"
   ],
   "jsList": [
+    "src/Constant.js",
     "src/data/data.js",
     "src/Base.js",
     "src/service/Util.js",
@@ -29,7 +30,6 @@
     "src/ui/Arrows.js",
     "src/ui/ControllerLayer.js",
     "src/resource.js",
-    "src/app.js",
-    "src/Constant.js"
+    "src/app.js"
   ]
 }

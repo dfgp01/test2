@@ -3,27 +3,25 @@
  */
 AnimateSystem = ActionSystem.extend({
 	
-	//引用对应action的animateCom
-	animateCom : null,
-	
 	//这个方法暂时用不上
-	start : function(gameObj){
-		unit.actionsCom.actions.frameIndex = 0;
+	start : function(gameObj, actionCom){
+		gameObj.viewCom.frameIndex = 0;
+		gameObj.viewCom.sprite.setSpriteFrame(this.animateCom.frames[0]);
 	},
-	update : function(dt, gameObj){
+	update : function(dt, gameObj, actionCom){
 		//冷却计时
-		if(unit.viewCom.animaDelayCount < unit.viewCom.animaDelay){
-			unit.viewCom.animaDelayCount += dt;
+		if(gameObj.viewCom.animaDelayCount < gameObj.viewCom.animaDelay){
+			gameObj.viewCom.animaDelayCount += dt;
 			return;
 		}
-		unit.viewCom.animaDelayCount = 0;
+		gameObj.viewCom.animaDelayCount = 0;
 		//播放动画
-		if(unit.actionsCom.frameIndex < this.animateCom.frames.length){
-			unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actionsCom.frameIndex]);
-			unit.actionsCom.frameIndex++;
+		if(gameObj.actionsCom.frameIndex < actionCom.frames.length){
+			gameObj.viewCom.sprite.setSpriteFrame(actionCom.frames[gameObj.actionsCom.frameIndex]);
+			gameObj.actionsCom.frameIndex++;
 		}
 		else{
-			unit.actionsCom.endFlag = true;
+			gameObj.actionsCom.endFlag = true;
 		}
 	}
 });
@@ -32,11 +30,11 @@ AnimateSystem = ActionSystem.extend({
 * 核心系统-动画循环播放
 */
 LoopAnimateSystem = ActionSystem.extend({
-	animateCom : null,
-	start : function(unit, dt){
-		unit.actions.frameIndex = 0;
+	start : function(unit, actionCom){
+		unit.actionsCom.actions.frameIndex = 0;
+		unit.viewCom.sprite.setSpriteFrame(actionCom.frames[0]);
 	},
-	update : function(dt, gameObj){
+	update : function(dt, unit, actionCom){
 		//冷却计时
 		if(unit.viewCom.animaDelayCount < unit.viewCom.animaDelay){
 			unit.viewCom.animaDelayCount += dt;
@@ -44,10 +42,10 @@ LoopAnimateSystem = ActionSystem.extend({
 		}
 		unit.viewCom.animaDelayCount = 0;
 		//播放动画
-		if(unit.actionsCom.frameIndex >= this.animateCom.frames.length){
+		if(unit.actionsCom.frameIndex >= actionCom.frames.length){
 			unit.actionsCom.frameIndex = 0;
 		}
-		unit.viewCom.sprite.setSpriteFrame(this.animateCom.frames[unit.actionsCom.frameIndex]);
+		unit.viewCom.sprite.setSpriteFrame(actionCom.frames[unit.actionsCom.frameIndex]);
 		unit.actionsCom.frameIndex++;
 	}
 });

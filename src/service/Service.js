@@ -5,11 +5,24 @@
 
 Service = {
 
+	//游戏经过时间
+	gameTime : 0,
+	
+	//上一帧剩下的时间数，实际上是小数，取余运算时用整数进行。
+	remainDt : 0.0000,	
+	
+	//主循环最外层系统
+	mainSystem : null,
+	
 	/**
 	 * 游戏经过时间递增
 	 */
 	gameTimeAfter : function(dt){
-		this.Container.gameTime += dt;
+		this.gameTime += dt;
+	},
+	
+	logicTick : function(){
+		return this.GameSetting.logicTick;
 	},
 	
 	/**
@@ -22,26 +35,18 @@ Service = {
 	/**
 	 * 	从指定模板中创建新对象
 	 */
-	createObj : function(tempName){
+	createObj : function(tempName, group){
 		var tmp = this.Container.templates[tempName];
 		if(tmp){
-			return tmp.getNewInstance();
+			var obj = tmp.getNewInstance();
+			obj.actionsCom.firstAct.start(obj);
+			this.Container.objList.push(obj);
+			obj.group = group;
+			return obj;
 		}else{
 			cc.log("template: " + tempName + " not found!");
 			return null;
 		}
-	},
-	
-	/**
-	 * 创建一个新单位，指定模板和组号
-	 */
-	createUnit : function(tempName, group){
-		var unit = this.createObj(tempName);
-		if(unit != null){
-			this.Container.unitList.push(unit);
-			unit.group = group;
-		}
-		return unit;
 	},
 	
 	/**
@@ -70,21 +75,22 @@ Service = {
 		var firstActName = data.actions[0].name;
 		unitTemplate.actionsCom.firstAct = unitTemplate.actionsCom.actions[firstActName];
 		
+		//根据不同种类的游戏对象补充各自的动作系统
+		switch(unitTemplate.type){
+		case Constant.GameObjectType.MONSTER :
+		case Constant.GameObjectType.HERO :
+			Factory.buildCharacterActionSys(unitTemplate.actionsCom.actions);
+			break;
+		default:
+			break;
+		}
+		
 		if(!Util.checkArrayNull(data, "actLamda")){
 			cc.log("initial action & skill link relationship......");
 			for(var i in data.actLamda){
 				cc.log("  initial : " + data.actLamda[i]);
 				this.linkForExpress(null, data.actLamda[i], unitTemplate);
 			}
-		}
-		
-		switch(unitTemplate.type){
-		case Constant.GameObjectType.MONSTER :
-		case Constant.GameObjectType.HERO :
-			Factory.buildCharacterActionSys(unitTemplate);
-			break;
-		default:
-			break;
 		}
 	},
 	
@@ -95,7 +101,7 @@ Service = {
 		if(!Util.checkIsString(playerData, "characterName")){
 			return;
 		}
-		this.Container.player.unit = Service.createUnit(playerData.characterName, Constant.UnitGroup.PLAYER);
+		this.Container.player.character = Service.createObj(playerData.characterName, Constant.UnitGroup.PLAYER);
 	},
 	
 	/**
@@ -106,12 +112,46 @@ Service = {
 	},
 	
 	/**
+	 * 初始化通用动作系统组件
+	 */
+	initActionSystem : function(){
+		Service.Container.animateSystems.normal = new AnimateSystem();
+		Service.Container.animateSystems.loop = new LoopAnimateSystem();
+		Service.Container.actionSystems.stand = new StandActionSystem();
+		Service.Container.actionSystems.walk = new WalkMotionSystem();
+		Service.Container.actionSystems.motion  = new MotionSystem();
+	},
+	
+	/**
+	 * 初始化主系统
+	 */
+	initSystem : function(){
+		var mainSystem = new MainSystem();
+		mainSystem.addSystem(new PlayerSystem());
+		mainSystem.addSystem(new ActionRunSystem());
+		//mainSystem.addSystem(new AnimateRunSystem());
+		mainSystem.addSystem(new MotionRunSystem());
+		mainSystem.start();
+		this.mainSystem = mainSystem;
+	},
+	
+	getActionSystem : function(name){
+		return Service.Container.actionSystems[name];
+	},
+	
+	getAnimateSystem : function(name){
+		return Service.Container.animateSystems[name];
+	},
+	
+	/**
 	 * 全局数据容器，存储所有游戏对象，用于数据共享
 	 */
 	Container : {
 
-			gameTime : 0,	//游戏时间
-
+			//动作动画系统单例存储
+			actionSystems : {},
+			animateSystems : {},
+		
 			//玩家数据
 			player : {
 				character : null,
@@ -134,8 +174,8 @@ Service = {
 	GameSetting : {
 
 			framerate : 60,				//cocos2d默认fps是60
-			logicTick : 0.033,			//逻辑帧fps:30
-			animateTick : 0.041,		//动画帧fps:24
+			logicTick : 0.0333,			//逻辑帧fps:30
+			animateTick : 0.0416,		//动画帧fps:24
 
 			gravity : -2,					//一般重力，一些单位可设置自定义重力
 			maxGravity : -10,			//最大引力

@@ -26,7 +26,7 @@ EffectGroup = Effect.extend({
 				break;
 			}
 		}
-	}
+	},
 	ctor : function(){
 		effectList = [];
 	}

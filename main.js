@@ -59,24 +59,14 @@ cc.game.onStart = function(){
     	cc.spriteFrameCache.addSpriteFrames(res.deep_2_plist);
     	
     	//system init
+    	Service.initActionSystem();
     	Service.initUnitTemplate(character_data);
     	Service.initPlayer();
-    	var actSys = new ActionRunSystem();
-    	var aniSys = new AnimateRunSystem();
-        var playerSys = new PlayerSystem();
-        var motionRunSys = new MotionRunSystem();
-        playerSys.target = Service.getPlayer().unit;
-        MainSystem.addSystem(playerSys);
-        MainSystem.addSystem(actSys);
-        MainSystem.addSystem(aniSys);
-        MainSystem.addSystem(motionRunSys);
-        MainSystem.start();
+    	Service.initSystem();
         
         var scene = new cc.Scene();
-        var mainLayer = new HelloWorldLayer();
-        var controllerLayer = new ControllerLayer();
-        scene.addChild(mainLayer);
-        scene.addChild(controllerLayer);
+        scene.addChild(new HelloWorldLayer());
+        scene.addChild(new ControllerLayer());
         cc.director.runScene(scene);
         //cc.director.runScene(new HelloWorldScene());
     }, this);

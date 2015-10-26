@@ -35,3 +35,4 @@ StopAtLastEffect = Effect.extend({
 	run : function(unit){
 		
 	}
+});

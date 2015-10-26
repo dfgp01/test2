@@ -25,6 +25,11 @@ Constant = {
 		RELEASE : 7,
 		ATTACK : 8
 	},
+	ACTION_SYSTEM : {
+		STAND : "stand",
+		WALK : "walk",
+		MOTION : "motion"
+	},
 	CMD : {
 		UP : 128,
 		DOWN : 64,
@@ -40,7 +45,7 @@ Constant = {
 		NONE : 0,
 		PLAYER : 1,
 		FRIEND : 2,
-		ENEMY : 3
+		ENEMY : 4
 	},
 	GameObjectType : {
 		NONE : 0,				//无
@@ -66,7 +71,18 @@ Constant = {
 		SUMMON : 8,			//会放出其他单位的，如子弹、召唤物、魔法阵等
 		CONSUME : 16,			//消耗MP、HP之类的，或组合式，用二进制就对了
 		ETC : 32
-	}
+	},
+	Tick : {
+		FPS60 : 0.0166,
+		FPS48 : 0.02,
+		FPS36 : 0.027,
+		FPS30 : 0.0333,
+		FPS24 : 0.041,
+		FPS20 : 0.05,
+		FPS12 : 0.083,
+		FPS10 : 0.1,
+		FPS05 : 0.2
+	},
 };
 
 

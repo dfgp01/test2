@@ -68,6 +68,7 @@ ActionsComponent = Component.extend({
 		com.actions = this.actions;
 		com.nodes = this.nodes;
 		com.state = this.state;
+		return com;
 	}
 });
 

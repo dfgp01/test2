@@ -6,7 +6,15 @@ ControllerLayer = cc.Layer.extend({
 	arrowsSprite : null,
 	closeSprite : null,
 	attSpRect : null,
+	playerSys : null,
 	ctor : function(){
+		for(var i in Service.mainSystem.systemList){
+			var sys = Service.mainSystem.systemList[i];
+			if(sys.name == "player"){
+				this.playerSys = sys;
+				break;
+			}
+		}
 		this._super();
 		var winSize = cc.winSize;
 		
@@ -31,14 +39,15 @@ ControllerLayer = cc.Layer.extend({
         this.addChild(menu, 9);
 	        
         //arrows
-        Arrows.init(100, 100);
-        this.addChild(Arrows.sprite, 5);
+        arrowsSprite = new cc.Sprite(res.arrows);
+        Arrows.init(arrowsSprite, 100, 100);
+        this.addChild(arrowsSprite, 5);
         
         //因为sprite的注册点在中间，但矩形的起始点从左下角开始算，被这个坑得很惨
         this.arrowsRect = cc.rect(
-        		Arrows.sprite.getPositionX() - Arrows.sprite.width * 0.5,
-        		Arrows.sprite.getPositionY() - Arrows.sprite.height * 0.5,
-        		Arrows.sprite.width, Arrows.sprite.height);
+        		arrowsSprite.getPositionX() - arrowsSprite.width * 0.5,
+        		arrowsSprite.getPositionY() - arrowsSprite.height * 0.5,
+        		arrowsSprite.width, arrowsSprite.height);
         
         var attButton = new cc.Sprite(res.button);
         attButton.attr({
@@ -63,7 +72,8 @@ ControllerLayer = cc.Layer.extend({
         	onTouchBegan: function (touch, event) {
         		var location = touch.getLocation();
         		if(cc.rectContainsPoint(selfPointer.arrowsRect, location)){
-        			Arrows.press(touch);
+        			Arrows.press(selfPointer.arrowsSprite.convertToNodeSpace(location));
+        			this.playerSys.pressDirection(this.cmd);
         			return true;
         		}
         		else if(cc.rectContainsPoint(selfPointer.attSpRect, location)){
@@ -74,6 +84,7 @@ ControllerLayer = cc.Layer.extend({
         	//onTouchMoved: function (touch, event) {},
         	onTouchEnded: function (touch, event) {
         		Arrows.release();
+        		this.playerSys.releaseKey(Constant.CMD.ALL_DIRECTION);
         	}
         });
         cc.eventManager.addListener(listener, this);
