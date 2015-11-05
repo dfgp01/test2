@@ -4,7 +4,7 @@
 System = cc.Class.extend({
 	name : null,
 	priority : 0,
-	tick : Constant.Tick.FPS60,
+	tick : Constant.Tick.FPS60,			//不能少于这个数
 	remainDt : 0,
 	prep : null,
 	next : null,
@@ -29,12 +29,7 @@ MainSystem = System.extend({
 		update : function(dt){
 			//dt = Math.floor(dt * 10000) / 10000);	保留4位小数的办法
 			//dt = dt.toFixed(4)			另一种保留4位小数，第4位会四舍五入，但类型会变为string
-			//逻辑帧时长控制
 			Service.gameTimeAfter(dt);
-			/*Service.remainDt += dt;
-			if(Service.remainDt < Service.logicTick()){
-				return;
-			}*/
 			for(var i in this.systemList){
 				this._currSys = this.systemList[i];
 				this._currSys.remainDt += dt;
@@ -42,14 +37,11 @@ MainSystem = System.extend({
 					//cc.log("  break " + this._currSys.remainDt);
 				}else{
 					//这里传入的时间是tick，这样可以保证匀速进行
+					//cc.log("update " + this._currSys.remainDt);
 					this._currSys.update(this._currSys.tick);
 					this._currSys.remainDt = this._currSys.remainDt - this._currSys.tick;
 				}
 			}
-			//Service.remainDt = 0;
-			//Service.remainDt / Service.logicTick() 是含小数的倍数，不是整除，因此不用累计余数
-			//Service.remainDt = Service.remainDt % Service.logicTick();
-			//cc.log("time: " + Service.Container.gameTime);
 		},
 
 		end : function(){
@@ -100,10 +92,6 @@ ActionRunSystem = System.extend({
 		this.objList = Service.getAllObjects();
 	},
 	update : function(dt){
-		/*this._remainDt += dt;
-		if(this._remainDt < this.tick){
-			return;
-		}*/
 		for(var i in this.objList){
 			this._currObj = this.objList[i];
 			this._currObj.actionsCom.currAction.run(dt, this._currObj);
@@ -113,7 +101,6 @@ ActionRunSystem = System.extend({
 				this._currObj.actionsCom.nextAction = null;
 			}
 		}
-		//this._remainDt = this._remainDt - this.tick;
 	},
 	end : function(){
 		//remove

@@ -129,7 +129,7 @@ Service = {
 		var mainSystem = new MainSystem();
 		mainSystem.addSystem(new PlayerSystem());
 		mainSystem.addSystem(new ActionRunSystem());
-		//mainSystem.addSystem(new AnimateRunSystem());
+		mainSystem.addSystem(new AnimateRunSystem());
 		mainSystem.addSystem(new MotionRunSystem());
 		mainSystem.start();
 		this.mainSystem = mainSystem;
