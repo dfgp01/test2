@@ -50,6 +50,7 @@ ViewComponent = Component.extend({
 	//animaDelay : 0.1,
 	//animaDelayCount : 0,
 	groundY : 0,			//在地上的Y值，用于空中状态落地判断
+	frameIndex : 0,
 	sprite : null
 });
 
@@ -58,22 +59,21 @@ ViewComponent = Component.extend({
  */
 ActionsComponent = Component.extend({
 	name : "actions",
-	frameIndex : 0,
 	repeatFlag : 0,
 	endFlag : false,
-	firstAct : null,
-	currAction : null,
-	actions : null,
+	phase : 0,
+	first : null,
+	current : null,
+	names : null,
 	nodes : null,			//动作状态节点，树状存储，key为action.key值
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
 	clone : function(){
 		var com = new ActionsComponent();
-		com.frameIndex = this.frameIndex;
 		com.repeatFlag = this.repeatFlag;
 		com.endFlag = this.endFlag;
-		com.firstAct = this.firstAct;
-		com.currAction = this.currAction;
-		com.actions = this.actions;
+		com.first = this.first;
+		com.current = this.current;
+		com.names = this.names;
 		com.nodes = this.nodes;
 		com.state = this.state;
 		return com;
@@ -85,7 +85,7 @@ ActionsComponent = Component.extend({
  */
 HitPropertiesComponent = Component.extend({
 	strength : 0,
-	attSpeedFactor : 0
+	speedFactor : 0
 });
 
 /**
