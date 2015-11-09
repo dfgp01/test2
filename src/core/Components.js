@@ -23,7 +23,15 @@ ChargeComponent = Component.extend({
  */
 CollideComponent = Component.extend({
 	rect : null,
-	target : 0,
+	maxNum : 0,
+	list : [],		//本次中招的人记录在这里 -_-0
+	history : [],	//之前中招的人记录在这里 -_-0
+	flag : false,	//是否已碰撞成功，撞到一个也算
+	target : 0
+});
+
+HitComponent = Component.extend({
+	damage : 0,
 	type : 0
 });
 
