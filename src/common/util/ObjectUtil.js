@@ -2,13 +2,14 @@
  *	工具类（修改过的）
  */
 
-Util = {
+ObjectUtil = {
 
 		/**
 		 * 	取得对象数据值
 		 */
 		getValue : function(data, fieldName){
-			var field = 0;
+			var field = null;
+			//如果参数fieldName没有输入，则直接返回data
 			if(fieldName){
 				field = data[fieldName];
 			}else{

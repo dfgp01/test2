@@ -9,7 +9,7 @@ UnitTemplate = cc.Class.extend({
 	type : 0,
 	featureCode : 0,
 	availableList : null,		//对象池
-	comList : null,			//此单位具有的组件
+	//comList : null,			//此单位具有的组件，*尝试使用遍历对象的方式
 
 	actionsCom : null,		//动作逻辑组件是必须有的
 

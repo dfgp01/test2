@@ -8,8 +8,10 @@ Factory = {
 		 */
 		createUnitTemplate : function(data){
 
-			if(!Util.checkNotNull(data) || !Util.checkIsString(data, "res") || !Util.checkIsString(data, "name")){
-				cc.log("create Unit error, lack of necessary data!");
+			//必要性检查
+			// !Util.checkIsString(data, "res") 这个检查不应该写在这里，应该有个统一的资源表要填
+			if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
+				cc.log("create Unit error, lack of necessary data! data is null or noname.");
 				return null;
 			}
 			if(!Util.checkIsInt(data, "type")){
@@ -28,7 +30,7 @@ Factory = {
 		},
 
 		/**
-		 * 创建一个动作节点，并存到模板中
+		 * 创建一个动作节点
 		 */
 		createActionState : function(data, template){
 			
@@ -48,27 +50,16 @@ Factory = {
 			actionState.coms = {};
 			cc.log("creating action:[" + data.name + "].");
 			
-			//设置key和默认key
-			if(Util.checkIsString(data,"key")){
-				actionState.key = data.key;
-			}else{
-				actionState.key = Constant.DIRECT_CHILDNODE;
-			}
-			
-			if(Util.checkIsInt(data,"state")){
-				actionState.state = data.state;
-			}else{
-				actionState.state = 0;
-			}
-			
+			//设置key
+			actionState.key = Util.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
+			//设置状态
+			actionState.state = Util.checkIsInt(data,"state") == true ? data.state : 0;
 			
 			//初始化动画组件系统
 			this.buildAnimateSys(data.animate, actionState);
-			
 			//初始化动作组件系统
 			this.buildActionSys(data, actionState);
-			
-			template.actionsCom.actions[actionState.name] = actionState;
+
 			return actionState;
 		},
 		
@@ -88,27 +79,21 @@ Factory = {
 				}
 			}
 			animateComponent.frames = list;
+			animateComponent.type = Util.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
+			action.coms.animate = animateComponent;
 			
-			if(Util.checkIsInt(animate, "type")){
-				animateComponent.type = parseInt(animate.type);
-			}else{
-				animateComponent.type = 0;
-			}
-
-			var animateSystem = null;
 			switch(animateComponent.type){
 			case Constant.ANIMATE_TYPE.NORMAL:
-				animateSystem = Service.Container.animateSystems.normal;
+				action.animateSystem = Service.Container.animateSystems.normal;
 				break;
 			case Constant.ANIMATE_TYPE.LOOP:
-				animateSystem = Service.Container.animateSystems.loop;
+				action.animateSystem = Service.Container.animateSystems.loop;
 				break;
 			default :
-				animateSystem = Service.Container.animateSystems.normal;
+				action.animateSystem = Service.Container.animateSystems.normal;
 				break;
 			}
 			action.coms.animate = animateComponent;
-			action.animateSystem = animateSystem;
 		},
 		
 		/**

@@ -9,7 +9,7 @@ Service = {
 	gameTime : 0,
 	
 	//上一帧剩下的时间数，实际上是小数，取余运算时用整数进行。
-	remainDt : 0.0000,	
+	remainDt : 0.0000,
 	
 	//主循环最外层系统
 	mainSystem : null,
@@ -50,17 +50,17 @@ Service = {
 	},
 	
 	/**
-	 * 从对象池中获得对象引用
-	 */
-	popUnitFromPool : function(){
-		return GameObjPool.popUnit();
-	},
-	
-	/**
 	 * 初始化单位设置，构建对象
 	 */
 	initUnitTemplate : function(data){
-		if(!this.checkCharacterDataRight(data)){
+		
+		//必要性检查
+		if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
+			cc.log("create Character error, lack of necessary data! data is null or no name.");
+			return;
+		}
+		if(!Util.checkIsArray(data, "actions")){
+			cc.log("create Character error, must has actions!");
 			return;
 		}
 		
@@ -70,8 +70,11 @@ Service = {
 		
 		cc.log("initial actions data......");
 		for(var i in data.actions){
-			Factory.createActionState(data.actions[i], unitTemplate);
+			var act = Factory.createActionState(data.actions[i]);
+			unitTemplate.actionsCom.actions[act.name] = act;
 		}
+		
+		//默认第一个action就是初始动作
 		var firstActName = data.actions[0].name;
 		unitTemplate.actionsCom.firstAct = unitTemplate.actionsCom.actions[firstActName];
 		
@@ -136,15 +139,15 @@ Service = {
 	},
 	
 	getActionSystem : function(name){
-		return Service.Container.actionSystems[name];
+		return this.Container.actionSystems[name];
 	},
 	
 	getAnimateSystem : function(name){
-		return Service.Container.animateSystems[name];
+		return this.Container.animateSystems[name];
 	},
 	
 	/**
-	 * 全局数据容器，存储所有游戏对象，用于数据共享
+	 * 全局数据容器，存储所有游戏对象，用于数据共享，方便对象间的访问
 	 */
 	Container : {
 
@@ -177,7 +180,7 @@ Service = {
 			logicTick : 0.0333,			//逻辑帧fps:30
 			animateTick : 0.0416,		//动画帧fps:24
 
-			gravity : -2,					//一般重力，一些单位可设置自定义重力
+			gravity : -2,				//一般重力，一些组件可设置自定义重力
 			maxGravity : -10,			//最大引力
 
 			//单位移动时，Y轴与X轴的相对速度比
@@ -194,26 +197,11 @@ Service = {
 };
 
 /**
- * 检查character是否满足可构建必要条件
- */
-Service.checkCharacterDataRight = function(data){
-	if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
-		cc.log("create Character error, lack of necessary data!");
-		return false;
-	}
-	if(!Util.checkIsArray(data, "actions")){
-		cc.log("create Character error, must has actions!");
-		return false;
-	}
-	return true;
-};
-
-/**
  * 根据lamda表达式构建动作链，最初版本
  * ( )括号=子表达式，里面只能填单向链，不支持嵌套表达式
  * { }花括号=分支，里面只能填多个act名，不支持嵌套表达式，不支持后续，意味着只能做表达式终点
  */
-Service.linkForExpress = function(node, strExpress, template){
+/*Service.linkForExpress = function(node, strExpress, template){
 	//检查是否含有子表达式"[ ]"
 	if(strExpress.charAt(0)=="["){
 		var end = strExpress.indexOf("]");
@@ -230,7 +218,7 @@ Service.linkForExpress = function(node, strExpress, template){
 		for(var i in actNameArr){
 			var act = template.actionsCom.actions[actNameArr[i]];
 			if(!act){
-				cc.log("action: " + actNameArr[i] + " not found! please check the lamda express.");
+				cc.log("action: " + actNameArr[i] + " not found! please check the express.");
 				return;
 			}
 			actList.push(act);
@@ -291,7 +279,7 @@ Service.linkForExpress = function(node, strExpress, template){
 		var suffixStr = strExpress.substring(s+1);
 		this.linkForExpress(act, suffixStr, template);	//继续递归
 	}
-};
+};*/
 
 Service.linkNode = function(node1, node2){
 	if(node1==null){
