@@ -59,7 +59,7 @@ ActionUtil = {
 	 * {} 子表达式，用于分支动作，里面只能填入多个act，用逗号分隔，暂不支持嵌套。
 	 * 		例子：act1>{act2,act3,act4}>act5 --效果 act1下有三个分支act2,act3,act4，而这三个分支都有act5作为后继节点
 	 */
-	linkForExpress : function(node, strExpress, actions){
+	linkForExpress2222 : function(node, strExpress, actions){
 		//检查是否含有子表达式"[ ]"
 		if(strExpress.charAt(0)=="["){
 			var end = strExpress.indexOf("]");
@@ -137,6 +137,137 @@ ActionUtil = {
 			var suffixStr = strExpress.substring(s+1);
 			//继续递归
 			this.linkForExpress(act, suffixStr, template);
+		}
+	},
+	
+	linkForExpress : function(strExpress, actions){
+
+		var thisNode,head,rear;
+		var nextExp;
+
+		//检查开头是否含有子表达式"[ ]"
+		if(strExpress.charAt(0)=="["){
+			var end = strExpress.indexOf("]");
+			nextExp = strExpress.substring(end+1);		// []> 后的表达式，进行后续运算
+			
+			var subExp = strExpress.substring(1, end);	// [ ] 内的子表达式，进行递归计算
+			var arr = subExp.split(",");	//将 [a1>an,x] 中的前表达式和重复标记分开
+			var actNames = arr[0].split(">");
+			if(actNames){
+				//根据表达式[]的规则，如果是数组，则依次从左往右连接
+				thisNode = this._findByName(actNames, actions);
+				for(var i=0; i<thisNode.length-1; i++){
+					this.linkNode(thisNode[i], thisNode[i+1]);
+				}
+				//指定头尾节点，用于递归连接
+				head = thisNode[0];
+				rear = thisNode[thisNode.length-1];
+			}else{
+				//arr[0]不是数组就是一个字符串
+				head = rear = thisNode = this._findByName(arr[0], actions);
+			}
+			//arr[1]	重复动作现在暂时不做
+		}
+		//检查开头是否含有子表达式"{ }"
+		else if(strExpress.charAt(0)=="{"){
+			var end = strExpress.indexOf("}");
+			nextExp = strExpress.substring(end+1);		// {}> 后的表达式，进行后续运算
+			
+			var subExp = strExpress.substring(1, end);	// { } 内的子表达式，进行递归计算
+			var actNames = subExp.split(",");	//将 {a1,a2,ax} 中的元素分开
+			if(actNames){
+				thisNode = this._findByName(actNames, actions);
+			}else{
+				//不是数组，只有一个actName
+				thisNode = this._findByName(subExp, actions);
+			}
+			//根据表达式{}的规则，所有action都要参与递归连接
+			head = rear = thisNode;
+		}
+		//剩下的一种情况就是action名了
+		else{
+			end = strExpress.length - 1;
+			var index = strExpress.indexOf("<");
+			if(index < 0){
+				//表达式已到达末尾
+				thisNode = this._findByName(strExpress, actions);
+				next = "";
+			}else{
+				thisNode = this._findByName(strExpress.substring(0, index), actions);
+				next = strExpress.substring(end+1);			//> 后的表达式，进行后续运算
+			}
+			head = rear = thisNode;
+		}
+
+		//尾部节点进行递归运算是重要的一环。
+		this.linkNode(rear, 
+				this.linkForExpress(nextExp, actions));
+		//返回头部节点作为上一层递归的重要参数
+		return head;
+	},
+	
+	//返回的是一个action实例或者action数组
+	_findByName : function(name, actions){
+		//如果是数组
+		if(!Util.checkArrayNull(name)){
+			var arr = [];
+			for(var i in name){
+				var act = actions[name[i]];
+				if(!act){
+					break;
+				}
+				arr.push(act);
+			}
+			return arr;
+		}
+		//如果是一个字符串
+		if(Util.checkIsString(name)){
+			var act = actions[name];
+			return act;
+		}
+	},
+	
+	/**
+	 * 两个参数都可以是action数组或者action实例
+	 */
+	linkNode = function(node1, node2){
+		//node1是数组
+		if(!Util.checkArrayNull(node1)){
+			//node2是数组,一般很少会有这种极端情况吧
+			if(!Util.checkArrayNull(node2)){
+				for(var i in node1){
+					for(var j in node2){
+						node1[i].addChild(node2[j]);
+					}
+				}
+			}
+			//node2不是数组
+			else if(!Util.checkNotNull(node2)){
+				for(var i in node1){
+					node1[i].addChild(node2);
+				}
+			}
+			//node2为空
+			else{
+				return;
+			}
+		}
+		//node1不是数组
+		else if(!Util.checkNotNull(node1)){
+			//node2是数组,这种情况应该会比较多
+			if(!Util.checkArrayNull(node2)){
+				for(var i in node2){
+					node1.addChild(node2[i]);
+				}
+			}
+			//node2不是数组
+			else if(!Util.checkNotNull(node2)){
+				node1.addChild(node2);
+			}
+		}
+		//node1为空
+		else{
+			return;
 		}
 	}
 };
