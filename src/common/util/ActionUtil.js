@@ -155,7 +155,7 @@ ActionUtil = {
 			var actNames = arr[0].split(">");
 			if(actNames){
 				//根据表达式[]的规则，如果是数组，则依次从左往右连接
-				thisNode = this._findByName(actNames, actions);
+				thisNode = this.findByName(actNames, actions);
 				for(var i=0; i<thisNode.length-1; i++){
 					this.linkNode(thisNode[i], thisNode[i+1]);
 				}
@@ -164,7 +164,7 @@ ActionUtil = {
 				rear = thisNode[thisNode.length-1];
 			}else{
 				//arr[0]不是数组就是一个字符串
-				head = rear = thisNode = this._findByName(arr[0], actions);
+				head = rear = thisNode = this.findByName(arr[0], actions);
 			}
 			//arr[1]	重复动作现在暂时不做
 		}
@@ -176,10 +176,10 @@ ActionUtil = {
 			var subExp = strExpress.substring(1, end);	// { } 内的子表达式，进行递归计算
 			var actNames = subExp.split(",");	//将 {a1,a2,ax} 中的元素分开
 			if(actNames){
-				thisNode = this._findByName(actNames, actions);
+				thisNode = this.findByName(actNames, actions);
 			}else{
 				//不是数组，只有一个actName
-				thisNode = this._findByName(subExp, actions);
+				thisNode = this.findByName(subExp, actions);
 			}
 			//根据表达式{}的规则，所有action都要参与递归连接
 			head = rear = thisNode;
@@ -190,24 +190,24 @@ ActionUtil = {
 			var index = strExpress.indexOf("<");
 			if(index < 0){
 				//表达式已到达末尾
-				thisNode = this._findByName(strExpress, actions);
+				thisNode = this.findByName(strExpress, actions);
 				next = "";
 			}else{
-				thisNode = this._findByName(strExpress.substring(0, index), actions);
+				thisNode = this.findByName(strExpress.substring(0, index), actions);
 				next = strExpress.substring(end+1);			//> 后的表达式，进行后续运算
 			}
 			head = rear = thisNode;
 		}
 
 		//尾部节点进行递归运算是重要的一环。
-		this.linkNode(rear, 
+		this.linkNode(rear,
 				this.linkForExpress(nextExp, actions));
 		//返回头部节点作为上一层递归的重要参数
 		return head;
 	},
 	
 	//返回的是一个action实例或者action数组
-	_findByName : function(name, actions){
+	findByName : function(name, actions){
 		//如果是数组
 		if(!Util.checkArrayNull(name)){
 			var arr = [];
@@ -230,7 +230,7 @@ ActionUtil = {
 	/**
 	 * 两个参数都可以是action数组或者action实例
 	 */
-	linkNode = function(node1, node2){
+	linkNode : function(node1, node2){
 		//node1是数组
 		if(!Util.checkArrayNull(node1)){
 			//node2是数组,一般很少会有这种极端情况吧

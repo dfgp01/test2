@@ -14,7 +14,8 @@ var res = {
 		arrows : "res/arrows.png",
 		button : "res/button.png",
 		//background_png : "res/BackGround.png",
-		background2_jpg : "res/BackGround2.jpg",
+		//background2_jpg : "res/BackGround2.jpg",
+		background2_jpg : "res/BackGround3.png",
 		CloseNormal_png : "res/CloseNormal.png",
 		CloseSelected_png : "res/CloseSelected.png"
 };
