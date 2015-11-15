@@ -4,7 +4,7 @@ playerData = {
 };
 
 //stand is first act for all unit
-character = {
+characterData = {
 	name : "deep",
 	res : "deep",
 	type : 2,
@@ -98,12 +98,17 @@ character = {
 			}
 		}
 	],
-	actLamda : [	//lamda表达式：> + - [] () , 随便起的名字 -_-
+	/*actLamda : [	//lamda表达式：> + - [] () , 随便起的名字 -_-
 	        "[attack>attack2,1]>attack3",
 	        "crossCutA>crossCutB>crossCutC",
 	        "roundCutA>{roundCutA,roundCutB}",
 	        "roundCutB>{roundCutA,roundCutB}"
-	]
+	],*/
+	actLamda : [
+	            "attack>{attack2,crossCutA}>{attack3,crossCutB}>crossCutC",
+	],
+	baseAct : ["attack"]
+	//baseAct : ["roundCutA", "roundCutB"]
 };
 
 

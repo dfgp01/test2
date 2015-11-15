@@ -55,11 +55,11 @@ Service = {
 	initUnitTemplate : function(data){
 		
 		//必要性检查
-		if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
+		if(!ObjectUtil.checkNotNull(data) || !ObjectUtil.checkIsString(data, "name")){
 			cc.log("create Character error, lack of necessary data! data is null or no name.");
 			return;
 		}
-		if(!Util.checkIsArray(data, "actions")){
+		if(!ObjectUtil.checkIsArray(data, "actions")){
 			cc.log("create Character error, must has actions!");
 			return;
 		}
@@ -88,12 +88,20 @@ Service = {
 			break;
 		}
 		
-		if(!Util.checkArrayNull(data, "actLamda")){
+		if(!ObjectUtil.checkArrayNull(data, "actLamda")){
 			cc.log("initial action & skill link relationship......");
 			for(var i in data.actLamda){
 				cc.log("  initial : " + data.actLamda[i]);
-				this.linkForExpress(null, data.actLamda[i], unitTemplate);
+				ActionUtil.linkForExpress(data.actLamda[i], unitTemplate.actionsCom.actions);
 			}
+			//临时临时
+			var li = ActionUtil.findByNames(data.baseAct, unitTemplate.actionsCom.actions);
+			for(var i in li){
+				unitTemplate.actionsCom.baseAct[li[i].name] = li[i];
+			}
+			//ActionUtil.childrenShow(unitTemplate.actionsCom.actions);
+			ActionUtil.treeMap([], unitTemplate.actionsCom.baseAct, "");
+			cc.log(" lamda express finish.");
 		}
 	},
 	
@@ -101,10 +109,10 @@ Service = {
 	 * 初始化玩家配置
 	 */
 	initPlayer : function(){
-		if(!Util.checkIsString(playerData, "characterName")){
+		if(!ObjectUtil.checkIsString(playerData, "unit")){
 			return;
 		}
-		this.Container.player.character = Service.createObj(playerData.characterName, Constant.UnitGroup.PLAYER);
+		this.Container.player.character = Service.createObj(playerData.unit, Constant.UnitGroup.PLAYER);
 	},
 	
 	/**

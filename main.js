@@ -60,7 +60,7 @@ cc.game.onStart = function(){
     	
     	//system init
     	Service.initActionSystem();
-    	Service.initUnitTemplate(character_data);
+    	Service.initUnitTemplate(characterData);
     	Service.initPlayer();
     	Service.initSystem();
         

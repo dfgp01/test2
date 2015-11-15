@@ -22,6 +22,7 @@ UnitTemplate = cc.Class.extend({
 		
 		this.actionsCom = new ActionsComponent();
 		this.actionsCom.actions = {};
+		this.actionsCom.baseAct = {};
 
 		//动画组件，暂时作废
 		/*if(this.featureCode & Constant.GameObjectType.animate){
@@ -31,7 +32,7 @@ UnitTemplate = cc.Class.extend({
 		//运动组件
 		if(this.featureCode & Constant.GameObjectFeature.MOTION){
 			var motionCom = new MotionComponent();
-			if(Util.checkIsInt(data, "speedFactor", false)){
+			if(ObjectUtil.checkIsInt(data, "speedFactor", false)){
 				motionCom.speedFactor = data.speedFactor;
 			}else{
 				motionCom.speedFactor = 1;
@@ -45,7 +46,7 @@ UnitTemplate = cc.Class.extend({
 		
 		//数据上配置的速度指的是x轴的速度，y轴速度一般比x轴要小一些百分比
 		//这些通用设置可以在GameSetting类中找到
-		/*if(Util.checkIsNumber(data, "walkSpeed", true)){
+		/*if(ObjectUtil.checkIsNumber(data, "walkSpeed", true)){
 			this.speedCom.dx = data.walkSpeed * GameSetting.unitSpeedFactor.walkX;
 			this.speedCom.dy = data.walkSpeed * GameSetting.unitSpeedFactor.walkY;
 		}*/

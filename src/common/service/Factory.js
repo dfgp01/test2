@@ -9,16 +9,16 @@ Factory = {
 		createUnitTemplate : function(data){
 
 			//必要性检查
-			// !Util.checkIsString(data, "res") 这个检查不应该写在这里，应该有个统一的资源表要填
-			if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name")){
+			// !ObjectUtil.checkIsString(data, "res") 这个检查不应该写在这里，应该有个统一的资源表要填
+			if(!ObjectUtil.checkNotNull(data) || !ObjectUtil.checkIsString(data, "name")){
 				cc.log("create Unit error, lack of necessary data! data is null or noname.");
 				return null;
 			}
-			if(!Util.checkIsInt(data, "type")){
+			if(!ObjectUtil.checkIsInt(data, "type")){
 				cc.log("create UnitTemplate error, field:type must int.");
 				return null;
 			}
-			if(!Util.checkNotNull(data, "actions")){
+			if(!ObjectUtil.checkNotNull(data, "actions")){
 				cc.log("create UnitTemplate error, must has actions.");
 				return null;
 			}
@@ -34,12 +34,12 @@ Factory = {
 		 */
 		createActionState : function(data, template){
 			
-			if(!Util.checkNotNull(data) || !Util.checkIsString(data, "name", true)){
+			if(!ObjectUtil.checkNotNull(data) || !ObjectUtil.checkIsString(data, "name", true)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
 
-			if(!Util.checkNotNull(data, "animate") && Util.checkArrayNull(data.animate, "frames")){
+			if(!ObjectUtil.checkNotNull(data, "animate") && ObjectUtil.checkArrayNull(data.animate, "frames")){
 				cc.log("createActionState:" + data.name + " error, animate or animate.frames not found!");
 				return null;
 			}
@@ -51,9 +51,9 @@ Factory = {
 			cc.log("creating action:[" + data.name + "].");
 			
 			//设置key
-			actionState.key = Util.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
+			actionState.key = ObjectUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
 			//设置状态
-			actionState.state = Util.checkIsInt(data,"state") == true ? data.state : 0;
+			actionState.state = ObjectUtil.checkIsInt(data,"state") == true ? data.state : 0;
 			
 			//初始化动画组件系统
 			this.buildAnimateSys(data.animate, actionState);
@@ -79,7 +79,7 @@ Factory = {
 				}
 			}
 			animateComponent.frames = list;
-			animateComponent.type = Util.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
+			animateComponent.type = ObjectUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
 			action.coms.animate = animateComponent;
 			
 			switch(animateComponent.type){
@@ -101,19 +101,19 @@ Factory = {
 		 */
 		buildActionSys : function(data, action){
 			var code = 0;
-			if(Util.checkIsInt(data, "featureCode")){
+			if(ObjectUtil.checkIsInt(data, "featureCode")){
 				code = data.featureCode;
 			}
-			if(Util.checkNotNull(data, "motion")){
+			if(ObjectUtil.checkNotNull(data, "motion")){
 				var motionCom = new MotionComponent();
 				//数据上的增量是每秒移动的距离
 				motionCom.dx = data.motion.dx;
 				motionCom.dy = data.motion.dy;
 				action.coms[motionCom.name] = motionCom;
-				action.addSystem(
+				ActionUtil.addSystem(action,
 						Service.Container.actionSystems.motion);
 			}
-			if(Util.checkNotNull(data, "attack")){
+			if(ObjectUtil.checkNotNull(data, "attack")){
 				
 			}
 		},
@@ -125,12 +125,12 @@ Factory = {
 			var standAct = actions.stand;
 			if(standAct){
 				//增加人物空闲时的控制系统
-				standAct.addSystem(Service.Container.actionSystems.stand);
+				ActionUtil.addSystem(standAct, Service.Container.actionSystems.stand);
 			}
 			var walkAct = actions.walk;
 			if(walkAct){
 				//将角色的一般运动系统改为受速度系数影响的运动系统
-				walkAct.replaceSystem("motion", Service.Container.actionSystems.walk);
+				ActionUtil.replaceSystem(walkAct, "motion", Service.Container.actionSystems.walk);
 			}
 			return;
 		}

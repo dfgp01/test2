@@ -27,6 +27,7 @@ ActionsComponent = Component.extend({
 	names : null,
 	nodes : null,			//动作状态节点，树状存储，key为action.key值
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
+	baseAct : null,	//临时变量
 	clone : function(){
 		var com = new ActionsComponent();
 		com.repeatFlag = this.repeatFlag;
