@@ -33,6 +33,13 @@ Service = {
 	},
 	
 	/**
+	 * 根据名称和id号的联合串获取缓存中的对象
+	 */
+	findObj : function(nameId){
+		return this.Container.units[nameId];
+	},
+	
+	/**
 	 * 	从指定模板中创建新对象
 	 */
 	createObj : function(tempName, group){

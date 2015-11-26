@@ -20,7 +20,7 @@ UnitCallback = cc.Class.extend({
 	 * 所有可以被攻击的单位都会有这个callback
 	 */
 	hurt : function(content){
-		var source = content.source.id;
-		var target = content.target;
+		var type = content.type;
+		var target = Service.findObj(content.target);
 	}
 });
