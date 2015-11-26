@@ -161,3 +161,24 @@ MotionRunSystem = System.extend({
 		}
 	}
 });
+
+/**
+ * 事件分发系统
+ */
+EventDispatchSystem = System.extend({
+	name : "eventDispatchSystem",
+	_currMsg : null,
+	update : function(dt){
+		while(_currMsg = quene.shift()){
+			switch(_currMsg.category){
+			case Constant.MsgCategory.SYS:
+			case Constant.MsgCategory.UNIT:
+			}
+		}
+	},
+	
+	addListener : function(name, callback){
+		cc.eventManager.addCustomListener(name, callback);
+		//cc.eventManager.dispatchCustomEvent("xxxxxevent", {a:1,b:2});		//发送方式
+	}
+});

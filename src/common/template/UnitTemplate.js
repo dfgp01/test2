@@ -2,6 +2,7 @@
  *  单位模板，相当于单位的制造工厂，以便于对象根据初始数值重新初始化
  *  因为每个模板对应一种单位，每种单位特征各不相同，所以也应该包含对象池
  *  edit by Hugo-Fu 2015.10.05
+ *  update by Hugo-Fu 2015.11.26	加入ID递增，放入Service缓存
  */
 UnitTemplate = cc.Class.extend({
 	
@@ -12,6 +13,8 @@ UnitTemplate = cc.Class.extend({
 	//comList : null,			//此单位具有的组件，*尝试使用遍历对象的方式
 
 	actionsCom : null,		//动作逻辑组件是必须有的
+	
+	nextId : 1,
 
 	init : function(data){
 		this.name = data.name;
@@ -61,6 +64,7 @@ UnitTemplate = cc.Class.extend({
 		if(unit == null){
 			unit = new GameObject();
 			unit.name = this.name;
+			unit.id = this.nextId++;
 			unit.viewCom = new ViewComponent();
 			unit.viewCom.sprite = new cc.Sprite();
 			unit.coms = {};

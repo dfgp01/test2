@@ -37,15 +37,19 @@ Service = {
 	 */
 	createObj : function(tempName, group){
 		var tmp = this.Container.templates[tempName];
-		if(tmp){
+		if(!tmp){
+			cc.log("template: " + tempName + " not found!");
+			return null;
+		}else{
 			var obj = tmp.getNewInstance();
+			if(!this.Container.units[obj.name+obj.id]){
+				//如果缓存内没有此单位，则加入
+				this.Container.units[obj.name+obj.id] = obj;
+			}
 			obj.actionsCom.firstAct.start(obj);
 			this.Container.objList.push(obj);
 			obj.group = group;
 			return obj;
-		}else{
-			cc.log("template: " + tempName + " not found!");
-			return null;
 		}
 	},
 	
@@ -168,6 +172,9 @@ Service = {
 				character : null,
 				score : 0
 			},
+			
+			//存储单位缓存、以name+id作为索引，如：monster1,monster2
+			units : {},
 
 			frames : {},		//存储帧
 			actions : {},		//存储动作组件

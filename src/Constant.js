@@ -83,24 +83,22 @@ Constant = {
 		FPS10 : 0.1,
 		FPS05 : 0.2
 	},
-};
-
-
-Constant.nodeType = {
-	ACTION : "action",
-	FUNC : "func",
-	STATE : "state"
-};
-
-Constant.eventType = {
-	ATTACK : "attack",
-	HIT : "hit",
-	HURT : "hurt",
-	RELEASE_SKILL : "release_skill",
-	DEAD : "dead"
-};
-
-Constant.eventPriority = {
+	MsgCategory : {
+		SYS : 1,
+		UNIT : 2,
+	},
+	MsgType : {
+		Unit : {
+			BORN : "born",
+			START_ACTION : "start_action",
+			ATTACK : "attack",
+			HIT : "hit",
+			HURT : "hurt",
+			DEAD : "dead",
+		}
+	},
+	eventPriority = {
 		HIGHEST_PRIORITY : 0,
 		LOWEST_PRIORITY : 99
+	}
 };
