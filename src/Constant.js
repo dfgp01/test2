@@ -43,9 +43,11 @@ Constant = {
 	},
 	UnitGroup : {
 		NONE : 0,
-		PLAYER : 1,
-		FRIEND : 2,
-		ENEMY : 4
+		BLOCK : 1,		//可破坏的场景物品，所有攻击单位均可对其破坏
+		ITEM : 2,		//可获得的道具（拾取、接触），通常只有玩家能获得
+		FACTION1 : 4,	//阵营1，单机中是玩家阵营
+		FACTION2 : 8,	//阵营2，单机中是敌人阵营
+		FACTION3 : 16,	//阵营3，单机中是中立阵营，很少会用到
 	},
 	GameObjectType : {
 		NONE : 0,				//无

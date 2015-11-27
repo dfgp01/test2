@@ -145,3 +145,19 @@ JumpActionSystem = ActionSystem.extend({
 		unit.actionsCom.state = unit.actionsCom.state & ~(Constant.ACTION_STATE.AIR);
 	}
 });
+
+CollideSystem = ActionSystem.extend({
+	name : "collide",
+	comName : "comName",
+	
+	start : function(gameObj, actionCom){
+		actionCom.rect;
+		actionCom.group;
+		Service.groups();
+	},
+	
+	update : function(dt, gameObj, actionCom){
+		
+	}
+});
+}
