@@ -85,10 +85,6 @@ Constant = {
 		FPS10 : 0.1,
 		FPS05 : 0.2
 	},
-	MsgCategory : {
-		SYS : 1,
-		UNIT : 2,
-	},
 	MsgType : {
 		Unit : {
 			BORN : "born",

@@ -64,15 +64,21 @@ UnitTemplate = cc.Class.extend({
 		if(unit == null){
 			unit = new GameObject();
 			unit.name = this.name;
-			unit.id = this.nextId++;
-			unit.viewCom = new ViewComponent();
-			unit.viewCom.sprite = new cc.Sprite();
+			
+			//注意，单位的ID是 名字+id序号 的组合
+			unit.id = this.name + this.nextId;
+			this.nextId++;
+			
+			unit.viewCom = new ViewComponent().clone();
 			unit.coms = {};
 			for(var i in this.comList){
 				var name = this.comList[i].name;
 				unit.coms[name] = this.comList[i].clone();
 			}
 			unit.actionsCom = this.actionsCom.clone();
+			
+			//放到对象池里，不用频繁创建
+			this.availableList.push(unit);
 		}else{
 			//重置所有组件内的数值
 			for(var i in unit.coms){

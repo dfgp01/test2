@@ -148,16 +148,31 @@ JumpActionSystem = ActionSystem.extend({
 
 CollideSystem = ActionSystem.extend({
 	name : "collide",
-	comName : "comName",
+	comName : "collide",
 	
-	start : function(gameObj, actionCom){
-		actionCom.rect;
-		actionCom.group;
+	start : function(gameObj, collideCom){
+		collideCom.rect;
+		collideCom.group;
 		Service.groups();
 	},
 	
-	update : function(dt, gameObj, actionCom){
+	update : function(dt, gameObj, collideCom){
 		
 	}
 });
-}
+
+HitSystem = ActionSystem.extend({
+	name : "hit",
+	
+	start : function(gameObj, hitCom){
+		gameObj.coms.hit.flag = false;
+	},
+	
+	update : function(dt, gameObj, hitCom){
+		//只有碰撞成功了才执行，而且碰撞系统必须在此系统前运行
+		if(gameObj.coms.collide.flag){
+			var evt = EvtTemplate.hit(gameObj, hitCom, gameObj.coms.hit.targets);
+			Service.dispatchEvent(evt);
+		}
+	}
+});
