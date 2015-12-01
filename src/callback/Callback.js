@@ -9,8 +9,8 @@ UnitCallback = cc.Class.extend({
 	 * 所有具有攻击能力的Action都会执行这个callback
 	 */
 	hit : function(content){
-		var targetIds = content.targets;
-		for(var i in targetIds){
+		var targets = content.targets;
+		for(var i in targets){
 			var msg = MsgTemplate.hurt(content.source, targets[i]);
 			Service.sendMsg(Constant.MsgType.Unit.HURT, msg);
 		}
