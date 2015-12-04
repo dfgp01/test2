@@ -50,7 +50,9 @@ characterData = {
 			hit : {
 				style : 0,	//利器、钝器、拳头等等
 				type : 1,	//击退、击飞等
-				hp : 100
+				hp : 100,
+				rect : [10,10,100,100],
+				frame : 1
 			}
 		},
 		{

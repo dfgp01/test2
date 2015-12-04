@@ -67,7 +67,7 @@ HurtPropertiesComponent = Component.extend({
 	defence : 0,
 	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
 	bodyState : 0,		//中毒、出血、灼伤等		1010 binary
-	isDead : 0				//0=未死，1=已死
+	effects : null
 });
 
 /**
@@ -79,3 +79,11 @@ SpeedPropertiesComponent = Component.extend({
 	currFactor : 0,
 	maxFactor : 3,
 });
+
+CollidePropertiesComponent = Component.extend({
+	name : "collide",
+	group : 0,
+	mask : 0,
+	targets
+});
+}

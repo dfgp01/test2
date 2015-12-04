@@ -105,6 +105,11 @@ Constant = {
 			TYPE : "sys"
 		}
 	},
+	HitType : {
+		NONE : 0,
+		NORMAL : 1,
+		KNOCK_DOWN : 2
+	},
 	eventPriority = {
 		HIGHEST_PRIORITY : 0,
 		LOWEST_PRIORITY : 99
