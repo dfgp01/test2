@@ -9,16 +9,16 @@ Factory = {
 		createUnitTemplate : function(data){
 
 			//必要性检查
-			// !ObjectUtil.checkIsString(data, "res") 这个检查不应该写在这里，应该有个统一的资源表要填
-			if(!ObjectUtil.checkNotNull(data) || !ObjectUtil.checkIsString(data, "name")){
+			// !DataUtil.checkIsString(data, "res") 这个检查不应该写在这里，应该有个统一的资源表要填
+			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name")){
 				cc.log("create Unit error, lack of necessary data! data is null or noname.");
 				return null;
 			}
-			if(!ObjectUtil.checkIsInt(data, "type")){
+			if(!DataUtil.checkIsInt(data, "type")){
 				cc.log("create UnitTemplate error, field:type must int.");
 				return null;
 			}
-			if(!ObjectUtil.checkNotNull(data, "actions")){
+			if(!DataUtil.checkNotNull(data, "actions")){
 				cc.log("create UnitTemplate error, must has actions.");
 				return null;
 			}
@@ -34,12 +34,12 @@ Factory = {
 		 */
 		createActionState : function(data, template){
 			
-			if(!ObjectUtil.checkNotNull(data) || !ObjectUtil.checkIsString(data, "name", true)){
+			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
 
-			if(!ObjectUtil.checkNotNull(data, "animate") && ObjectUtil.checkArrayNull(data.animate, "frames")){
+			if(!DataUtil.checkNotNull(data, "animate") && DataUtil.checkArrayNull(data.animate, "frames")){
 				cc.log("createActionState:" + data.name + " error, animate or animate.frames not found!");
 				return null;
 			}
@@ -51,9 +51,9 @@ Factory = {
 			cc.log("creating action:[" + data.name + "].");
 			
 			//设置key
-			actionState.key = ObjectUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
+			actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
 			//设置状态
-			actionState.state = ObjectUtil.checkIsInt(data,"state") == true ? data.state : 0;
+			actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
 			
 			//初始化动画组件系统
 			this.buildAnimateSys(data.animate, actionState);
@@ -79,7 +79,7 @@ Factory = {
 				}
 			}
 			animateComponent.frames = list;
-			animateComponent.type = ObjectUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
+			animateComponent.type = DataUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
 			action.coms.animate = animateComponent;
 			
 			switch(animateComponent.type){
@@ -101,10 +101,10 @@ Factory = {
 		 */
 		buildActionSys : function(data, action){
 			var code = 0;
-			if(ObjectUtil.checkIsInt(data, "featureCode")){
+			if(DataUtil.checkIsInt(data, "featureCode")){
 				code = data.featureCode;
 			}
-			if(ObjectUtil.checkNotNull(data, "motion")){
+			if(DataUtil.checkNotNull(data, "motion")){
 				var motionCom = new MotionComponent();
 				//数据上的增量是每秒移动的距离
 				motionCom.dx = data.motion.dx;
@@ -113,7 +113,7 @@ Factory = {
 				ActionUtil.addSystem(action,
 						Service.Container.actionSystems.motion);
 			}
-			if(ObjectUtil.checkNotNull(data, "attack")){
+			if(DataUtil.checkNotNull(data, "attack")){
 				
 			}
 		},

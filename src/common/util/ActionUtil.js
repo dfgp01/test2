@@ -3,7 +3,7 @@
  */
 
 ActionUtil = {
-	
+
 	/**
 	 * 添加一个子系统到action中，根据优先级决定插入的位置，越高越靠前
 	 */
@@ -174,7 +174,7 @@ ActionUtil = {
 	 */
 	findByName : function(name, actions){
 		var act = null;
-		if(ObjectUtil.checkIsString(name)){
+		if(DataUtil.checkIsString(name)){
 			var act = actions[name];
 			if(act){
 				return act;
@@ -193,7 +193,7 @@ ActionUtil = {
 	 * @returns
 	 */
 	findByNames : function(names, actions){
-		if(!ObjectUtil.checkArrayNull(names)){
+		if(!DataUtil.checkArrayNull(names)){
 			var arr = [];
 			for(var i in names){
 				var act = actions[names[i]];
@@ -246,24 +246,6 @@ ActionUtil = {
 				stack.push(exists);
 				this.treeMap(stack, actions[i].children, newMsg);
 				stack.pop();		//遍历完后要记得将列表末尾出栈
-			}
-		}
-	},
-	
-	/**
-	 * 临时的临时的临时的
-	 * @param actions
-	 */
-	childrenShow : function(actions){
-		for(var i in actions){
-			var str = actions[i].name;
-			cc.log("" + str + ":");
-			if(actions[i].children){
-				var ss = "";
-				for(var j in actions[i].children){
-					ss += actions[i].children[j].name + ", ";
-				}
-				cc.log("		" + ss);
 			}
 		}
 	}

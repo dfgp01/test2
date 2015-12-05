@@ -26,9 +26,8 @@ ActionState = cc.Class.extend({
 	
 	//加载时
 	start : function(unit){
-		unit.actionsCom.currAction = this;
-		unit.actionsCom.frameIndex = 0;
-		unit.actionsCom.endFlag = false;
+		unit.actions.current = this;
+		unit.actions.endFlag = false;
 		this.animateSystem.start(unit, this.coms.animate);
 		for(var i in this.systemList){
 			this.systemList[i].start(unit);
@@ -40,8 +39,20 @@ ActionState = cc.Class.extend({
 		for(var i in this.systemList){
 			this.systemList[i].update(dt, unit, this.coms[this.systemList[i].comName]);
 		}
-		if(unit.actionsCom.endFlag){
-			unit.nextAction();
+		//临时措施，日后完善，可能会放到 ActionRunSystem中
+		if(unit.actions.endFlag){
+			this.end(unit);
+			if(unit.actions.next != null){
+				unit.actions.next.start(this);
+				//还原为空状态，原因你懂，不信的话把这句注释看看。
+				unit.actions.next = null;
+				return;
+			}
+			if(this.children && this.children[Constant.DIRECT_CHILDNODE]){
+				this.children[Constant.DIRECT_CHILDNODE].start(unit);
+			}else{
+				unit.actions.names.stand.start(unit);
+			}
 		}
 	},
 

@@ -12,9 +12,9 @@
   "jsList": [
     "src/Constant.js",
     "src/data/data.js",
-    "src/common/util/ObjectUtil.js",
     "src/common/util/ActionUtil.js",
     "src/common/util/EngineUtil.js",
+    "src/common/util/GameUtil.js",
     "src/common/service/Factory.js",
     "src/common/service/Service.js",
     "src/common/component/Components.js",
@@ -31,6 +31,7 @@
     "src/ui/UI.js",
     "src/ui/ControllerLayer.js",
     "src/resource.js",
-    "src/app.js"
+    "src/app.js",
+    "src/common/util/DataUtil.js"
   ]
 }

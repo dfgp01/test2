@@ -5,7 +5,7 @@ AnimateSystem = ActionSystem.extend({
 	
 	//这个方法暂时用不上
 	start : function(gameObj, actionCom){
-		gameObj.viewCom.frameIndex = 0;
+		gameObj.coms.view.frameIndex = 0;
 		gameObj.viewCom.sprite.setSpriteFrame(this.animateCom.frames[0]);
 	},
 	update : function(dt, gameObj, actionCom){
@@ -31,21 +31,21 @@ AnimateSystem = ActionSystem.extend({
 */
 LoopAnimateSystem = ActionSystem.extend({
 	start : function(unit, actionCom){
-		unit.actionsCom.actions.frameIndex = 0;
+		unit.coms.view.frameIndex = 0;
 		unit.viewCom.sprite.setSpriteFrame(actionCom.frames[0]);
 	},
-	update : function(dt, unit, actionCom){
+	update : function(dt, unit, animateCom){
 		//冷却计时
 		if(unit.viewCom.animaDelayCount < unit.viewCom.animaDelay){
 			unit.viewCom.animaDelayCount += dt;
 			return;
 		}
-		unit.viewCom.animaDelayCount = 0;
+		unit.coms.view.animaDelayCount = 0;
 		//播放动画
-		if(unit.actionsCom.frameIndex >= actionCom.frames.length){
-			unit.actionsCom.frameIndex = 0;
+		if(unit.coms.view.frameIndex >= animateCom.frames.length){
+			unit.coms.view.frameIndex = 0;
 		}
-		unit.viewCom.sprite.setSpriteFrame(actionCom.frames[unit.actionsCom.frameIndex]);
-		unit.actionsCom.frameIndex++;
+		unit.coms.view.sprite.setSpriteFrame(animateCom.frames[unit.coms.view.frameIndex]);
+		unit.coms.view.frameIndex++;
 	}
 });

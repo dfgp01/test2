@@ -86,19 +86,20 @@ MainSystem = System.extend({
 ActionRunSystem = System.extend({
 	name : "ActionRunSystem",
 	tick : Constant.Tick.FPS30,
-	objList : null,
 	_currObj : null,
 	start : function(){
-		this.objList = Service.getAllObjects();
+		//this.objList = Service.getAllObjects();
 	},
 	update : function(dt){
-		for(var i in this.objList){
-			this._currObj = this.objList[i];
-			this._currObj.actionsCom.currAction.run(dt, this._currObj);
-			if(this._currObj.actionsCom.nextAction != null){
-				this._currObj.changeAction(this._currObj.actionsCom.nextAction);
-				//还原为空状态，原因你懂
-				this._currObj.actionsCom.nextAction = null;
+		for(var i in Service.Container.groups){
+			for(var j in Service.Container.groups[i].list){
+				this._currObj = Service.Container.groups[i].list[j];
+				this._currObj.actions.current.run(dt, this._currObj);
+				if(this._currObj.actions.nextAction != null){
+					this._currObj.changeAction(this._currObj.actionsCom.nextAction);
+					//还原为空状态，原因你懂
+					this._currObj.actionsCom.nextAction = null;
+				}
 			}
 		}
 	},
@@ -120,9 +121,11 @@ AnimateRunSystem = System.extend({
 		this.objList = Service.getAllObjects();
 	},
 	update : function(dt){
-		for(var i in this.objList){
-			this._currObj = this.objList[i];
-			this._currObj.actionsCom.currAction.animateSystem.update(dt, this._currObj, this._currObj.actionsCom.currAction.coms.animate);
+		for(var i in Service.Container.groups){
+			for(var j in Service.Container.groups[i].list){
+				this._currObj = Service.Container.groups[i].list[j];
+				this._currObj.actions.current.animateSystem.update(dt, this._currObj, this._currObj.actions.current.coms.animate);
+			}
 		}
 	}
 });

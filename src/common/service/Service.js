@@ -45,21 +45,19 @@ Service = {
 	/**
 	 * 	从指定模板中创建新对象
 	 */
-	createObj : function(tempName, group){
+	createObj : function(tempName, groupNum){
 		var tmp = this.Container.templates[tempName];
 		if(!tmp){
 			cc.log("template: " + tempName + " not found!");
 			return null;
 		}else{
 			var obj = tmp.getNewInstance();
-			obj.active = true;
 			if(!this.Container.units[obj.id]){
 				//如果缓存内没有此单位，则加入
 				this.Container.units[obj.id] = obj;
 			}
-			obj.actionsCom.firstAct.start(obj);
-			this.Container.objList.push(obj);
-			obj.group = group;
+			this.Container.groups[groupNum].add(obj);
+			obj.template.firstAct.start(obj);
 			return obj;
 		}
 	},
@@ -68,10 +66,8 @@ Service = {
 	 * 初始化玩家配置
 	 */
 	initPlayer : function(){
-		if(!ObjectUtil.checkIsString(playerData, "unit")){
-			return;
-		}
-		this.Container.player.character = Service.createObj(playerData.unit, Constant.UnitGroup.PLAYER);
+		this.Container.player.character = this.createObj("deep", Constant.Group.PLAYER.index);
+		this.Container.groups[Constant.Group.FACTION1.index].add(this.Container.player.character);
 	},
 
 	getPlayer : function(){
@@ -79,9 +75,10 @@ Service = {
 	},
 	
 	initialize : function(){
-		GameUtil.initSystem();
 		GameUtil.initGroup();
+		GameUtil.initSystem();
 		GameUtil.initUnitTemplate(characterData);
+		this.initPlayer();
 		this.mainSystem.start();
 	},
 	
@@ -96,6 +93,13 @@ Service = {
 	//加入到 消息/事件 列表中，等待执行
 	dispatchEvent : function(evt){
 		this.eventDispatchSystem.addEvent(evt);
+	},
+	
+	//对象回收
+	gc : function(obj){
+		this.Container.groups[obj.group].remove(obj);
+		obj.active = false;
+		obj.template.availableList.push(obj);
 	},
 	
 	/**
@@ -120,7 +124,6 @@ Service = {
 			actions : {},		//存储动作组件
 			data : {},			//存储原始数据
 
-			objList : [],			//存储所有单位
 			groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
 
 			templates : {}		//存储已初始化的原始数据的模板

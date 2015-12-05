@@ -22,7 +22,8 @@ var HelloWorldLayer = cc.Layer.extend({
         });
         this.addChild(bg, 0);
 
-    	var sprite = Service.getPlayer().character.viewCom.sprite;
+    	var player = Service.getPlayer().character;
+    	var sprite = player.coms.view.sprite;
     	sprite.attr({
     		x: 150,
         	y: 250

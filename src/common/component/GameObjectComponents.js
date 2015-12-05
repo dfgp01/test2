@@ -32,20 +32,30 @@ ActionsComponent = Component.extend({
 	repeatFlag : 0,
 	endFlag : false,
 	phase : 0,
-	first : null,
 	current : null,
-	names : null,
+	next : null,
+	names : null,			//Action索引
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
-	baseAct : null,	//临时变量
 	clone : function(){
 		var com = new ActionsComponent();
 		com.repeatFlag = this.repeatFlag;
 		com.endFlag = this.endFlag;
-		com.first = this.first;
+		com.phase = this.phase;
 		com.current = this.current;
+		com.next = this.next;
 		com.names = this.names;
-		com.nodes = this.nodes;
 		com.state = this.state;
+		return com;
+	},
+	newInstance : function(){
+		var com = new ActionsComponent();
+		com.repeatFlag = 0;
+		com.endFlag = false;
+		com.phase = 0;
+		com.current = null;
+		com.next = null,
+		com.names = {};
+		com.state = 0;
 		return com;
 	}
 });
