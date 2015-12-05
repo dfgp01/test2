@@ -15,7 +15,7 @@ characterData = {
 			name : "stand",
 			featureCode : 0,
 			animate :{
-				type : 1,
+				type : Constant.ANIMATE_TYPE.LOOP,
 				speedFactor : 2,
 				frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
 			},
@@ -25,7 +25,7 @@ characterData = {
 			name : "walk",
 			featureCode : 1,
 			animate : {
-				type : 1,
+				type : Constant.ANIMATE_TYPE.LOOP,
 				speedFactor : 1,
 				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
 			},
