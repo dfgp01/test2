@@ -85,19 +85,30 @@ Constant = {
 		FPS10 : 0.1,
 		FPS05 : 0.2
 	},
-	MsgCategory : {
-		SYS : 1,
-		UNIT : 2,
-	},
 	MsgType : {
 		Unit : {
-			BORN : "born",
-			START_ACTION : "start_action",
-			ATTACK : "attack",
-			HIT : "hit",
-			HURT : "hurt",
-			DEAD : "dead",
+			TYPE : "unit",
+			BORN : 1,
+			START_ACTION : 2,
+			ATTACK : 3,
+			HIT : 4,
+			HURT : 5,
+			DEAD : 6
+		},
+		UNIT_BORN : "unit_born",
+		UNIT_START_ACTION : "unit_start_action",
+		UNIT_ATTACK : "unit_attack",
+		UNIT_HIT : "unit_hit",
+		UNIT_HURT : "unit_hurt",
+		UNIT_DEAD : "unit_dead",
+		Sys : {
+			TYPE : "sys"
 		}
+	},
+	HitType : {
+		NONE : 0,
+		NORMAL : 1,
+		KNOCK_DOWN : 2
 	},
 	eventPriority = {
 		HIGHEST_PRIORITY : 0,

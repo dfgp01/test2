@@ -9,9 +9,19 @@
 ViewComponent = Component.extend({
 	//animaDelay : 0.1,
 	//animaDelayCount : 0,
-	groundY : 0,			//在地上的Y值，用于空中状态落地判断
+	z : 0,			//在地上的Y值，用于空中状态落地判断
 	frameIndex : 0,
-	sprite : null
+	displayName : "unit",	//显示的名字
+	sprite : null,
+	
+	clone : function(){
+		var com = new ViewComponent();
+		com.sprite = new cc.Sprite();
+		com.z = this.z;
+		com.frameIndex = this.frameIndex;
+		com.displayName = this.displayName;
+		return com;
+	}
 });
 
 /**
@@ -25,7 +35,6 @@ ActionsComponent = Component.extend({
 	first : null,
 	current : null,
 	names : null,
-	nodes : null,			//动作状态节点，树状存储，key为action.key值
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
 	baseAct : null,	//临时变量
 	clone : function(){
@@ -58,7 +67,7 @@ HurtPropertiesComponent = Component.extend({
 	defence : 0,
 	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
 	bodyState : 0,		//中毒、出血、灼伤等		1010 binary
-	isDead : 0				//0=未死，1=已死
+	effects : null
 });
 
 /**
@@ -70,3 +79,11 @@ SpeedPropertiesComponent = Component.extend({
 	currFactor : 0,
 	maxFactor : 3,
 });
+
+CollidePropertiesComponent = Component.extend({
+	name : "collide",
+	group : 0,
+	mask : 0,
+	targets
+});
+}

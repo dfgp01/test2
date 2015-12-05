@@ -14,6 +14,7 @@
     "src/data/data.js",
     "src/common/util/ObjectUtil.js",
     "src/common/util/ActionUtil.js",
+    "src/common/util/EngineUtil.js",
     "src/common/service/Factory.js",
     "src/common/service/Service.js",
     "src/common/component/Components.js",

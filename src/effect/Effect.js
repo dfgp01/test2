@@ -1,33 +1,48 @@
 /**
  * 基类定义，接口定义
  */
-
 Effect = cc.Class.extend({
-	name : null,
-	run : function(){}
+	name : "effect",
+	update : function(content){	/**return int**/}
 });
 
 EffectGroup = Effect.extend({
-	effectList : null,
-	run : function(){
-		for(var i=0; i<effectList.length; i++){
-			if(!effectList[i].run()){
-				break;
-			}
+	list : null,
+	
+	update : function(content){
+		for(var i in list){
+			list[i].update(content);
 		}
 	},
-	addEffect : function(effect, pos){
-		effectList.push(effect);
+	
+	add : function(effect){
+		list.push(effect);
 	},
-	removeEffectByName : function(name){
-		for(var i in effectList){
+	
+	removeByName : function(name){
+		for(var i in list){
 			if(effectList[i].name == name){
 				//remove
 				break;
 			}
 		}
-	},
-	ctor : function(){
-		effectList = [];
+	}
+});
+
+/**
+ * 受击后的动作
+ */
+HurtActEffect = Effect.extend({
+	name : "hurtAct",
+	
+	update : function(content){
+		var target = content.target;
+		var type = content.type;
+		switch(type){
+		case Constant.HitType.NORMAL:
+			break;
+		case Constant.HitType.KNOCK_DOWN:
+			break;
+		}
 	}
 });

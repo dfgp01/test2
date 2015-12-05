@@ -167,18 +167,28 @@ MotionRunSystem = System.extend({
  */
 EventDispatchSystem = System.extend({
 	name : "eventDispatchSystem",
-	_currMsg : null,
+	_currEvt : null,
+	_quene : null,
+	
+	start : function(){
+		this._quene = [];
+	},
+	
 	update : function(dt){
-		while(_currMsg = quene.shift()){
-			switch(_currMsg.category){
-			case Constant.MsgCategory.SYS:
-			case Constant.MsgCategory.UNIT:
-			}
+		while(_currEvt = this._quene.shift()){
+			/*switch(_currEvt.type){
+			case Constant.MsgType.UNIT_HIT:
+			case Constant.MsgType.UNIT_HURT:
+			}*/
+			cc.eventManager.dispatchCustomEvent(_currEvt.type, _currEvt.content);		//发送方式
 		}
 	},
 	
 	addListener : function(name, callback){
 		cc.eventManager.addCustomListener(name, callback);
-		//cc.eventManager.dispatchCustomEvent("xxxxxevent", {a:1,b:2});		//发送方式
+	},
+	
+	addEvent : function(evt){
+		this._quene.push(evt);
 	}
 });
