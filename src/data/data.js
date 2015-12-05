@@ -42,14 +42,14 @@ characterData = {
 			}
 		},
 		{
-			name : "attack",  key : "A", keyFrame : 1,
+			name : "attack",  key : "A",
 			featureCode : 4,
 			animate : {
 				frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"]
 			},
 			hit : {
 				style : 0,	//利器、钝器、拳头等等
-				type : 1,	//击退、击飞等
+				type : 1,	//普通后退、倒地等
 				hp : 100,
 				rect : [10,10,100,100],
 				frame : 1

@@ -82,8 +82,6 @@ SpeedPropertiesComponent = Component.extend({
 
 CollidePropertiesComponent = Component.extend({
 	name : "collide",
-	group : 0,
 	mask : 0,
-	targets
+	targets : null
 });
-}

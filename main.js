@@ -58,12 +58,9 @@ cc.game.onStart = function(){
     	cc.spriteFrameCache.addSpriteFrames(res.deep_1_plist);
     	cc.spriteFrameCache.addSpriteFrames(res.deep_2_plist);
     	
-    	//system init
-    	Service.initActionSystem();
-    	Service.initUnitTemplate(characterData);
+    	Service.initialize();
     	Service.initPlayer();
-    	Service.initSystem();
-        
+
         var scene = new cc.Scene();
         scene.addChild(new HelloWorldLayer());
         scene.addChild(new ControllerLayer());

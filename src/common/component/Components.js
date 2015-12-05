@@ -9,8 +9,8 @@
 Component = cc.Class.extend({
 	name : null,
 	ownerId : 0,
-	clone : function(){},	//克隆对象接口而已
-	reset : function(){}		//重置数据
+	clone : function(){		cc.log("看到这一句说明你还没重写Component.clone接口");		},	//克隆对象接口而已
+	reset : function(){		cc.log("看到这一句说明你还没重写Component.reset接口");		}	//重置数据
 });
 
 /**
