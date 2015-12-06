@@ -32,15 +32,16 @@ AnimateSystem = ActionSystem.extend({
 LoopAnimateSystem = ActionSystem.extend({
 	start : function(unit, actionCom){
 		unit.coms.view.frameIndex = 0;
-		unit.viewCom.sprite.setSpriteFrame(actionCom.frames[0]);
+		unit.coms.view.sprite.setSpriteFrame(actionCom.frames[0]);
 	},
 	update : function(dt, unit, animateCom){
-		//冷却计时
+		/*//冷却计时
 		if(unit.viewCom.animaDelayCount < unit.viewCom.animaDelay){
 			unit.viewCom.animaDelayCount += dt;
 			return;
 		}
-		unit.coms.view.animaDelayCount = 0;
+		unit.coms.view.animaDelayCount = 0;*/
+		
 		//播放动画
 		if(unit.coms.view.frameIndex >= animateCom.frames.length){
 			unit.coms.view.frameIndex = 0;

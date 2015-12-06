@@ -4,6 +4,11 @@
 
 ActionUtil = {
 
+	preparedToChange : function(obj, action){
+		obj.actions.next = action;
+		obj.actions.endFlag = true;
+	},
+	
 	/**
 	 * 添加一个子系统到action中，根据优先级决定插入的位置，越高越靠前
 	 */

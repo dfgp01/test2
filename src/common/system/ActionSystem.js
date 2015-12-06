@@ -17,15 +17,16 @@ StandActionSystem = ActionSystem.extend({
 	name : "stand",
 	comName : "stand",
 	update : function(dt, gameObj, actionCom){
+		
 		if(gameObj.cmd != 0){
 			//检测是否按下方向键
 			if(gameObj.cmd & Constant.CMD.ALL_DIRECTION){
-				gameObj.actionsCom.nextAction = gameObj.actionsCom.actions["walk"];
+				ActionUtil.preparedToChange(gameObj, gameObj.actions.names["walk"]);
 				//这里return是保证代码不会跑到下面的if语句中，不然就乱套了
 				return;
 			}
 			if(gameObj.cmd & Constant.CMD.ATTACK_ALL){
-				gameObj.actionsCom.nextAction = gameObj.actionsCom.actions["attack"];
+				ActionUtil.preparedToChange(gameObj, gameObj.actions.names["attack"]);
 				//同上
 				return;
 			}
@@ -53,7 +54,6 @@ MotionSystem = ActionSystem.extend({
 	update : function(dt, gameObj, actionCom){
 		gameObj.coms.motion.dx = gameObj.coms.motion.vx * actionCom.dx * dt;
 		gameObj.coms.motion.dy = gameObj.coms.motion.vy * actionCom.dy * dt;
-		cc.log("dx= " + actionCom.dx + " * " + dt + " = " + gameObj.coms.motion.dx);
 	},
 	
 	end : function(gameObj, actionCom){
@@ -93,7 +93,7 @@ WalkMotionSystem = MotionSystem.extend({
 	update : function(dt, gameObj, actionCom){
 
 		if(!(gameObj.cmd & Constant.CMD.ALL_DIRECTION)){
-			gameObj.actionsCom.nextAction = gameObj.actionsCom.actions["stand"];
+			ActionUtil.preparedToChange(gameObj, gameObj.actions.names["stand"]);
 			return;
 		}
 

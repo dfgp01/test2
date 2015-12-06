@@ -1,9 +1,4 @@
-playerData = {
-	unit : "deep",
-	name : "DFL",
-};
 
-//stand is first act for all unit
 characterData = {
 	name : "deep",
 	res : "deep",

@@ -29,10 +29,16 @@ Service = {
 	},
 	
 	/**
-	 * 得到所有单位列表
+	 * 轮询所有单位
+	 * @param
+	 * 		callbackFunc 回调函数，func(gameObj)
 	 */
-	getAllObjects : function(){
-		return this.Container.objList;
+	loopAllObjects : function(callbackFunc){
+		for(var i in this.Container.groups){
+			for(var j in this.Container.groups[i].list){
+				callbackFunc(this.Container.groups[i].list[j]);
+			}
+		}
 	},
 	
 	/**

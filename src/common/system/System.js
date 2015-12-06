@@ -114,19 +114,15 @@ ActionRunSystem = System.extend({
 AnimateRunSystem = System.extend({
 	tick : Constant.Tick.FPS05,
 	name : "AnimateRunSystem",
-	objList : null,
-	_currObj : null,
-	
-	start : function(){
-		this.objList = Service.getAllObjects();
-	},
+	_dt : 0,
+
 	update : function(dt){
-		for(var i in Service.Container.groups){
-			for(var j in Service.Container.groups[i].list){
-				this._currObj = Service.Container.groups[i].list[j];
-				this._currObj.actions.current.animateSystem.update(dt, this._currObj, this._currObj.actions.current.coms.animate);
-			}
-		}
+		this._dt = dt;
+		Service.loopAllObjects(this._callback);
+	},
+	
+	_callback :function(unit){
+		unit.actions.current.animateSystem.update(this._dt, unit, unit.actions.current.coms.animate);
 	}
 });
 
@@ -136,31 +132,25 @@ AnimateRunSystem = System.extend({
  */
 MotionRunSystem = System.extend({
 	name : "MotionRunSystem",
-	unitList : null,
 	dx : 0,
 	dy : 0,
 	unit : null,
 	sprite : null,
-	start : function(){
-		this.unitList = Service.getAllObjects();
+
+	update : function(dt){
+		Service.loopAllObjects(this._callback);
 	},
 	
-	update : function(dt){
-		
-		for(var i in this.unitList){
-
-			this.unit = this.unitList[i];
-			this.sprite = this.unit.viewCom.sprite;
-			
-			this.dx = this.unit.coms.motion.dx;
-			this.dy = this.unit.coms.motion.dy;
-			if(this.dx != 0 || this.dy != 0){
-				//setPosition()里面有绘制命令
-				//这里要使用getPositionX()而不是getPosition().x这种，因为翻查源码发现，getPosition()是会有new操作的。
-				this.sprite.setPosition(
-						this.sprite.getPositionX() + this.dx,
-						this.sprite.getPositionY() + this.dy);
-			}
+	_callback : function(unit){
+		this.sprite = unit.coms.view.sprite;
+		this.dx = unit.coms.motion.dx;
+		this.dy = unit.coms.motion.dy;
+		if(this.dx != 0 || this.dy != 0){
+			//setPosition()里面有绘制命令
+			//这里要使用getPositionX()而不是getPosition().x这种，因为翻查源码发现，getPosition()是会有new操作的。
+			this.sprite.setPosition(
+					this.sprite.getPositionX() + this.dx,
+					this.sprite.getPositionY() + this.dy);
 		}
 	}
 });

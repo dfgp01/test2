@@ -16,23 +16,12 @@ PlayerSystem = System.extend({
 
 	//被控制的目标，Unit类型
 	target : null,
-	
-	//临时方法，自动测试
-	move : function(){
-		if(Service.dis - Service.begin >=100){
-			this.key = 0;
-			cc.log("结束：距离："+(Service.dis-Service.begin)+" 耗时：" + (Service.gameTime - Service.tt));
-		}else{
-			Service.dis = this.target.viewCom.sprite.getPositionX();
-		}
-	},
 
 	start : function(){
 		this.target = Service.getPlayer().character;
 	},
 
 	update : function(dt){
-
 		this.target.cmd = 0;
 
 		//如果按下了攻击键，从单击状态变为持续按住状态，以后可能加个缓冲计时
@@ -44,10 +33,6 @@ PlayerSystem = System.extend({
 		//连按系统时间间隔叠加
 		if(this.combo.length>0){
 			this.comboTimeCount += dt;
-		}
-		
-		if(this.key & Constant.CMD.RIGHT){
-			this.move();
 		}
 
 		if(this.key > 0){

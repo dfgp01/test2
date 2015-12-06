@@ -25,19 +25,10 @@ UnitTemplate = cc.Class.extend({
 		this.coms = {};
 		this.actions = new ActionsComponent().newInstance();
 
-		//动画组件，暂时作废
-		/*if(this.featureCode & Constant.GameObjectType.animate){
-			var animateCom = new AnimateComponent();
-		}*/
-		
 		//运动组件
 		if(this.featureCode & Constant.GameObject.Feature.MOTION){
 			var motionCom = new MotionComponent();
-			if(DataUtil.checkIsInt(data, "speedFactor", false)){
-				motionCom.speedFactor = data.speedFactor;
-			}else{
-				motionCom.speedFactor = 1;
-			}
+			motionCom.speedFactor == DataUtil.checkIsInt(data, "speedFactor") ? data.speedFactor : 1;
 			this.coms.motion = motionCom;
 		}
 		
