@@ -3,22 +3,23 @@
  */
 AnimateSystem = ActionSystem.extend({
 	
-	//这个方法暂时用不上
-	start : function(gameObj, actionCom){
+	start : function(gameObj, animateCom){
 		gameObj.coms.view.frameIndex = 0;
+		gameObj.coms.view.delay = animateCom.delay[0];
 		gameObj.viewCom.sprite.setSpriteFrame(this.animateCom.frames[0]);
 	},
-	update : function(dt, gameObj, actionCom){
+	update : function(dt, gameObj, animateCom){
 		//冷却计时
-		if(gameObj.viewCom.animaDelayCount < gameObj.viewCom.animaDelay){
-			gameObj.viewCom.animaDelayCount += dt;
+		if(gameObj.coms.view.delay < animateCom.delay[gameObj.actionsCom.frameIndex]){
+			gameObj.coms.view.delay += dt;
 			return;
 		}
-		gameObj.viewCom.animaDelayCount = 0;
+		gameObj.coms.view.delay -= animateCom.delay[gameObj.actionsCom.frameIndex];
+		gameObj.actionsCom.frameIndex++;
+		
 		//播放动画
 		if(gameObj.actionsCom.frameIndex < actionCom.frames.length){
 			gameObj.viewCom.sprite.setSpriteFrame(actionCom.frames[gameObj.actionsCom.frameIndex]);
-			gameObj.actionsCom.frameIndex++;
 		}
 		else{
 			gameObj.actionsCom.endFlag = true;
@@ -29,18 +30,16 @@ AnimateSystem = ActionSystem.extend({
 /**
 * 核心系统-动画循环播放
 */
-LoopAnimateSystem = ActionSystem.extend({
-	start : function(unit, actionCom){
-		unit.coms.view.frameIndex = 0;
-		unit.coms.view.sprite.setSpriteFrame(actionCom.frames[0]);
-	},
+LoopAnimateSystem = AnimateSystem.extend({
+
 	update : function(dt, unit, animateCom){
-		/*//冷却计时
-		if(unit.viewCom.animaDelayCount < unit.viewCom.animaDelay){
-			unit.viewCom.animaDelayCount += dt;
+		//冷却计时
+		if(gameObj.coms.view.delay < animateCom.delay[gameObj.actionsCom.frameIndex]){
+			gameObj.coms.view.delay += dt;
 			return;
 		}
-		unit.coms.view.animaDelayCount = 0;*/
+		gameObj.coms.view.delay -= animateCom.delay[gameObj.actionsCom.frameIndex];
+		gameObj.actionsCom.frameIndex++;
 		
 		//播放动画
 		if(unit.coms.view.frameIndex >= animateCom.frames.length){
