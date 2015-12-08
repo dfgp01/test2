@@ -141,8 +141,8 @@ Service = {
 	GameSetting : {
 
 			framerate : 60,				//cocos2d默认fps是60
-			logicTick : 0.0333,			//逻辑帧fps:30
-			animateTick : 0.0416,		//动画帧fps:24
+			logicTick : Constant.Tick.FPS30,			//默认逻辑帧fps:30
+			frameTick : Constant.Tick.FPS10,		//默认动画帧fps:24
 
 			gravity : -2,				//一般重力，一些组件可设置自定义重力
 			maxGravity : -10,			//最大引力

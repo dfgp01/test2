@@ -58,12 +58,11 @@ UnitTemplate = cc.Class.extend({
 			unit.id = this.name + this.nextId;
 			this.nextId++;
 			
-			unit.viewCom = new ViewComponent().clone();
 			for(var i in this.coms){
 				var name = this.coms[i].name;
 				unit.coms[name] = this.coms[i].clone();
 			}
-			unit.coms.view = new ViewComponent().clone();
+			unit.coms.view = new ViewComponent().newInstance();
 			unit.actions = this.actions.clone();
 			unit.template = this;
 		}

@@ -67,18 +67,36 @@ Factory = {
 		 * 动画逻辑系统组件
 		 */
 		buildAnimateSys : function(animate, action){
-			var animateComponent = new AnimateComponent();
-			var list = [];
+			var animateComponent = new AnimateComponent().newInstance();
+			var frameList = [];
 			for(var i in animate.frames){
 				var frame = cc.spriteFrameCache.getSpriteFrame(animate.frames[i]);
 				if(frame){
-					list.push(frame);
+					frameList.push(frame);
 				}else{
 					cc.log("action:" + action.name + " frame:" + animate.frames[i] + " not found");
 					return null;
 				}
 			}
-			animateComponent.frames = list;
+			animateComponent.frames = frameList;
+			
+			//设置每帧延时
+			if(!DataUtil.checkArrayNull(animate,"delays")){
+				if(animate.delays.length != frameList.length){
+					cc.log("animate.delays 数组和frame数量不对等.");
+					return null;
+				}
+				for(var i=0; i<animate.delays.length; i++){
+					animateComponent.delays.push(animate.delays[i]);
+				}
+			}else{
+				for(var i=0; i<frameList.length; i++){
+					//设置默认动画帧时长
+					animateComponent.delays.push(
+							Service.GameSetting.frameTick);
+				}
+			}
+
 			animateComponent.type = DataUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
 			action.coms.animate = animateComponent;
 			

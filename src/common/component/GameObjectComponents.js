@@ -11,6 +11,7 @@ ViewComponent = Component.extend({
 	//animaDelayCount : 0,
 	z : 0,			//在地上的Y值，用于空中状态落地判断
 	frameIndex : 0,
+	delay : 0,
 	displayName : "unit",	//显示的名字
 	sprite : null,
 	
@@ -19,7 +20,17 @@ ViewComponent = Component.extend({
 		com.sprite = new cc.Sprite();
 		com.z = this.z;
 		com.frameIndex = this.frameIndex;
+		com.delay = this.delay;
 		com.displayName = this.displayName;
+		return com;
+	},
+	newInstance : function(){
+		var com = new ViewComponent();
+		com.sprite = new cc.Sprite();
+		com.z = 0;
+		com.frameIndex = 0;
+		com.delay = 0;
+		com.displayName = "unit";
 		return com;
 	}
 });

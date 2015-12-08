@@ -62,11 +62,20 @@ TimerComponent = Component.extend({
 AnimateComponent = Component.extend({
 	name : "animate",
 	frames : null,
+	delays : null,
 	type : 0,
 	clone : function(){
 		var com = new AnimateComponent();
 		com.frames = this.frames;
+		com.dalays = this.delays;
 		com.type = this.type;
+		return com;
+	},
+	newInstance : function(){
+		var com = new AnimateComponent();
+		com.frames = [];
+		com.delays = [];
+		com.type = 0;
 		return com;
 	}
 });

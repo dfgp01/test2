@@ -5,24 +5,24 @@ AnimateSystem = ActionSystem.extend({
 	
 	start : function(gameObj, animateCom){
 		gameObj.coms.view.frameIndex = 0;
-		gameObj.coms.view.delay = animateCom.delay[0];
-		gameObj.viewCom.sprite.setSpriteFrame(this.animateCom.frames[0]);
+		gameObj.coms.view.delay = animateCom.delays[0];
+		gameObj.coms.view.sprite.setSpriteFrame(animateCom.frames[0]);
 	},
 	update : function(dt, gameObj, animateCom){
 		//冷却计时
-		if(gameObj.coms.view.delay < animateCom.delay[gameObj.actionsCom.frameIndex]){
+		if(gameObj.coms.view.delay < animateCom.delays[gameObj.coms.view.frameIndex]){
 			gameObj.coms.view.delay += dt;
 			return;
 		}
-		gameObj.coms.view.delay -= animateCom.delay[gameObj.actionsCom.frameIndex];
-		gameObj.actionsCom.frameIndex++;
+		gameObj.coms.view.delay -= animateCom.delays[gameObj.coms.view.frameIndex];
+		gameObj.coms.view.frameIndex++;
 		
 		//播放动画
 		if(gameObj.actionsCom.frameIndex < actionCom.frames.length){
-			gameObj.viewCom.sprite.setSpriteFrame(actionCom.frames[gameObj.actionsCom.frameIndex]);
+			gameObj.viewCom.sprite.setSpriteFrame(actionCom.frames[gameObj.coms.view.frameIndex]);
 		}
 		else{
-			gameObj.actionsCom.endFlag = true;
+			gameObj.actions.endFlag = true;
 		}
 	}
 });
@@ -32,20 +32,19 @@ AnimateSystem = ActionSystem.extend({
 */
 LoopAnimateSystem = AnimateSystem.extend({
 
-	update : function(dt, unit, animateCom){
+	update : function(dt, gameObj, animateCom){
 		//冷却计时
-		if(gameObj.coms.view.delay < animateCom.delay[gameObj.actionsCom.frameIndex]){
+		if(gameObj.coms.view.delay < animateCom.delays[gameObj.coms.view.frameIndex]){
 			gameObj.coms.view.delay += dt;
 			return;
 		}
-		gameObj.coms.view.delay -= animateCom.delay[gameObj.actionsCom.frameIndex];
-		gameObj.actionsCom.frameIndex++;
+		gameObj.coms.view.delay = gameObj.coms.view.delay - animateCom.delays[gameObj.coms.view.frameIndex];
+		gameObj.coms.view.frameIndex++;
 		
 		//播放动画
-		if(unit.coms.view.frameIndex >= animateCom.frames.length){
-			unit.coms.view.frameIndex = 0;
+		if(gameObj.coms.view.frameIndex >= animateCom.frames.length){
+			gameObj.coms.view.frameIndex = 0;
 		}
-		unit.coms.view.sprite.setSpriteFrame(animateCom.frames[unit.coms.view.frameIndex]);
-		unit.coms.view.frameIndex++;
+		gameObj.coms.view.sprite.setSpriteFrame(animateCom.frames[gameObj.coms.view.frameIndex]);
 	}
 });
