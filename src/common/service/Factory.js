@@ -100,18 +100,20 @@ Factory = {
 			animateComponent.type = DataUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
 			action.coms.animate = animateComponent;
 			
+			var system;
 			switch(animateComponent.type){
 			case Constant.ANIMATE_TYPE.NORMAL:
-				action.animateSystem = Service.Container.animateSystems.normal;
+				system = Service.Container.animateSystems.normal;
 				break;
 			case Constant.ANIMATE_TYPE.LOOP:
-				action.animateSystem = Service.Container.animateSystems.loop;
+				system = Service.Container.animateSystems.loop;
 				break;
 			default :
-				action.animateSystem = Service.Container.animateSystems.normal;
+				system = Service.Container.animateSystems.normal;
 				break;
 			}
 			action.coms.animate = animateComponent;
+			ActionUtil.addSystem(action, system);
 		},
 		
 		/**

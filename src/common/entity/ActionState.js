@@ -10,7 +10,6 @@ ActionState = cc.Class.extend({
 	state : 0,
 	type : 0,
 	
-	animateSystem : null,	//动画系统组件是必须有的，通常在动画主系统中调用
 	coms : null,
 	
 	//设置直接下一个节点，需要改
@@ -27,7 +26,6 @@ ActionState = cc.Class.extend({
 	//加载时
 	start : function(unit){
 		unit.actions.current = this;
-		this.animateSystem.start(unit, this.coms.animate);
 		for(var i in this.systemList){
 			this.systemList[i].start(unit);
 		}

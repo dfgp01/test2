@@ -8,7 +8,7 @@ GameUtil = {
 		 * @param obj
 		 * @param mask
 		 */
-		collideMask : function(mask){
+		collideMask : function(group){
 			var mask  = 0;
 			if(mask & Collide.Target.ENEMY){
 				//和全阵营码进行与运算取反可标出敌对阵营
@@ -28,7 +28,7 @@ GameUtil = {
 			var mainSystem = new MainSystem();
 			mainSystem.addSystem(new PlayerSystem());
 			mainSystem.addSystem(new ActionRunSystem());
-			mainSystem.addSystem(new AnimateRunSystem());
+			//mainSystem.addSystem(new AnimateRunSystem());	动画系统已合并至动作系统中
 			mainSystem.addSystem(new MotionRunSystem());
 			Service.mainSystem = mainSystem;
 		},
