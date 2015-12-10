@@ -104,5 +104,21 @@ SpeedPropertiesComponent = Component.extend({
 CollidePropertiesComponent = Component.extend({
 	name : "collide",
 	mask : 0,
-	targets : null
+	targets : null,
+	cost : null,		//存储上一帧已经碰撞过的unit，以id为key，value存什么都可以
+	
+	ctor : function(){
+		this.mask = 0;
+		this.targets = [];
+		this.cost = {};
+		return this;
+	}
+	
+	newInstance : function(){
+		var com = new CollidePropertiesComponent();
+		com.mask = 0;
+		com.targets = [];
+		com.cost = {};
+		return com;
+	}
 });

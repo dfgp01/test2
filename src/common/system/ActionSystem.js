@@ -146,6 +146,9 @@ JumpActionSystem = ActionSystem.extend({
 	}
 });
 
+/**
+ * 最初的碰撞系统，只检测指定帧，有效碰撞1次
+ */
 CollideSystem = ActionSystem.extend({
 	name : "collide",
 	comName : "collide",
@@ -173,15 +176,21 @@ CollideSystem = ActionSystem.extend({
 			//标注"中奖"的人，gameObj.coms.collide.targets，可用于下次重复检验
 			var mask = gameObj.coms.collide.mask;
 			var groups = Service.Container.groups;
+			gameObj.coms.collide.flag = false;
+			gameObj.coms.collide.targets.length = 0;
 			for(var i in groups){
 				if(mask & groups[i].mask){
 					var list = groups[i].list;
 					for(var j in list){
-						if(EngineUtil.checkCollide(rect, list[j].coms.view)){
+						if(gameObj.coms.collide.cost[list[j].id] && EngineUtil.checkCollide(rect, list[j].coms.view)){
 							gameObj.coms.collide.targets.push(list[j]);
+							gameObj.coms.collide.cost[list[j].id] = 1;
 						}
 					}
 				}
+			}
+			if(gameObj.coms.collide.targets.length > 0){
+				gameObj.coms.collide.flag = true;
 			}
 		}
 	}
