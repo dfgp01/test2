@@ -49,6 +49,13 @@ Service = {
 	},
 	
 	/**
+	 * 根据下标索引查找组，通常unit.group就是下标索引
+	 */
+	findGroup : function(index){
+		return this.Container.groups[index];
+	},
+	
+	/**
 	 * 	从指定模板中创建新对象
 	 */
 	createObj : function(tempName, groupNum){
@@ -72,8 +79,7 @@ Service = {
 	 * 初始化玩家配置
 	 */
 	initPlayer : function(){
-		this.Container.player.character = this.createObj("deep", Constant.Group.PLAYER.index);
-		this.Container.groups[Constant.Group.FACTION1.index].add(this.Container.player.character);
+		this.Container.player.character = this.createObj("deep", Constant.Group.TEAM1.index);
 	},
 
 	getPlayer : function(){

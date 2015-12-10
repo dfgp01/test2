@@ -151,18 +151,38 @@ CollideSystem = ActionSystem.extend({
 	comName : "collide",
 	
 	start : function(gameObj, collideCom){
-		collideCom.rect;
-		collideCom.group;
-		Service.groups();
+		gameObj.coms.collide.mask = 0;
+		var mask = 0;
+		if(collideCom.mask & Constant.Collide.Type.FRIEND){
+			mask = mask | (Constant.Group.ALL_TEAM_MASK & Service.findGroup(gameObj.group).mask);
+		}
+		if(collideCom.mask & Constant.Collide.Type.ENEMY){
+			mask = mask | ~(Constant.Group.ALL_TEAM_MASK & Service.findGroup(gameObj.group).mask);
+		}
+		if(collideCom.mask & Constant.Collide.Type.BLOCK){
+			mask = mask | Constant.Group.BLOCK.mask;
+		}
+		gameObj.coms.collide.mask = mask;
 	},
 	
 	update : function(dt, gameObj, collideCom){
-		var frameIndex = gameObj.coms.view.frameIndex;
-		if(frameIndex == collideCom.frame){
+		if(gameObj.coms.view.frameIndex == collideCom.frame){
 			//根据gameObj获取rect的真实位置
 			var rect = EngineUtil.getRectWithNode(gameObj.coms.view.sprite, collideCom.rect);
 			//循环所有队列所有单位
 			//标注"中奖"的人，gameObj.coms.collide.targets，可用于下次重复检验
+			var mask = gameObj.coms.collide.mask;
+			var groups = Service.Container.groups;
+			for(var i in groups){
+				if(mask & groups[i].mask){
+					var list = groups[i].list;
+					for(var j in list){
+						if(EngineUtil.checkCollide(rect, list[j].coms.view)){
+							gameObj.coms.collide.targets.push(list[j]);
+						}
+					}
+				}
+			}
 		}
 	}
 });

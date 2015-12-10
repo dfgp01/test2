@@ -56,12 +56,13 @@ Constant = {
 	Group : {
 		
 		//这个只是用来作与运算，标出阵营的
-		ALL_FACTION_MASK : 12,		//8+4+2，三个阵营的groupMask
+		ALL_TEAM_MASK : 15,		//8+4+2+1，四个阵营的groupMask
 			
-		PLAYER :	{ index : 0, mask : 1},			//这个用来存放玩家的，当然，在所属阵营组中也要存放
-		FACTION1 : { index : 1, mask : 2},		//阵营1，单机中是玩家阵营
-		FACTION2 : { index : 2, mask : 4},		//阵营2，单机中是敌人阵营
-		FACTION3 : { index : 3, mask : 8},		//阵营3，单机中是中立阵营，很少会用到
+		//PLAYER :	{ index : 0, mask : 1},			//这个用来存放玩家的，当然，在所属阵营组中也要存放
+		TEAM1 : { index : 0, mask : 1},		//阵营1，单机中是玩家阵营
+		TEAM2 : { index : 1, mask : 2},		//阵营2，单机中是敌人阵营
+		TEAM3 : { index : 2, mask : 4},		//阵营3，单机中是中立阵营，很少会用到
+		TEAM4 : { index : 3, mask : 8},		//留待扩展
 		BLOCK : 	{ index : 4, mask : 16},		//可破坏的场景物品，所有攻击单位均可对其破坏
 		ITEM :		{ index : 5, mask : 32},		//可获得的道具（拾取、接触），通常只有玩家能获得
 		NEUTRAL : 	{ index : 6, mask : 64}	//中立阵营，不参与碰撞检测，可能只是播放动画什么的
