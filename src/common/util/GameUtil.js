@@ -1,4 +1,5 @@
 /**
+*	只是用来堆放很长的代码的地方
 *	CreateBy Hugo-Fu 2015.12.05
 */
 GameUtil = {
@@ -73,7 +74,7 @@ GameUtil = {
 			switch(unitTemplate.type){
 			case Constant.GameObject.Type.MONSTER :
 			case Constant.GameObject.Type.HERO :
-				Factory.buildCharacterActionSys(unitTemplate.actions.names);
+				this.buildCharacterActionSys(unitTemplate.actions.names);
 				break;
 			default:
 				break;
@@ -90,5 +91,99 @@ GameUtil = {
 				cc.log(" lamda express finish.");
 			}
 			Service.Container.templates[unitTemplate.name] = unitTemplate;
+		},
+		
+		/**
+		 * 动作逻辑系统组件
+		 */
+		buildActionSys : function(data, action){
+			
+			if(DataUtil.checkNotNull(data, "motion")){
+				var motionCom = new MotionComponent();
+				//数据上的增量是每秒移动的距离
+				motionCom.dx = data.motion.dx;
+				motionCom.dy = data.motion.dy;
+				action.coms[motionCom.name] = motionCom;
+				ActionUtil.addSystem(action,
+						Service.Container.actionSystems.motion);
+			}
+			
+			if(DataUtil.checkNotNull(data, "animate")){
+				this.buildAnimateSys(data.animate, action);
+			}
+			
+			if(DataUtil.checkNotNull(data, "attack")){
+				
+			}
+		},
+		
+		/**
+		 * 动画逻辑系统组件
+		 */
+		buildAnimateSys : function(animate, action){
+			var animateComponent = new AnimateComponent().newInstance();
+			var frameList = [];
+			for(var i in animate.frames){
+				var frame = cc.spriteFrameCache.getSpriteFrame(animate.frames[i]);
+				if(frame){
+					frameList.push(frame);
+				}else{
+					cc.log("action:" + action.name + " frame:" + animate.frames[i] + " not found");
+					return null;
+				}
+			}
+			animateComponent.frames = frameList;
+			
+			//设置每帧延时
+			if(!DataUtil.checkArrayNull(animate,"delays")){
+				if(animate.delays.length != frameList.length){
+					cc.log("animate.delays 数组和frame数量不对等.");
+					return null;
+				}
+				for(var i=0; i<animate.delays.length; i++){
+					animateComponent.delays.push(animate.delays[i]);
+				}
+			}else{
+				for(var i=0; i<frameList.length; i++){
+					//设置默认动画帧时长
+					animateComponent.delays.push(
+							Service.GameSetting.frameTick);
+				}
+			}
+
+			animateComponent.type = DataUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
+			action.coms.animate = animateComponent;
+			
+			var system;
+			switch(animateComponent.type){
+			case Constant.ANIMATE_TYPE.NORMAL:
+				system = Service.Container.animateSystems.normal;
+				break;
+			case Constant.ANIMATE_TYPE.LOOP:
+				system = Service.Container.animateSystems.loop;
+				break;
+			default :
+				system = Service.Container.animateSystems.normal;
+				break;
+			}
+			action.coms.animate = animateComponent;
+			ActionUtil.addSystem(action, system);
+		},
+		
+		/**
+		 * 补充人物的动作系统
+		 */
+		buildCharacterActionSys : function(actions){
+			var standAct = actions.stand;
+			if(standAct){
+				//增加人物空闲时的控制系统
+				ActionUtil.addSystem(standAct, Service.Container.actionSystems.stand);
+			}
+			var walkAct = actions.walk;
+			if(walkAct){
+				//将角色的一般运动系统改为受速度系数影响的运动系统
+				ActionUtil.replaceSystem(walkAct, "motion", Service.Container.actionSystems.walk);
+			}
+			return;
 		}
 };

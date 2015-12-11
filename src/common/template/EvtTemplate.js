@@ -4,7 +4,7 @@
 EvtTemplate = {
 	
 	/**
-	 * 攻击事件
+	 * 攻击发起事件
 	 */
 	hit : function(source, hitCom, targets){
 		var evt = {};
@@ -14,5 +14,12 @@ EvtTemplate = {
 		evt.content.source = source;
 		evt.content.hitCom = hitCom;
 		return evt;
+	},
+	
+	/**
+	 * 击中事件
+	 */
+	hitComplete : function(resultMap){
+		
 	}
 };

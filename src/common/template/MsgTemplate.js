@@ -24,5 +24,12 @@ MsgTemplate = {
 		msg.type = source.type;
 		msg.targetId = targetId;
 		return msg;
+	},
+	
+	hitMap : function(unit, actHitCom){
+		var map = {};
+		map.damage = unit.coms.hit.power * actHitCom.power;
+		map.type = actHitCom.type;
+		return map;
 	}
 }

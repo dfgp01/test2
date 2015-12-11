@@ -12,6 +12,8 @@ ActionState = cc.Class.extend({
 	
 	coms : null,
 	
+	init : function(data){/**留给子类用的**/},
+	
 	//设置直接下一个节点，需要改
 	addChild : function(node){
 		if(this.children==null){

@@ -1,5 +1,5 @@
 /**
- * 
+ * 封装引擎API
  */
 
 EngineUtil = {

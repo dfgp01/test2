@@ -24,6 +24,8 @@ Factory = {
 			}
 
 			var unitTemplate = new UnitTemplate();
+			
+			//其他初始化操作，通常是子类实现
 			unitTemplate.init(data);
 
 			return unitTemplate;
@@ -54,105 +56,12 @@ Factory = {
 			actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
 			//设置状态
 			actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
-			
-			//初始化动画组件系统
-			this.buildAnimateSys(data.animate, actionState);
+
 			//初始化动作组件系统
-			this.buildActionSys(data, actionState);
-
+			GameUtil.buildActionSys(data, actionState);
+			//其他初始化操作，通常是子类实现
+			actionsState.init(data);
 			return actionState;
-		},
-		
-		/**
-		 * 动画逻辑系统组件
-		 */
-		buildAnimateSys : function(animate, action){
-			var animateComponent = new AnimateComponent().newInstance();
-			var frameList = [];
-			for(var i in animate.frames){
-				var frame = cc.spriteFrameCache.getSpriteFrame(animate.frames[i]);
-				if(frame){
-					frameList.push(frame);
-				}else{
-					cc.log("action:" + action.name + " frame:" + animate.frames[i] + " not found");
-					return null;
-				}
-			}
-			animateComponent.frames = frameList;
-			
-			//设置每帧延时
-			if(!DataUtil.checkArrayNull(animate,"delays")){
-				if(animate.delays.length != frameList.length){
-					cc.log("animate.delays 数组和frame数量不对等.");
-					return null;
-				}
-				for(var i=0; i<animate.delays.length; i++){
-					animateComponent.delays.push(animate.delays[i]);
-				}
-			}else{
-				for(var i=0; i<frameList.length; i++){
-					//设置默认动画帧时长
-					animateComponent.delays.push(
-							Service.GameSetting.frameTick);
-				}
-			}
-
-			animateComponent.type = DataUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
-			action.coms.animate = animateComponent;
-			
-			var system;
-			switch(animateComponent.type){
-			case Constant.ANIMATE_TYPE.NORMAL:
-				system = Service.Container.animateSystems.normal;
-				break;
-			case Constant.ANIMATE_TYPE.LOOP:
-				system = Service.Container.animateSystems.loop;
-				break;
-			default :
-				system = Service.Container.animateSystems.normal;
-				break;
-			}
-			action.coms.animate = animateComponent;
-			ActionUtil.addSystem(action, system);
-		},
-		
-		/**
-		 * 动作逻辑系统组件
-		 */
-		buildActionSys : function(data, action){
-			var code = 0;
-			if(DataUtil.checkIsInt(data, "featureCode")){
-				code = data.featureCode;
-			}
-			if(DataUtil.checkNotNull(data, "motion")){
-				var motionCom = new MotionComponent();
-				//数据上的增量是每秒移动的距离
-				motionCom.dx = data.motion.dx;
-				motionCom.dy = data.motion.dy;
-				action.coms[motionCom.name] = motionCom;
-				ActionUtil.addSystem(action,
-						Service.Container.actionSystems.motion);
-			}
-			if(DataUtil.checkNotNull(data, "attack")){
-				
-			}
-		},
-		
-		/**
-		 * 补充人物的动作系统
-		 */
-		buildCharacterActionSys : function(actions){
-			var standAct = actions.stand;
-			if(standAct){
-				//增加人物空闲时的控制系统
-				ActionUtil.addSystem(standAct, Service.Container.actionSystems.stand);
-			}
-			var walkAct = actions.walk;
-			if(walkAct){
-				//将角色的一般运动系统改为受速度系数影响的运动系统
-				ActionUtil.replaceSystem(walkAct, "motion", Service.Container.actionSystems.walk);
-			}
-			return;
 		}
 		
 };
