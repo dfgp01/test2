@@ -15,11 +15,19 @@ EvtTemplate = {
 		evt.content.hitCom = hitCom;
 		return evt;
 	},
-	
-	/**
-	 * 击中事件
-	 */
-	hitComplete : function(resultMap){
-		
+
+	hitMap : function(content){
+		var source = content.source;
+		var hitCom = content.hitCom;
+		var map = {};
+		map.source = source;
+		map.damage = source.coms.hit.gongjili * (hitCom.damage / 100);
+		map.type = hitCom.type;
+		if(source.type == Constant.Unit.Type.CHARACTER){
+			var buffIds = source.coms.buff.hit
+			for(var i in buffIds){
+				//buff叠加逻辑
+			}
+		}
 	}
 };

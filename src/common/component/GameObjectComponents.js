@@ -112,13 +112,33 @@ CollidePropertiesComponent = Component.extend({
 		this.targets = [];
 		this.cost = {};
 		return this;
-	}
+	},
 	
 	newInstance : function(){
 		var com = new CollidePropertiesComponent();
 		com.mask = 0;
 		com.targets = [];
 		com.cost = {};
+		return com;
+	}
+});
+
+/**
+ * buff组件，体系结构：
+ * 		category : {
+ * 				id1 : 1,
+ * 				id2 : 1,
+ */
+BuffComponent = Component.extend({
+	hit : null,
+	hurt : null,
+	state : null,
+	
+	newInstance : function(){
+		var com = new BuffComponent();
+		com.hit = {};
+		com.hurt = {};
+		com.state = {};
 		return com;
 	}
 });
