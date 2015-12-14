@@ -18,7 +18,7 @@ PlayerSystem = System.extend({
 	target : null,
 
 	start : function(){
-		this.target = Service.getPlayer().character;
+		this.target = Service.Container.player.unit;
 	},
 
 	update : function(dt){

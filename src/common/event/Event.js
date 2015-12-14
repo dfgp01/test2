@@ -10,6 +10,9 @@ EventScheduler = cc.Class.extend({
 	},
 	
 	addListener : function(eventCallback){
+		if(!ObjectUtil.checkNotNull(eventCallback,"name")){
+			cc.log("EventScheduler.addListener error, no name.");
+		}
 		var list = this.types[eventCallback.name];
 		if(!list){
 			list = [];

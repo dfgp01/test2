@@ -1,7 +1,7 @@
 
 var HelloWorldLayer = cc.Layer.extend({
 	
-	playerUnit : null,
+	mainSystem : null,
 	
     ctor:function () {
         //////////////////////////////
@@ -74,16 +74,17 @@ var HelloWorldLayer = cc.Layer.extend({
         //deep.runAction(cc.animate(animation).repeatForever());
         
         //this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
+        this.mainSystem = GameUtil.systems.sys.main.start();
         this.scheduleUpdate();
         return true;
     },
     
     update : function(dt){
-    	Service.mainSystem.update(dt);
+    	this.mainSystem.update(dt);
     },
     
     updateCustom : function(dt){
-    	MainSystem.update(dt);
+    	this.mainSystem.update(dt);
     }
 });
 

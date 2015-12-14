@@ -29,9 +29,23 @@ HitComponent = Component.extend({
 	type : 0
 });
 
-/**
- * 击中后的效果组件
- */
-HittedComponent = Component.extend({
-	effectList : null
+PhaseGroupComponent = Component.extend({
+	name : "phase",
+	phases : null,
+	
+	ctor : function(){
+		this.phase = [];
+	},
+	add : function(phase){
+		this.phases.push(phase);
+	}
+});
+
+PhaseComponent = Component.extend({
+	name : "phase",
+	coms : null,
+	systems : null,
+	ctor : function(){
+		this.coms = {};
+	}
 });

@@ -22,9 +22,8 @@ UnitHitCallback = EventCallback.extend({
 		var hitMap = EvtTemplate.hitMap(content);
 		var targets = content.targets;
 		for(var i in targets){
-			Service.dispatchEvent(EvtTemplate.hurt(hitMap, targets[i]));
+			Service.dispatchEvent(EvtTemplate.hurtEvent(targets[i], hitMap));
 		}
-		content.result = resultMap;
 	}
 });
 
@@ -35,9 +34,9 @@ UnitHurtCallback = EventCallback.extend({
 	 * unit被击中后会触发这个事件
 	 */
 	response : function(content){
-		var target = Service.findObj(content.target);
+		var target = content.target;
 		if(source.active && target.active){
-
+			//详细计算
 		}
 	}
 });

@@ -142,3 +142,27 @@ BuffComponent = Component.extend({
 		return com;
 	}
 });
+
+/**
+*	从属组件，暂定
+*	用于召唤兽和子弹之类
+*/
+MasterComponent = Component.extend({
+	name : "master",
+	top : null,			//顶级所属
+	parent : null,		//上一级所属
+	
+	clone : function(){
+		var com = new MasterComponent();
+		com.top = this.top;
+		com.parent = this.parent;
+		return com;
+	},
+	
+	newInstance : function(){
+		var com = new MasterComponent();
+		com.top = null;
+		com.parent = null;
+		return com;
+	}
+});

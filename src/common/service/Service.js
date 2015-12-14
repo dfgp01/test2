@@ -11,12 +11,6 @@ Service = {
 	//上一帧剩下的时间数，实际上是小数，取余运算时用整数进行。
 	remainDt : 0.0000,
 	
-	//主循环最外层系统
-	mainSystem : null,
-	
-	//消息系统
-	eventDispatchSystem : null,
-	
 	/**
 	 * 游戏经过时间递增
 	 */
@@ -79,11 +73,7 @@ Service = {
 	 * 初始化玩家配置
 	 */
 	initPlayer : function(){
-		this.Container.player.character = this.createObj("deep", Constant.Group.TEAM1.index);
-	},
-
-	getPlayer : function(){
-		return this.Container.player;
+		this.Container.player.unit = this.createObj("deep", Constant.Group.TEAM1.index);
 	},
 	
 	initialize : function(){
@@ -91,7 +81,6 @@ Service = {
 		GameUtil.initSystem();
 		GameUtil.initUnitTemplate(characterData);
 		this.initPlayer();
-		this.mainSystem.start();
 	},
 	
 	getActionSystem : function(name){
@@ -118,22 +107,16 @@ Service = {
 	 * 全局数据容器，存储所有游戏对象，用于数据共享，方便对象间的访问
 	 */
 	Container : {
-
-			//动作动画系统单例存储
-			actionSystems : {},
-			animateSystems : {},
 		
 			//玩家数据
 			player : {
-				character : null,
+				unit : null,
 				score : 0
 			},
 			
 			//存储单位缓存、以name+id作为索引，如：monster1,monster2
 			units : {},
 
-			frames : {},		//存储帧
-			actions : {},		//存储动作组件
 			data : {},			//存储原始数据
 
 			groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list

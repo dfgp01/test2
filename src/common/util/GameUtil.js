@@ -4,6 +4,23 @@
 */
 GameUtil = {
 		
+		//系统组件缓存
+		systems : {
+			sys : {
+				main : null,
+				player : null,
+				motion : null,
+				action : null,
+			},
+			act : {
+				normalAnimate : null,
+				loopAnimate : null,
+				stand : null,
+				walk : null,
+				motion : null
+			}
+		},
+		
 		/**
 		 * 生成碰撞标示码
 		 * @param obj
@@ -19,19 +36,21 @@ GameUtil = {
 		
 		initSystem : function(){
 			//初始化通用动作系统组件
-			Service.Container.animateSystems.normal = new AnimateSystem();
-			Service.Container.animateSystems.loop = new LoopAnimateSystem();
-			Service.Container.actionSystems.stand = new StandActionSystem();
-			Service.Container.actionSystems.walk = new WalkMotionSystem();
-			Service.Container.actionSystems.motion  = new MotionSystem();
+			this.systems.act.normalAnimate = new AnimateSystem();
+			this.systems.act.loopAnimate = new LoopAnimateSystem();
+			this.systems.act.stand = new StandActionSystem();
+			this.systems.act.walk = new WalkMotionSystem();
+			this.systems.act.motion  = new MotionSystem();
 			
 			//初始化主系统
-			var mainSystem = new MainSystem();
-			mainSystem.addSystem(new PlayerSystem());
-			mainSystem.addSystem(new ActionRunSystem());
-			//mainSystem.addSystem(new AnimateRunSystem());	动画系统已合并至动作系统中
-			mainSystem.addSystem(new MotionRunSystem());
-			Service.mainSystem = mainSystem;
+			this.systems.sys.main = new MainSystem();
+			this.systems.sys.player = new PlayerSystem();
+			this.systems.sys.motion = new MotionRunSystem();
+			this.systems.sys.action = new ActionRunSystem();
+			var mainSystem = this.systems.sys.main;
+			mainSystem.addSystem(this.systems.sys.player);
+			mainSystem.addSystem(this.systems.sys.motion);
+			mainSystem.addSystem(this.systems.sys.action);
 		},
 		
 		initGroup : function(){

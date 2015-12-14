@@ -102,12 +102,12 @@ Constant = {
 	MsgType : {
 		Unit : {
 			TYPE : "unit",
-			BORN : 1,
-			START_ACTION : 2,
-			ATTACK : 3,
-			HIT : 4,
-			HURT : 5,
-			DEAD : 6
+			BORN : "born",
+			START_ACTION : "start_action",
+			ATTACK : "attack",
+			HIT : "hit",
+			HURT : "hurt",
+			DEAD : "dead"
 		},
 		UNIT_BORN : "unit_born",
 		UNIT_START_ACTION : "unit_start_action",
