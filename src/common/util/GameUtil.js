@@ -21,6 +21,15 @@ GameUtil = {
 			}
 		},
 		
+		//效果逻辑缓存{id:class}
+		effect : {
+			
+		},
+		
+		runEffect : function(obj, id){
+			this.effect[id].update(obj);
+		},
+		
 		/**
 		 * 生成碰撞标示码
 		 * @param obj

@@ -1,10 +1,11 @@
 /**
- * 动作中需要用到计时功能的系统组件
+ * 单位需要用到计时功能的系统组件
+ * 	如BUFF时长
  */
-ActionTimerSystem = ActionSystem.extend({
+ActionTimerSystem = System.extend({
 	timerCom : null,
 
-	start : function(dt, unit){
+	start : function(unit){
 		
 	},
 	update : function(dt, unit){
@@ -13,8 +14,7 @@ ActionTimerSystem = ActionSystem.extend({
 			this.end();
 		}
 	},
-	end : function(dt, unit){
-		this.timeProgressComponent.isStart = false;
+	end : function(unit){
 		//抽象方法，子类必须实现
 		this.afterTimer();
 	}
