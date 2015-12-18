@@ -47,7 +47,9 @@ characterData = {
 				type : 1,	//普通后退、倒地等
 				hp : 100,
 				rect : [10,10,100,100],
-				frame : 1
+				frame : 1,
+				direction : 1,
+				num : 1
 			}
 		},
 		{

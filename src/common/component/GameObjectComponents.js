@@ -124,21 +124,25 @@ CollidePropertiesComponent = Component.extend({
 });
 
 /**
- * buff组件，体系结构：
+ * 单位状态存储组件，体系结构：
  * 		category : {
  * 				id1 : 1,
  * 				id2 : 1,
  */
-BuffComponent = Component.extend({
-	hit : null,
-	hurt : null,
-	state : null,
+StateComponent = Component.extend({
+	buffIds : null,
+	hitEffect : null,
+	hurtEffect : null,
+	effect : null,
+	
+	ctor : function(){
+		this.buffIds = {};
+		this.hitEffect = {};
+		this.hurtEffect = {};
+	},
 	
 	newInstance : function(){
-		var com = new BuffComponent();
-		com.hit = {};
-		com.hurt = {};
-		com.state = {};
+		var com = new StateComponent();
 		return com;
 	}
 });
