@@ -87,6 +87,7 @@ ActionRunSystem = System.extend({
 	name : "ActionRunSystem",
 	tick : Constant.Tick.FPS30,
 	_currObj : null,
+	_currState : null,
 	groups : null,
 	
 	start : function(){
@@ -98,6 +99,12 @@ ActionRunSystem = System.extend({
 			for(var j in this.groups[i].list){
 				this._currObj = this.groups[i].list[j];
 				this._currObj.actions.current.run(dt, this._currObj);
+				this._currState = this._currObj.coms.state;
+				if(this._currState && this._currState.timer){
+					for(var name in this._currState.timer){
+						GameUtil.effectUpdate(name, this._currObj, this._currState.timer[name]);
+					}
+				}
 			}
 		}
 	},
