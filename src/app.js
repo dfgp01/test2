@@ -22,7 +22,7 @@ var HelloWorldLayer = cc.Layer.extend({
         });
         this.addChild(bg, 0);
 
-    	var player = Service.getPlayer().character;
+        var player = Service.Container.player.unit;
     	var sprite = player.coms.view.sprite;
     	sprite.attr({
     		x: 150,
@@ -74,7 +74,8 @@ var HelloWorldLayer = cc.Layer.extend({
         //deep.runAction(cc.animate(animation).repeatForever());
         
         //this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
-        this.mainSystem = GameUtil.systems.sys.main.start();
+        this.mainSystem = GameUtil.systems.sys.main;
+        this.mainSystem.start();
         this.scheduleUpdate();
         return true;
     },

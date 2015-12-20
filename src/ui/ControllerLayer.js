@@ -8,13 +8,7 @@ ControllerLayer = cc.Layer.extend({
 	playerSys : null,
 	
 	ctor : function(){
-		for(var i in Service.mainSystem.systemList){
-			var sys = Service.mainSystem.systemList[i];
-			if(sys.name == "player"){
-				this.playerSys = sys;
-				break;
-			}
-		}
+		this.playerSys = GameUtil.systems.sys.player;
 		this._super();
 		var winSize = cc.winSize;
 		

@@ -29,14 +29,14 @@ ActionState = cc.Class.extend({
 	start : function(unit){
 		unit.actions.current = this;
 		for(var i in this.systemList){
-			this.systemList[i].start(unit);
+			this.systemList[i].start(unit, this.coms[this.systemList[i].name]);
 		}
 	},
 	
 	//运行时
 	run : function(dt, unit){
 		for(var i in this.systemList){
-			this.systemList[i].update(dt, unit, this.coms[this.systemList[i].comName]);
+			this.systemList[i].update(dt, unit, this.coms[this.systemList[i].name]);
 		}
 		//临时措施，日后完善，可能会放到 ActionRunSystem中
 		if(unit.actions.endFlag){

@@ -22,10 +22,11 @@ characterData = {
 			animate : {
 				type : Constant.ANIMATE_TYPE.LOOP,
 				speedFactor : 1,
-				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
+				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
+				//delays : [1, 2, 3, 4]
 			},
 			motion : {
-				dx : 100,
+				dx : 10,
 				dy : 50
 			}
 		},

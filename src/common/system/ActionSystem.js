@@ -15,7 +15,6 @@ ActionSystem = cc.Class.extend({
 */
 StandActionSystem = ActionSystem.extend({
 	name : "stand",
-	comName : "stand",
 	update : function(dt, gameObj, actionCom){
 		
 		if(gameObj.cmd != 0){
@@ -42,7 +41,6 @@ StandActionSystem = ActionSystem.extend({
  */
 MotionSystem = ActionSystem.extend({
 	name : "motion",
-	comName : "motion",
 	motionCom : null,
 	
 	start : function(gameObj, actionCom){
@@ -68,7 +66,6 @@ MotionSystem = ActionSystem.extend({
  * 人物行走动作的操作系统，此系统要继承MotionSystem，实现自定义的运动逻辑
  */
 WalkMotionSystem = MotionSystem.extend({
-	name : "walk",
 	start : function(gameObj, actionCom){
 		//左右方向不共存
 		if(gameObj.cmd & Constant.CMD.RIGHT){
@@ -91,7 +88,6 @@ WalkMotionSystem = MotionSystem.extend({
 
 	//这一部分应该要更完善 2015.10.09
 	update : function(dt, gameObj, actionCom){
-
 		if(!(gameObj.cmd & Constant.CMD.ALL_DIRECTION)){
 			ActionUtil.preparedToChange(gameObj, gameObj.actions.names["stand"]);
 			return;
@@ -100,11 +96,11 @@ WalkMotionSystem = MotionSystem.extend({
 		//行走中改变左右方向的，虽然现在不支持，但以后肯定会有的
 		if(gameObj.coms.motion.vx = 1 && gameObj.cmd & Constant.CMD.LEFT){
 			gameObj.coms.motion.vx = -1;
-			gameObj.viewCom.sprite._scaleX = -1;
+			gameObj.coms.view.sprite._scaleX = -1;
 		}
 		else if(gameObj.coms.motion.vx = -1 && gameObj.cmd & Constant.CMD.RIGHT){
 			gameObj.coms.motion.vx = 1;
-			gameObj.viewCom.sprite._scaleX = 1;
+			gameObj.coms.view.sprite._scaleX = 1;
 		}
 
 		if(gameObj.coms.motion.vy = -1 && gameObj.cmd & Constant.CMD.UP){
@@ -129,7 +125,6 @@ WalkMotionSystem = MotionSystem.extend({
 */
 JumpActionSystem = ActionSystem.extend({
 	name : "jump",
-	comName : "jump",
 	
 	start : function(unit){
 		unit.motionCom.dy = this.speedCom.factorH * this.motionCom.dh;
@@ -151,7 +146,6 @@ JumpActionSystem = ActionSystem.extend({
  */
 CollideSystem = ActionSystem.extend({
 	name : "collide",
-	comName : "collide",
 	
 	start : function(gameObj, collideCom){
 		gameObj.coms.collide.mask = 0;

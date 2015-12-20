@@ -27,6 +27,7 @@
     "src/common/system/TimerSystem.js",
     "src/common/entity/GameObject.js",
     "src/common/entity/ActionState.js",
+    "src/common/entity/Group.js",
     "src/common/template/UnitTemplate.js",
     "src/ui/UI.js",
     "src/ui/ControllerLayer.js",

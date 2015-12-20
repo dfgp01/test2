@@ -56,11 +56,10 @@ Factory = {
 			actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
 			//设置状态
 			actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
-
 			//初始化动作组件系统
 			GameUtil.buildActionSys(data, actionState);
 			//其他初始化操作，通常是子类实现
-			actionsState.init(data);
+			actionState.init(data);
 			return actionState;
 		}
 		

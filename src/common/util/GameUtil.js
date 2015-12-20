@@ -63,10 +63,9 @@ GameUtil = {
 		},
 		
 		initGroup : function(){
-			Service.Container.groups[Constant.Group.PLAYER.index] = new Group(Constant.Group.PLAYER);
-			Service.Container.groups[Constant.Group.FACTION1.index] = new Group(Constant.Group.FACTION1);
-			Service.Container.groups[Constant.Group.FACTION2.index] = new Group(Constant.Group.FACTION2);
-			Service.Container.groups[Constant.Group.FACTION3.index] = new Group(Constant.Group.FACTION3);
+			Service.Container.groups[Constant.Group.TEAM1.index] = new Group(Constant.Group.TEAM1);
+			Service.Container.groups[Constant.Group.TEAM2.index] = new Group(Constant.Group.TEAM2);
+			Service.Container.groups[Constant.Group.TEAM3.index] = new Group(Constant.Group.TEAM3);
 			Service.Container.groups[Constant.Group.BLOCK.index] = new Group(Constant.Group.BLOCK);
 		},
 		
@@ -133,7 +132,7 @@ GameUtil = {
 				motionCom.dy = data.motion.dy;
 				action.coms[motionCom.name] = motionCom;
 				ActionUtil.addSystem(action,
-						Service.Container.actionSystems.motion);
+						this.systems.act.motion);
 			}
 			
 			if(DataUtil.checkNotNull(data, "animate")){
@@ -172,6 +171,7 @@ GameUtil = {
 					animateComponent.delays.push(animate.delays[i]);
 				}
 			}else{
+				animateComponent.delays = [];
 				for(var i=0; i<frameList.length; i++){
 					//设置默认动画帧时长
 					animateComponent.delays.push(
@@ -185,13 +185,13 @@ GameUtil = {
 			var system;
 			switch(animateComponent.type){
 			case Constant.ANIMATE_TYPE.NORMAL:
-				system = Service.Container.animateSystems.normal;
+				system = this.systems.act.normalAnimate;
 				break;
 			case Constant.ANIMATE_TYPE.LOOP:
-				system = Service.Container.animateSystems.loop;
+				system = this.systems.act.loopAnimate;
 				break;
 			default :
-				system = Service.Container.animateSystems.normal;
+				system = this.systems.act.normalAnimate;
 				break;
 			}
 			action.coms.animate = animateComponent;
@@ -205,12 +205,12 @@ GameUtil = {
 			var standAct = actions.stand;
 			if(standAct){
 				//增加人物空闲时的控制系统
-				ActionUtil.addSystem(standAct, Service.Container.actionSystems.stand);
+				ActionUtil.addSystem(standAct, this.systems.act.stand);
 			}
 			var walkAct = actions.walk;
 			if(walkAct){
 				//将角色的一般运动系统改为受速度系数影响的运动系统
-				ActionUtil.replaceSystem(walkAct, "motion", Service.Container.actionSystems.walk);
+				ActionUtil.replaceSystem(walkAct, "motion", this.systems.act.walk);
 			}
 			return;
 		},

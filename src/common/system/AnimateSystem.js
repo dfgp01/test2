@@ -3,11 +3,14 @@
  */
 AnimateSystem = ActionSystem.extend({
 	
+	name : "animate",
+	
 	start : function(gameObj, animateCom){
 		gameObj.coms.view.frameIndex = 0;
 		gameObj.coms.view.delay = animateCom.delays[0];
 		gameObj.coms.view.sprite.setSpriteFrame(animateCom.frames[0]);
 	},
+	
 	update : function(dt, gameObj, animateCom){
 		//冷却计时
 		if(gameObj.coms.view.delay < animateCom.delays[gameObj.coms.view.frameIndex]){
