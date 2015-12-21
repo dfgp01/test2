@@ -11,6 +11,7 @@ GameUtil = {
 				player : null,
 				motion : null,
 				action : null,
+				EvtMsg : null
 			},
 			act : {
 				normalAnimate : null,
@@ -56,10 +57,12 @@ GameUtil = {
 			this.systems.sys.player = new PlayerSystem();
 			this.systems.sys.motion = new MotionRunSystem();
 			this.systems.sys.action = new ActionRunSystem();
+			this.systems.sys.EvtMsg = new EventMessageSystem();
 			var mainSystem = this.systems.sys.main;
 			mainSystem.addSystem(this.systems.sys.player);
 			mainSystem.addSystem(this.systems.sys.motion);
 			mainSystem.addSystem(this.systems.sys.action);
+			mainSystem.addSystem(this.systems.sys.EvtMsg);
 		},
 		
 		initGroup : function(){

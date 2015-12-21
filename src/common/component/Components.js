@@ -23,12 +23,12 @@ Component = cc.Class.extend({
 MotionComponent = Component.extend({
 	name : "motion",
 	speedFactor : 1,	//速度系数
-	vx : 0,					//vx,vy,vh 代表方向向量
+	vx : 0,					//vx,vy,vz 代表方向向量
 	vy : 0,
-	vh : 0,
-	dx : 0,					//dx,dy,dh 代表移动增量
+	vz : 0,
+	dx : 0,					//dx,dy,dz 代表移动增量
 	dy : 0,
-	dh : 0,
+	dz : 0,
 	maxDx : 0,
 	maxDy : 0,
 	maxDh : 0,

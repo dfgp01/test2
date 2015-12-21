@@ -7,8 +7,6 @@
  *  可视元素组件
  */
 ViewComponent = Component.extend({
-	//animaDelay : 0.1,
-	//animaDelayCount : 0,
 	z : 0,			//在地上的Y值，用于空中状态落地判断
 	frameIndex : 0,
 	delay : 0,
@@ -24,14 +22,13 @@ ViewComponent = Component.extend({
 		com.displayName = this.displayName;
 		return com;
 	},
-	newInstance : function(){
-		var com = new ViewComponent();
-		com.sprite = new cc.Sprite();
-		com.z = 0;
-		com.frameIndex = 0;
-		com.delay = 0;
-		com.displayName = "unit";
-		return com;
+	ctor : function(){
+		this.sprite = new cc.Sprite();
+		this.z = 0;
+		this.frameIndex = 0;
+		this.delay = 0;
+		this.displayName = "unit";
+		return this;
 	}
 });
 
@@ -58,16 +55,15 @@ ActionsComponent = Component.extend({
 		com.state = this.state;
 		return com;
 	},
-	newInstance : function(){
-		var com = new ActionsComponent();
-		com.repeatFlag = 0;
-		com.endFlag = false;
-		com.phase = 0;
-		com.current = null;
-		com.next = null,
-		com.names = {};
-		com.state = 0;
-		return com;
+	ctor : function(){
+		this.repeatFlag = 0;
+		this.endFlag = false;
+		this.phase = 0;
+		this.current = null;
+		this.next = null,
+		this.names = {};
+		this.state = 0;
+		return this;
 	}
 });
 
@@ -76,6 +72,7 @@ ActionsComponent = Component.extend({
  */
 HitPropertiesComponent = Component.extend({
 	strength : 0,
+	critical : 0,	//暴击
 	speedFactor : 0
 });
 
@@ -88,7 +85,6 @@ HurtPropertiesComponent = Component.extend({
 	defence : 0,
 	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
 	bodyState : 0,		//中毒、出血、灼伤等		1010 binary
-	effects : null
 });
 
 /**

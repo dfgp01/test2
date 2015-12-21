@@ -172,10 +172,10 @@ MotionRunSystem = System.extend({
 });
 
 /**
- * 事件分发系统
+ * 事件消息分发系统
  */
-EventDispatchSystem = System.extend({
-	name : "eventDispatchSystem",
+EventMessageSystem = System.extend({
+	name : "EvtMsg",
 	_currEvt : null,
 	_quene : null,
 	
@@ -184,17 +184,17 @@ EventDispatchSystem = System.extend({
 	},
 	
 	update : function(dt){
-		while(_currEvt = this._quene.shift()){
+		while(this._currEvt = this._quene.shift()){
 			/*switch(_currEvt.type){
 			case Constant.MsgType.UNIT_HIT:
 			case Constant.MsgType.UNIT_HURT:
 			}*/
-			cc.eventManager.dispatchCustomEvent(_currEvt.type, _currEvt.content);		//发送方式
+			EngineUtil.dispatch(this._currEvt);
 		}
 	},
 	
 	addListener : function(name, callback){
-		cc.eventManager.addCustomListener(name, callback);
+		EngineUtil.addListener(name, callback);
 	},
 	
 	addEvent : function(evt){
