@@ -15,6 +15,7 @@
     "src/common/util/ActionUtil.js",
     "src/common/util/EngineUtil.js",
     "src/common/util/GameUtil.js",
+    "src/common/util/DataUtil.js",
     "src/common/service/Factory.js",
     "src/common/service/Service.js",
     "src/common/component/Components.js",
@@ -29,10 +30,11 @@
     "src/common/entity/ActionState.js",
     "src/common/entity/Group.js",
     "src/common/template/UnitTemplate.js",
+    "src/common/template/EvtTemplate.js",
+    "src/common/template/MsgTemplate.js",
     "src/ui/UI.js",
     "src/ui/ControllerLayer.js",
     "src/resource.js",
-    "src/app.js",
-    "src/common/util/DataUtil.js"
+    "src/app.js"
   ]
 }

@@ -148,6 +148,8 @@ CollideSystem = ActionSystem.extend({
 	name : "collide",
 	
 	start : function(gameObj, collideCom){
+		gameObj.coms.collide.cost = {};
+		gameObj.coms.collide.targets.length = 0;
 		gameObj.coms.collide.mask = 0;
 		var mask = 0;
 		if(collideCom.mask & Constant.Collide.Type.FRIEND){
@@ -160,12 +162,13 @@ CollideSystem = ActionSystem.extend({
 			mask = mask | Constant.Group.BLOCK.mask;
 		}
 		gameObj.coms.collide.mask = mask;
+		
+		//根据gameObj获取rect的真实位置
+		gameObj.coms.collide.rect = EngineUtil.getRectWithNode(gameObj.coms.view.sprite, collideCom.rect);
 	},
 	
 	update : function(dt, gameObj, collideCom){
 		if(gameObj.coms.view.frameIndex == collideCom.frame){
-			//根据gameObj获取rect的真实位置
-			var rect = EngineUtil.getRectWithNode(gameObj.coms.view.sprite, collideCom.rect);
 			//循环所有队列所有单位
 			//标注"中奖"的人，gameObj.coms.collide.targets，可用于下次重复检验
 			var mask = gameObj.coms.collide.mask;
@@ -183,9 +186,7 @@ CollideSystem = ActionSystem.extend({
 					}
 				}
 			}
-			if(gameObj.coms.collide.targets.length > 0){
-				gameObj.coms.collide.flag = true;
-			}
+			gameObj.coms.collide.flag == gameObj.coms.collide.targets.length > 0 ? true : false;
 		}
 	}
 });

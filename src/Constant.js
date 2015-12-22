@@ -109,14 +109,8 @@ Constant = {
 			HURT : "hurt",
 			DEAD : "dead"
 		},
-		UNIT_BORN : "unit_born",
-		UNIT_START_ACTION : "unit_start_action",
-		UNIT_ATTACK : "unit_attack",
-		UNIT_HIT : "unit_hit",
-		UNIT_HURT : "unit_hurt",
-		UNIT_DEAD : "unit_dead",
-		Sys : {
-			TYPE : "sys"
+		System : {
+			TYPE : "system"
 		}
 	},
 	HitType : {

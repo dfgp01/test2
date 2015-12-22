@@ -18,37 +18,6 @@ Component = cc.Class.extend({
 });
 
 /**
- * 物体运动组件
- */
-MotionComponent = Component.extend({
-	name : "motion",
-	speedFactor : 1,	//速度系数
-	vx : 0,					//vx,vy,vz 代表方向向量
-	vy : 0,
-	vz : 0,
-	dx : 0,					//dx,dy,dz 代表移动增量
-	dy : 0,
-	dz : 0,
-	maxDx : 0,
-	maxDy : 0,
-	maxDh : 0,
-	clone : function(){
-		var com = new MotionComponent();
-		com.speedFactor = this.speedFactor;
-		com.vx = this.vx;
-		com.vy = this.vy;
-		com.vh = this.vh;
-		com.dx = this.dx;
-		com.dy = this.dy;
-		com.dh = this.dh;
-		com.maxDx = this.maxDx;
-		com.maxDy = this.maxDy;
-		com.maxDh = this.maxDh;
-		return com;
-	}
-});
-
-/**
  * 	计时组件（Buff持续，技能冷却等组件用）
  */
 TimerComponent = Component.extend({

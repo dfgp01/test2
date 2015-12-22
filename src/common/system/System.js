@@ -178,18 +178,24 @@ EventMessageSystem = System.extend({
 	name : "EvtMsg",
 	_currEvt : null,
 	_quene : null,
+	_unitEvt : null,
 	
 	start : function(){
 		this._quene = [];
+		this._unitEvt = new UnitEventScheduler();
 	},
 	
 	update : function(dt){
 		while(this._currEvt = this._quene.shift()){
-			/*switch(_currEvt.type){
-			case Constant.MsgType.UNIT_HIT:
-			case Constant.MsgType.UNIT_HURT:
-			}*/
-			EngineUtil.dispatch(this._currEvt);
+			switch(_currEvt.name){
+			case Constant.MsgType.Unit.Type:
+				this._unitEvt.callback(this._currEvt);
+			case Constant.MsgType.System.TYPE:
+			default :
+				EngineUtil.dispatch(this._currEvt);
+				break;
+			}
+			
 		}
 	},
 	

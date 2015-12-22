@@ -68,40 +68,77 @@ ActionsComponent = Component.extend({
 });
 
 /**
- * 可攻击属性组件
+ * 单位运动组件
  */
-HitPropertiesComponent = Component.extend({
+UnitMotionComponent = Component.extend({
+	name : "motion",
+	speedFactor : 1,	//速度系数
+	vx : 0,					//vx,vy,vz 代表方向向量
+	vy : 0,
+	vz : 0,
+	dx : 0,					//dx,dy,dz 代表移动增量
+	dy : 0,
+	dz : 0,
+	maxDx : 0,
+	maxDy : 0,
+	maxDz : 0,
+	clone : function(){
+		var com = new UnitMotionComponent();
+		com.speedFactor = this.speedFactor;
+		com.vx = this.vx;
+		com.vy = this.vy;
+		com.vz = this.vz;
+		com.dx = this.dx;
+		com.dy = this.dy;
+		com.dz = this.dz;
+		com.maxDx = this.maxDx;
+		com.maxDy = this.maxDy;
+		com.maxDz = this.maxDz;
+		return com;
+	}
+});
+
+/**
+ * 单位的攻击组件
+ */
+UnitHitComponent = Component.extend({
+	name : "hit",
 	strength : 0,
-	critical : 0,	//暴击
-	speedFactor : 0
+	critical : 0,		//暴击
+	speedFactor : 0,	//攻击速度
+	effects : null,
+	
+	ctor : function(){
+		this.effects = {};
+	}
 });
 
 /**
- * 可被攻击属性组件
+ * 单位的挨打组件
  */
-HurtPropertiesComponent = Component.extend({
-	healthPoint : 0,
-	maxHealthPoint : 0,
-	defence : 0,
+UnitHurtComponent = Component.extend({
+	name : "hurt",
+	hp : 0,
+	defence : 0,		//防御值
 	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
-	bodyState : 0,		//中毒、出血、灼伤等		1010 binary
+	effects : null,
+	
+	ctor : function(){
+		this.effects = {};
+	}
 });
 
 /**
- * 速度属性组件
- * 所有属性值为系数，基础数在action中的motionCom中定义
+ * 单位的碰撞组件
  */
-SpeedPropertiesComponent = Component.extend({
-	factor : 0,
-	currFactor : 0,
-	maxFactor : 3,
-});
-
-CollidePropertiesComponent = Component.extend({
+UnitCollideComponent = Component.extend({
 	name : "collide",
 	mask : 0,
-	targets : null,
-	cost : null,		//存储上一帧已经碰撞过的unit，以id为key，value存什么都可以
+	rect : null,		//cc.rect矩阵对象
+	total : 0,			//记录一共碰撞了多少unit
+	targets : null,		//本次中招的人记录在这里 -_-0
+	cost : null,		//之前中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
+	flag : false,		//是否已碰撞成功，撞到一个也算
 	
 	ctor : function(){
 		this.mask = 0;
@@ -120,31 +157,21 @@ CollidePropertiesComponent = Component.extend({
 });
 
 /**
- * 单位状态存储组件，体系结构：
- * 		category : {
- * 				id1 : 1,
- * 				id2 : 1,
+ * 单位状态存储组件
+ * 	stateIds 存储buff和其他状态的信息，key为effect.name，effect分别分布在hitCom,hurtCom和stateCom.timer中
  */
-StateComponent = Component.extend({
-	buffIds : null,
-	hitEffect : null,
-	hurtEffect : null,
-	effect : null,
+UnitStateComponent = Component.extend({
+	stateIds : null,
+	timer : null,
 	
 	ctor : function(){
-		this.buffIds = {};
-		this.hitEffect = {};
-		this.hurtEffect = {};
-	},
-	
-	newInstance : function(){
-		var com = new StateComponent();
-		return com;
+		this.stateIds = {};
+		this.timer = {};
 	}
 });
 
 /**
-*	从属组件，暂定
+*	单位从属关系组件
 *	用于召唤兽和子弹之类
 */
 MasterComponent = Component.extend({

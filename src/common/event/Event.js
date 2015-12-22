@@ -23,7 +23,7 @@ EventScheduler = cc.Class.extend({
 
 	//主方法
 	callback : function(evt){
-		var list = this.types[evt.name];
+		var list = this.types[evt.type];
 		if(list){
 			for(var i in list){
 				list[i].response(evt.content);

@@ -4,6 +4,29 @@
  **/
 
 /**
+ * 动作运动组件
+ */
+ActionMotionComponent = Component.extend({
+	name : "motion",
+	dx : 0,					//dx,dy,dz 代表移动增量
+	dy : 0,
+	dz : 0,
+	maxDx : 0,
+	maxDy : 0,
+	maxDz : 0,
+	clone : function(){
+		var com = new ActionMotionComponent();
+		com.dx = this.dx;
+		com.dy = this.dy;
+		com.dz = this.dz;
+		com.maxDx = this.maxDx;
+		com.maxDy = this.maxDy;
+		com.maxDz = this.maxDz;
+		return com;
+	}
+});
+
+/**
  * 可蓄力动作组件
  */
 ChargeComponent = Component.extend({
@@ -13,15 +36,12 @@ ChargeComponent = Component.extend({
 });
 
 /**
- * 	碰撞数据组件
+ * 	动作-碰撞数据组件
  */
-CollideComponent = Component.extend({
-	rect : null,
-	maxNum : 0,
-	//list : [],		//本次中招的人记录在这里 -_-0
-	//history : [],	//之前中招的人记录在这里 -_-0
-	//flag : false,	//是否已碰撞成功，撞到一个也算
-	target : 0
+ActionCollideComponent = Component.extend({
+	rect : null,	//矩形框
+	maxNum : 0,		//最大碰撞数
+	mask : 0		//目标
 });
 
 HitComponent = Component.extend({
