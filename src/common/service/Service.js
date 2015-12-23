@@ -93,7 +93,7 @@ Service = {
 	
 	//加入到 消息/事件 列表中，等待执行
 	dispatchEvent : function(evt){
-		this.eventDispatchSystem.addEvent(evt);
+		GameUtil.systems.sys.EvtMsg.addEvent(evt);
 	},
 	
 	//对象回收
@@ -111,6 +111,7 @@ Service = {
 			//玩家数据
 			player : {
 				unit : null,
+				unitState : 0,
 				score : 0
 			},
 			
@@ -119,7 +120,7 @@ Service = {
 
 			data : {},			//存储原始数据
 
-			groups : [],		//存储单位组信息，里面是个二维数组，每元素是一个组，里面存储一个list
+			groups : [],		//存储单位组信息，对象是Group
 
 			templates : {}		//存储已初始化的原始数据的模板
 	},

@@ -129,13 +129,17 @@ GameUtil = {
 		buildActionSys : function(data, action){
 			
 			if(DataUtil.checkNotNull(data, "motion")){
-				var motionCom = new MotionComponent();
-				//数据上的增量是每秒移动的距离
-				motionCom.dx = data.motion.dx;
-				motionCom.dy = data.motion.dy;
+				var motionCom = new ActionMotionComponent();
+				motionCom.init(data.motion);
 				action.coms[motionCom.name] = motionCom;
-				ActionUtil.addSystem(action,
-						this.systems.act.motion);
+				ActionUtil.addSystem(action, this.systems.act.motion);
+			}
+			
+			if(DataUtil.checkNotNull(data, "collide")){
+				var collideCom = new ActionCollideComponent();
+				collideCom.init(data.collide);
+				action.coms[collideCom.name] = collideCom;
+				ActionUtil.addSystem(action, this.systems.act.collide);
 			}
 			
 			if(DataUtil.checkNotNull(data, "animate")){

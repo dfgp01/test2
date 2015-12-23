@@ -23,6 +23,12 @@ ActionMotionComponent = Component.extend({
 		com.maxDy = this.maxDy;
 		com.maxDz = this.maxDz;
 		return com;
+	},
+	
+	init : function(data){
+		//数据上的增量是每秒移动的距离
+		this.dx = data.dx;
+		this.dy = data.dy;
 	}
 });
 
@@ -42,6 +48,16 @@ ActionCollideComponent = Component.extend({
 	rect : null,	//矩形框
 	maxNum : 0,		//最大碰撞数
 	mask : 0		//目标
+	
+	ctor : function(){
+		this.rect = [];
+	},
+	
+	init : function(data){
+		this.rect = DataUtil.copyArray(data.rect);
+		this.maxNum = data.maxNum;
+		this.mask = data.mask;
+	}
 });
 
 HitComponent = Component.extend({

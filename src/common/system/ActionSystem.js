@@ -37,7 +37,7 @@ StandActionSystem = ActionSystem.extend({
 });
 
 /**
- * 通常移动逻辑系统
+ * 移动逻辑系统
  */
 MotionSystem = ActionSystem.extend({
 	name : "motion",
@@ -168,9 +168,10 @@ CollideSystem = ActionSystem.extend({
 	},
 	
 	update : function(dt, gameObj, collideCom){
-		if(gameObj.coms.view.frameIndex == collideCom.frame){
+		//到达指定帧
+		if(gameObj.coms.view.frameIndex == collideCom.frameIndex){
 			//循环所有队列所有单位
-			//标注"中奖"的人，gameObj.coms.collide.targets，可用于下次重复检验
+			//标注"中奖"的人，gameObj.coms.collide.cost，可用于下次重复检验
 			var mask = gameObj.coms.collide.mask;
 			var groups = Service.Container.groups;
 			gameObj.coms.collide.flag = false;
@@ -179,8 +180,9 @@ CollideSystem = ActionSystem.extend({
 				if(mask & groups[i].mask){
 					var list = groups[i].list;
 					for(var j in list){
-						if(gameObj.coms.collide.cost[list[j].id] && EngineUtil.checkCollide(rect, list[j].coms.view)){
+						if(!gameObj.coms.collide.cost[list[j].id] && EngineUtil.checkCollide(rect, list[j].coms.view)){
 							gameObj.coms.collide.targets.push(list[j]);
+							//标注"中奖"的人，用于下次重复检验
 							gameObj.coms.collide.cost[list[j].id] = 1;
 						}
 					}

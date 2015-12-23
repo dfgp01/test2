@@ -126,6 +126,14 @@ DataUtil = {
 			return true;
 		},
 
+		copyArray : function(arr){
+			var newArr = [];
+			for(var i=0; i<arr.length; i++){
+				newArr[i] = arr[i];
+			}
+			return newArr;
+		},
+		
 		iterObj : function(obj){
 			var str = "";
 			for(var key in obj){

@@ -14,7 +14,7 @@ HurtAction = ActionState.extend({
 		motion.dy = 0;
 		phase1.coms.motion = motion;
 		var phase2 = new PhaseComponent();
-		motion = new MotionComponent();
+		motion = new UnitMotionComponent();
 		motion.dx = Service.GameSetting.hitDownX;
 		motion.dy = Service.GameSetting.hitDownY;
 		phase2.coms.motion = motion;
@@ -24,14 +24,12 @@ HurtAction = ActionState.extend({
 	},
 	
 	start : function(unit){
+		//首先判断phase
 		unit.actions.phase = unit.coms.hurt.type - 1;
+		this._super(unit);
 	},
 	
 	update : function(dt, unit){
-		
-	}
-	
-	end : function(unit){
 		
 	}
 });
