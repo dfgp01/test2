@@ -1,0 +1,6 @@
+/**
+ * 
+ */
+UnitHurtActionPhase = PhaseComponent.extend({
+	
+});

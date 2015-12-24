@@ -8,16 +8,19 @@ EvtTemplate = {
 	 */
 	hitEvent : function(source, hitCom, targets){
 		var evt = {};
+		evt.name = "unit";
 		evt.type = Constant.MsgType.Unit.HIT;
 		evt.content = {};
 		evt.content.targets = targets;
 		evt.content.source = source;
-		evt.content.hitCom = hitCom;
+		evt.content.type = hitCom.type;
+		evt.content.damage = hitCom.damage;
 		return evt;
 	},
 	
 	hurtEvent : function(target, hitMap){
 		var evt = {};
+		evt.name = "unit";
 		evt.type = Constant.MsgType.Unit.HURT;
 		evt.content = {};
 		evt.content.target = target;

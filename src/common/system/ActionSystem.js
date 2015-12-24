@@ -3,7 +3,6 @@
  */
 ActionSystem = cc.Class.extend({
 	name : null,
-	comName : "none",
 	priority : 0,
 	start : function(gameObject, actionCom){return;},
 	update : function(dt, gameObject, actionCom){return;},
@@ -205,6 +204,39 @@ HitSystem = ActionSystem.extend({
 		if(gameObj.coms.collide.flag){
 			var evt = EvtTemplate.hit(gameObj, hitCom, gameObj.coms.collide.targets);
 			Service.dispatchEvent(evt);
+		}
+	}
+});
+
+PhaseSystem = ActionSystem.extend({
+	name : "phase",
+	list : null,		//ActionSystemGroup对象
+	
+	ctor : function(){
+		this.list = [];
+	},
+	
+	start : function(gameObj, phaseCom){
+		var phase = gameObj.actions.phase;
+		this.list[phase].start(gameObj, phaseCom.list[phase]);
+	}
+});
+
+ActionSystemGroup = ActionSystem.extend({
+	name : "group",
+	list : null,		//ActionSystem对象
+	
+	ctor : function(){
+		this.list = [];
+	},
+	add : function(system){
+		this.list.push(system);
+	},
+	start : function(gameObj, groupCom){
+		var system = null;
+		for(var i in this.list){
+			system = this.list[i];
+			system.start(gameObj, groupCom.coms[system.name]);
 		}
 	}
 });

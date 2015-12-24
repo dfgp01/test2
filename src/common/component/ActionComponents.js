@@ -65,23 +65,25 @@ HitComponent = Component.extend({
 	type : 0
 });
 
-PhaseGroupComponent = Component.extend({
+PhaseComponent = Component.extend({
 	name : "phase",
-	phases : null,
+	list : null,		//GroupComponent对象
 	
 	ctor : function(){
-		this.phase = [];
+		this.list = [];
 	},
-	add : function(phase){
-		this.phases.push(phase);
+	add : function(groupCom){
+		this.list.push(groupCom);
 	}
 });
 
-PhaseComponent = Component.extend({
-	name : "phase",
+GroupComponent = Component.extend({
+	name : "group",
 	coms : null,
-	systems : null,
 	ctor : function(){
 		this.coms = {};
+	},
+	add : function(com){
+		this.coms[com.name] = com;
 	}
 });
