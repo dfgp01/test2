@@ -23,12 +23,8 @@ GameUtil = {
 		},
 		
 		//效果逻辑缓存{id:class}
-		effect : {
+		effects : {
 			
-		},
-		
-		runEffect : function(obj, id){
-			this.effect[id].update(obj);
 		},
 		
 		/**

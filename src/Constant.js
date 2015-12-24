@@ -114,9 +114,10 @@ Constant = {
 		}
 	},
 	HitType : {
-		NONE : 0,
-		NORMAL : 1,
-		KNOCK_DOWN : 2
+		NONE : 0,			//无效攻击
+		REMOTE : 1,			//是否远程攻击
+		KNOCK_DOWN : 2,		//是否倒地攻击
+		MOTION : 4			//是否发生位移
 	},
 	Collide : {
 		Target : {
