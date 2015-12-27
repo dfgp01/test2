@@ -21,7 +21,7 @@ var HelloWorldLayer = cc.Layer.extend({
         	y: winSize.height / 2
         });
         this.addChild(bg, 0);
-
+/*
         var player = Service.Container.player.unit;
     	var sprite = player.coms.view.sprite;
     	sprite.attr({
@@ -29,7 +29,11 @@ var HelloWorldLayer = cc.Layer.extend({
         	y: 250
     	});
     	sprite._scaleX = -1;
-    	this.addChild(sprite, 1);
+    	this.addChild(sprite, 1);*/
+        
+        Service.initPlayer(
+        		Service.createObj("deep", Constant.Group.TEAM1.index, 150, 0, -250, this));
+        var sprite = Service.Container.player.unit.coms.view.sprite;
         
         var selfPointer = this;
         var listener = cc.EventListener.create({
@@ -74,6 +78,7 @@ var HelloWorldLayer = cc.Layer.extend({
         //deep.runAction(cc.animate(animation).repeatForever());
         
         //this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
+
         this.mainSystem = GameUtil.systems.sys.main;
         this.mainSystem.start();
         this.scheduleUpdate();

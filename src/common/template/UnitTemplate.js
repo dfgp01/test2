@@ -23,12 +23,12 @@ UnitTemplate = cc.Class.extend({
 		this.featureCode = data.featureCode;
 		this.availableList = [];
 		this.coms = {};
-		this.actions = new ActionsComponent().newInstance();
+		this.actions = new ActionsComponent();
 
 		//运动组件
 		if(this.featureCode & Constant.GameObject.Feature.MOTION){
-			var motionCom = new MotionComponent();
-			motionCom.speedFactor == DataUtil.checkIsInt(data, "speedFactor") ? data.speedFactor : 1;
+			var motionCom = new UnitMotionComponent();
+			motionCom.init(data);
 			this.coms.motion = motionCom;
 		}
 		
@@ -62,7 +62,7 @@ UnitTemplate = cc.Class.extend({
 				var name = this.coms[i].name;
 				unit.coms[name] = this.coms[i].clone();
 			}
-			unit.coms.view = new ViewComponent().newInstance();
+			unit.coms.view = new ViewComponent();
 			unit.actions = this.actions.clone();
 			unit.template = this;
 		}

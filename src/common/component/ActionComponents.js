@@ -45,9 +45,9 @@ ChargeComponent = Component.extend({
  * 	动作-碰撞数据组件
  */
 ActionCollideComponent = Component.extend({
-	rect : null,	//矩形框
+	rect : null,			//矩形框
 	maxNum : 0,		//最大碰撞数
-	mask : 0		//目标
+	mask : 0,			//目标
 	
 	ctor : function(){
 		this.rect = [];

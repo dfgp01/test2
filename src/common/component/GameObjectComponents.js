@@ -7,6 +7,7 @@
  *  可视元素组件
  */
 ViewComponent = Component.extend({
+	name : "view",
 	z : 0,			//在地上的Y值，用于空中状态落地判断
 	frameIndex : 0,
 	delay : 0,
@@ -95,6 +96,9 @@ UnitMotionComponent = Component.extend({
 		com.maxDy = this.maxDy;
 		com.maxDz = this.maxDz;
 		return com;
+	},
+	init : function(data){
+		this.speedFactor  = DataUtil.checkIsInt(data, "speedFactor") ? data.speedFactor : 1;
 	}
 });
 

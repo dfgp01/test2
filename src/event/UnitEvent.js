@@ -5,6 +5,7 @@ UnitEventScheduler = EventScheduler.extend({
 	hurtCallBack : null,
 
 	ctor : function(){
+		this._super();
 		this.hitCallBack = new UnitHitCallback();
 		this.addListener(this.hitCallBack);
 		this.hurtCallBack = new UnitHurtCallback();

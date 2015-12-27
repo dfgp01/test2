@@ -52,7 +52,7 @@ Service = {
 	/**
 	 * 	从指定模板中创建新对象
 	 */
-	createObj : function(tempName, groupNum){
+	createObj : function(tempName, groupNum, _x, _y, _z, ccLayer){
 		var tmp = this.Container.templates[tempName];
 		if(!tmp){
 			cc.log("template: " + tempName + " not found!");
@@ -64,6 +64,10 @@ Service = {
 				this.Container.units[obj.id] = obj;
 			}
 			this.Container.groups[groupNum].add(obj);
+			obj.coms.view.z = _z;
+			obj.coms.view.sprite.attr({x: _x, y: _y+_z});
+			//GL坐标系，z值(Y轴)越小越排前
+			ccLayer.addChild(obj.coms.view.sprite, -(_z));
 			obj.template.firstAct.start(obj);
 			return obj;
 		}
@@ -72,15 +76,14 @@ Service = {
 	/**
 	 * 初始化玩家配置
 	 */
-	initPlayer : function(){
-		this.Container.player.unit = this.createObj("deep", Constant.Group.TEAM1.index);
+	initPlayer : function(unit){
+		this.Container.player.unit = unit;
 	},
 	
 	initialize : function(){
 		GameUtil.initGroup();
 		GameUtil.initSystem();
 		GameUtil.initUnitTemplate(characterData);
-		this.initPlayer();
 	},
 	
 	getActionSystem : function(name){

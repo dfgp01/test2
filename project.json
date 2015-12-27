@@ -12,28 +12,40 @@
   "jsList": [
     "src/Constant.js",
     "src/data/data.js",
+    
+    "src/common/Component.js",
+    "src/common/Event.js",
+    "src/common/System.js",
+    
     "src/common/util/ActionUtil.js",
+    "src/common/util/DataUtil.js",
     "src/common/util/EngineUtil.js",
     "src/common/util/GameUtil.js",
-    "src/common/util/DataUtil.js",
-    "src/common/service/Factory.js",
-    "src/common/service/Service.js",
-    "src/common/component/Components.js",
+    
     "src/common/component/ActionComponents.js",
     "src/common/component/GameObjectComponents.js",
-    "src/common/system/System.js",
-    "src/common/system/PlayerSystem.js",
+    
+    "src/common/entity/ActionState.js",
+    "src/common/entity/GameObject.js",
+    "src/common/entity/Group.js",
+    
+    "src/common/service/Factory.js",
+    "src/common/service/Service.js",
+    
     "src/common/system/ActionSystem.js",
     "src/common/system/AnimateSystem.js",
+    "src/common/system/PlayerSystem.js",
     "src/common/system/TimerSystem.js",
-    "src/common/entity/GameObject.js",
-    "src/common/entity/ActionState.js",
-    "src/common/entity/Group.js",
-    "src/common/template/UnitTemplate.js",
+    
     "src/common/template/EvtTemplate.js",
     "src/common/template/MsgTemplate.js",
+    "src/common/template/UnitTemplate.js",
+    
+    "src/event/UnitEvent.js",
+    
     "src/ui/UI.js",
     "src/ui/ControllerLayer.js",
+    
     "src/resource.js",
     "src/app.js"
   ]
