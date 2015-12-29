@@ -208,7 +208,10 @@ HitSystem = ActionSystem.extend({
 	}
 });
 
-PhaseSystem = ActionSystem.extend({
+/**
+ * 阶段性动作系统
+ */
+ActionPhaseSystem = ActionSystem.extend({
 	name : "phase",
 	list : null,		//ActionSystemGroup对象
 	
@@ -222,6 +225,9 @@ PhaseSystem = ActionSystem.extend({
 	}
 });
 
+/**
+ * 组合型动作系统
+ */
 ActionSystemGroup = ActionSystem.extend({
 	name : "group",
 	list : null,		//ActionSystem对象

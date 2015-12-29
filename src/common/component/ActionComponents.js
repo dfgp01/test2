@@ -65,6 +65,9 @@ HitComponent = Component.extend({
 	type : 0
 });
 
+/**
+ * 阶段型组件
+ */
 PhaseComponent = Component.extend({
 	name : "phase",
 	list : null,		//GroupComponent对象
@@ -77,6 +80,9 @@ PhaseComponent = Component.extend({
 	}
 });
 
+/**
+ * 组合型组件
+ */
 GroupComponent = Component.extend({
 	name : "group",
 	coms : null,

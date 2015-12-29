@@ -137,6 +137,7 @@ UnitHurtComponent = Component.extend({
  */
 UnitCollideComponent = Component.extend({
 	name : "collide",
+	type : 0,			//无敌、人类、建筑等
 	mask : 0,
 	rect : null,		//cc.rect矩阵对象
 	total : 0,			//记录一共碰撞了多少unit
