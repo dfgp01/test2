@@ -20,33 +20,9 @@ Component = cc.Class.extend({
 });
 
 /**
- * 	计时组件（Buff持续，技能冷却等组件用）
+ * 	计时组件（Buff持续，技能冷却等地方使用）
+ * 		基类只存储总时长
  */
 TimerComponent = Component.extend({
-	second : 0,
-	currTime : 0
-});
-
-/**
- * 	动画组件
- */
-AnimateComponent = Component.extend({
-	name : "animate",
-	frames : null,
-	delays : null,
-	type : 0,
-	clone : function(){
-		var com = new AnimateComponent();
-		com.frames = this.frames;
-		com.dalays = this.delays;
-		com.type = this.type;
-		return com;
-	},
-	newInstance : function(){
-		var com = new AnimateComponent();
-		com.frames = [];
-		com.delays = [];
-		com.type = 0;
-		return com;
-	}
+	toal : 0,
 });

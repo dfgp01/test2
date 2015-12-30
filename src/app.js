@@ -32,7 +32,7 @@ var HelloWorldLayer = cc.Layer.extend({
     	this.addChild(sprite, 1);*/
         
         Service.initPlayer(
-        		Service.createObj("deep", Constant.Group.TEAM1.index, 150, 0, -250, this));
+        		Service.createObj("deep", Constant.Group.TEAM1_INDEX, 150, 0, -250, this));
         var sprite = Service.Container.player.unit.coms.view.sprite;
         
         var selfPointer = this;

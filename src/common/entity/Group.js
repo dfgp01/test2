@@ -6,12 +6,11 @@ Group = cc.Class.extend({
 	list : null,
 	index : -1,
 	mask : -1,
+	type : 0,
 
-	ctor : function(data){
-		if(data){
-			this.index = data.index;
-			this.msk = data.mask;
-		}
+	ctor : function(type, name){
+		this.type = type;
+		this.name = name;
 		this.list = [];
 	},
 	

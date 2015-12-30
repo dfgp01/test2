@@ -61,11 +61,28 @@ GameUtil = {
 			mainSystem.addSystem(this.systems.sys.EvtMsg);
 		},
 		
-		initGroup : function(){
-			Service.Container.groups[Constant.Group.TEAM1.index] = new Group(Constant.Group.TEAM1);
-			Service.Container.groups[Constant.Group.TEAM2.index] = new Group(Constant.Group.TEAM2);
-			Service.Container.groups[Constant.Group.TEAM3.index] = new Group(Constant.Group.TEAM3);
-			Service.Container.groups[Constant.Group.BLOCK.index] = new Group(Constant.Group.BLOCK);
+		initGroup : function(groupsData){
+			if(groupsData.length > 10){
+				//总组数大于10就不玩了
+				cc.log("team num large than 16.");
+				return;
+			}
+			var group = null;
+			var teamCharacterMask = 0;		//用于计算敌对阵营的
+			for(var i=0; i<groupsData; i++){
+				group = new Group(groupsData[i].type, groupsData[i].name);
+				group.index = Service.Container.groups.length;	//index是Container.group[]中的下标
+				group.mask = Math.pow(2, group.index);			//2的index次方就是mask值
+				Service.Container.groups.push(group);
+				if(group.type == Constant.Group.TYPE_CHARACTER){
+					teamCharacterMask = teamCharacterMask | group.mask;
+					group = new Group(Constant.Group.TYPE_BULLET, groupsData[i].name + "_bullet");
+					group.index = Service.Container.groups.length;
+					group.mask = Math.pow(2, group.index);
+					Service.Container.groups.push(group);
+				}
+			}
+			Service.Container.teamMask = teamCharacterMask;
 		},
 		
 		/**

@@ -81,7 +81,11 @@ Service = {
 	},
 	
 	initialize : function(){
-		GameUtil.initGroup();
+		GameUtil.initGroup(
+			[{type:Constant.Group.Team1.TYPE, name:Constant.Group.Team1.NAME},
+		     {type:Constant.Group.Team2.TYPE, name:Constant.Group.Team2.NAME},
+		     {type:Constant.Group.Block.TYPE, name:Constant.Group.Block.NAME}]
+		);
 		GameUtil.initSystem();
 		GameUtil.initUnitTemplate(characterData);
 	},
@@ -124,6 +128,8 @@ Service = {
 			data : {},			//存储原始数据
 
 			groups : [],		//存储单位组信息，对象是Group
+			
+			teamMask : 0,		//阵营的掩码
 
 			templates : {}		//存储已初始化的原始数据的模板
 	},
@@ -139,6 +145,12 @@ Service = {
 
 			gravity : -2,				//一般重力，一些组件可设置自定义重力
 			maxGravity : -10,			//最大引力
+			
+			hitBack : 15,		//硬直后退距离
+			hitDownX : 135,		//倒地后退距离X
+			hitDownY : 30,		//倒地后退距离Y
+			stiffTimer : 5,		//硬直时间
+			knockDownTimer : 8	//倒地硬直时间
 
 			//单位移动时，Y轴与X轴的相对速度比
 			unitSpeedFactor : {

@@ -54,18 +54,19 @@ Constant = {
 	},
 	
 	Group : {
+		TYPE_NONE : 0,
+		TYPE_CHARACTER : 1,
+		TYPE_BULLET	: 2,
+		TYPE_BLOCK : 3,
+		TYPE_ITEM : 4,
+
+		Team1 : { TYPE : 1, NAME : "team1"},	//阵营1，单机中是玩家阵营
+		Team2 : { TYPE : 1, NAME : "team2"},	//阵营2，单机中是敌人阵营
+		BLOCK : { TYPE : 3, NAME : "block"},	//可破坏的场景物品，所有攻击单位均可对其破坏
+		ITEM :	{ TYPE : 4, NAME : "item"},		//可获得的道具（拾取、接触），通常只有玩家能获得
+		ETC : 	{ TYPE : 0, NAME : "etc"},		//中立阵营，不参与碰撞检测，可能只是播放动画什么的
 		
-		//这个只是用来作与运算，标出阵营的
-		ALL_TEAM_MASK : 15,		//8+4+2+1，四个阵营的groupMask
-			
-		//PLAYER :	{ index : 0, mask : 1},			//这个用来存放玩家的，当然，在所属阵营组中也要存放
-		TEAM1 : { index : 0, mask : 1},		//阵营1，单机中是玩家阵营
-		TEAM2 : { index : 1, mask : 2},		//阵营2，单机中是敌人阵营
-		TEAM3 : { index : 2, mask : 4},		//阵营3，单机中是中立阵营，很少会用到
-		TEAM4 : { index : 3, mask : 8},		//留待扩展
-		BLOCK : 	{ index : 4, mask : 16},		//可破坏的场景物品，所有攻击单位均可对其破坏
-		ITEM :		{ index : 5, mask : 32},		//可获得的道具（拾取、接触），通常只有玩家能获得
-		NEUTRAL : 	{ index : 6, mask : 64}	//中立阵营，不参与碰撞检测，可能只是播放动画什么的
+		TEAM1_INDEX : 0
 	},
 	
 	GameObject : {
@@ -114,10 +115,11 @@ Constant = {
 		}
 	},
 	HitType : {
-		NONE : 0,			//无效攻击
-		REMOTE : 1,			//是否远程攻击
-		KNOCK_DOWN : 2,		//是否倒地攻击
-		MOTION : 4			//是否发生位移
+		NONE : 0,			//无任何受击动作影响
+		STIFF : 1,			//是否硬直（有硬直时间）
+		REMOTE : 2,			//是否远程攻击
+		KNOCK_DOWN : 4,		//是否倒地攻击
+		MOTION : 8			//是否发生位移
 	},
 	Collide : {
 		Target : {

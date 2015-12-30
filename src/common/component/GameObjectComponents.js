@@ -198,3 +198,14 @@ MasterComponent = Component.extend({
 		return com;
 	}
 });
+
+/**
+ * 单位的用于计算时间的组件
+ * 	作用在Action下
+ */
+UnitTimerComponent = TimerComponent.extend({
+	name : "timer",		//这个组件是属于Unit，用于action上的
+	start : 0,	//开始时间
+	dt : 0,		//每隔一段时间触发
+	after : 0	//累计经过
+});

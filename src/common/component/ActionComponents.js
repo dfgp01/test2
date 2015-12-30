@@ -4,6 +4,30 @@
  **/
 
 /**
+ * 	动画组件
+ */
+AnimateComponent = Component.extend({
+	name : "animate",
+	frames : null,
+	delays : null,
+	type : 0,
+	clone : function(){
+		var com = new AnimateComponent();
+		com.frames = this.frames;
+		com.dalays = this.delays;
+		com.type = this.type;
+		return com;
+	},
+	newInstance : function(){
+		var com = new AnimateComponent();
+		com.frames = [];
+		com.delays = [];
+		com.type = 0;
+		return com;
+	}
+});
+
+/**
  * 动作运动组件
  */
 ActionMotionComponent = Component.extend({
@@ -92,4 +116,13 @@ GroupComponent = Component.extend({
 	add : function(com){
 		this.coms[com.name] = com;
 	}
+});
+
+/**
+ * 动作的计时组件
+ * 	通常和UnitTimerComponent交互
+ */
+ActionTimerComponent = TimerComponent.extend({
+	name : "timer",
+	dt : 0			//每隔一段时间触发
 });
