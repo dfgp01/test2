@@ -117,12 +117,3 @@ GroupComponent = Component.extend({
 		this.coms[com.name] = com;
 	}
 });
-
-/**
- * 动作的计时组件
- * 	通常和UnitTimerComponent交互
- */
-ActionTimerComponent = TimerComponent.extend({
-	name : "timer",
-	dt : 0			//每隔一段时间触发
-});

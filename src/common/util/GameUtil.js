@@ -47,6 +47,7 @@ GameUtil = {
 			this.systems.act.stand = new StandActionSystem();
 			this.systems.act.walk = new WalkMotionSystem();
 			this.systems.act.motion  = new MotionSystem();
+			this.systems.act.hurt = new HurtSystem();
 			
 			//初始化主系统
 			this.systems.sys.main = new MainSystem();

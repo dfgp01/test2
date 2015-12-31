@@ -4,6 +4,10 @@
 
 EngineUtil = {
 	
+	setFrame : function(gameObj, frame){
+		gameObj.coms.view.sprite.setSpriteFrame(frame);
+	},
+	
 	getRectWithNode : function(node, rectData){
 		var rectSource = node.getBoundingBox();
 		return cc.rect(

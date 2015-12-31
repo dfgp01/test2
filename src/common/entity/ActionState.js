@@ -38,22 +38,6 @@ ActionState = cc.Class.extend({
 		for(var i in this.systemList){
 			this.systemList[i].update(dt, unit, this.coms[this.systemList[i].name]);
 		}
-		//临时措施，日后完善，可能会放到 ActionRunSystem中
-		if(unit.actions.endFlag){
-			this.end(unit);
-			if(unit.actions.next != null){
-				unit.actions.next.start(unit);
-				//还原为空状态，原因你懂，不信的话把这句注释看看。
-				unit.actions.next = null;
-			}
-			else if(this.children && this.children[Constant.DIRECT_CHILDNODE]){
-				this.children[Constant.DIRECT_CHILDNODE].start(unit);
-			}
-			else{
-				unit.actions.names.stand.start(unit);
-			}
-			unit.actions.endFlag = false;
-		}
 	},
 
 	//结束时

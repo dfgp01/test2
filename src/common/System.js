@@ -88,6 +88,7 @@ ActionRunSystem = System.extend({
 	tick : Constant.Tick.FPS30,
 	_currObj : null,
 	_currState : null,
+	_currAct : null,
 	groups : null,
 	
 	start : function(){
@@ -98,7 +99,32 @@ ActionRunSystem = System.extend({
 		for(var i in this.groups){
 			for(var j in this.groups[i].list){
 				this._currObj = this.groups[i].list[j];
-				this._currObj.actions.current.run(dt, this._currObj);
+				this._currAct = this._currObj.actions.current;
+				if(this._currAct != null){
+					//运行
+					this._currAct.run(dt, this._currObj);
+					//动作结束后
+					if(this._currObj.actions.endFlag){
+						this._currAct.end(unit);
+						if(this._currObj.actions.next != null){
+							this._currObj.actions.next.start(unit);
+							//还原为空状态，原因你懂，不信的话把这句注释看看。
+							this._currObj.actions.next = null;
+						}
+						else if(this._currAct.children && this._currAct.children[Constant.DIRECT_CHILDNODE]){
+							this._currAct.children[Constant.DIRECT_CHILDNODE].start(unit);
+						}
+						else{
+							this._currAct = null;
+						}
+						//同理，这一句也必须要有
+						unit.actions.endFlag = false;
+					}
+				}else{
+					
+				}
+				
+				//一些计时组件系统的更新
 				this._currState = this._currObj.coms.state;
 				if(this._currState && this._currState.timer){
 					for(var name in this._currState.timer){

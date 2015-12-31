@@ -209,11 +209,11 @@ HitSystem = ActionSystem.extend({
 });
 
 /**
- * 阶段性动作系统
+ * 阶段性动作系统，动作组形式
  */
 ActionPhaseSystem = ActionSystem.extend({
 	name : "phase",
-	list : null,		//ActionSystemGroup对象
+	list : null,		//ActionSystem子类对象
 	
 	ctor : function(){
 		this.list = [];
@@ -222,13 +222,17 @@ ActionPhaseSystem = ActionSystem.extend({
 	start : function(gameObj, phaseCom){
 		var phase = gameObj.actions.phase;
 		this.list[phase].start(gameObj, phaseCom.list[phase]);
+	},
+	
+	add : function(system){
+		this.list.push(system);
 	}
 });
 
 /**
  * 组合型动作系统
  */
-ActionSystemGroup = ActionSystem.extend({
+/*ActionSystemGroup = ActionSystem.extend({
 	name : "group",
 	list : null,		//ActionSystem对象
 	
@@ -245,4 +249,4 @@ ActionSystemGroup = ActionSystem.extend({
 			system.start(gameObj, groupCom.coms[system.name]);
 		}
 	}
-});
+});*/

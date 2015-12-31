@@ -34,7 +34,7 @@ HurtAction = ActionState.extend({
 		phase2.coms[timer.name] = timer;
 		group.add(phase2);
 		this.phaseCom = group;
-		ActionUtil.addSystem(this, GameUtil.sys.action.hurtPhase);
+		ActionUtil.addSystem(this, GameUtil.sys.action.hurt);
 	},
 	
 	/**
