@@ -22,6 +22,11 @@ GameUtil = {
 			}
 		},
 		
+		//公共动作节点缓存
+		actions : {
+			hurt : null,
+		},
+		
 		//效果逻辑缓存{id:class}
 		effects : {
 			

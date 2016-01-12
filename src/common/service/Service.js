@@ -146,11 +146,11 @@ Service = {
 			gravity : -2,				//一般重力，一些组件可设置自定义重力
 			maxGravity : -10,			//最大引力
 			
-			hitBack : 15,		//硬直后退距离
-			hitDownX : 135,		//倒地后退距离X
-			hitDownY : 30,		//倒地后退距离Y
-			stiffTimer : 5,		//硬直时间
-			knockDownTimer : 8	//倒地硬直时间
+			hitBack : 15,					//硬直后退距离
+			hitDownX : 135,			//倒地后退距离X
+			hitDownY : 30,				//倒地后退距离Y
+			stiffTime : 500,					//硬直时间(毫秒)
+			knockDownTime : 800,	//倒地硬直时间(毫秒)
 
 			//单位移动时，Y轴与X轴的相对速度比
 			unitSpeedFactor : {

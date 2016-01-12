@@ -61,6 +61,17 @@ Factory = {
 			//其他初始化操作，通常是子类实现
 			actionState.init(data);
 			return actionState;
+		},
+		
+		/**
+		 * 创建公共Action
+		 */
+		createPublicAction : function(data, actClass){
+			var actionState = new actClass();
+			actionState.systemList = [];
+			actionState.coms = {};
+			actionState.init(data);
+			GameUtil.actions[actionState.name] = actionState;
 		}
 		
 };

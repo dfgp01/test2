@@ -1,7 +1,8 @@
 /**
- * 	击中目标后调用
+ * 	被击中后的动作（公共Action）
+ * 		2016.01.12 暂时废置，改用下面的
  */
-HurtAction = ActionState.extend({
+HurtActionTMP = ActionState.extend({
 	name : "hurt",
 	
 	phaseCom : null,
@@ -65,5 +66,35 @@ HurtAction = ActionState.extend({
 			}
 		}
 		this._super(unit);
+	}
+});
+
+/**
+ *  被击中后的动作（公共Action）
+ */
+HurtAction = ActionState.extend({
+	name : "hurt",
+	
+	start : function(obj){
+		//loop state
+	},
+	
+	update : function(dt, obj){
+		//理论上不会执行到这里
+	}
+});
+
+/**
+ * 原地硬直
+ */
+HurtAction1 = ActionState.extend({
+	name : "hurt1",
+	timerCom : null,
+	init : function(data){
+		this.timerCom = new TimerComponent();
+		this.timerCom.total = Service.GameSetting.stiffTime;
+	},
+	start : function(obj){
+		
 	}
 });
