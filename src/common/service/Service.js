@@ -161,6 +161,12 @@ Service = {
 				airX : 0.9,
 				airY : 0.8
 			}
+	
+			gravityCom : null,
+			hitBackMotion : null,
+			hitDownMotion : null,
+			stiffTimer : null,
+			stiffDownTimer : null
 	}
 
 };

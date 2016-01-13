@@ -75,12 +75,40 @@ HurtActionTMP = ActionState.extend({
 HurtAction = ActionState.extend({
 	name : "hurt",
 	
-	start : function(obj){
-		//loop state
+	start : function(unit){
+		var effectNames = unit.coms.hurt.effects
+		if(effectNames){
+			for(var i in effectNames){
+				GameUtil.effects[effectNames].start(unit);
+			}
+		}
+		this.end(unit);
+		//unit.coms.hurt.type 值为0~7，分别有三个标志位：远程、倒地、位移
+		//普通逻辑下只需要判断 倒地和位移
+		//00 : 只是受击，无任何反应（霸体）
+		//01 : 后退硬直，如果dx=0，则原地硬直
+		//10 : 直接向下倒地
+		if(unit.coms.hurt.type == Constant.HitType.NONE){
+			return;
+		}
+		//倒地攻击或者unit处在空中
+		if((unit.coms.hurt.type & Constant.HitType.KNOCK_DOWN) || unit.coms.motion.dy != 0){
+			GameUtil.actions.hurt2.start(unit);
+		}
+		//平推攻击
+		else{
+			//没有位移的原地硬直
+			if(unit.coms.motion.dx == 0){
+				GameUtil.actions.hurt1.start(unit);
+			}else{
+				GameUtil.actions.hurt2.start(unit);
+			}
+		}
 	},
 	
 	update : function(dt, obj){
 		//理论上不会执行到这里
+		cc.log("理论上不会执行这里");
 	}
 });
 
@@ -95,6 +123,42 @@ HurtAction1 = ActionState.extend({
 		this.timerCom.total = Service.GameSetting.stiffTime;
 	},
 	start : function(obj){
+		
+	}
+});
+
+/**
+ * 平地击退
+ */
+HurtAction2 = ActionState.extend({
+	name : "hurt2",
+	motionCom : null,
+	init : function(data){
+		ActionUtil.addDirectChild(this, GameUtil.actions.hurt1);
+	},
+	start : function(unit){
+		
+	}
+});
+
+/**
+ * 倒地、浮空攻击
+ */
+HurtAction3 = ActionState.extend({
+	name : "hurt3",
+	motionCom : null,
+	init : function(data){
+		ActionUtil.addDirectChild(this, GameUtil.actions.hurt4);
+	},
+});
+
+/**
+ * 躺下
+ */
+HurtAction4 = ActionState.extend({
+	name : "hurt4",
+	timerCom : null,
+	init : function(data){
 		
 	}
 });

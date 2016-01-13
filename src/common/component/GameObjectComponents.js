@@ -43,6 +43,7 @@ ActionsComponent = Component.extend({
 	phase : 0,
 	current : null,
 	next : null,
+	timer : null,			//timerCom组件
 	names : null,			//Action索引
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
 	clone : function(){
@@ -54,6 +55,7 @@ ActionsComponent = Component.extend({
 		com.next = this.next;
 		com.names = this.names;
 		com.state = this.state;
+		com.timer = this.timer;
 		return com;
 	},
 	ctor : function(){
@@ -64,6 +66,7 @@ ActionsComponent = Component.extend({
 		this.next = null,
 		this.names = {};
 		this.state = 0;
+		this.timer = new UnitTimerComponent();
 		return this;
 	}
 });
@@ -71,34 +74,23 @@ ActionsComponent = Component.extend({
 /**
  * 单位运动组件
  */
-UnitMotionComponent = Component.extend({
-	name : "motion",
+UnitMotionComponent = MotionComponent.extend({
 	speedFactor : 1,	//速度系数
-	vx : 0,					//vx,vy,vz 代表方向向量
+	vx : 0,				//vx,vy,vz 代表方向向量
 	vy : 0,
 	vz : 0,
-	dx : 0,					//dx,dy,dz 代表移动增量
-	dy : 0,
-	dz : 0,
-	maxDx : 0,
-	maxDy : 0,
-	maxDz : 0,
+
 	clone : function(){
-		var com = new UnitMotionComponent();
+		var com = this._super();
 		com.speedFactor = this.speedFactor;
 		com.vx = this.vx;
 		com.vy = this.vy;
 		com.vz = this.vz;
-		com.dx = this.dx;
-		com.dy = this.dy;
-		com.dz = this.dz;
-		com.maxDx = this.maxDx;
-		com.maxDy = this.maxDy;
-		com.maxDz = this.maxDz;
 		return com;
 	},
 	init : function(data){
-		this.speedFactor  = DataUtil.checkIsInt(data, "speedFactor") ? data.speedFactor : 1;
+		this._super(data);
+		this.speedFactor  = DataUtil.checkIsInt(data, "speedFactor") ? data.speedFactor : this.speedFactor;
 	}
 });
 
@@ -207,5 +199,5 @@ UnitTimerComponent = TimerComponent.extend({
 	name : "timer",		//这个组件是属于Unit，用于action上的
 	start : 0,	//开始时间
 	dt : 0,		//每隔一段时间触发
-	after : 0	//累计经过
+	end : 0		//总时长
 });

@@ -27,6 +27,8 @@ ActionState = cc.Class.extend({
 	
 	//加载时
 	start : function(unit){
+		//这一句必须要有
+		unit.actions.endFlag = false;
 		unit.actions.current = this;
 		for(var i in this.systemList){
 			this.systemList[i].start(unit, this.coms[this.systemList[i].name]);

@@ -26,3 +26,32 @@ Component = cc.Class.extend({
 TimerComponent = Component.extend({
 	toal : 0,
 });
+
+/**
+ * 动作运动组件
+ */
+MotionComponent = Component.extend({
+	name : "motion",
+	dx : 0,					//dx,dy,dz 代表移动增量
+	dy : 0,
+	dz : 0,
+	maxDx : 0,
+	maxDy : 0,
+	maxDz : 0,
+	clone : function(){
+		var com = new ActionMotionComponent();
+		com.dx = this.dx;
+		com.dy = this.dy;
+		com.dz = this.dz;
+		com.maxDx = this.maxDx;
+		com.maxDy = this.maxDy;
+		com.maxDz = this.maxDz;
+		return com;
+	},
+	
+	init : function(data){
+		//数据上的增量是每秒移动的距离
+		this.dx = data.dx;
+		this.dy = data.dy;
+	}
+});

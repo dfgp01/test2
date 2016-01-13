@@ -45,6 +45,30 @@ GameUtil = {
 			}
 		},
 		
+		initGobalParam : function(){
+			//引力设置
+			var motionCom = new MotionComponent();
+			motionCom.dy = Service.GameSetting.gravity;
+			motionCom.maxDy = Service.GameSetting.maxGravity;
+			Service.GameSetting.gravityCom = motionCom;
+			
+			//被击中相关设置
+			motionCom = new MotionComponent();
+			motionCom.dx = Service.GameSetting.hitBack;
+			Service.GameSetting.hitBackMotion = motionCom;
+			var timerCom = new TimerComponent();
+			timerCom.total = Service.GameSetting.stiffTime;
+			Service.GameSetting.stiffTimer = timerCom;
+			
+			motionCom = new MotionComponent();
+			motionCom.dx = Service.GameSetting.hitDownX;
+			motionCom.dy = Service.GameSetting.hitDownY;
+			Service.GameSetting.hitDownMotion = motionCom;
+			timerCom = new TimerComponent();
+			timerCom.total = Service.GameSetting.knockDownTime;
+			Service.GameSetting.stiffDownTimer = timerCom;
+		},
+		
 		initSystem : function(){
 			//初始化通用动作系统组件
 			this.systems.act.normalAnimate = new AnimateSystem();

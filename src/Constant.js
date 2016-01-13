@@ -116,10 +116,9 @@ Constant = {
 	},
 	HitType : {
 		NONE : 0,			//无任何受击动作影响
-		STIFF : 1,			//是否硬直（有硬直时间）
-		REMOTE : 2,			//是否远程攻击
-		KNOCK_DOWN : 4,		//是否倒地攻击
-		MOTION : 8			//是否发生位移
+		MOTION : 1,			//是否位移
+		KNOCK_DOWN : 2,		//是否倒地攻击
+		REMOTE : 4			//是否远程攻击
 	},
 	Collide : {
 		Target : {

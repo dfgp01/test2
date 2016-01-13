@@ -117,8 +117,6 @@ ActionRunSystem = System.extend({
 						else{
 							this._currAct = null;
 						}
-						//同理，这一句也必须要有
-						unit.actions.endFlag = false;
 					}
 				}else{
 					

@@ -26,6 +26,14 @@ ActionUtil = {
 	},
 	
 	/**
+	 * 增加直驱节点
+	 */
+	addDirectChild : function(pre, next){
+		next.key = Constant.DIRECT_CHILDNODE;
+		pre.addChild(next);
+	},
+	
+	/**
 	 * 	新旧系统替换，指定要去除的旧系统名字和新系统对象
 	 *  如找不到旧系统，则将新系统添加到列表中
 	 * @param oldName		旧系统名称
