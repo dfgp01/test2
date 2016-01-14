@@ -63,10 +63,10 @@ Factory = {
 		/**
 		 * 创建公共Action
 		 */
-		createPublicAction : function(data, actClass){
+		createCustomAction : function(data, actClass){
 			var actionState = new actClass();
 			actionState.init(data);
-			GameUtil.actions[actionState.name] = actionState;
+			return actionState;
 		}
 		
 };

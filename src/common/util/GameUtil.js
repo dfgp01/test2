@@ -91,6 +91,11 @@ GameUtil = {
 			mainSystem.addSystem(this.systems.sys.EvtMsg);
 		},
 		
+		initHurtAction : function(){
+			var action = Factory.createCustomAction(HurtAction);
+			this.actions.hurt = action;
+		}
+		
 		initGroup : function(groupsData){
 			if(groupsData.length > 10){
 				//总组数大于10就不玩了
