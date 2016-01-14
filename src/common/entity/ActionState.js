@@ -12,7 +12,11 @@ ActionState = cc.Class.extend({
 	
 	coms : null,
 	
-	init : function(data){/**留给子类用的**/},
+	init : function(data){
+		this.name = data.name;
+		this.coms = {};
+		this.systemList = [];
+	},
 	
 	//设置直接下一个节点，需要改
 	addChild : function(node){

@@ -109,6 +109,15 @@ HurtAction = ActionState.extend({
 	update : function(dt, obj){
 		//理论上不会执行到这里
 		cc.log("理论上不会执行这里");
+	},
+	
+	end : function(unit){
+		var effectNames = unit.coms.hurt.effects
+		if(effectNames){
+			for(var i in effectNames){
+				GameUtil.effects[effectNames].end(unit);
+			}
+		}
 	}
 });
 
@@ -119,11 +128,11 @@ HurtAction1 = ActionState.extend({
 	name : "hurt1",
 	timerCom : null,
 	init : function(data){
-		this.timerCom = new TimerComponent();
-		this.timerCom.total = Service.GameSetting.stiffTime;
+		this.timerCom = Service.GameSetting.stiffTimer;
 	},
 	start : function(obj){
-		
+		//暂定方案
+		EngineUtil.setFrame(obj, obj.coms.hurt.animte.frames[0]);
 	}
 });
 
@@ -134,10 +143,11 @@ HurtAction2 = ActionState.extend({
 	name : "hurt2",
 	motionCom : null,
 	init : function(data){
+		this.motionCom = Service.GameSetting.hitBackMotion;
 		ActionUtil.addDirectChild(this, GameUtil.actions.hurt1);
 	},
 	start : function(unit){
-		
+		EngineUtil.setFrame(obj, obj.coms.hurt.animte.frames[0]);
 	}
 });
 
@@ -150,6 +160,9 @@ HurtAction3 = ActionState.extend({
 	init : function(data){
 		ActionUtil.addDirectChild(this, GameUtil.actions.hurt4);
 	},
+	start : function(unit){
+		EngineUtil.setFrame(obj, obj.coms.hurt.animte.frames[0]);
+	}
 });
 
 /**

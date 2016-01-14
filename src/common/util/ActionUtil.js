@@ -9,6 +9,16 @@ ActionUtil = {
 		obj.actions.endFlag = true;
 	},
 	
+	addNext : function(pre, key, next){
+		if(pre.children==null){
+			pre.children = {};
+		}
+		if(this.children[key]){
+			cc.log("key: " + key + " has exists in parent node. parent:"+pre.name+" child:"+next.name);
+		}
+		this.children[key] = next;
+	},
+	
 	/**
 	 * 添加一个子系统到action中，根据优先级决定插入的位置，越高越靠前
 	 */

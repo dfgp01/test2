@@ -46,11 +46,9 @@ Factory = {
 				return null;
 			}
 			
-			var actionState = new ActionState();
-			actionState.name = data.name;
-			actionState.systemList = [];
-			actionState.coms = {};
 			cc.log("creating action:[" + data.name + "].");
+			var actionState = new ActionState();
+			actionState.init(data);
 			
 			//设置key
 			actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
@@ -58,8 +56,7 @@ Factory = {
 			actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
 			//初始化动作组件系统
 			GameUtil.buildActionSys(data, actionState);
-			//其他初始化操作，通常是子类实现
-			actionState.init(data);
+			
 			return actionState;
 		},
 		
@@ -68,8 +65,6 @@ Factory = {
 		 */
 		createPublicAction : function(data, actClass){
 			var actionState = new actClass();
-			actionState.systemList = [];
-			actionState.coms = {};
 			actionState.init(data);
 			GameUtil.actions[actionState.name] = actionState;
 		}
