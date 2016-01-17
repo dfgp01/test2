@@ -13,7 +13,6 @@ ActionState = cc.Class.extend({
 	coms : null,
 	
 	init : function(data){
-		this.name = data.name;
 		this.coms = {};
 		this.systemList = [];
 	},

@@ -46,8 +46,9 @@ Factory = {
 				return null;
 			}
 			
-			cc.log("creating action:[" + data.name + "].");
+			cc.log("info: creating action:[" + data.name + "].");
 			var actionState = new ActionState();
+			actionState.name = data.name;
 			actionState.init(data);
 			
 			//设置key
@@ -61,10 +62,11 @@ Factory = {
 		},
 		
 		/**
-		 * 创建公共Action
+		 * 创建自定义的Action类
 		 */
 		createCustomAction : function(data, actClass){
 			var actionState = new actClass();
+			//自定义的Action类需要自行指定name
 			actionState.init(data);
 			return actionState;
 		}

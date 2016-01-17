@@ -74,6 +74,30 @@ HurtActionTMP = ActionState.extend({
  */
 HurtAction = ActionState.extend({
 	name : "hurt",
+	hurt1 : null,
+	hurt2 : null,
+	hurt3 : null,
+	hurt4 : null,
+	
+	init : function(data){
+		//this._super();
+		var hurt1 = new HurtAction1();
+		hurt1.init(data);
+		var hurt2 = new HurtAction2();
+		hurt2.init(data);
+		//顺序别搞反，先是后退硬直，再到原地硬直
+		ActionUtil.addDirectChild(hurt2, hurt1);
+		var hurt3 = new HurtAction3();
+		hurt3.init(data);
+		var hurt4 = new HurtAction4();
+		hurt4.init(data);
+		//先浮空，再躺下
+		ActionUtil.addDirectChild(hurt3, hurt4);
+		this.hurt1 = hurt1;
+		this.hurt2 = hurt2;
+		this.hurt3 = hurt3;
+		this.hurt4 = hurt4;
+	},
 	
 	start : function(unit){
 		var effectNames = unit.coms.hurt.effects
