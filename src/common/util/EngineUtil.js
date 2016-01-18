@@ -4,9 +4,18 @@
 
 EngineUtil = {
 	
-	setFrame : function(gameObj, frame){
-		gameObj.coms.view.sprite.setSpriteFrame(frame);
+	setFrame : function(sprite, frame){
+		sprite.setSpriteFrame(frame);
 	},
+	
+	setFrameByName : function(sprite, frameName){
+		var frame = cc.spriteFrameCache.getSpriteFrame(frameName);
+		if(frame){
+			sprite.setSpriteFrame(frame);
+		}else{
+			cc.log("EngineUtil.setFrameByName error. frame:" + frameName + " not found~!");
+		}
+	}
 	
 	getRectWithNode : function(node, rectData){
 		var rectSource = node.getBoundingBox();

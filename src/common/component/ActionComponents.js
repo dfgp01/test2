@@ -18,6 +18,10 @@ AnimateComponent = Component.extend({
 		com.type = this.type;
 		return com;
 	},
+	ctor : function(){
+		this.frames = [];
+		this.delays = [];
+	},
 	newInstance : function(){
 		var com = new AnimateComponent();
 		com.frames = [];

@@ -9,25 +9,25 @@ Initializer = {
 		initGobalParam : function(){
 			//引力设置
 			var motionCom = new MotionComponent();
-			motionCom.dy = Service.GameSetting.gravity;
-			motionCom.maxDy = Service.GameSetting.maxGravity;
-			Service.GameSetting.gravityCom = motionCom;
+			motionCom.dy = GameSetting.gravity;
+			motionCom.maxDy = GameSetting.maxGravity;
+			Service.Gobal.gravityCom = motionCom;
 
 			//被击中相关设置
 			motionCom = new MotionComponent();
-			motionCom.dx = Service.GameSetting.hitBack;
-			Service.GameSetting.hitBackMotion = motionCom;
+			motionCom.dx = GameSetting.hitBack;
+			Service.Gobal.hitBackMotion = motionCom;
 			var timerCom = new TimerComponent();
-			timerCom.total = Service.GameSetting.stiffTime;
-			Service.GameSetting.stiffTimer = timerCom;
+			timerCom.total = GameSetting.stiffTime;
+			Service.Gobal.stiffTimer = timerCom;
 
 			motionCom = new MotionComponent();
-			motionCom.dx = Service.GameSetting.hitDownX;
-			motionCom.dy = Service.GameSetting.hitDownY;
-			Service.GameSetting.hitDownMotion = motionCom;
+			motionCom.dx = GameSetting.hitDownX;
+			motionCom.dy = GameSetting.hitDownY;
+			Service.Gobal.hitDownMotion = motionCom;
 			timerCom = new TimerComponent();
-			timerCom.total = Service.GameSetting.knockDownTime;
-			Service.GameSetting.stiffDownTimer = timerCom;
+			timerCom.total = GameSetting.knockDownTime;
+			Service.Gobal.stiffDownTimer = timerCom;
 		},
 		
 		/**

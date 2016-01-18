@@ -24,7 +24,9 @@ Component = cc.Class.extend({
  * 		基类只存储总时长
  */
 TimerComponent = Component.extend({
-	toal : 0,
+	start : 0,	//开始计时标记,通常是Unit用
+	dt : 0,		//用于每隔一段时间触发的
+	toal : 0	//总时长
 });
 
 /**

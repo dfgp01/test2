@@ -30,6 +30,9 @@ ViewComponent = Component.extend({
 		this.delay = 0;
 		this.displayName = "unit";
 		return this;
+	},
+	init : function(data){
+		EngineUtil.setFrameByName(this.sprite, data.frame);
 	}
 });
 
@@ -66,7 +69,7 @@ ActionsComponent = Component.extend({
 		this.next = null,
 		this.names = {};
 		this.state = 0;
-		this.timer = new UnitTimerComponent();
+		this.timer = new TimerComponent();
 		return this;
 	}
 });
@@ -75,7 +78,7 @@ ActionsComponent = Component.extend({
  * 单位运动组件
  */
 UnitMotionComponent = MotionComponent.extend({
-	speedFactor : 1,	//速度系数
+	speedFactor : 1,	//速度比例系数
 	vx : 0,				//vx,vy,vz 代表方向向量
 	vy : 0,
 	vz : 0,
@@ -189,15 +192,4 @@ MasterComponent = Component.extend({
 		com.parent = null;
 		return com;
 	}
-});
-
-/**
- * 单位的用于计算时间的组件
- * 	作用在Action下
- */
-UnitTimerComponent = TimerComponent.extend({
-	name : "timer",		//这个组件是属于Unit，用于action上的
-	start : 0,	//开始时间
-	dt : 0,		//每隔一段时间触发
-	end : 0		//总时长
 });
