@@ -81,11 +81,7 @@ Service = {
 	},
 	
 	initialize : function(){
-		GameUtil.initGroup(
-			[{type:Constant.Group.Team1.TYPE, name:Constant.Group.Team1.NAME},
-		     {type:Constant.Group.Team2.TYPE, name:Constant.Group.Team2.NAME},
-		     {type:Constant.Group.Block.TYPE, name:Constant.Group.Block.NAME}]
-		);
+		GameUtil.initGroup(2);
 		GameUtil.initSystem();
 		GameUtil.initUnitTemplate(characterData);
 	},

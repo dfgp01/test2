@@ -30,6 +30,7 @@
     "src/common/entity/Group.js",
     
     "src/common/service/Factory.js",
+    "src/common/service/Initializer.js",
     "src/common/service/Service.js",
     
     "src/common/system/ActionSystem.js",

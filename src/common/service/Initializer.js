@@ -66,12 +66,11 @@ Initializer = {
 		/**
 		 * 单位组定义
 		 */
-		initGroup : function(groupsData){
-			if(groupsData.length > 10){
-				//总组数大于10就不玩了
-				cc.log("team num large than 16.");
-				return;
-			}
+		initGroup : function(){
+			//逻辑，至少初始化三个组：block,team1,team2，index分别为0 1 2
+			// teamMask = 2的group.length次方-2
+			//因为：group[0]=block。假设有三个组，index为 1 2 3，teamMask应该为 1110，block组需要自己实现相应逻辑
+			
 			var group = null;
 			var teamCharacterMask = 0;		//用于计算敌对阵营的
 			for(var i=0; i<groupsData; i++){

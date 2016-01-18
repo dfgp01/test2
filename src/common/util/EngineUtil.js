@@ -15,7 +15,7 @@ EngineUtil = {
 		}else{
 			cc.log("EngineUtil.setFrameByName error. frame:" + frameName + " not found~!");
 		}
-	}
+	},
 	
 	getRectWithNode : function(node, rectData){
 		var rectSource = node.getBoundingBox();
