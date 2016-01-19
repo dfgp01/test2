@@ -101,8 +101,6 @@ ActionRunSystem = System.extend({
 				this._currObj = this.groups[i].list[j];
 				this._currAct = this._currObj.actions.current;
 				if(this._currAct != null){
-					//运行
-					this._currAct.run(dt, this._currObj);
 					//动作结束后
 					if(this._currObj.actions.endFlag){
 						this._currAct.end(unit);
@@ -117,9 +115,12 @@ ActionRunSystem = System.extend({
 						else{
 							this._currAct = null;
 						}
+					}else{
+						//运行
+						this._currAct.run(dt, this._currObj);
 					}
 				}else{
-					
+					//重置action
 				}
 				
 				//一些计时组件系统的更新

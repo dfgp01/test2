@@ -37,12 +37,21 @@ GameUtil = {
 		 * @param obj
 		 * @param mask
 		 */
-		collideMask : function(group){
+		collideMask : function(group, mask){
 			var mask  = 0;
-			if(mask & Collide.Target.ENEMY){
-				//和全阵营码进行与运算取反可标出敌对阵营
-				mask  = mask | ~(obj.group.mask & Constant.Group.ALL_FACTION_MASK);
+			//类型判断：硬打击(包括敌人和block)，只攻击人(不包括block)，等等......
+			if(mask & Constant.Collide.TARGET_ENEMY){
+				//组号取反 与 全组掩码 可得其余组的二进制（主要是剔除block组）
+				mask = mask | ((~group) & Service.Container.teamMask);
 			}
+			if(mask & Constant.Collide.TARGET_FRIEND){
+				mask = mask | group;
+			}
+			if(mask & Constant.Collide.TARGET_BLOCK){
+				//index为1的组通常是block组
+				mask = mask | 1;
+			}
+			return mask;
 		},
 		
 		/**

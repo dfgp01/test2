@@ -8,10 +8,14 @@ Group = cc.Class.extend({
 	mask : -1,
 	type : 0,
 
-	ctor : function(type, name){
-		this.type = type;
-		this.name = name;
+	ctor : function(){
 		this.list = [];
+	},
+	
+	attr : function(data){
+		this.type = data.type;
+		this.name = data.name;
+		this.index = data.index;
 	},
 	
 	add : function(obj){
@@ -19,6 +23,7 @@ Group = cc.Class.extend({
 		obj.group = this.index;
 	},
 	
+	//以后可能会用链表实现这个
 	remove : function(obj){
 		if(this.list.length > 0){
 			for(var i in this.list){

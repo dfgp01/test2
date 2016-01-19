@@ -121,13 +121,11 @@ Constant = {
 		REMOTE : 4			//是否远程攻击
 	},
 	Collide : {
-		Target : {
-			NONE : 0,
-			BLOCK : 1,
-			ENEMY : 2,
-			FRIEND : 4,
-			SELF : 8
-		},
+		TARGET_NODE : 0,
+		TARGET_BLOCK : 1,
+		TARGET_ENEMY : 2,
+		TARGET_FRIEND : 4,
+		TARGET_SELF : 8,
 		Amount : {
 			ONE : 1,
 			MULTI : 99
