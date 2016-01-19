@@ -95,6 +95,9 @@ ActionRunSystem = System.extend({
 		this.groups = Service.Container.groups;
 	},
 	
+	/**
+	 * 主循环实在是太重量级了，希望有好的优化方案
+	 */
 	update : function(dt){
 		for(var i in this.groups){
 			for(var j in this.groups[i].list){
@@ -106,12 +109,11 @@ ActionRunSystem = System.extend({
 						this._currAct.end(unit);
 						if(this._currObj.actions.next != null){
 							this._currObj.actions.next.start(unit);
-							//还原为空状态，原因你懂，不信的话把这句注释看看。
-							this._currObj.actions.next = null;
+							this._currObj.actions.next = null;//还原为空状态，原因你懂，不信的话把这句注释看看。
 						}
-						else if(this._currAct.children && this._currAct.children[Constant.DIRECT_CHILDNODE]){
+						/*else if(this._currAct.children && this._currAct.children[Constant.DIRECT_CHILDNODE]){
 							this._currAct.children[Constant.DIRECT_CHILDNODE].start(unit);
-						}
+						}*/
 						else{
 							this._currAct = null;
 						}
