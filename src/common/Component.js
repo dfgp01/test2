@@ -8,7 +8,9 @@
  */
 Component = cc.Class.extend({
 	name : "noName",
-	ownerId : 0,
+	owner : null,		//所属unit
+	prev : null,		//用于链表结构的前指针
+	next : null,		//用于链表结构的后指针
 	//克隆对象接口而已
 	clone : function(){		cc.log("看到这一句说明你还没重写Component.clone接口 name:" + this.name);	},
 	//重置数据

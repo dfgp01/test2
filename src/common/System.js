@@ -6,11 +6,50 @@ System = cc.Class.extend({
 	priority : 0,
 	tick : Constant.Tick.FPS60,			//不能少于这个数
 	remainDt : 0,
-	prep : null,
-	next : null,
 	start : function(){},
 	update : function(dt){},
-	end : function(){}
+	end : function(){},
+	
+	//这三个以后要
+	_head : null,
+	_curr : null,
+	_end : null,
+	
+	//暂定的名称
+	updateNew : function(dt){
+		if(this._head != null){
+			this._curr = this._head;
+			do{
+				this.update(dt, this._curr);
+				this._curr = this._curr.next;
+			}while(this._curr != null);
+		}
+	},
+	
+	addToLink : function(node){
+		node.prep = null;
+		node.next = null;
+		if(this._head == null){
+			this._head = node;
+		}else{
+			this._end.next = node;
+			node.prep = this._end;
+			node.next = null;	//* node.next = this._head; 如果需要循环链表
+		}
+		this._end = node;
+	},
+	
+	removeFromLink : function(node){
+		if(this._head == node){
+			this._head = node.next;
+		}
+		else if(this._end == node){
+			this._end = node.prep;
+		}else{
+			node.prep.next = node.next;
+			node.next.prep = node.prep;
+		}
+	}
 });
 
 /**
@@ -232,5 +271,40 @@ EventMessageSystem = System.extend({
 	
 	addEvent : function(evt){
 		this._quene.push(evt);
+	}
+});
+
+/**
+ * 更新坐标的系统（新版，暂不使用）
+ * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
+ */
+MotionRunSystemNEW = System.extend({
+	name : "motion",
+	dx : 0,
+	dy : 0,
+	unit : null,
+	_sprite : null,
+	
+	update : function(dt){
+		if(this._head != null){
+			this._curr = this._head;
+			do{
+				EngineUtil.setPosition(this._curr.owner.coms.view.sprite, this._curr);
+				this._curr = this._curr.next;
+			}while(this._curr != null);
+		}
+	}
+});
+
+/**
+ * 主循环中的动画系统（新版，暂不使用）
+ */
+AnimateRunSystemNEW = System.extend({
+	tick : Constant.Tick.FPS05,
+	name : "animate",
+	_dt : 0,
+
+	update : function(dt, com){
+		
 	}
 });

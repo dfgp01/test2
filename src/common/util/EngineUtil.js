@@ -17,6 +17,14 @@ EngineUtil = {
 		}
 	},
 	
+	setPosition : function(sprite, motionCom){
+		//setPosition()里面有绘制命令
+		//这里要使用getPositionX()而不是getPosition().x这种，因为翻查源码发现，getPosition()是会有new操作的。
+		sprite.setPosition(
+			sprite.getPositionX() + motionCom.dx,
+			sprite.getPositionY() + motionCom.dy);
+	}
+	
 	getRectWithNode : function(node, rectData){
 		var rectSource = node.getBoundingBox();
 		return cc.rect(
