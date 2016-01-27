@@ -7,7 +7,7 @@ System = cc.Class.extend({
 	tick : Constant.Tick.FPS60,			//不能少于这个数
 	remainDt : 0,
 	start : function(){},
-	update : function(dt){},
+	//update : function(dt){},
 	end : function(){},
 	
 	//这三个以后要
@@ -15,18 +15,22 @@ System = cc.Class.extend({
 	_curr : null,
 	_end : null,
 	
-	//暂定的名称
-	updateNew : function(dt){
+	/**
+	 * 主函数
+	 */
+	update : function(dt){
 		if(this._head != null){
 			this._curr = this._head;
 			do{
-				this.update(dt, this._curr);
+				this.callback(dt, this._curr);
 				this._curr = this._curr.next;
 			}while(this._curr != null);
 		}
 	},
 	
-	addToLink : function(node){
+	callback : function(dt, com){/**子类重写此方法**/},
+	
+	addComponent : function(node){
 		node.prep = null;
 		node.next = null;
 		if(this._head == null){
@@ -36,10 +40,11 @@ System = cc.Class.extend({
 			node.prep = this._end;
 			node.next = null;	//* node.next = this._head; 如果需要循环链表
 		}
+		//新加入的一定是放在链尾
 		this._end = node;
 	},
 	
-	removeFromLink : function(node){
+	removeComponent : function(node){
 		if(this._head == node){
 			this._head = node.next;
 		}
@@ -298,13 +303,54 @@ MotionRunSystemNEW = System.extend({
 
 /**
  * 主循环中的动画系统（新版，暂不使用）
+ * com是复合类型的
  */
 AnimateRunSystemNEW = System.extend({
 	tick : Constant.Tick.FPS05,
 	name : "animate",
 	_dt : 0,
+	
+	//局部变量
+	_unit : null,
+	_animate : null,
+	_view : null,
+	
+	/**
+	 * 加入到链表中，并初始化第一帧
+	 */
+	addComponent : function(node){
+		this._super(node);
+		this._unit = node.gameObj;
+		this._view = this._unit.coms.view;
+		this._animate = node.animate;
+		this._view.frameIndex = 0;
+		this._view.delay = 0;
+		EngineUtil.setFrame(this._view.sprite, this._animate.frames[0]);
+	},
 
-	update : function(dt, com){
+	callback : function(dt, component){
 		
+		this._unit = component.gameObj;
+		this._animate = component.animate;
+		this._view = component.gameObj.coms.view;
+		
+		if(this._view.frameIndex < this._animate.frames.length){
+			//冷却计时
+			if(this.view.delay < this._animate.delays[this._view.frameIndex]){
+				this._view.delay += dt;
+				return;
+			}else{
+				this._view.frameIndex++;
+				this._view.delay = 0;
+				//冷却时间到就切换下一帧
+				EngineUtil.setFrame(this._view.sprite, this._animate.frames[this._view.frameIndex]);
+			}
+		}else if(this._animate.type & Constant.animate.type.LOOP){
+			this._view.frameIndex = 0;
+			this._view.delay = 0;
+			EngineUtil.setFrame(this._view.sprite, this._animate.frames[0]);
+		}else{
+			//移除这个节点
+		}
 	}
 });

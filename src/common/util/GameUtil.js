@@ -11,11 +11,10 @@ GameUtil = {
 				player : null,
 				motion : null,
 				action : null,
-				EvtMsg : null
+				EvtMsg : null,
+				animate : null
 			},
 			act : {
-				normalAnimate : null,
-				loopAnimate : null,
 				stand : null,
 				walk : null,
 				motion : null

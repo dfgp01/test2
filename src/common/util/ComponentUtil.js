@@ -22,5 +22,27 @@ ComponentUtil = {
 		}else{
 			return false;
 		}
+	},
+	
+	/**
+	 * JS特有的赋值方法
+	 * 不递归，只保存引用，不深层赋值
+	 */
+	attr : function(elems, data){
+		if(data){
+			for(var key in data){
+				if(elems[key]){
+					/*if(data[key] && typeof data[key] === "object"){
+						//递归
+						this.attr(elems[key], data[key]);
+					}else{
+						elems[key] = data[key];
+					}*/
+					elems[key] = data[key];
+				}else{
+					cc.log(elems.name + "类没有" + key + "属性");
+				}
+			}
+		}
 	}
 };

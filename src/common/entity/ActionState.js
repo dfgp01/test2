@@ -36,6 +36,18 @@ ActionState = cc.Class.extend({
 		for(var i in this.systemList){
 			this.systemList[i].start(unit, this.coms[this.systemList[i].name]);
 		}
+		//动画逻辑
+		if(this.coms.animate){
+			var animate = this.coms.animate;
+			var com = Service.getInstance("animateComplex");
+			if(com==null){
+				com = new AnimateComplexComponent();
+			}
+			ComponentUtil.attr(com, {gameObj:unit,animate:animate});
+			GameUtil.systems.sys.animate.addComponent(com);
+			//AnimateRunSystemNEW.addComponent(com);
+		}
+		
 	},
 	
 	//运行时

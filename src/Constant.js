@@ -3,7 +3,10 @@
  */
 Constant = {
 	DIRECT_CHILDNODE : "-",
-	ANIMATE_TYPE : {
+	animate : {
+		type : {
+			LOOP : 1
+		}
 		NONE : 0,
 		NORMAL : 1,
 		LOOP : 2

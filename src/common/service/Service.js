@@ -127,7 +127,12 @@ Service = {
 			
 			teamMask : 0,		//阵营的掩码
 
-			templates : {}		//存储已初始化的原始数据的模板
+			templates : {},		//存储已初始化的原始数据的模板
+			
+			//实例对象池，不用频繁创建
+			instances : {
+				animateComplex : []
+			}
 	},
 	
 	/**

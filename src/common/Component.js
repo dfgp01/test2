@@ -16,9 +16,7 @@ Component = cc.Class.extend({
 	//重置数据
 	reset : function(){		cc.log("看到这一句说明你还没重写Component.reset接口 name:" + this.name);		},
 	//新的初始化实例
-	newInstance : function(){		cc.log("看到这一句说明你还没重写Component.newInstance接口 name:" + this.name);		},
-	//通过数据初始化
-	init : function(data){		cc.log("看到这一句说明你还没重写Component.init接口 name:" + this.name);		}
+	newInstance : function(){		cc.log("看到这一句说明你还没重写Component.newInstance接口 name:" + this.name);		}
 });
 
 /**
