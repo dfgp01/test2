@@ -16,7 +16,7 @@ System = cc.Class.extend({
 	_end : null,
 	
 	/**
-	 * 主函数
+	 * 主函数，循环整个链表
 	 */
 	update : function(dt){
 		if(this._head != null){
@@ -28,7 +28,15 @@ System = cc.Class.extend({
 		}
 	},
 	
-	callback : function(dt, com){/**子类重写此方法**/},
+	/**
+	 * 用于执行一次指定组件节点的逻辑，该节点不加入链表中
+	 */
+	updateOnce : function(dt, node){this.callback(dt, node);},
+	
+	/**
+	 * 子类重写此方法，用于执行详细逻辑
+	 */
+	callback : function(dt, com){return;},
 	
 	addComponent : function(node){
 		node.prep = null;
@@ -38,7 +46,7 @@ System = cc.Class.extend({
 		}else{
 			this._end.next = node;
 			node.prep = this._end;
-			node.next = null;	//* node.next = this._head; 如果需要循环链表
+			//* node.next = this._head; 如果需要循环链表
 		}
 		//新加入的一定是放在链尾
 		this._end = node;
@@ -54,6 +62,8 @@ System = cc.Class.extend({
 			node.prep.next = node.next;
 			node.next.prep = node.prep;
 		}
+		node.prep = null;
+		node.next = null;
 	}
 });
 
@@ -287,17 +297,11 @@ MotionRunSystemNEW = System.extend({
 	name : "motion",
 	dx : 0,
 	dy : 0,
-	unit : null,
+	_unit : null,
 	_sprite : null,
-	
-	update : function(dt){
-		if(this._head != null){
-			this._curr = this._head;
-			do{
-				EngineUtil.setPosition(this._curr.owner.coms.view.sprite, this._curr);
-				this._curr = this._curr.next;
-			}while(this._curr != null);
-		}
+
+	callback : function(dt, component){
+		EngineUtil.setPosition(component.owner.coms.view.sprite, component);
 	}
 });
 

@@ -40,7 +40,6 @@ StandActionSystem = ActionSystem.extend({
  */
 MotionSystem = ActionSystem.extend({
 	name : "motion",
-	motionCom : null,
 	
 	start : function(gameObj, actionCom){
 	},
@@ -58,6 +57,32 @@ MotionSystem = ActionSystem.extend({
 		gameObj.coms.motion.vy = 0;
 		gameObj.coms.motion.dx = 0;
 		gameObj.coms.motion.dy = 0;
+	}
+});
+
+/**
+ * 只移动一下的逻辑
+ */
+MoveOnceSystem = MotionSystem.extend({
+	start : function(gameObj, motionCom){
+		xxx.updateOnce(gameObj, motionCom);
+	},
+	update : function(dt, gameObj, actionCom){return;}
+});
+
+/**
+ * 每帧移动一次的逻辑
+ */
+MovePerFrameSystem = MotionSystem.extend({
+	_view : null,
+	start : function(gameObj, movePerFrame){
+		xxx.updateOnce(gameObj, movePerFrame.list[0]);
+	},
+	update : function(dt, gameObj, movePerFrame){
+		this._view = gameObj.coms.view; 
+		if(this._view.delay==0 && this._view.frameIndex < movePerFrame.list.length){
+			xxx.updateOnce(gameObj, movePerFrame.list[this._view.frameIndex]);
+		}
 	}
 });
 

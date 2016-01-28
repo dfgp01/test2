@@ -92,3 +92,17 @@ GroupComponent = Component.extend({
 		this.coms[com.name] = com;
 	}
 });
+
+/**
+ * 每帧移动一次的组件
+ */
+MovePerFrameComponent = Component.extend({
+	name : "motion",
+	list : null,
+	ctor : function(){
+		this.list = [];
+	},
+	add : function(motionCom){
+		this.list.push(motionCom);
+	}
+});

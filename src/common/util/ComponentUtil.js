@@ -44,5 +44,24 @@ ComponentUtil = {
 				}
 			}
 		}
+	},
+	
+	//实例对象池
+	instances : {
+		animateComplex : []
+	},
+	pushInstance : function(node){
+		var key = node.name;
+		if(!this.instances[key]){
+			this.instances[key] = [];
+		}
+		this.instances[key].push(node);
+	},
+	popInstance : function(key){
+		if(this.instances[key] && this.instances[key].length>0){
+			return this.instances[key].shift();
+		}else{
+			return null;
+		}
 	}
 };
