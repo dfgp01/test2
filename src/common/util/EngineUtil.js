@@ -23,7 +23,7 @@ EngineUtil = {
 		sprite.setPosition(
 			sprite.getPositionX() + motionCom.dx,
 			sprite.getPositionY() + motionCom.dy);
-	}
+	},
 	
 	getRectWithNode : function(node, rectData){
 		var rectSource = node.getBoundingBox();

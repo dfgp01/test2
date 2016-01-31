@@ -196,24 +196,6 @@ ActionRunSystem = System.extend({
 });
 
 /**
- * 主循环中的动画系统
- */
-AnimateRunSystem = System.extend({
-	tick : Constant.Tick.FPS05,
-	name : "AnimateRunSystem",
-	_dt : 0,
-
-	update : function(dt){
-		this._dt = dt;
-		Service.loopAllObjects(this._callback);
-	},
-	
-	_callback : function(unit){
-		unit.actions.current.animateSystem.update(this._dt, unit, unit.actions.current.coms.animate);
-	}
-});
-
-/**
  * 更新坐标的系统
  * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
  */
@@ -293,7 +275,7 @@ EventMessageSystem = System.extend({
  * 更新坐标的系统（新版，暂不使用）
  * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
  */
-MotionRunSystemNEW = System.extend({
+MotionSystem = System.extend({
 	name : "motion",
 	dx : 0,
 	dy : 0,
@@ -306,10 +288,10 @@ MotionRunSystemNEW = System.extend({
 });
 
 /**
- * 主循环中的动画系统（新版，暂不使用）
+ * 主循环中的动画系统（新版）
  * com是复合类型的
  */
-AnimateRunSystemNEW = System.extend({
+AnimateSystem = System.extend({
 	tick : Constant.Tick.FPS05,
 	name : "animate",
 	_dt : 0,
@@ -324,12 +306,10 @@ AnimateRunSystemNEW = System.extend({
 	 */
 	addComponent : function(node){
 		this._super(node);
-		this._unit = node.gameObj;
-		this._view = this._unit.coms.view;
-		this._animate = node.animate;
-		this._view.frameIndex = 0;
-		this._view.delay = 0;
-		EngineUtil.setFrame(this._view.sprite, this._animate.frames[0]);
+		var view = node.gameObj.coms.view;
+		view.frameIndex = 0;
+		view.delay = 0;
+		EngineUtil.setFrame(view.sprite, node.animate.frames[0]);
 	},
 
 	callback : function(dt, component){
