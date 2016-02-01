@@ -243,7 +243,7 @@ EventMessageSystem = System.extend({
 	_quene : null,
 	_unitEvt : null,
 	
-	start : function(){
+	ctor : function(){
 		this._quene = [];
 		this._unitEvt = new UnitEventScheduler();
 	},

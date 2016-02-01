@@ -2,6 +2,21 @@
  * 工厂类，用于建造游戏组件。
  */
 Factory = {
+		
+		actionComCreator : {},
+		
+		componentCreator : function(data, template){
+			if(!DataUtil.checkIsString(name)){
+				cc.log("noname.");
+			}
+			var creator = null;
+			for(var key in data){
+				creator = this.actionComCreator[key];
+				if(creator){
+					creator.build(data, template);
+				}
+			}
+		},
 
 		/**
 		 * 创建一个单位模板

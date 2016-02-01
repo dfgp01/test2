@@ -4,12 +4,10 @@
 Constant = {
 	DIRECT_CHILDNODE : "-",
 	animate : {
-		type : {
-			LOOP : 1
-		}
-		NONE : 0,
-		NORMAL : 1,
-		LOOP : 2
+		TYPE_NONE : 0,
+		TYPE_STATIC : 1,
+		TYPE_NORMAL : 2,
+		TYPE_SCROLL : 3
 	},
 	
 	Action : {

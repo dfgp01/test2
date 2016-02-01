@@ -26,54 +26,85 @@ GameSetting = {
 	}
 };
 
+//可以做成系统变量
+commonActions = {
+	list:[{
+		name:"block",
+		animate:{
+			type: Constant.animate.TYPE_STATIC
+		},
+		rect:[10,10,10,10]
+	},{
+		name:"block-hurt",
+		animate:{
+			type: Constant.animate.TYPE_SHAKE
+		}
+	},{
+		name:"animate-only",
+		animate:{
+			type: Constant.animate.TYPE_SCROLL
+		}
+	}]
+}
+
+deep = {
+	name : "deep",
+	disName : "玩家",
+	res : [res.deep_0_plist,res.deep_1_plist,res.deep_2_plist],
+	actions : actions
+};
+
+actions : {
+	stand : {
+		animate:{
+			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
+		}
+	},
+	run : {
+		animate : {
+			frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
+			//delays : [1, 2, 3, 4]
+		},
+		motion : {
+			dx : 10,
+			dz : 50
+		}
+	},
+	hurt : {
+		type : 1,
+		animate : {
+			frames : ["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png"]
+		}
+	},
+	attack : {
+		style : 1,
+		list : [
+		  {
+			animate : {
+				frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"]
+			},
+			hit : {
+				style : 0,	//利器、钝器、拳头等等
+				type : Constant.HitType.MOTION,	//普通后退、倒地等
+				damage : 10.2,
+				rect : [10,10,100,100],
+				frame : 1,
+				direction : 1,
+				num : 1
+			}
+		},{
+			
+		}]
+	}
+};
+
 characterData = {
 	name : "deep",
 	res : "deep",
 	type : 2,
 	featureCode : 29,
 	speedFactor : 1,
-	actions : {
-		stand : {
-			animate:{
-				frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"]
-			}
-		},
-		walk : {
-			animate : {
-				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
-				//delays : [1, 2, 3, 4]
-			},
-			motion : {
-				dx : 10,
-				dy : 50
-			}
-		},
-		hurt : {
-			animate : {
-				frames : ["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png"]
-			}
-		},
-		attack : {
-			style : 1,
-			list : [
-			  {
-				animate : {
-					frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"]
-				},
-				hit : {
-					style : 0,	//利器、钝器、拳头等等
-					type : Constant.HitType.MOTION,	//普通后退、倒地等
-					damage : 10.2,
-					rect : [10,10,100,100],
-					frame : 1,
-					direction : 1,
-					num : 1
-				}
-			},{
-				
-			}]
-		}
-	},
+	
 	actions : [
 		{
 			name : "stand",
