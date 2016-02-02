@@ -7,8 +7,8 @@
  * 组件父类
  */
 Component = cc.Class.extend({
-	name : "noName",
-	owner : null,		//所属unit
+	name : "component",
+	owner : null,		//所属unit或action
 	prev : null,		//用于链表结构的前指针
 	next : null,		//用于链表结构的后指针
 	//克隆对象接口而已
@@ -20,11 +20,38 @@ Component = cc.Class.extend({
 });
 
 /**
+ * 	动画组件
+ */
+AnimateComponent = Component.extend({
+	name : "animate",
+	frames : null,
+	delays : null,
+	type : 0,
+	clone : function(){
+		var com = new AnimateComponent();
+		com.frames = this.frames;
+		com.dalays = this.delays;
+		com.type = this.type;
+		return com;
+	},
+	ctor : function(){
+		this.frames = [];
+		this.delays = [];
+	},
+	newInstance : function(){
+		var com = new AnimateComponent();
+		com.frames = [];
+		com.delays = [];
+		com.type = 0;
+		return com;
+	}
+});
+
+/**
  * 	计时组件（Buff持续，技能冷却等地方使用）
  * 		基类只存储总时长
  */
 TimerComponent = Component.extend({
-	start : 0,	//开始计时标记,通常是Unit用
 	dt : 0,		//用于每隔一段时间触发的
 	toal : 0	//总时长
 });
@@ -56,4 +83,12 @@ MotionComponent = Component.extend({
 		this.dx = data.dx;
 		this.dy = data.dy;
 	}
+});
+
+/**
+ * 矩形交互组件，如会阻碍通行、可拾取、可接触等
+ */
+RectDataComponent = Component.extend({
+	name : "rectData",
+	rect : null
 });

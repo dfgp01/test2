@@ -5,9 +5,9 @@
  *  update by Hugo-Fu 2015.11.26	加入ID递增，放入Service缓存
  */
 UnitTemplate = cc.Class.extend({
-	
+
 	name : null,
-	type : 0,
+	frame : null,				//初始frame
 	featureCode : 0,
 	availableList : null,		//对象池
 
@@ -18,11 +18,6 @@ UnitTemplate = cc.Class.extend({
 	nextId : 1,
 
 	init : function(data){
-		this.name = data.name;
-		this.type = data.type;
-		this.featureCode = data.featureCode;
-		this.availableList = [];
-		this.coms = {};
 		this.actions = new ActionsComponent();
 
 		//运动组件
@@ -63,6 +58,7 @@ UnitTemplate = cc.Class.extend({
 				unit.coms[name] = this.coms[i].clone();
 			}
 			unit.coms.view = new ViewComponent();
+			EngineUtil.setFrame(unit.coms.view.sprite, this.frame);
 			unit.actions = this.actions.clone();
 			unit.template = this;
 		}

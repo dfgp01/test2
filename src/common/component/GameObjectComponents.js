@@ -8,29 +8,21 @@
  */
 ViewComponent = Component.extend({
 	name : "view",
-	z : 0,			//在地上的Y值，用于空中状态落地判断
+	animate : null,			//当前动画组件引用
+	z : 0,					//在地上的Y值，用于空中状态落地判断
 	frameIndex : 0,
 	delay : 0,
 	displayName : "unit",	//显示的名字
-	sprite : null,
-	
-	clone : function(){
-		var com = new ViewComponent();
-		com.sprite = new cc.Sprite();
-		com.z = this.z;
-		com.frameIndex = this.frameIndex;
-		com.delay = this.delay;
-		com.displayName = this.displayName;
-		return com;
-	},
+	sprite : null,			//cc.sprite的引用
+
 	ctor : function(){
-		this.sprite = new cc.Sprite();
+		this.sprite = EngineUtil.newSprite();
 		this.z = 0;
 		this.frameIndex = 0;
 		this.delay = 0;
-		this.displayName = "unit";
 		return this;
 	},
+	
 	init : function(data){
 		EngineUtil.setFrameByName(this.sprite, data.frame);
 	}
@@ -41,14 +33,15 @@ ViewComponent = Component.extend({
  */
 ActionsComponent = Component.extend({
 	name : "actions",
+	action : null,			//当前action引用
 	repeatFlag : 0,
 	endFlag : false,
 	phase : 0,
-	current : null,
 	next : null,
 	timer : null,			//timerCom组件
 	names : null,			//Action索引
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
+	
 	clone : function(){
 		var com = new ActionsComponent();
 		com.repeatFlag = this.repeatFlag;
@@ -61,25 +54,23 @@ ActionsComponent = Component.extend({
 		com.timer = this.timer;
 		return com;
 	},
+	
 	ctor : function(){
 		this.repeatFlag = 0;
 		this.endFlag = false;
 		this.phase = 0;
-		this.current = null;
-		this.next = null,
-		this.names = {};
+		this.next = null;
 		this.state = 0;
-		this.timer = new TimerComponent();
-		return this;
 	}
 });
 
 /**
  * 单位运动组件
  */
-UnitMotionComponent = MotionComponent.extend({
-	speedFactor : 1,	//速度比例系数
-	vx : 0,				//vx,vy,vz 代表方向向量
+UnitMotionComponent = Component.extend({
+	motion : null,	//当前motion组件引用
+	factor : 1,		//速度比例系数
+	vx : 0,			//vx,vy,vz 代表方向向量
 	vy : 0,
 	vz : 0,
 
@@ -102,6 +93,7 @@ UnitMotionComponent = MotionComponent.extend({
  */
 UnitHitComponent = Component.extend({
 	name : "hit",
+	hit : null,			//当前action.hit的引用
 	strength : 0,
 	critical : 0,		//暴击
 	speedFactor : 0,	//攻击速度

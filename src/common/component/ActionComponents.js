@@ -4,34 +4,6 @@
  **/
 
 /**
- * 	动画组件
- */
-AnimateComponent = Component.extend({
-	name : "animate",
-	frames : null,
-	delays : null,
-	type : 0,
-	clone : function(){
-		var com = new AnimateComponent();
-		com.frames = this.frames;
-		com.dalays = this.delays;
-		com.type = this.type;
-		return com;
-	},
-	ctor : function(){
-		this.frames = [];
-		this.delays = [];
-	},
-	newInstance : function(){
-		var com = new AnimateComponent();
-		com.frames = [];
-		com.delays = [];
-		com.type = 0;
-		return com;
-	}
-});
-
-/**
  * 可蓄力动作组件
  */
 ChargeComponent = Component.extend({

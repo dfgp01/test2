@@ -17,6 +17,36 @@ Factory = {
 				}
 			}
 		},
+		
+		/**
+		 * 创建背景元素，中立组
+		 */
+		createTile : function(data){
+			var template = this.createUnitTemplate(data);
+			var action = null;
+			if(DataUtil.checkNotNull(data,"interact")){
+				var type=data.interact.type;
+				switch(type){
+				case Constant.GameObject.Interact.BLOCK:
+					action = GameUtil.actions.block;
+					break;
+				}
+			}
+		},
+		
+		/**
+		 * 创建玩家可交互的元素，物品组
+		 */
+		createItem : function(data){
+			
+		},
+		
+		/**
+		 * 创建战斗单位（人物、子弹、召唤兽等）
+		 */
+		createBattleUnit : function(data){
+			
+		},
 
 		/**
 		 * 创建一个单位模板
@@ -29,16 +59,16 @@ Factory = {
 				cc.log("create Unit error, lack of necessary data! data is null or noname.");
 				return null;
 			}
-			if(!DataUtil.checkIsInt(data, "type")){
-				cc.log("create UnitTemplate error, field:type must int.");
-				return null;
-			}
+			//这个也不是必须的
 			if(!DataUtil.checkNotNull(data, "actions")){
 				cc.log("create UnitTemplate error, must has actions.");
 				return null;
 			}
 
 			var unitTemplate = new UnitTemplate();
+			unitTemplate.name = data.name;
+			unitTemplate.availableList = [];
+			unitTemplate.coms = {};
 			
 			//其他初始化操作，通常是子类实现
 			unitTemplate.init(data);

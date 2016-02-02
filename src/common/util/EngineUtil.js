@@ -3,6 +3,10 @@
  */
 
 EngineUtil = {
+		
+	newSprite : function(){
+		return new cc.Sprite();
+	},
 	
 	setFrame : function(sprite, frame){
 		sprite.setSpriteFrame(frame);

@@ -72,6 +72,14 @@ Constant = {
 	},
 	
 	GameObject : {
+		Interact : {
+			UNIT : 0,
+			BLOCK : 1,
+			PICKABLE : 2,
+			PLAYER_TOUCH : 3,
+			UNIT_TOUCH : 4,
+			ZONE : 5
+		},
 		Type : {
 			NONE : 0,				//无
 			MONSTER : 1,		//一般杂兵
