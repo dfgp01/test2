@@ -12,9 +12,20 @@ ActionState = cc.Class.extend({
 	
 	coms : null,
 	
-	init : function(data){
+	init : function(data, template){
 		this.coms = {};
 		this.systemList = [];
+		
+		//穷举组件检测
+		if(DataUtil.checkNotNull(data,"animate")){
+			this.createAnimate(data.animate, template);
+		}
+		if(DataUtil.checkNotNull(data,"motion")){
+			this.createMotion(data.motion, template);
+		}
+		if(DataUtil.checkNotNull(data,"timer")){
+			this.createTimer(data.timer, template);
+		}
 	},
 	
 	//设置直接下一个节点，需要改
@@ -64,3 +75,7 @@ ActionState = cc.Class.extend({
 		}
 	}
 });
+
+ActionState.createAnimate = function(data, template){
+	
+};

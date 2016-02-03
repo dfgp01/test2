@@ -2,7 +2,7 @@
  * 	定义游戏主要系统接口
  */
 System = cc.Class.extend({
-	name : null,
+	name : "system",
 	priority : 0,
 	tick : Constant.Tick.FPS60,			//不能少于这个数
 	remainDt : 0,
@@ -15,44 +15,39 @@ System = cc.Class.extend({
 	_curr : null,
 	_end : null,
 	
+	ctor : function(){
+		//初始化头尾两个空内容的指针
+		this._head = new Component();
+		this._end = new Component();
+		this._head.next = this._end;
+	},
+	
 	/**
 	 * 主函数，循环整个链表
 	 */
 	update : function(dt){
-		if(this._head != null){
-			this._curr = this._head;
+		if(this._head.next != this._end){
+			this._curr = this._head.next;
 			do{
-				this.callback(dt, this._curr);
+				this.executeUpdate(dt, this._curr);
 				this._curr = this._curr.next;
-			}while(this._curr != null);
+			}while(this._curr != this._end);
 		}
 	},
 	
 	/**
-	 * 用于执行一次指定组件节点的逻辑，该节点不加入链表中
+	 * 子类重写此方法，用于执行一次详细逻辑
 	 */
-	updateOnce : function(dt, node){this.callback(dt, node);},
-	
-	/**
-	 * 子类重写此方法，用于执行详细逻辑
-	 */
-	callback : function(dt, com){return;},
+	executeUpdate : function(dt, node){return;},
 	
 	addComponent : function(node){
-		node.prep = null;
-		node.next = null;
-		if(this._head == null){
-			this._head = node;
-		}else{
-			this._end.next = node;
-			node.prep = this._end;
-			//* node.next = this._head; 如果需要循环链表
-		}
 		//新加入的一定是放在链尾
-		this._end = node;
-	},
+		node.prep = this._end.prep;
+		node.next = this._end;
+		this._end.prep.next = node;
+	}
 	
-	removeComponent : function(node){
+	/*removeComponent : function(node){
 		if(this._head == node){
 			this._head = node.next;
 		}
@@ -64,7 +59,7 @@ System = cc.Class.extend({
 		}
 		node.prep = null;
 		node.next = null;
-	}
+	}*/
 });
 
 /**
@@ -291,7 +286,7 @@ MotionSystem = System.extend({
  * 主循环中的动画系统（新版）
  * com是复合类型的
  */
-AnimateSystem = System.extend({
+AnimateUpdateSystem = System.extend({
 	tick : Constant.Tick.FPS05,
 	name : "animate",
 	_dt : 0,

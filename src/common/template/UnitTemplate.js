@@ -18,7 +18,6 @@ UnitTemplate = cc.Class.extend({
 	nextId : 1,
 
 	init : function(data){
-		this.actions = new ActionsComponent();
 
 		//运动组件
 		if(this.featureCode & Constant.GameObject.Feature.MOTION){

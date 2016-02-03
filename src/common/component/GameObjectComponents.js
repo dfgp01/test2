@@ -84,7 +84,7 @@ UnitMotionComponent = Component.extend({
 	},
 	init : function(data){
 		this._super(data);
-		this.speedFactor  = DataUtil.checkIsInt(data, "speedFactor") ? data.speedFactor : this.speedFactor;
+		this.speedFactor  = DataUtil.checkIsInt(data, "factor") ? data.factor : this.factor;
 	}
 });
 

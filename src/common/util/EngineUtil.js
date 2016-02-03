@@ -11,6 +11,20 @@ EngineUtil = {
 	setFrame : function(sprite, frame){
 		sprite.setSpriteFrame(frame);
 	},
+
+	getFrame : function(name){
+		if(!DataUtil.checkIsString(name)){
+			cc.log("EngineUtil.getFrame error. name is null. return default frame");
+			return cc.spriteFrameCache.getSpriteFrame("noFrame");
+		}
+		var frame = cc.spriteFrameCache.getSpriteFrame(name);
+		if(frame){
+			return frame;
+		}else{
+			cc.log("EngineUtil.getFrame error. name:[" + name + "] not found. return default frame");
+			return cc.spriteFrameCache.getSpriteFrame("noFrame");
+		}
+	}
 	
 	setFrameByName : function(sprite, frameName){
 		var frame = cc.spriteFrameCache.getSpriteFrame(frameName);

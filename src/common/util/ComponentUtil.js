@@ -25,6 +25,15 @@ ComponentUtil = {
 	},
 	
 	/**
+	 * 移除此节点
+	 * 	组件对应的主系统是一定有头尾指针的，所以不用担心component的前后指针为空的问题
+	 */
+	remove : function(component){
+		component.prep.next = component.next;
+		component.next.prep = component.prep;
+	},
+	
+	/**
 	 * JS特有的赋值方法
 	 * 不递归，只保存引用，不深层赋值
 	 */
@@ -43,25 +52,6 @@ ComponentUtil = {
 					cc.log(elems.name + "类没有" + key + "属性");
 				}
 			}
-		}
-	},
-	
-	//实例对象池
-	instances : {
-		animateComplex : []
-	},
-	pushInstance : function(node){
-		var key = node.name;
-		if(!this.instances[key]){
-			this.instances[key] = [];
-		}
-		this.instances[key].push(node);
-	},
-	popInstance : function(key){
-		if(this.instances[key] && this.instances[key].length>0){
-			return this.instances[key].shift();
-		}else{
-			return null;
 		}
 	}
 };

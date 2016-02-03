@@ -76,9 +76,8 @@ Constant = {
 			UNIT : 0,
 			BLOCK : 1,
 			PICKABLE : 2,
-			PLAYER_TOUCH : 3,
-			UNIT_TOUCH : 4,
-			ZONE : 5
+			TOUCHABLE : 3,
+			ZONE : 4
 		},
 		Type : {
 			NONE : 0,				//无
