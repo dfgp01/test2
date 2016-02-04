@@ -3,6 +3,8 @@
  */
 Constant = {
 	DIRECT_CHILDNODE : "-",
+	BOOLEAN_TRUE : 1,
+	BOOLEAN_FALSE : 0,
 	animate : {
 		TYPE_NONE : 0,
 		TYPE_STATIC : 1,

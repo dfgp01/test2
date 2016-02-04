@@ -13,7 +13,7 @@ ChargeComponent = Component.extend({
 });
 
 /**
- * 	动作-碰撞数据组件
+ * 	动作-碰撞数据组件，待删
  */
 ActionCollideComponent = Component.extend({
 	rect : null,			//矩形框

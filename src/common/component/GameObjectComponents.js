@@ -107,11 +107,11 @@ UnitHitComponent = Component.extend({
 /**
  * 单位的挨打组件
  */
-UnitHurtComponent = Component.extend({
+HurtComponent = Component.extend({
 	name : "hurt",
 	hp : 0,
 	defence : 0,		//防御值
-	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
+	type : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
 	effects : null,
 	
 	ctor : function(){
@@ -124,27 +124,16 @@ UnitHurtComponent = Component.extend({
  */
 UnitCollideComponent = Component.extend({
 	name : "collide",
-	type : 0,			//无敌、人类、建筑等
-	mask : 0,
-	rect : null,		//cc.rect矩阵对象
+	collide : null,		//action.collide的引用
 	total : 0,			//记录一共碰撞了多少unit
 	targets : null,		//本次中招的人记录在这里 -_-0
 	cost : null,		//之前中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
 	flag : false,		//是否已碰撞成功，撞到一个也算
 	
 	ctor : function(){
-		this.mask = 0;
 		this.targets = [];
 		this.cost = {};
 		return this;
-	},
-	
-	newInstance : function(){
-		var com = new CollidePropertiesComponent();
-		com.mask = 0;
-		com.targets = [];
-		com.cost = {};
-		return com;
 	}
 });
 

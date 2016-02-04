@@ -158,7 +158,7 @@ Initializer = {
 		},
 		
 		/**
-		 * 构建动作逻辑系统组件
+		 * 构建动作逻辑系统组件，待删
 		 */
 		buildActionSys : function(data, action){
 
@@ -183,60 +183,6 @@ Initializer = {
 			if(DataUtil.checkNotNull(data, "attack")){
 
 			}
-		},
-
-		/**
-		 * 构建动画逻辑系统组件
-		 */
-		buildAnimateSys : function(animate, action){
-			var animateComponent = new AnimateComponent().newInstance();
-			var frameList = [];
-			for(var i in animate.frames){
-				var frame = cc.spriteFrameCache.getSpriteFrame(animate.frames[i]);
-				if(frame){
-					frameList.push(frame);
-				}else{
-					cc.log("action:" + action.name + " frame:" + animate.frames[i] + " not found");
-					return null;
-				}
-			}
-			animateComponent.frames = frameList;
-
-			//设置每帧延时
-			if(!DataUtil.checkArrayNull(animate,"delays")){
-				if(animate.delays.length != frameList.length){
-					cc.log("animate.delays 数组和frame数量不对等.");
-					return null;
-				}
-				for(var i=0; i<animate.delays.length; i++){
-					animateComponent.delays.push(animate.delays[i]);
-				}
-			}else{
-				animateComponent.delays = [];
-				for(var i=0; i<frameList.length; i++){
-					//设置默认动画帧时长
-					animateComponent.delays.push(
-							Service.GameSetting.frameTick);
-				}
-			}
-
-			animateComponent.type = DataUtil.checkIsInt(animate, "type") == true ? parseInt(animate.type) : 0;
-			action.coms.animate = animateComponent;
-
-			var system;
-			switch(animateComponent.type){
-			case Constant.ANIMATE_TYPE.NORMAL:
-				system = this.systems.act.normalAnimate;
-				break;
-			case Constant.ANIMATE_TYPE.LOOP:
-				system = this.systems.act.loopAnimate;
-				break;
-			default :
-				system = this.systems.act.normalAnimate;
-			break;
-			}
-			action.coms.animate = animateComponent;
-			ActionUtil.addSystem(action, system);
 		},
 		
 		/**

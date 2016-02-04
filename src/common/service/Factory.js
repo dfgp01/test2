@@ -2,62 +2,9 @@
  * 工厂类，用于建造游戏组件。
  */
 Factory = {
-		
-		actionComCreator : {},
-		
-		componentCreator : function(data, template){
-			if(!DataUtil.checkIsString(name)){
-				cc.log("noname.");
-			}
-			var creator = null;
-			for(var key in data){
-				creator = this.actionComCreator[key];
-				if(creator){
-					creator.build(data, template);
-				}
-			}
-		},
-		
-		createGameObjectTemplate : function(data){
-			if(!DataUtil.checkIsString(data,"name",true)){
-				cc.log("Factory.createGameObjectTemplate error. data or name is null.");
-				return null;
-			}
-			var template = new GameObjectTemplate();
-			template.name = data.name;
-			template.frame = EngineUtil.getFrame(data.frame);
-			template.availableList = [];
-			template.coms = {};
-			template.actions = new ActionsComponent();
-			
-			//根据交互类型创建不同的游戏对象
-			if(DataUtil.checkIsInt(data,"interact")){
-				var type=data.interact.type;
-				switch(type){
-				case Constant.GameObject.Interact.BLOCK:
-					template = this.createBlock(data, template);
-					break;
-				case Constant.GameObject.Interact.UNIT:
-					template = this.createUnit(data, template);
-					break;
-				}
-			}else{
-				//没有交互类型的当作静态tile处理
-				template = this.createTile(data, template);
-			}
-			template.init(data);
-			return object;
-		},
-		
-		/**
-		 * 创建玩家可交互的元素，物品组
-		 */
-		createItem : function(data){
-			
-		},
 
 		/**
-		 * 创建一个单位模板
+		 * 创建一个单位模板（旧方法，待删）
 		 */
 		createUnitTemplate : function(data){
 
@@ -83,58 +30,32 @@ Factory = {
 
 			return unitTemplate;
 		},
-
+		
 		/**
-		 * 创建一个动作节点
+		 * 创建地图元素，中立组
+		 *  tile,block,animate等
 		 */
-		createAction : function(data, template){
-			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
-				cc.log("create ActionState error, lack of necessary data!");
-				return null;
+		createTile : function(data){
+			var template = this.createGameObjectTemplate(data);
+			var action = ActionUtil.getCommonAction("tileStart");
+			template.actions.start = action;
+			if(DataUtil.checkIsInt(data,"block") && data.block==Constant.BOOLEAN_TRUE){
+				//判断有没有rect，。没有就用自身sprite的包围盒，这个暂时不做，默认用sprite的
 			}
-			if(!DataUtil.checkNotNull(data, "animate")){
-				cc.log("createActionState:" + data.name + " error, animate or frame/frames not found!");
-				return null;
-			}
-			cc.log("info: creating action:[" + data.name + "].");
-			var actionState = new ActionState();
-			actionState.name = data.name;
-			actionState.init(data);
-			
-			//设置key
-			//actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
-			//设置状态
-			//actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
-			//初始化动作组件系统
-			//GameUtil.buildActionSys(data, actionState);
-			return actionState;
+			return template;
 		},
 		
 		/**
-		 * 创建自定义的Action类
+		 * 创建人物
 		 */
-		createCustomAction : function(data, actClass){
-			var actionState = new actClass();
-			//自定义的Action类需要自行指定name
-			actionState.init(data);
-			return actionState;
+		createCharacter : function(data){
+			var template = this.createGameObjectTemplate(data);
+			//start 使用  CharacterStartAction
+			
+			//运动组件
+			var motionCom = new UnitMotionComponent();
+			template.coms[motionCom.name] = motionCom;
 		}
-};
-
-Factory.createBlock = function(data, template){
-	//初始化碰撞框
-	if(DataUtil.checkArrayNull(data,"rect")){
-		
-	}
-	var start = new BloackAction();
-	start.init(data, template);
-};
-
-/**
- * 创建背景元素，中立组
- */
-Factory.createTile = function(data){
-	//判断有没有rect，。没有就用自身sprite的包围盒
 };
 
 /**
@@ -162,4 +83,71 @@ Factory.createCharacter = function(data, template){
 			this.createAction(data.actions[i],template);
 		}
 	}
+};
+
+/**
+ * 创建一个单位模板
+ */
+Factory.createGameObjectTemplate = function(data){
+	if(!DataUtil.checkIsString(data,"name",true)){
+		cc.log("Factory.createGameObjectTemplate error. data or name is null.");
+		return null;
+	}
+	var template = new GameObjectTemplate();
+	template.name = data.name;
+	template.frame = EngineUtil.getFrame(data.frame);
+	template.availableList = [];
+	template.coms = {};
+	template.actions = new ActionsComponent();
+	
+	/*//根据交互类型创建不同的游戏对象
+	if(DataUtil.checkIsInt(data,"interact")){
+		var type=data.interact.type;
+		switch(type){
+		case Constant.GameObject.Interact.BLOCK:
+			template = this.createBlock(data, template);
+			break;
+		case Constant.GameObject.Interact.UNIT:
+			template = this.createUnit(data, template);
+			break;
+		}
+	}else{
+		//没有交互类型的当作静态tile处理
+		template = this.createTile(data, template);
+	}*/
+	template.init(data);
+	return template;
+};
+
+/**
+ * 创建一个动作节点
+ * param
+ * 	data 	 数据DNA
+ * 	template 单位模板
+ * 	actClass action的子类，可为空
+ */
+Factory.createAction = function(data, template, actClass){
+	var actionState = null;
+	if(actClass){
+		actionState = new actClass();
+	}else{
+		if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
+			cc.log("create ActionState error, lack of necessary data!");
+			return null;
+		}
+		cc.log("info: creating action:[" + data.name + "].");
+		actionState = new ActionState();
+		actionState.name = data.name;
+	}
+	actionState.coms = {};
+	actionState.systemList = [];
+	actionState.init(data);
+	//初始化动作组件系统
+	ActionUtil.buildComponentSystem(data, actionState);
+	
+	//设置key
+	//actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
+	//设置状态
+	//actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
+	return actionState;
 };

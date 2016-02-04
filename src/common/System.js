@@ -301,10 +301,10 @@ AnimateUpdateSystem = System.extend({
 	 */
 	addComponent : function(node){
 		this._super(node);
-		var view = node.gameObj.coms.view;
+		var view = node.owner.coms.view;
 		view.frameIndex = 0;
 		view.delay = 0;
-		EngineUtil.setFrame(view.sprite, node.animate.frames[0]);
+		EngineUtil.setFrame(view.sprite, view.animate.frames[0]);
 	},
 
 	callback : function(dt, component){

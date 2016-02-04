@@ -13,8 +13,6 @@ ActionState = cc.Class.extend({
 	coms : null,
 	
 	init : function(data, template){
-		this.coms = {};
-		this.systemList = [];
 		
 		//穷举组件检测
 		if(DataUtil.checkNotNull(data,"animate")){

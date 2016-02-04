@@ -1,7 +1,7 @@
 /**
  * 核心系统-动画播放
  */
-AnimateSystem = ActionSystem.extend({
+AnimateSystemOld = ActionSystem.extend({
 	
 	name : "animate",
 	
@@ -55,7 +55,7 @@ LoopAnimateSystem = AnimateSystem.extend({
 /**
  * 核心系统-动画播放，以下是新的
  */
-AnimateSystemNew = ActionSystem.extend({
+AnimateSystem = ActionSystem.extend({
 	name : "animate",
 	system : null,
 	ctor : function(){
@@ -75,9 +75,9 @@ AnimateSystemNew = ActionSystem.extend({
 /**
  * 给tile用的
  */
-SimpleAnimateSystem = AnimateSystemNew.extend({
+SimpleAnimateSystem = AnimateSystem.extend({
 	start : function(gameObj,animateCom){
-		this._super(gameObj,animateCom);
+		gameObj.coms.view.animate = animateCom;
 		this.system.addComponent(gameObj.coms.view);
 	},
 	update : function(dt, gameObj, animateCom){

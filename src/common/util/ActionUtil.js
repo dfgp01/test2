@@ -3,6 +3,19 @@
  */
 
 ActionUtil = {
+		
+	//公共action缓存
+	action:{
+		tileStart:null,
+	}
+
+	init : function(){
+		this.action.tileStart = TileStartAction();
+	},
+	
+	getCommonAction : function(name){
+		return this.action[name];
+	},
 
 	preparedToChange : function(obj, action){
 		obj.actions.next = action;
@@ -34,6 +47,25 @@ ActionUtil = {
 			action.systemList.push(system);
 		}
 	},
+	
+	bulidComponentSystem(data, action){
+		var component = null;
+		var system = null;
+		//穷举组件检测
+		if(DataUtil.checkNotNull(data,"animate")){
+			component = Component.createAnimate(data.animate);
+			system = ActionSystemUtil.getAnimate(component);
+			action.coms[component.name] = component;
+			this.addSystem(action, system);
+		}
+		if(DataUtil.checkNotNull(data,"motion")){
+			Component.createMotion(data.motion);
+		}
+		if(DataUtil.checkNotNull(data,"timer")){
+			Component.createTimer(data.timer);
+		}
+		return;
+	}
 	
 	/**
 	 * 增加直驱节点
