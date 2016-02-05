@@ -49,40 +49,41 @@ Factory = {
 		 * 创建人物
 		 */
 		createCharacter : function(data){
+			//人物必须要有stand动作
+			if(!data.stand){
+				cc.log("Factory.createCharacter error. stand action is necessary.");
+				return null;
+			}
 			var template = this.createGameObjectTemplate(data);
-			//start 使用  CharacterStartAction
+			var action = ActionUtil.actions.characterStart;
+			trmplate.actions[action.name] = action;
 			
-			//运动组件
+			//人物必须要有运动组件
 			var motionCom = new UnitMotionComponent();
 			template.coms[motionCom.name] = motionCom;
+			
+			//伤害组件
+			if(DataUtil.checkNotNull(data,"hurt"){
+				action = ActionUtil.actions.characterHurt();
+				action.init(data, template);
+			}
+			//其他动作
+			if(!DataUtil.checkArrayNull(data,"actions")){
+				for(var i in data.actions){
+					this.createAction(data.actions[i],template);
+				}
+			}
+		},
+		
+		/**
+		 * 创建自定义的action子类
+		 */
+		createCustomAction : function(data, actClass){
+			var action = new actClass();
+			//子类自行初始化coms和systems
+			action.init(data);
+			return action;
 		}
-};
-
-/**
- * 创建人物
- */
-Factory.createCharacter = function(data, template){
-	if(!data.start){
-		cc.log("Factory.createCharacter error. start action is necessary.");
-		return null;
-	}
-	//运动组件
-	var motionCom = new UnitMotionComponent();
-	template.coms[motionCom.name] = motionCom;
-	//人物启动逻辑
-	var action = new CharacterStartAction();
-	action.init(data, template);
-	//伤害组件
-	if(DataUtil.checkNotNull(data,"hurt"){
-		action = new CharacterHurtAction();
-		action.init(data, template);
-	}
-	//其他动作
-	if(!DataUtil.checkArrayNull(data,"actions")){
-		for(var i in data.actions){
-			this.createAction(data.actions[i],template);
-		}
-	}
 };
 
 /**
@@ -126,19 +127,14 @@ Factory.createGameObjectTemplate = function(data){
  * 	template 单位模板
  * 	actClass action的子类，可为空
  */
-Factory.createAction = function(data, template, actClass){
-	var actionState = null;
-	if(actClass){
-		actionState = new actClass();
-	}else{
-		if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
-			cc.log("create ActionState error, lack of necessary data!");
-			return null;
-		}
-		cc.log("info: creating action:[" + data.name + "].");
-		actionState = new ActionState();
-		actionState.name = data.name;
+Factory.createAction = function(data, template){
+	if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
+		cc.log("create ActionState error, lack of necessary data!");
+		return null;
 	}
+	cc.log("info: creating action:[" + data.name + "].");
+	var actionState = new ActionState();
+	actionState.name = data.name;
 	actionState.coms = {};
 	actionState.systemList = [];
 	actionState.init(data);
