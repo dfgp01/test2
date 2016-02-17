@@ -5,12 +5,9 @@ Constant = {
 	DIRECT_CHILDNODE : "-",
 	BOOLEAN_TRUE : 1,
 	BOOLEAN_FALSE : 0,
-	animate : {
-		TYPE_NONE : 0,
-		TYPE_STATIC : 1,
-		TYPE_NORMAL : 2,
-		TYPE_SCROLL : 3
-	},
+	ANIMATE_STATIC : 1,		//只有一帧
+	ANIMATE_NORMAL : 2,		//只播放一次
+	ANIMATE_SCROLL : 3,		//循环播放
 	
 	Action : {
 		Feature : {
@@ -45,17 +42,15 @@ Constant = {
 		}
 	},
 
-	CMD : {
-		UP : 128,
-		DOWN : 64,
-		LEFT : 32,
-		RIGHT : 16,
-		ALL_DIRECTION : 240,	//用于判断是否按下了任一方向键，不用每次判断都用 "|"运算
-		ATTACK_ONCE : 1,		//按一下攻击
-		ATTACK_HOLD_ON : 2,	//按住攻击（比如蓄力）
-		ATTACK_ALL : 3,			//单击或按住
-		JUMP : 4
-	},
+	CMD_UP : 128, 
+	CMD_DOWN : 64,
+	CMD_LEFT : 32,
+	CMD_RIGHT : 16,
+	CMD_ALL_DIRECTION : 240,	//用于判断是否按下了任一方向键，不用每次判断都用 "|"运算
+	CMD_ATTACK_ONCE : 1,		//按一下攻击
+	CMD_ATTACK_HOLD_ON : 2,		//按住攻击（比如蓄力）
+	CMD_ATTACK_ALL : 3,			//单击或按住
+	CMD_JUMP : 4,
 	
 	Group : {
 		TYPE_NONE : 0,
@@ -100,17 +95,16 @@ Constant = {
 		}
 	},
 
-	Tick : {
-		FPS60 : 0.0166,
-		FPS48 : 0.02,
-		FPS36 : 0.027,
-		FPS30 : 0.0333,
-		FPS24 : 0.041,
-		FPS20 : 0.05,
-		FPS12 : 0.083,
-		FPS10 : 0.1,
-		FPS05 : 0.2
-	},
+	TICK_FPS60 : 0.0166,
+	TICK_FPS48 : 0.02,
+	TICK_FPS36 : 0.027,
+	TICK_FPS30 : 0.0333,
+	TICK_FPS24 : 0.041,
+	TICK_FPS20 : 0.05,
+	TICK_FPS12 : 0.083,
+	TICK_FPS10 : 0.1,
+	TICK_FPS05 : 0.2,
+	
 	MsgType : {
 		Unit : {
 			TYPE : "unit",
@@ -129,7 +123,9 @@ Constant = {
 		NONE : 0,			//无任何受击动作影响
 		MOTION : 1,			//是否位移
 		KNOCK_DOWN : 2,		//是否倒地攻击
-		REMOTE : 4			//是否远程攻击
+		REMOTE : 4,			//是否远程攻击
+		PAUSE : 8,			//是否停顿
+		SHAKE : 16			//是否震动
 	},
 	Collide : {
 		TARGET_NODE : 0,

@@ -81,9 +81,10 @@ Service = {
 	},
 	
 	initialize : function(){
-		GameUtil.initGroup(2);
-		GameUtil.initSystem();
-		GameUtil.initUnitTemplate(characterData);
+		Initializer.initGobalParam();
+		Initializer.initSystem();
+		Initializer.initCommonAction();
+		Initializer.initUnitTemplate(characterData);
 	},
 	
 	getActionSystem : function(name){

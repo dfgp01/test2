@@ -1,3 +1,6 @@
+/**
+ * 全局游戏设置
+ */
 GameSetting = {
 
 	framerate : 60,				//cocos2d默认fps是60
@@ -46,6 +49,33 @@ commonActions = {
 		}
 	}]
 }
+
+simpleTile = {
+	name:"tile",
+	frame:"",
+	block:1,
+	animate:{
+		type:4,
+		frames:[],
+		delays:[],
+		cooldown:3
+	}
+};
+
+simpleTile2 = {
+	name:"tile2",
+	frame:"",
+	hurt:{
+		hp:6
+	}
+};
+
+//机关
+customTile = {
+	name:"tile3",
+	frame:"",
+	actions:[]
+};
 
 deep = {
 	name : "deep",

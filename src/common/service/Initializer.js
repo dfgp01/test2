@@ -56,13 +56,6 @@ Initializer = {
 		},
 		
 		/**
-		 * 初始化动作组件的创建器
-		 */
-		initActionComponentCreator : function(){
-			
-		}
-		
-		/**
 		 * 一般伤害动作定义
 		 */
 		initHurtAction : function(){
@@ -121,7 +114,7 @@ Initializer = {
 				return;
 			}
 
-			cc.log("initial unit template......");
+			cc.log("initial unit template, name:" + data.name);
 			var unitTemplate = Factory.createUnitTemplate(data);
 
 			cc.log("initial actions data......");

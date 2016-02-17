@@ -1,0 +1,305 @@
+
+***	edit by Hugo-Fu 2016.02.11 01:33 am
+
+
+1.术语介绍：
+
+ECS：实体组件系统，一种用于开发游戏的设计模式
+
+GameObject：游戏对象实体，在ECS中，没有类的概念，所有的对象都由组件组成。
+
+Component：存储不同的数据，组成GameObject。
+
+System：运行component的逻辑单元。
+
+Action：component和system的聚合逻辑。
+
+data：定义游戏对象的数据表格，使用json定义。
+
+time-scope：不同的时间组件生存周期。
+
+
+2.GameObject：
+游戏的开发不像其他软件项目，游戏这种娱乐原则上不受任何规则约束，因此在程序可以处理的前提下，任何需求的改动都是合理的。
+如果我们按照OOP的思想去开发游戏，会有怎样的坑在等着我们呢？
+
+举个例子，就拿我们最常见的飞机游戏，基础单位有飞机和子弹，那么我们可以这样设计以下类：
+飞机的基类
+我们设计了一个简单的飞机类，它有武器和移动这两个功能，这很合理。
+Plane:{
+	id:
+	name:
+	move()
+	Weapon:
+}
+武器基类：
+Weapon:{
+	id:
+	name:
+	fire()
+	List<Bullet>
+}
+脑洞派生类：Connon、MissileLauncher、MachineGun
+
+子弹基类:
+Bullet:{
+	id:
+	name:
+	damage:
+}
+脑洞派生类：Bomb、Missile
+
+那么一个有多个炮台而且还可以出动飞机的航母呢：
+AirCraft:{
+	id:
+	name:
+	List<Cannon>
+	List<Plane>
+}
+后来想想，航母这个脑洞太前卫了，军舰是只有炮台，没有飞机的，因此，船只的关系应该改成这样设计：
+基本穿类，只可以移动，这样看似很合理
+Ship:{
+	id:
+	name:
+	move()
+}
+BattleShip extend Ship:{
+	List<Cannon>
+	fire()
+}
+AirCraft extend Ship:{
+	List<Cannon>
+	List<Plane>
+}
+前面我说过，任何需求都是合理的，那么我们来脑洞一些有趣的物体：
+会发射导弹的军舰：
+MissileShip extend BattleShip:{
+	List<Missile>
+}
+这里是继承了军舰类，它拥有炮台和导弹。那么，如果有些军舰只有导弹，没有炮台？或者是机枪和炮台的组合，或者是机枪和导弹的组合？或者都有？
+那么，到了这里，我们知道船只可能有这几个外挂组合：炮台、机枪、导弹、飞机、其他等等。
+我们可能要重新设计这些类：
+Ship:{
+	id:
+	name:
+	move()
+	List<Weapon>:	//Weapon是 机枪台、导弹台、炮台的基类
+}
+那么BattleShip这个类可以省略了
+AirCraft extend Ship:{
+	List<Plane>
+}
+这样航母也有了武器了，虽然可以设为null，但在类结构来说，也不算很合理。
+我们现在来看看我们的类：
+Plane、Weapon、Bullet、Ship、飞机子类、Connon、MissileLauncher、MachineGun、其他武器子类、Bomb、Missile、其他子弹子类
+随着需求的增加，还会有其他的子类出现，还有其他模块的物品（奖励道具）等，这样一来会有类爆炸的问题。
+
+为解决这个难题，我使用了ECS的设计模式。
+
+那么按照ECS的思想，所有的对象都可以归类成GameObject类：
+GameObject:{
+	id:
+	name:
+	frame:	//初始帧，因为必须要渲染到场景中，至少要有一帧
+	components:	//动态数据组件，map结构,key是组件的name,value是组件本身
+}
+
+可以看出，GameObject是ECS模式中的E。
+
+3.Component:
+组件是组成GameObject和Action的基础单元数据，也是供system处理的数据源，主要存储基础数据。
+
+列举一些常用的组件：
+animate:{
+	type:	//静止帧、普通动画、重复动画
+	frames:
+	*delays:
+}
+motion:{
+	dx:
+	dy:
+	factor:	//速度系数
+}
+hurt:{
+	type:	//普通人、霸体、不倒地等等
+}
+
+
+4.System:
+系统分为两大类：主system和ActionSystem
+
+System主要维护自己对应的组件链表和进行update逻辑
+ActionSystem是在动作节点内的逻辑操作
+
+
+5.工厂：
+使用工厂接口分别对不同的数据对象进行构造：
+
+createTile(data)
+我们对tile的特征进行了一些抽象汇总，
+静态或者循环动画，如静止的花和不断摆动的草
+可以是，动画A-->冷却一定时间-->动画A循环
+
+数据样式：
+tile:{
+	name: "obj1",
+	frame: "1.png",
+
+	*animate:{
+		frames:[...]
+		cd:5 //冷却5秒后继续
+	}
+}
+从此接口创建的obj不会加入到action节点
+
+createCharacter(data)
+
+createBullet(data)
+归纳子弹的特征：
+最简单的子弹，有一个帧，朝前发射，一段距离后消失，或打中一个人后消失
+
+扩展的子弹现象举例：
+*修罗邪光斩：每个单位最多碰撞三次，每次有间隔。
+*鬼印珠： 无论碰撞多少单位，总共只能碰撞20次。
+*反坦克炮：命中一个单位后，会粘在其身上，一段时间后爆炸。
+
+因此，我们能对子弹组件进行汇总抽象
+
+*方向：一直向前、来来回回、抛物线等都需要自己执行逻辑
+*速度：不解释
+*有效距离/时间：生存周期咯
+*碰撞：必须指定碰撞后要执行的逻辑
+*结束逻辑：必须指定，一般都是子弹碰撞成功后
+
+createSimpleBullet(data)
+此接口会创建飞机游戏中最普通的子弹，即只会朝一个方向，并只命中一次的子弹。必填的数据样式：
+bullet:{
+	name:"",
+	frame:"",
+	pos:[],
+	distance:,
+	speed:[],
+	hit:{
+		animate:{}
+	}
+}
+
+createGameObject(data)
+如果需要创建一些特殊的，无法归类的动态object，就用此接口
+比如事件触发类的彩蛋：动画A-->静止-->事件触发-->动画B
+比如机关：动画A-->会攻击人的-->会消失一段时间-->重新出现-->动画A循环
+
+createAction(data)
+创建动作的接口，动作类后面会介绍
+
+
+6.Action:
+Action和GameObject一样，属于Entity，用于定义GameObject的动作状态，同样也同时拥有多个Component和ActionSystem。
+类定义Action:{
+	name:
+	Map<String,Component>
+	List<ActionSystem>
+	next:
+}
+
+6.1公共逻辑动作
+	tileStart:不加入action链表
+	characterStart:人物的初始动作：stand || fall
+	unitHurt:
+	blockHurt:
+
+6.2复杂动作，一些很纠结的技能猜想
+	鬼影闪: 1.发起者无敌 2.目标定住一段时间 3.发起攻击 4.动作结束
+	念气环绕：1.施放时间 2.判断球上限 3.发射球环绕(独立单位)
+	疾风乱舞：1.前冲(有影分身特效) 2.乱舞攻击(重复3次) 3.终结攻击 4.结束动作 4以前都是无敌状态
+
+6.3多阶段动作
+	6.3.1
+	施放型：1.施放前阶段，时间没到，会卡在最后一帧 2.执行阶段
+	蓄力型：1.蓄力计时阶段 2.蓄力完成，指令没解除，会卡在最后一帧 3.执行
+
+	6.3.2
+	action.phase
+
+举例：猛龙断空斩
+	1.移动斩击，分为3次，每次都可改变方向，每次只判定3次攻击
+	2.最后一次会浮空
+	*3.某些道具加成可以增加第一阶段次数
+
+      巨旋风
+	1.蓄力，如果蓄满，第3阶段可增加两次旋转
+	2.甩手，有攻击判定
+	3.兵器飞出，有攻击判定，判定有时间间隔
+	4.兵器旋转，有间隔攻击
+
+6.4普通攻击动作
+6.4.1 神枪手的攻击：攻击A*5，攻击B
+6.4.2 格斗家的攻击：攻击A，攻击B，攻击C，攻击D
+6.4.3 红眼暴走攻击：攻击A，攻击B，攻击C，攻击D
+需求，神枪手可以加成，攻击A次数增加
+红眼暴走加成，攻击A和攻击B可形成无线循环
+
+目前解决方案：
+	神枪手攻击A创建N个实体（根据实际加成情况），不能在运行期动态增加，使用action复制coms和sys即可。
+	红眼暴走攻击B的next指向A
+
+备选方案：ActionGroup
+
+
+7.攻击类型和反馈
+
+7.1 一个有效的攻击具备以下特征组合：
+是否产生位移、是否使目标倒地、是否属于远程攻击、是否停顿帧、是否震屏
+比如一个重击可能是这样组合的：位移、倒地、停顿、震屏
+
+7.2 单位受击反馈：
+设定几个hurt帧：0-1:普通  2:下落、弹起  3:平躺
+unitHurt:公共逻辑动作
+
+
+草稿8:攻击系统逻辑：
+
+1.发起者碰撞hurt链表：hurt链表由hurtSystem维护，hurtCom有obj的view.sprite，用于产生rect
+2.发起hit事件，封装hurt和hit(均为ownerId)
+3.处理hit事件
+
+8.1 攻击与hurtSys
+6个unit需要碰撞
+两两运算：6*6=36次
+冒泡优化：6+5+4+3+2=20次
+过滤：假如1、2是一组，3-6是一组，则 4*2=8次
+从结果上看，过滤分组是运算最少的，所以碰撞必须分组
+
+8个敌人，3个已方子弹，每帧3*8=24次碰撞检测
+优化方案：偷懒运算
+或者不做优化
+
+
+草稿9：系统组件一览表：
+
+motionSys - motionCom : 所有组件都会移动，判断block和地图边界
+
+hurtSys - hurtCom: 目前仅维护列表，联动函数
+
+animateSys - animateCom : 播放动画
+
+actionSys - actionCom : 主节点运行
+
+hitSys - hitCom: 主要用于做碰撞的
+
+
+草稿10: 脚本引擎？
+
+某gameObj有以下运行方案：
+
+tile: 动画A--沉默5秒--动画A...
+
+机关：渐渐出现--发起攻击--渐渐消失--随机位置再渐渐出现...
+
+customObj:{
+	frame:...
+	actions:["a1","a2","a3"]
+}
+script:{
+	a1->a2->a1
+}

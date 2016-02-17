@@ -17,9 +17,10 @@ System = cc.Class.extend({
 	
 	ctor : function(){
 		//初始化头尾两个空内容的指针
-		this._head = new Component();
+		/*this._head = new Component();
 		this._end = new Component();
 		this._head.next = this._end;
+		this._end.prep = this._head;*/
 	},
 	
 	/**
@@ -40,26 +41,65 @@ System = cc.Class.extend({
 	 */
 	executeUpdate : function(dt, node){return;},
 	
-	addComponent : function(node){
+	/**
+	 * 这是不用关心头尾节点的版本
+	 */
+	/*addComponent : function(node){
 		//新加入的一定是放在链尾
 		node.prep = this._end.prep;
 		node.next = this._end;
-		this._end.prep.next = node;
-	}
+		node.prep.next = node;
+	},*/
 	
-	/*removeComponent : function(node){
-		if(this._head == node){
+	/**
+	 * 其他组件和本系统的链表进行遍历
+	 */
+	iterator : function(com, func){
+		if(this._head.next != this._end){
+			this._curr = this._head.next;
+			do{
+				func(com, this._curr);
+				this._curr = this._curr.next;
+			}while(this._curr != this._end);
+		}
+	},
+	
+	/**
+	 * 将组件添加进链表
+	 */
+	addComponent : function(node){
+		if(this._head == null){
+			this._head = node;
+			this._end = node;
+		}else{
+			this._end.next = node;
+			node.prep = this._end;
+			this._end = node;	//新加入的一定是放在链尾
+		}
+	},
+	
+	removeComponent : function(node){
+		//如果已经不在链表里，就直接退出
+		if(node.prep == null && node.next == null){
+			return;
+		}
+		if(this._head == node && this._end == node){
+			this._head = null;
+			this._end = null;
+		}
+		else if(this._head == node){
 			this._head = node.next;
 		}
 		else if(this._end == node){
 			this._end = node.prep;
-		}else{
+		}
+		else{
 			node.prep.next = node.next;
 			node.next.prep = node.prep;
 		}
 		node.prep = null;
 		node.next = null;
-	}*/
+	}
 });
 
 /**
@@ -132,8 +172,8 @@ MainSystem = System.extend({
 /**
  * 主循环中的动作系统
  */
-ActionRunSystem = System.extend({
-	name : "ActionRunSystem",
+ActionUpdateSystem = System.extend({
+	name : "action",
 	tick : Constant.Tick.FPS30,
 	_currObj : null,
 	_currState : null,
@@ -195,7 +235,7 @@ ActionRunSystem = System.extend({
  * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
  */
 MotionRunSystem = System.extend({
-	name : "MotionRunSystem",
+	name : "motion",
 	dx : 0,
 	dy : 0,
 	unit : null,
@@ -270,7 +310,7 @@ EventMessageSystem = System.extend({
  * 更新坐标的系统（新版，暂不使用）
  * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
  */
-MotionSystem = System.extend({
+MotionUpdateSystem = System.extend({
 	name : "motion",
 	dx : 0,
 	dy : 0,

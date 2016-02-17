@@ -55,8 +55,8 @@ Factory = {
 				return null;
 			}
 			var template = this.createGameObjectTemplate(data);
-			var action = ActionUtil.actions.characterStart;
-			trmplate.actions[action.name] = action;
+			var action = ActionUtil.getCommonAction("characterStart");
+			template.actions.start = action;
 			
 			//人物必须要有运动组件
 			var motionCom = new UnitMotionComponent();
@@ -66,12 +66,6 @@ Factory = {
 			if(DataUtil.checkNotNull(data,"hurt"){
 				action = ActionUtil.actions.characterHurt();
 				action.init(data, template);
-			}
-			//其他动作
-			if(!DataUtil.checkArrayNull(data,"actions")){
-				for(var i in data.actions){
-					this.createAction(data.actions[i],template);
-				}
 			}
 		},
 		
@@ -117,6 +111,11 @@ Factory.createGameObjectTemplate = function(data){
 		template = this.createTile(data, template);
 	}*/
 	template.init(data);
+	if(!DataUtil.checkArrayNull(data,"actions")){
+		for(var i in data.actions){
+			this.createAction(data.actions[i],template);
+		}
+	}
 	return template;
 };
 
@@ -125,7 +124,6 @@ Factory.createGameObjectTemplate = function(data){
  * param
  * 	data 	 数据DNA
  * 	template 单位模板
- * 	actClass action的子类，可为空
  */
 Factory.createAction = function(data, template){
 	if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
