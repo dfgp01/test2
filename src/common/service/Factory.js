@@ -63,7 +63,7 @@ Factory = {
 			template.coms[motionCom.name] = motionCom;
 			
 			//伤害组件
-			if(DataUtil.checkNotNull(data,"hurt"){
+			if(DataUtil.checkNotNull(data,"hurt")){
 				action = ActionUtil.actions.characterHurt();
 				action.init(data, template);
 			}
