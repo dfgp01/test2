@@ -6,9 +6,9 @@
 
 ECS：实体组件系统，一种用于开发游戏的设计模式
 
-GameObject：游戏对象实体，在ECS中，没有类的概念，所有的对象都由组件组成。
+GameObject：游戏对象实体，在ECS中，没有类的概念，所有的对象都由组件组成，可以把此类看作组件的集合。
 
-Component：存储不同的数据，组成GameObject。
+Component：存储不同的数据，是组成GameObject的基础单元。
 
 System：运行component的逻辑单元。
 
@@ -131,6 +131,51 @@ hurt:{
 System主要维护自己对应的组件链表和进行update逻辑
 ActionSystem是在动作节点内的逻辑操作
 
+草稿4：动作特效
+1.特效只做显示，不含其它逻辑
+2.特效不一定和主动画同步
+animate:{
+	frames : [1,2,3]
+	interval : 2
+}
+effect:{
+	frames : [1,2,3,4,5]
+	intervals : [2,2,3,2,3]
+}
+
+草稿5：数据格式
+基础数据部分:{
+	name : "deep",			//名称，用作快速查找的缓存，也是ID的前缀
+	frame : "deep_stand_0.png",		//初始显示帧
+	res : [res.deep_0_plist,res.deep_1_plist]	//素材引用
+}
+人物:{
+	title : "玩家",
+	action : ...		//详见下面action格式介绍
+}
+人物action数据格式:{
+	stand : {
+		animate : {
+			//frames数组可以为1帧或多帧，系统判断1帧时是静态动画，多帧时是循环动画
+			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
+			// interval和intervals选其一，当多帧时，interval为每帧指定同样数值，而intervals则按下标分配
+			inteval : 1
+			intervals : [1,1,2,1]
+		}
+		walk : {
+			animate : {
+				//同上
+				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
+				inteval : 1
+			},
+			motion : {
+				//每帧移动距离，FPS以60为主
+				dx : 10,
+				dy : 50
+			}
+		},
+	}
+}
 
 5.工厂：
 使用工厂接口分别对不同的数据对象进行构造：

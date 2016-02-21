@@ -24,7 +24,7 @@ EngineUtil = {
 			cc.log("EngineUtil.getFrame error. name:[" + name + "] not found. return default frame");
 			return cc.spriteFrameCache.getSpriteFrame("noFrame");
 		}
-	}
+	},
 	
 	setFrameByName : function(sprite, frameName){
 		var frame = cc.spriteFrameCache.getSpriteFrame(frameName);
