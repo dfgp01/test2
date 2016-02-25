@@ -32,41 +32,30 @@ Factory = {
 		},
 		
 		/**
-		 * 创建地图元素，中立组
-		 *  tile,block,animate等
+		 * 创建一个动作节点
+		 * param
+		 * 	data 	 数据DNA
+		 * 	template 单位模板
 		 */
-		createTile : function(data){
-			var template = this.createGameObjectTemplate(data);
-			var action = ActionUtil.getCommonAction("tileStart");
-			template.actions.start = action;
-			if(DataUtil.checkIsInt(data,"block") && data.block==Constant.BOOLEAN_TRUE){
-				//判断有没有rect，。没有就用自身sprite的包围盒，这个暂时不做，默认用sprite的
-			}
-			return template;
-		},
-		
-		/**
-		 * 创建人物
-		 */
-		createCharacter : function(data){
-			//人物必须要有stand动作
-			if(!data.stand){
-				cc.log("Factory.createCharacter error. stand action is necessary.");
+		createAction : function(data, template){
+			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
+				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
-			var template = this.createGameObjectTemplate(data);
-			var action = ActionUtil.getCommonAction("characterStart");
-			template.actions.start = action;
+			cc.log("info: creating action:[" + data.name + "].");
+			var actionState = new ActionState();
+			actionState.name = data.name;
+			actionState.coms = {};
+			actionState.systemList = [];
+			actionState.init(data);
+			//初始化动作组件系统
+			ActionUtil.buildComponentSystem(data, actionState);
 			
-			//人物必须要有运动组件
-			var motionCom = new UnitMotionComponent();
-			template.coms[motionCom.name] = motionCom;
-			
-			//伤害组件
-			if(DataUtil.checkNotNull(data,"hurt")){
-				action = ActionUtil.actions.characterHurt();
-				action.init(data, template);
-			}
+			//设置key
+			//actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
+			//设置状态
+			//actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
+			return actionState;
 		},
 		
 		/**
@@ -77,71 +66,28 @@ Factory = {
 			//子类自行初始化coms和systems
 			action.init(data);
 			return action;
+		},
+		
+		/**
+		 * 创建一个单位模板
+		 */
+		createGameObjectTemplate : function(data){
+			if(!DataUtil.checkIsString(data,"name",true)){
+				cc.log("Factory.createGameObjectTemplate error. data or name is null.");
+				return null;
+			}
+			var template = new GameObjectTemplate();
+			template.name = data.name;
+			template.frame = EngineUtil.getFrame(data.frame);
+			template.availableList = [];
+			template.coms = {};
+			template.actions = {};
+			template.init(data);
+			if(!DataUtil.checkArrayNull(data,"actions")){
+				for(var i in data.actions){
+					this.createAction(data.actions[i],template);
+				}
+			}
+			return template;
 		}
-};
-
-/**
- * 创建一个单位模板
- */
-Factory.createGameObjectTemplate = function(data){
-	if(!DataUtil.checkIsString(data,"name",true)){
-		cc.log("Factory.createGameObjectTemplate error. data or name is null.");
-		return null;
-	}
-	var template = new GameObjectTemplate();
-	template.name = data.name;
-	template.frame = EngineUtil.getFrame(data.frame);
-	template.availableList = [];
-	template.coms = {};
-	template.actions = new ActionsComponent();
-	
-	/*//根据交互类型创建不同的游戏对象
-	if(DataUtil.checkIsInt(data,"interact")){
-		var type=data.interact.type;
-		switch(type){
-		case Constant.GameObject.Interact.BLOCK:
-			template = this.createBlock(data, template);
-			break;
-		case Constant.GameObject.Interact.UNIT:
-			template = this.createUnit(data, template);
-			break;
-		}
-	}else{
-		//没有交互类型的当作静态tile处理
-		template = this.createTile(data, template);
-	}*/
-	template.init(data);
-	if(!DataUtil.checkArrayNull(data,"actions")){
-		for(var i in data.actions){
-			this.createAction(data.actions[i],template);
-		}
-	}
-	return template;
-};
-
-/**
- * 创建一个动作节点
- * param
- * 	data 	 数据DNA
- * 	template 单位模板
- */
-Factory.createAction = function(data, template){
-	if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
-		cc.log("create ActionState error, lack of necessary data!");
-		return null;
-	}
-	cc.log("info: creating action:[" + data.name + "].");
-	var actionState = new ActionState();
-	actionState.name = data.name;
-	actionState.coms = {};
-	actionState.systemList = [];
-	actionState.init(data);
-	//初始化动作组件系统
-	ActionUtil.buildComponentSystem(data, actionState);
-	
-	//设置key
-	//actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
-	//设置状态
-	//actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
-	return actionState;
 };
