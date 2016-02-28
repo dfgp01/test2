@@ -9,6 +9,12 @@ Constant = {
 	ANIMATE_NORMAL : 2,		//只播放一次
 	ANIMATE_SCROLL : 3,		//循环播放
 	
+	COMPONENT_ANIMATE : 'animate',
+	COMPONENT_MOTION : 'motion',
+	COMPONENT_HURT : 'hurt',
+	COMPONENT_HIT : 'hit',
+	COMPONENT_TIMER : 'timer',
+	
 	Action : {
 		Feature : {
 			MOTION : 1,

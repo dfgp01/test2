@@ -12,10 +12,6 @@ ActionUtil = {
 	init : function(){
 		this.action.tileStart = TileStartAction();
 	},
-	
-	getCommonAction : function(name){
-		return this.action[name];
-	},
 
 	preparedToChange : function(obj, action){
 		obj.actions.next = action;

@@ -50,11 +50,6 @@ Factory = {
 			actionState.init(data);
 			//初始化动作组件系统
 			ActionUtil.buildComponentSystem(data, actionState);
-			
-			//设置key
-			//actionState.key = DataUtil.checkIsString(data,"key") == true ? data.key : Constant.DIRECT_CHILDNODE;
-			//设置状态
-			//actionState.state = DataUtil.checkIsInt(data,"state") == true ? data.state : 0;
 			return actionState;
 		},
 		
@@ -89,5 +84,32 @@ Factory = {
 				}
 			}
 			return template;
+		},
+		
+		/**
+		 * 创建动作组件
+		 */
+		createActionComponent : function(data){
+			if(!DataUtil.checkIsString(data, "name")){
+				cc.log("Factory.createActionComponent error. no name.");
+				return null;
+			}
+			if(data.name == Constant.COMPONENT_ANIMATE){
+				return ComponentUtil.createActionAnimate(data);
+			}else if(data.name == Constant.COMPONENT_MOTION){
+				return ComponentUtil.createActionMotion(data);
+			}else if(data.name == Constant.COMPONENT_HIT){
+				return ComponentUtil.createActionHit(data);
+			}
+		},
+		
+		/**
+		 * 创建动作组件
+		 */
+		createUnitComponent : function(data){
+			if(!DataUtil.checkIsString(data, "name")){
+				cc.log("Factory.createUnitComponent error. no name.");
+				return null;
+			}
 		}
 };
