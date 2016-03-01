@@ -21,10 +21,6 @@ ViewComponent = Component.extend({
 		this.frameIndex = 0;
 		this.delay = 0;
 		return this;
-	},
-	
-	init : function(data){
-		EngineUtil.setFrameByName(this.sprite, data.frame);
 	}
 });
 

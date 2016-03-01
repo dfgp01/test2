@@ -5,7 +5,7 @@
 ActionUtil = {
 		
 	//公共action缓存
-	action:{
+	actions:{
 		tileStart:null,
 	}
 
@@ -44,24 +44,32 @@ ActionUtil = {
 		}
 	},
 	
-	bulidComponentSystem(data, action){
+	bulidComponentSystem : function(data, action){
 		var component = null;
 		var system = null;
 		//穷举组件检测
 		if(DataUtil.checkNotNull(data,"animate")){
-			component = Component.createAnimate(data.animate);
+			component = ComponentUtil.createActionAnimate(data.animate);
 			system = ActionSystemUtil.getAnimate(component);
-			action.coms[component.name] = component;
-			this.addSystem(action, system);
+			this.build(action, component, system);
 		}
 		if(DataUtil.checkNotNull(data,"motion")){
-			Component.createMotion(data.motion);
+			component = ComponentUtil.createActionMotion(data.motion);
+			system = ActionSystemUtil.getMotion(component);
+			this.build(action, component, system);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){
-			Component.createTimer(data.timer);
+			component = ComponentUtil.createActionTimer(data.timer);
+			system = ActionSystemUtil.getTimer(component);
+			this.build(action, component, system);
 		}
 		return;
-	}
+	},
+	
+	build : function(action, component, system){
+		action.coms[component.name] = component;
+		this.addSystem(action, system);
+	},
 	
 	/**
 	 * 增加直驱节点
@@ -72,14 +80,14 @@ ActionUtil = {
 	},
 	
 	/**
-	 * 	新旧系统替换，指定要去除的旧系统名字和新系统对象
+	 * 	新旧系统替换（根据同名替换）
 	 *  如找不到旧系统，则将新系统添加到列表中
 	 * @param oldName		旧系统名称
 	 * @param newSystem		新系统实例
 	 */
-	replaceSystem : function(action, oldName, newSystem){
+	replaceSystem : function(action, newSystem){
 		for(var i in this.systemList){
-			if(this.systemList[i].name == oldName){
+			if(this.systemList[i].name == newSystem.name){
 				this.systemList[i] = newSystem;
 				return;
 			}

@@ -7,6 +7,15 @@ ActionSystem = cc.Class.extend({
 	start : function(gameObject, actionCom){return;},
 	update : function(dt, gameObject, actionCom){return;},
 	end : function(gameObject, actionCom){return;}
+	
+	/**
+	 * 将单位组件加入到主系统遍历链表内
+	 */
+	addToLink : function(node){
+		if(node.prep==null && node.next==null){
+			GameUtil.systems[this.name].addComponentNode(node);	
+		}
+	}
 });
 
 /**

@@ -27,17 +27,14 @@ SimpleFactory = {
 				return null;
 			}
 			var template = this.createGameObjectTemplate(data);
-			var action = ActionUtil.getCommonAction("characterStart");
-			template.actions.start = action;
-			
-			//人物必须要有运动组件
-			var motionCom = new UnitMotionComponent();
-			template.coms[motionCom.name] = motionCom;
-			
-			//伤害组件
-			if(DataUtil.checkNotNull(data,"hurt")){
-				action = ActionUtil.actions.characterHurt();
-				action.init(data, template);
-			}
+			template.actions.start = ActionUtil.actions.characterStart;
+			template.actions.stand = this.createStandAction(data.stand, template);
+		},
+		
+		createStandAction : function(data, template){
+			data.name = "stand";
+			var action = Factory.createAction(data);
+			return action;
 		}
+		
 };

@@ -1,4 +1,4 @@
-character = {
+characterData = {
 	name : "deep",
 	frame : "deep_stand_0.png",
 	title : "玩家",

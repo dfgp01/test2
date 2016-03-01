@@ -35,18 +35,18 @@ Initializer = {
 		 */
 		initSystem : function(){
 			//初始化通用动作系统组件
-			this.systems.act.normalAnimate = new AnimateSystem();
-			this.systems.act.loopAnimate = new LoopAnimateSystem();
-			this.systems.act.stand = new StandActionSystem();
-			this.systems.act.walk = new WalkMotionSystem();
-			this.systems.act.motion  = new MotionSystem();
-			this.systems.act.hurt = new HurtSystem();
+			ActionUtil.systems.normalAnimate = new AnimateSystem();
+			ActionUtil.systems.loopAnimate = new LoopAnimateSystem();
+			ActionUtil.systems.stand = new StandActionSystem();
+			ActionUtil.systems.walk = new WalkMotionSystem();
+			ActionUtil.systems.motion  = new MotionSystem();
+			ActionUtil.systems.hurt = new HurtSystem();
 
 			//初始化主系统
 			this.systems.sys.main = new MainSystem();
 			this.systems.sys.player = new PlayerSystem();
-			this.systems.sys.motion = new MotionRunSystem();
-			this.systems.sys.action = new ActionRunSystem();
+			this.systems.sys.motion = new MotionUpdateSystem();
+			this.systems.sys.action = new ActionUpdateSystem();
 			this.systems.sys.EvtMsg = new EventMessageSystem();
 			var mainSystem = this.systems.sys.main;
 			mainSystem.addSystem(this.systems.sys.player);
@@ -151,47 +151,10 @@ Initializer = {
 		},
 		
 		/**
-		 * 构建动作逻辑系统组件，待删
+		 * 临时方法 2016.03.01
 		 */
-		buildActionSys : function(data, action){
-
-			if(DataUtil.checkNotNull(data, "motion")){
-				var motionCom = new ActionMotionComponent();
-				motionCom.init(data.motion);
-				action.coms[motionCom.name] = motionCom;
-				ActionUtil.addSystem(action, this.systems.act.motion);
-			}
-
-			if(DataUtil.checkNotNull(data, "collide")){
-				var collideCom = new ActionCollideComponent();
-				collideCom.init(data.collide);
-				action.coms[collideCom.name] = collideCom;
-				ActionUtil.addSystem(action, this.systems.act.collide);
-			}
-
-			if(DataUtil.checkNotNull(data, "animate")){
-				this.buildAnimateSys(data.animate, action);
-			}
-
-			if(DataUtil.checkNotNull(data, "attack")){
-
-			}
-		},
-		
-		/**
-		 * 补充人物的动作系统
-		 */
-		buildCharacterActionSys : function(actions){
-			var standAct = actions.stand;
-			if(standAct){
-				//增加人物空闲时的控制系统
-				ActionUtil.addSystem(standAct, this.systems.act.stand);
-			}
-			var walkAct = actions.walk;
-			if(walkAct){
-				//将角色的一般运动系统改为受速度系数影响的运动系统
-				ActionUtil.replaceSystem(walkAct, "motion", this.systems.act.walk);
-			}
-			return;
-		},
+		initCharacter : function(){
+			var character = SimpleFactory.createCharacter(characterData);
+			Service.Container.templates[character.name] = character;
+		}
 }

@@ -67,7 +67,7 @@ System = cc.Class.extend({
 	/**
 	 * 将组件添加进链表
 	 */
-	addComponent : function(node){
+	addComponentNode : function(node){
 		if(this._head == null){
 			this._head = node;
 			this._end = node;
@@ -227,45 +227,6 @@ ActionUpdateSystem = System.extend({
 	
 	end : function(){
 		//remove
-	}
-});
-
-/**
- * 更新坐标的系统
- * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
- */
-MotionRunSystem = System.extend({
-	name : "motion",
-	dx : 0,
-	dy : 0,
-	unit : null,
-	sprite : null,
-	groups : null,
-	
-	start : function(){
-		this.groups = Service.Container.groups;
-	},
-	
-	update : function(dt){
-		for(var i in this.groups){
-			for(var j in this.groups[i].list){
-				this.unit = this.groups[i].list[j];
-				this.sprite = this.unit.coms.view.sprite;
-				this._callback(dt);
-			}
-		}
-	},
-	
-	_callback : function(dt){
-		this.dx = this.unit.coms.motion.dx;
-		this.dy = this.unit.coms.motion.dy;
-		if(this.dx != 0 || this.dy != 0){
-			//setPosition()里面有绘制命令
-			//这里要使用getPositionX()而不是getPosition().x这种，因为翻查源码发现，getPosition()是会有new操作的。
-			this.sprite.setPosition(
-					this.sprite.getPositionX() + this.dx,
-					this.sprite.getPositionY() + this.dy);
-		}
 	}
 });
 

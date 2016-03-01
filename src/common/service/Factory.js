@@ -37,7 +37,7 @@ Factory = {
 		 * 	data 	 数据DNA
 		 * 	template 单位模板
 		 */
-		createAction : function(data, template){
+		createAction : function(data){
 			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
@@ -78,12 +78,35 @@ Factory = {
 			template.coms = {};
 			template.actions = {};
 			template.init(data);
+			var keys = {};	//用于存储所有关联action的组件名称并集，然后统一构建unit的组件
 			if(!DataUtil.checkArrayNull(data,"actions")){
+				var action = null;
 				for(var i in data.actions){
-					this.createAction(data.actions[i],template);
+					action = this.createAction(data.actions[i]);
+					for(var k in action.coms){
+						if(!keys[k]){
+							keys[k] = k;
+						}
+					}
+					template.actions[action.name] = action;
 				}
 			}
+			template.coms.view = new ViewComponent();
+			this.buildUnitComs(keys, template, data);
 			return template;
+		},
+		
+		//内部方法
+		buildUnitComs : function(keys, template, data){
+			var coms = template.coms;
+			var actions = template.actions;
+			if(keys.motion && !coms.motion){
+				coms.motion = ComponentUtil.createMotion(data.motion);
+			}
+			if(keys.hit && !coms.hit){
+				coms.hit = ComponentUtil.createHit(data.hit);
+			}
+			return;
 		},
 		
 		/**

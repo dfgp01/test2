@@ -6,19 +6,12 @@ GameUtil = {
 		
 		//系统组件缓存
 		systems : {
-			sys : {
-				main : null,
-				player : null,
-				motion : null,
-				action : null,
-				EvtMsg : null,
-				animate : null
-			},
-			act : {
-				stand : null,
-				walk : null,
-				motion : null
-			}
+			main : null,
+			player : null,
+			motion : null,
+			action : null,
+			EvtMsg : null,
+			animate : null
 		},
 		
 		//公共动作节点缓存
