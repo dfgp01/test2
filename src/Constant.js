@@ -15,6 +15,9 @@ Constant = {
 	COMPONENT_HIT : 'hit',
 	COMPONENT_TIMER : 'timer',
 	
+	GAMEOBJECT_TILE : 0,
+	GAMEOBJECT_CHARACTER : 1,
+	
 	Action : {
 		Feature : {
 			MOTION : 1,

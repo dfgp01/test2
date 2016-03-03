@@ -39,18 +39,8 @@ System = cc.Class.extend({
 	/**
 	 * 子类重写此方法，用于执行一次详细逻辑
 	 */
-	executeUpdate : function(dt, node){return;},
-	
-	/**
-	 * 这是不用关心头尾节点的版本
-	 */
-	/*addComponent : function(node){
-		//新加入的一定是放在链尾
-		node.prep = this._end.prep;
-		node.next = this._end;
-		node.prep.next = node;
-	},*/
-	
+	execute : function(dt, node){return;},
+
 	/**
 	 * 其他组件和本系统的链表进行遍历
 	 */
@@ -292,45 +282,33 @@ AnimateUpdateSystem = System.extend({
 	name : "animate",
 	_dt : 0,
 	
-	//局部变量
-	_unit : null,
-	_animate : null,
-	_view : null,
-	
 	/**
 	 * 加入到链表中，并初始化第一帧
 	 */
-	addComponent : function(node){
-		this._super(node);
-		var view = node.owner.coms.view;
-		view.frameIndex = 0;
-		view.delay = 0;
-		EngineUtil.setFrame(view.sprite, view.animate.frames[0]);
+	addComponent : function(viewCom){
+		this._super(viewCom);
+		viewCom.frameIndex = 0;
+		viewCom.delay = 0;
+		EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
 	},
 
-	callback : function(dt, component){
+	execute : function(dt, viewCom){
 		
-		this._unit = component.gameObj;
-		this._animate = component.animate;
-		this._view = component.gameObj.coms.view;
-		
-		if(this._view.frameIndex < this._animate.frames.length){
-			//冷却计时
-			if(this.view.delay < this._animate.delays[this._view.frameIndex]){
-				this._view.delay += dt;
-				return;
-			}else{
-				this._view.frameIndex++;
-				this._view.delay = 0;
-				//冷却时间到就切换下一帧
-				EngineUtil.setFrame(this._view.sprite, this._animate.frames[this._view.frameIndex]);
-			}
-		}else if(this._animate.type & Constant.animate.type.LOOP){
-			this._view.frameIndex = 0;
-			this._view.delay = 0;
-			EngineUtil.setFrame(this._view.sprite, this._animate.frames[0]);
+		//冷却计时
+		if(viewCom.delay < viewCom.animate.delays[viewCom.frameIndex]){
+			viewCom.delay += dt;
+			return;
 		}else{
-			//移除这个节点
+			viewCom.frameIndex++;
+			viewCom.delay = 0;
+			if(viewCom.frameIndex < this._animate.frames.length){
+				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
+			}else if(viewCom.animate.type & Constant.animate.type.LOOP){
+				viewCom.frameIndex = 0;
+				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
+			}else{
+				this.removeComponent(viewCom);
+			}
 		}
 	}
 });

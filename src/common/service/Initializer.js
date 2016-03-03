@@ -34,33 +34,8 @@ Initializer = {
 		 * 初始化组件逻辑系统
 		 */
 		initSystem : function(){
-			//初始化通用动作系统组件
-			ActionUtil.systems.normalAnimate = new AnimateSystem();
-			ActionUtil.systems.loopAnimate = new LoopAnimateSystem();
-			ActionUtil.systems.stand = new StandActionSystem();
-			ActionUtil.systems.walk = new WalkMotionSystem();
-			ActionUtil.systems.motion  = new MotionSystem();
-			ActionUtil.systems.hurt = new HurtSystem();
-
-			//初始化主系统
-			this.systems.sys.main = new MainSystem();
-			this.systems.sys.player = new PlayerSystem();
-			this.systems.sys.motion = new MotionUpdateSystem();
-			this.systems.sys.action = new ActionUpdateSystem();
-			this.systems.sys.EvtMsg = new EventMessageSystem();
-			var mainSystem = this.systems.sys.main;
-			mainSystem.addSystem(this.systems.sys.player);
-			mainSystem.addSystem(this.systems.sys.motion);
-			mainSystem.addSystem(this.systems.sys.action);
-			mainSystem.addSystem(this.systems.sys.EvtMsg);
-		},
-		
-		/**
-		 * 一般伤害动作定义
-		 */
-		initHurtAction : function(){
-			var action = Factory.createCustomAction(HurtAction);
-			this.actions.hurt = action;
+			SystemUtil.init();
+			ActionUtil.init();
 		},
 
 		/**

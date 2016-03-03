@@ -83,28 +83,13 @@ Service = {
 	initialize : function(){
 		Initializer.initGobalParam();
 		Initializer.initSystem();
-		Initializer.initCommonAction();
-		Initializer.initUnitTemplate(characterData);
-	},
-	
-	getActionSystem : function(name){
-		return this.Container.actionSystems[name];
-	},
-	
-	getAnimateSystem : function(name){
-		return this.Container.animateSystems[name];
+		Initializer.initCharacter();
+		Initializer.initPlayer();
 	},
 	
 	//加入到 消息/事件 列表中，等待执行
 	dispatchEvent : function(evt){
 		GameUtil.systems.sys.EvtMsg.addEvent(evt);
-	},
-	
-	//对象回收
-	gc : function(obj){
-		this.Container.groups[obj.group].remove(obj);
-		obj.active = false;
-		obj.template.availableList.push(obj);
 	},
 	
 	/**

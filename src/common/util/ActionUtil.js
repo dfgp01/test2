@@ -6,11 +6,19 @@ ActionUtil = {
 		
 	//公共action缓存
 	actions:{
-		tileStart:null,
+		start:[]
+	},
+	
+	//system缓存
+	systems:{
+		animate:[],
+		motion:[]
 	}
 
 	init : function(){
-		this.action.tileStart = TileStartAction();
+		this.actions.start[Constant.GAMEOBJECT_TILE] = new TileStartAction();
+		this.actions.start[Constant.GAMEOBJECT_CHARACTER] = new CharacterStartAction();
+		this.systems.animate[0] = new SimpleAnimateSystem();
 	},
 
 	preparedToChange : function(obj, action){

@@ -1,7 +1,21 @@
 /**
  * 		用于Action中的组件
- * 		Hugo-Fu 2015.11.11	
+ * 		Hugo-Fu 2016.03.03	last-edit
  **/
+
+/**
+ * 	动画组件
+ */
+AnimateComponent = Component.extend({
+	name : "animate",
+	frames : null,
+	delays : null,
+	type : 0,
+	ctor : function(){
+		this.frames = [];
+		this.delays = [];
+	}
+});
 
 /**
  * 可蓄力动作组件

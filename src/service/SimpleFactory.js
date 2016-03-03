@@ -27,13 +27,16 @@ SimpleFactory = {
 				return null;
 			}
 			var template = this.createGameObjectTemplate(data);
-			template.actions.start = ActionUtil.actions.characterStart;
+			template.actions.start = ActionUtil.actions[Constant.GAMEOBJECT_CHARACTER];
 			template.actions.stand = this.createStandAction(data.stand, template);
 		},
 		
 		createStandAction : function(data, template){
 			data.name = "stand";
 			var action = Factory.createAction(data);
+			var component = ComponentUtil.createCommand(data.command);
+			var system = ActionSystemUtil.actions.getCommand(component);
+			ActionUtil.build(action, component, system);
 			return action;
 		}
 		

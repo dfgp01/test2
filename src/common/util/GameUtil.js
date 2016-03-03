@@ -3,27 +3,7 @@
 *	CreateBy Hugo-Fu 2015.12.05
 */
 GameUtil = {
-		
-		//系统组件缓存
-		systems : {
-			main : null,
-			player : null,
-			motion : null,
-			action : null,
-			EvtMsg : null,
-			animate : null
-		},
-		
-		//公共动作节点缓存
-		actions : {
-			hurt : null,
-		},
-		
-		//效果逻辑缓存{id:class}
-		effects : {
-			
-		},
-		
+
 		/**
 		 * 生成碰撞标示码
 		 * @param obj

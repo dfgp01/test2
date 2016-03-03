@@ -1,5 +1,5 @@
 /**
- *  单位组件和动作组件之间的交互工具类
+ *  单位组件工具类
  */
 
 ComponentUtil = {
@@ -52,48 +52,6 @@ ComponentUtil = {
 					cc.log(elems.name + "类没有" + key + "属性");
 				}
 			}
-		}
-	}
-};
-
-ComponentUtil.createAnimate = function(data){
-	if(DataUtil.checkIsInt(data, "type")){
-		cc.log("ComponentUtil.createAnimate error. animate.type error.");
-		return null;
-	}
-	if(DataUtil.checkArrayNull(data,"frames")){
-		cc.log("ComponentUtil.createAnimate error. animate.frames error.");
-		return null;
-	}
-	var animate = new AnimateComponent();
-	animate.type = data.type;
-	var frameList = [];
-	for(var i in animate.frames){
-		var frame = cc.spriteFrameCache.getSpriteFrame(animate.frames[i]);
-		if(frame){
-			frameList.push(frame);
-		}else{
-			cc.log("action:" + action.name + " frame:" + animate.frames[i] + " not found");
-			return null;
-		}
-	}
-	animate.frames = frameList;
-
-	//设置每帧延时
-	if(!DataUtil.checkArrayNull(data,"delays")){
-		if(data.delays.length != frameList.length){
-			cc.log("animate.delays 数组和frame数量不对等.");
-			return null;
-		}
-		for(var i=0; i<animate.delays.length; i++){
-			animate.delays.push(data.delays[i]);
-		}
-	}else{
-		animate.delays = [];
-		for(var i=0; i<frameList.length; i++){
-			//设置默认动画帧时长
-			animate.delays.push(
-					Service.GameSetting.frameTick);
 		}
 	}
 };
