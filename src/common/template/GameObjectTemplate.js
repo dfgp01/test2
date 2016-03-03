@@ -4,7 +4,7 @@
  *  edit by Hugo-Fu 2015.10.05
  *  update by Hugo-Fu 2015.11.26	加入ID递增，放入Service缓存
  */
-UnitTemplate = cc.Class.extend({
+GameObjectTemplate = cc.Class.extend({
 
 	name : null,
 	frame : null,				//初始frame

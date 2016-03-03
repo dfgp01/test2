@@ -59,7 +59,7 @@ SimpleAnimateSystem = ActionSystem.extend({
 	name : "animate",
 	system : null,
 	ctor : function(){
-		this.system = GameUtil.systems.animate;
+		this.system = SystemUtil.systems.animate;
 	},
 	start : function(gameObj,animateCom){
 		gameObj.coms.view.animate = animateCom;

@@ -3,7 +3,7 @@
  */
 PlayerSystem = System.extend({
 	name : "player",
-	tick : Constant.Tick.FPS30,
+	tick : Constant.TICK_FPS30,
 	key : 0,
 	combo : [],
 	maxLength : 6,

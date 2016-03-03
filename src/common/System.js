@@ -4,7 +4,7 @@
 System = cc.Class.extend({
 	name : "system",
 	priority : 0,
-	tick : Constant.Tick.FPS60,			//不能少于这个数
+	tick : Constant.TICK_FPS60,			//不能少于这个数
 	remainDt : 0,
 	start : function(){},
 	//update : function(dt){},
@@ -164,7 +164,7 @@ MainSystem = System.extend({
  */
 ActionUpdateSystem = System.extend({
 	name : "action",
-	tick : Constant.Tick.FPS30,
+	tick : Constant.TICK_FPS30,
 	_currObj : null,
 	_currState : null,
 	_currAct : null,
@@ -278,7 +278,7 @@ MotionUpdateSystem = System.extend({
  * com是复合类型的
  */
 AnimateUpdateSystem = System.extend({
-	tick : Constant.Tick.FPS05,
+	tick : Constant.TICK_FPS05,
 	name : "animate",
 	_dt : 0,
 	

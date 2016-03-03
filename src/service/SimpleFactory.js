@@ -26,9 +26,10 @@ SimpleFactory = {
 				cc.log("Factory.createCharacter error. stand action is necessary.");
 				return null;
 			}
-			var template = this.createGameObjectTemplate(data);
+			var template = Factory.createGameObjectTemplate(data);
 			template.actions.start = ActionUtil.actions[Constant.GAMEOBJECT_CHARACTER];
 			template.actions.stand = this.createStandAction(data.stand, template);
+			return template;
 		},
 		
 		createStandAction : function(data, template){

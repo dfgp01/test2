@@ -4,8 +4,8 @@
 GameSetting = {
 
 		framerate : 60,				//cocos2d默认fps是60
-		logicTick : Constant.Tick.FPS30,			//默认逻辑帧fps:30
-		frameTick : Constant.Tick.FPS10,		//默认动画帧fps:24
+		logicTick : Constant.TICK_FPS30,			//默认逻辑帧fps:30
+		frameTick : Constant.TICK_FPS24,		//默认动画帧fps:24
 
 		gravity : -2,				//一般重力，一些组件可设置自定义重力
 		maxGravity : -10,			//最大引力
@@ -28,26 +28,3 @@ GameSetting = {
 			airY : 0.8
 		}
 };
-
-/**
- * 公共动作节点数据
- */
-commonActions = {
-		list:[{
-			name:"block",
-			animate:{
-				type: Constant.animate.TYPE_STATIC
-			},
-			rect:[10,10,10,10]
-		},{
-			name:"block-hurt",
-			animate:{
-				type: Constant.animate.TYPE_SHAKE
-			}
-		},{
-			name:"animate-only",
-			animate:{
-				type: Constant.animate.TYPE_SCROLL
-			}
-		}]
-}

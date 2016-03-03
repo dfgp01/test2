@@ -124,7 +124,8 @@ Service = {
 		hitBackMotion : null,
 		hitDownMotion : null,
 		stiffTimer : null,
-		stiffDownTimer : null
+		stiffDownTimer : null,
+		animateFrameTick : 0
 	}
 
 };

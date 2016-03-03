@@ -49,7 +49,7 @@ Factory = {
 			actionState.systemList = [];
 			actionState.init(data);
 			//初始化动作组件系统
-			ActionUtil.buildComponentSystem(data, actionState);
+			ActionUtil.bulidComponentSystem(data, actionState);
 			return actionState;
 		},
 		

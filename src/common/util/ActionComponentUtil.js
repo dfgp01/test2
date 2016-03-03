@@ -16,10 +16,10 @@ ActionComponentUtil = {
 			return null;
 		}
 		var animate = new AnimateComponent();
-		animate.type = data.type;
+		animate.type = DataUtil.checkIsInt(data,"type") ? data.type : 0;
 		var frameList = [];
-		for(var i in animate.frames){
-			var frame = cc.spriteFrameCache.getSpriteFrame(animate.frames[i]);
+		for(var i in data.frames){
+			var frame = cc.spriteFrameCache.getSpriteFrame(data.frames[i]);
 			if(frame){
 				frameList.push(frame);
 			}else{
@@ -30,21 +30,28 @@ ActionComponentUtil = {
 		animate.frames = frameList;
 
 		//设置每帧延时
-		if(!DataUtil.checkArrayNull(data,"delays")){
-			if(data.delays.length != frameList.length){
-				cc.log("animate.delays 数组和frame数量不对等.");
-				return null;
+		if(animate.type != Constant.ANIMATE_STATIC){
+			//interval或intervals属性必须有其中一个，否则用默认的间隔
+			animate.intervals = [];
+			if(!DataUtil.checkIsNumber(data, "interval")){
+
 			}
-			for(var i=0; i<animate.delays.length; i++){
-				animate.delays.push(data.delays[i]);
-			}
-		}else{
-			animate.delays = [];
-			for(var i=0; i<frameList.length; i++){
-				//设置默认动画帧时长
-				animate.delays.push(
-						Service.GameSetting.frameTick);
+			else if(!DataUtil.checkArrayNull(data,"intervals")){
+				if(data.intervals.length != frameList.length){
+					cc.log("animate.intervals 数组和frame数量不对等.");
+					return null;
+				}
+				for(var i=0; i<data.intervals.length; i++){
+					animate.intervals.push(data.intervals[i]);
+				}
+			}else{
+				for(var i=0; i<frameList.length; i++){
+					//设置默认动画帧时长
+					animate.delays.push(
+							Service.Gobal.animateFrameTick);
+				}
 			}
 		}
+		return animate;
 	}
 };

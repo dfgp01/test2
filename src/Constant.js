@@ -5,9 +5,9 @@ Constant = {
 	DIRECT_CHILDNODE : "-",
 	BOOLEAN_TRUE : 1,
 	BOOLEAN_FALSE : 0,
-	ANIMATE_STATIC : 1,		//只有一帧
-	ANIMATE_NORMAL : 2,		//只播放一次
-	ANIMATE_SCROLL : 3,		//循环播放
+	ANIMATE_STATIC : 0,		//只有一帧
+	ANIMATE_NORMAL : 1,		//只播放一次
+	ANIMATE_SCROLL : 2,		//循环播放
 	
 	COMPONENT_ANIMATE : 'animate',
 	COMPONENT_MOTION : 'motion',

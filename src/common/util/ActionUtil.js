@@ -13,7 +13,7 @@ ActionUtil = {
 	systems:{
 		animate:[],
 		motion:[]
-	}
+	},
 
 	init : function(){
 		this.actions.start[Constant.GAMEOBJECT_TILE] = new TileStartAction();
@@ -57,17 +57,17 @@ ActionUtil = {
 		var system = null;
 		//穷举组件检测
 		if(DataUtil.checkNotNull(data,"animate")){
-			component = ComponentUtil.createActionAnimate(data.animate);
-			system = ActionSystemUtil.getAnimate(component);
+			component = ActionComponentUtil.createAnimate(data.animate);
+			system = this.systems.animate[component.type];
 			this.build(action, component, system);
 		}
 		if(DataUtil.checkNotNull(data,"motion")){
-			component = ComponentUtil.createActionMotion(data.motion);
+			component = ActionComponentUtil.createMotion(data.motion);
 			system = ActionSystemUtil.getMotion(component);
 			this.build(action, component, system);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){
-			component = ComponentUtil.createActionTimer(data.timer);
+			component = ActionComponentUtil.createTimer(data.timer);
 			system = ActionSystemUtil.getTimer(component);
 			this.build(action, component, system);
 		}
