@@ -28,16 +28,11 @@ Initializer = {
 			timerCom = new TimerComponent();
 			timerCom.total = GameSetting.knockDownTime;
 			Service.Gobal.stiffDownTimer = timerCom;
+			
+			Service.Gobal.animateFrameRate = GameSetting.animateFrameRate;
+			Service.Gobal.logicFrameRate = GameSetting.logicFrameRate;
 		},
 		
-		/**
-		 * 初始化组件逻辑系统
-		 */
-		initSystem : function(){
-			SystemUtil.init();
-			ActionUtil.init();
-		},
-
 		/**
 		 * 单位组定义
 		 */

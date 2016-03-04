@@ -23,21 +23,29 @@ SimpleFactory = {
 		createCharacter : function(data){
 			//人物必须要有stand动作
 			if(!data.stand){
-				cc.log("Factory.createCharacter error. stand action is necessary.");
+				cc.log("SimpleFactory.createCharacter error. stand action is necessary.");
 				return null;
 			}
 			var template = Factory.createGameObjectTemplate(data);
 			template.actions.start = ActionUtil.actions[Constant.GAMEOBJECT_CHARACTER];
-			template.actions.stand = this.createStandAction(data.stand, template);
+			template.actions.stand = this.createStandAction(data.stand);
+			ActionUtil.buildActions(template, data);
 			return template;
 		},
 		
 		createStandAction : function(data, template){
 			data.name = "stand";
+			if(data.animate && !DataUtil.checkArrayNull(data.animate,"frames")){
+				if(data.animate.frames.length>1){
+					data.type = Constant.ANIMATE_STATIC;
+				}else{
+					data.type = Constant.ANIMATE_SCROLL;
+				}
+			}else{
+				cc.log("SimpleFactory.createStandAction error. animte & animate.frames is necessary.");
+				return null;
+			}
 			var action = Factory.createAction(data);
-			var component = ComponentUtil.createCommand(data.command);
-			var system = ActionSystemUtil.actions.getCommand(component);
-			ActionUtil.build(action, component, system);
 			return action;
 		}
 		

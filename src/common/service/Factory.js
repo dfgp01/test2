@@ -78,35 +78,15 @@ Factory = {
 			template.coms = {};
 			template.actions = {};
 			template.init(data);
-			var keys = {};	//用于存储所有关联action的组件名称并集，然后统一构建unit的组件
 			if(!DataUtil.checkArrayNull(data,"actions")){
 				var action = null;
 				for(var i in data.actions){
 					action = this.createAction(data.actions[i]);
-					for(var k in action.coms){
-						if(!keys[k]){
-							keys[k] = k;
-						}
-					}
 					template.actions[action.name] = action;
 				}
 			}
 			template.coms.view = new ViewComponent();
-			this.buildUnitComs(keys, template, data);
 			return template;
-		},
-		
-		//内部方法
-		buildUnitComs : function(keys, template, data){
-			var coms = template.coms;
-			var actions = template.actions;
-			if(keys.motion && !coms.motion){
-				coms.motion = ComponentUtil.createMotion(data.motion);
-			}
-			if(keys.hit && !coms.hit){
-				coms.hit = ComponentUtil.createHit(data.hit);
-			}
-			return;
 		},
 		
 		/**
@@ -123,16 +103,6 @@ Factory = {
 				return ComponentUtil.createActionMotion(data);
 			}else if(data.name == Constant.COMPONENT_HIT){
 				return ComponentUtil.createActionHit(data);
-			}
-		},
-		
-		/**
-		 * 创建动作组件
-		 */
-		createUnitComponent : function(data){
-			if(!DataUtil.checkIsString(data, "name")){
-				cc.log("Factory.createUnitComponent error. no name.");
-				return null;
 			}
 		}
 };

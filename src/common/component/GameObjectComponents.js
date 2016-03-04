@@ -69,6 +69,9 @@ UnitMotionComponent = Component.extend({
 	vx : 0,			//vx,vy,vz 代表方向向量
 	vy : 0,
 	vz : 0,
+	dx : 0,			//dx,dy,dz 代表移动增量
+	dy : 0,
+	dz : 0,
 
 	clone : function(){
 		var com = this._super();
@@ -76,11 +79,10 @@ UnitMotionComponent = Component.extend({
 		com.vx = this.vx;
 		com.vy = this.vy;
 		com.vz = this.vz;
+		com.dx = this.dx;
+		com.dy = this.dy;
+		com.dz = this.dz;
 		return com;
-	},
-	init : function(data){
-		this._super(data);
-		this.speedFactor  = DataUtil.checkIsInt(data, "factor") ? data.factor : this.factor;
 	}
 });
 

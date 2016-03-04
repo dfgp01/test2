@@ -34,7 +34,9 @@ ActionComponentUtil = {
 			//interval或intervals属性必须有其中一个，否则用默认的间隔
 			animate.intervals = [];
 			if(!DataUtil.checkIsNumber(data, "interval")){
-
+				for(var i=0; i<data.intervals.length; i++){
+					animate.intervals.push(data.interval);
+				}
 			}
 			else if(!DataUtil.checkArrayNull(data,"intervals")){
 				if(data.intervals.length != frameList.length){
@@ -53,5 +55,13 @@ ActionComponentUtil = {
 			}
 		}
 		return animate;
+	},
+	
+	createSwitchable : function(data){
+		var switchable = new SwitchableComponent();
+		for(var cmd in data){
+			switchable.keys[cmd] = data[cmd];
+		}
+		return switchable;
 	}
 };

@@ -81,8 +81,9 @@ Service = {
 	},
 	
 	initialize : function(){
-		Initializer.initGobalParam();
-		Initializer.initSystem();
+		Initializer.initGobalParam();	//全局默认数值（引力、帧频等）
+		SystemUtil.init();	//主系统
+		ActionUtil.init();	//动作系统和公共动作
 		Initializer.initCharacter();
 		Initializer.initPlayer();
 	},
@@ -125,7 +126,8 @@ Service = {
 		hitDownMotion : null,
 		stiffTimer : null,
 		stiffDownTimer : null,
-		animateFrameTick : 0
+		animateFrameRate : 0,
+		logicFrameRate : 0
 	}
 
 };

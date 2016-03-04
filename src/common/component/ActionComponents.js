@@ -18,6 +18,17 @@ AnimateComponent = Component.extend({
 });
 
 /**
+ * 可切换动作的组件
+ */
+SwitchableComponent = Component.extend({
+	name : "switchable",
+	keys : null,
+	ctor : function(){
+		this.keys = {};
+	}
+});
+
+/**
  * 可蓄力动作组件
  */
 ChargeComponent = Component.extend({
@@ -76,19 +87,5 @@ GroupComponent = Component.extend({
 	},
 	add : function(com){
 		this.coms[com.name] = com;
-	}
-});
-
-/**
- * 每帧移动一次的组件
- */
-MovePerFrameComponent = Component.extend({
-	name : "motion",
-	list : null,
-	ctor : function(){
-		this.list = [];
-	},
-	add : function(motionCom){
-		this.list.push(motionCom);
 	}
 });

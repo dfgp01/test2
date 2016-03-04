@@ -11,31 +11,13 @@ GameObjectTemplate = cc.Class.extend({
 	featureCode : 0,
 	availableList : null,		//对象池
 
-	actions : null,		//动作逻辑组件是每个单位必须具备的
+	actions : null,		//动作集合
 	firstAct : null,
 	coms : null,
 	
 	nextId : 1,
 
 	init : function(data){
-
-		//运动组件
-		if(this.featureCode & Constant.GameObject.Feature.MOTION){
-			var motionCom = new UnitMotionComponent();
-			motionCom.init(data);
-			this.coms.motion = motionCom;
-		}
-		
-		/*this.hitCom = new HitPropertiesComponent();
-		this.hurtCom = new HurtPropertiesComponent();
-		this.speedCom = new SpeedPropertiesComponent();*/
-		
-		//数据上配置的速度指的是x轴的速度，y轴速度一般比x轴要小一些百分比
-		//这些通用设置可以在GameSetting类中找到
-		/*if(DataUtil.checkIsNumber(data, "walkSpeed", true)){
-			this.speedCom.dx = data.walkSpeed * GameSetting.unitSpeedFactor.walkX;
-			this.speedCom.dy = data.walkSpeed * GameSetting.unitSpeedFactor.walkY;
-		}*/
 	},
 	
 	/**
@@ -58,7 +40,7 @@ GameObjectTemplate = cc.Class.extend({
 			}
 			unit.coms.view = new ViewComponent();
 			EngineUtil.setFrame(unit.coms.view.sprite, this.frame);
-			unit.actions = this.actions.clone();
+			unit.actions = new ActionsComponent();
 			unit.template = this;
 		}
 		else{

@@ -57,7 +57,7 @@ System = cc.Class.extend({
 	/**
 	 * 将组件添加进链表
 	 */
-	addComponentNode : function(node){
+	addComponent : function(node){
 		if(this._head == null){
 			this._head = node;
 			this._end = node;
