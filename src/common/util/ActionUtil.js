@@ -16,8 +16,10 @@ ActionUtil = {
 	},
 
 	init : function(){
-		this.actions.start[Constant.GAMEOBJECT_TILE] = new TileStartAction();
-		this.actions.start[Constant.GAMEOBJECT_CHARACTER] = new CharacterStartAction();
+		var action = new CharacterStartAction();
+		action.init(null,null);
+		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
+		this.actions.start[Constant.GAMEOBJECT_CHARACTER] = action;
 		this.systems.animate[0] = new SimpleAnimateSystem();
 	},
 
@@ -53,6 +55,9 @@ ActionUtil = {
 	},
 	
 	bulidComponentSystem : function(data, action){
+		if(!data){
+			return;
+		}
 		var component = null;
 		var system = null;
 		//穷举组件检测
@@ -87,7 +92,7 @@ ActionUtil = {
 	//和上面一样，暂定个名称，有好的再改
 	buildActions : function(template, data){
 		var keys = {};	//用于存储所有关联action的组件名称并集，然后统一构建unit的组件
-		var action = null,
+		var action = null;
 		for(var i in template.actions){
 			action = template.actions[i];
 			for(var k in action.coms){
@@ -97,7 +102,7 @@ ActionUtil = {
 			}
 			if(action.coms.switchable){
 				var k = action.coms.switchable.keys;
-				var name = null,
+				var name = null;
 				for(var cmd in k){
 					name = k[cmd];
 					if(template.actions[name]){
@@ -110,7 +115,7 @@ ActionUtil = {
 			}
 		}
 		ComponentUtil.createByKeys(keys, template, data);
-	}
+	},
 
 	/**
 	 * 增加直驱节点

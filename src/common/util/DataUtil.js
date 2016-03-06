@@ -139,6 +139,7 @@ DataUtil = {
 			for(var key in obj){
 				str += "key : " + key + ", value : " + obj[key] + "\n";
 			}
-			return str;
+			cc.log(str);
+			return;
 		}
 };

@@ -98,25 +98,25 @@ Arrows = Button.extend({
 		var bt = new Button();
 		//左边矩形
 		bt.rect = cc.rect(0, 0, width / 3, height);
-		bt.cmd = Constant.CMD.LEFT;
+		bt.cmd = Constant.CMD_LEFT;
 		this.buttons.push(bt);
 
 		//上边矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, height * 2 / 3, width, height / 3);
-		bt.cmd = Constant.CMD.UP;
+		bt.cmd = Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//右边矩形
 		bt = new Button();
 		bt.rect = cc.rect(width * 2 / 3, 0, width / 3, height);
-		bt.cmd = Constant.CMD.RIGHT;
+		bt.cmd = Constant.CMD_RIGHT;
 		this.buttons.push(bt);
 
 		//下边矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, 0, width, height / 3);
-		bt.cmd = Constant.CMD.DOWN;
+		bt.cmd = Constant.CMD_DOWN;
 		this.buttons.push(bt);
 
 	},
@@ -129,49 +129,49 @@ Arrows = Button.extend({
 		var bt = new Button();
 		//左上矩形
 		bt.rect = cc.rect(0, height *2 / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD.LEFT | Constant.CMD.UP;
+		bt.cmd = Constant.CMD_LEFT | Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//左中矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, height / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD.LEFT;
+		bt.cmd = Constant.CMD_LEFT;
 		this.buttons.push(bt);
 
 		//左下矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, 0, width / 3, height / 3);
-		bt.cmd = Constant.CMD.LEFT | Constant.CMD.DOWN;
+		bt.cmd = Constant.CMD_LEFT | Constant.CMD_DOWN;
 		this.buttons.push(bt);
 
 		//中上矩形
 		bt = new Button();
 		bt.rect = cc.rect(width / 3, height *2 / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD.UP;
+		bt.cmd = Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//中下矩形
 		bt = new Button();
 		bt.rect = cc.rect(width / 3, 0, width / 3, height / 3);
-		bt.cmd = Constant.CMD.DOWN;
+		bt.cmd = Constant.CMD_DOWN;
 		this.buttons.push(bt);
 
 		//右上矩形
 		bt = new Button();
 		bt.rect = cc.rect(width *2 / 3, height *2 / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD.RIGHT | Constant.CMD.UP;
+		bt.cmd = Constant.CMD_RIGHT | Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//右中矩形
 		bt = new Button();
 		bt.rect = cc.rect(width *2 / 3, height / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD.RIGHT;
+		bt.cmd = Constant.CMD_RIGHT;
 		this.buttons.push(bt);
 
 		//右下矩形
 		bt = new Button();
 		bt.rect = cc.rect(width *2 / 3, 0, width / 3, height / 3);
-		bt.cmd = Constant.CMD.RIGHT | Constant.CMD.DOWN;
+		bt.cmd = Constant.CMD_RIGHT | Constant.CMD_DOWN;
 		this.buttons.push(bt);
 	}
 });

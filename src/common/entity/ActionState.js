@@ -12,7 +12,17 @@ ActionState = cc.Class.extend({
 	
 	coms : null,
 	
+	/**
+	 * 因目前暂时搞不清楚JS的反射创建实例相关的技术，所以，ActionState的子类统一用 new 创建 然后调用init()
+	 * @param data
+	 * @param template
+	 */
 	init : function(data, template){
+		cc.log("info: creating action:[" + this.name + "].");
+		this.coms = {};
+		this.systemList = [];
+		//初始化动作组件系统
+		ActionUtil.bulidComponentSystem(data, this);
 	},
 	
 	//设置直接下一个节点，需要改

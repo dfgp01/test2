@@ -8,7 +8,7 @@ ControllerLayer = cc.Layer.extend({
 	playerSys : null,
 	
 	ctor : function(){
-		this.playerSys = GameUtil.systems.sys.player;
+		this.playerSys = SystemUtil.systems.player;
 		this._super();
 		var winSize = cc.winSize;
 		
@@ -65,7 +65,7 @@ ControllerLayer = cc.Layer.extend({
         			Service.begin = selfPointer.playerSys.target.viewCom.sprite.getPositionX();
         			Service.dis = selfPointer.playerSys.target.viewCom.sprite.getPositionX();
         			cc.log("开始：");
-        			selfPointer.playerSys.pressKey(Constant.CMD.RIGHT);
+        			selfPointer.playerSys.pressKey(Constant.CMD_RIGHT);
         			return false;
         		}
         		return false;
@@ -73,7 +73,7 @@ ControllerLayer = cc.Layer.extend({
         	//onTouchMoved: function (touch, event) {},
         	onTouchEnded: function (touch, event) {
         		selfPointer.arrows.release();
-        		selfPointer.playerSys.releaseKey(Constant.CMD.ALL_DIRECTION);
+        		selfPointer.playerSys.releaseKey(Constant.CMD_ALL_DIRECTION);
         	}
         });
         cc.eventManager.addListener(listener, this);

@@ -3,7 +3,7 @@
  */
 CharacterStartAction = ActionState.extend({
 	name : "start",
-	_system = null,
+	_system : null,
 	
 	start : function(unit){
 		this._system.addComponent(unit.coms.actions);
@@ -13,7 +13,8 @@ CharacterStartAction = ActionState.extend({
 		this._system.removeComponent(unit.coms.actions);
 	},
 
-	init : function(data){
+	init : function(data, template){
+		this._super(data, template);
 		this._system = SystemUtil.systems.action;
 	}
 });

@@ -52,7 +52,7 @@ Service = {
 	/**
 	 * 	从指定模板中创建新对象
 	 */
-	createObj : function(tempName, groupNum, _x, _y, _z, ccLayer){
+	newObject : function(tempName, _x, _y, _z, ccNode){
 		var tmp = this.Container.templates[tempName];
 		if(!tmp){
 			cc.log("template: " + tempName + " not found!");
@@ -63,29 +63,28 @@ Service = {
 				//如果缓存内没有此单位，则加入
 				this.Container.units[obj.id] = obj;
 			}
-			this.Container.groups[groupNum].add(obj);
-			obj.coms.view.z = _z;
-			obj.coms.view.sprite.attr({x: _x, y: _y+_z});
-			//GL坐标系，z值(Y轴)越小越排前
-			ccLayer.addChild(obj.coms.view.sprite, -(_z));
-			obj.template.firstAct.start(obj);
+			tmp.actions.start.start(obj);
 			return obj;
 		}
-	},
-	
-	/**
-	 * 初始化玩家配置
-	 */
-	initPlayer : function(unit){
-		this.Container.player.unit = unit;
 	},
 	
 	initialize : function(){
 		Initializer.initGobalParam();	//全局默认数值（引力、帧频等）
 		SystemUtil.init();	//主系统
 		ActionUtil.init();	//动作系统和公共动作
-		Initializer.initCharacter();
-		Initializer.initPlayer();
+		//初始化玩家
+		var character = SimpleFactory.createCharacter(characterData);
+		Service.Container.templates[character.name] = character;
+		var object = this.newObject(character.name);
+		this.Container.player.unit = object;
+	},
+	
+	getPlayer : function(){
+		return this.Container.player;
+	},
+	
+	start : function(){
+		SystemUtil.systems.main.start();
 	},
 	
 	//加入到 消息/事件 列表中，等待执行

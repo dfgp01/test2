@@ -35,32 +35,23 @@ Factory = {
 		 * 创建一个动作节点
 		 * param
 		 * 	data 	 数据DNA
-		 * 	template 单位模板
+		 * 	actClass  ActionState的子类，可缺省
+		 *  2016.03.05 有改动，详见 ActionState.init()注释
 		 */
 		createAction : function(data){
 			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
-			cc.log("info: creating action:[" + data.name + "].");
+			//cc.log("info: creating action:[" + data.name + "].");
 			var actionState = new ActionState();
 			actionState.name = data.name;
-			actionState.coms = {};
-			actionState.systemList = [];
+			//actionState.coms = {};
+			//actionState.systemList = [];
 			actionState.init(data);
 			//初始化动作组件系统
-			ActionUtil.bulidComponentSystem(data, actionState);
+			//ActionUtil.bulidComponentSystem(data, actionState);
 			return actionState;
-		},
-		
-		/**
-		 * 创建自定义的action子类
-		 */
-		createCustomAction : function(data, actClass){
-			var action = new actClass();
-			//子类自行初始化coms和systems
-			action.init(data);
-			return action;
 		},
 		
 		/**
@@ -85,7 +76,7 @@ Factory = {
 					template.actions[action.name] = action;
 				}
 			}
-			template.coms.view = new ViewComponent();
+			//template.coms.view = new ViewComponent();
 			return template;
 		},
 		

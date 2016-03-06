@@ -27,8 +27,8 @@ System = cc.Class.extend({
 	 * 主函数，循环整个链表
 	 */
 	update : function(dt){
-		if(this._head.next != this._end){
-			this._curr = this._head.next;
+		if(this._head != null){
+			this._curr = this._head;
 			do{
 				this.executeUpdate(dt, this._curr);
 				this._curr = this._curr.next;

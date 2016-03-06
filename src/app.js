@@ -20,7 +20,7 @@ var HelloWorldLayer = cc.Layer.extend({
         	x: winSize.width / 2,
         	y: winSize.height / 2
         });
-        this.addChild(bg, 0);
+        this.addChild(bg, -999);
 /*
         var player = Service.Container.player.unit;
     	var sprite = player.coms.view.sprite;
@@ -31,9 +31,9 @@ var HelloWorldLayer = cc.Layer.extend({
     	sprite._scaleX = -1;
     	this.addChild(sprite, 1);*/
         
-        Service.initPlayer(
-        		Service.createObj("deep", Constant.Group.TEAM1_INDEX, 150, 0, -250, this));
-        var sprite = Service.Container.player.unit.coms.view.sprite;
+        var character = Service.getPlayer().unit;
+        EngineUtil.addSprite(character.coms.view, 150, 0, 250, this);
+        var sprite = character.coms.view.sprite;
         
         var selfPointer = this;
         var listener = cc.EventListener.create({
@@ -79,8 +79,8 @@ var HelloWorldLayer = cc.Layer.extend({
         
         //this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
 
-        this.mainSystem = GameUtil.systems.sys.main;
-        this.mainSystem.start();
+        Service.start();
+        this.mainSystem = SystemUtil.systems.main;
         this.scheduleUpdate();
         return true;
     },

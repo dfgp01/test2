@@ -27,7 +27,7 @@ SimpleFactory = {
 				return null;
 			}
 			var template = Factory.createGameObjectTemplate(data);
-			template.actions.start = ActionUtil.actions[Constant.GAMEOBJECT_CHARACTER];
+			template.actions.start = ActionUtil.actions.start[Constant.GAMEOBJECT_CHARACTER];
 			template.actions.stand = this.createStandAction(data.stand);
 			ActionUtil.buildActions(template, data);
 			return template;

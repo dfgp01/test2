@@ -118,13 +118,5 @@ Initializer = {
 				cc.log(" lamda express finish.");
 			}
 			Service.Container.templates[unitTemplate.name] = unitTemplate;
-		},
-		
-		/**
-		 * 临时方法 2016.03.01
-		 */
-		initCharacter : function(){
-			var character = SimpleFactory.createCharacter(characterData);
-			Service.Container.templates[character.name] = character;
 		}
 }

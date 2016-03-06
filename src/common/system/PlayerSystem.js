@@ -26,9 +26,9 @@ PlayerSystem = System.extend({
 
 		//如果按下了攻击键，从单击状态变为持续按住状态，以后可能加个缓冲计时
 		//方向键暂时不用判断单击还是按住的状态
-		if(this.key & Constant.CMD.ATTACK_ONCE){
+		if(this.key & Constant.CMD_ATTACK_ONCE){
 			//把二进制最后两位变成10，暂时没想到更好的办法
-			this.key = this.key & (~Constant.CMD.ATTACK_ONCE) | Constant.CMD.ATTACK_HOLD_ON;
+			this.key = this.key & (~Constant.CMD_ATTACK_ONCE) | Constant.CMD_ATTACK_HOLD_ON;
 		}
 		//连按系统时间间隔叠加
 		if(this.combo.length>0){
@@ -46,20 +46,20 @@ PlayerSystem = System.extend({
 
 	pressKey : function(key){
 		this.key = this.key | key;
-		if(key==Constant.CMD.ATTACK_ONCE){
+		if(key==Constant.CMD_ATTACK_ONCE){
 			this.addCombo("A");
 		}
 	},
 
 	pressDirection : function(key){
 		this.key = this.key | key;
-		if(key==Constant.CMD.UP){
+		if(key==Constant.CMD_UP){
 			this.addCombo("U");
 		}
-		else if(key==Constant.CMD.DOWN){
+		else if(key==Constant.CMD_DOWN){
 			this.addCombo("D");
 		}
-		else if(key==Constant.CMD.LEFT){
+		else if(key==Constant.CMD_LEFT){
 			this.addCombo("L");
 		}else{
 			this.addCombo("R");

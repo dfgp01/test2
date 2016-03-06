@@ -67,5 +67,12 @@ EngineUtil = {
 	
 	addListener : function(name, callback){
 		cc.eventManager.addCustomListener(name, callback);
+	},
+	
+	addSprite : function(viewCom, _x, _y, _z, ccNode){
+		viewCom.z = _z;
+		viewCom.sprite.attr({x: _x, y: _y+_z});
+		//GL坐标系，z值(Y轴)越小越排前
+		ccNode.addChild(viewCom.sprite, -(_z));
 	}
 };
