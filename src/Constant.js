@@ -3,20 +3,60 @@
  */
 Constant = {
 	DIRECT_CHILDNODE : "-",
+	
+	/**
+	 * 用于表示文本数据的逻辑
+	 */
 	BOOLEAN_TRUE : 1,
 	BOOLEAN_FALSE : 0,
+	
+	/**
+	 * 动画类型枚举
+	 */
 	ANIMATE_STATIC : 0,		//只有一帧
 	ANIMATE_NORMAL : 1,		//只播放一次
 	ANIMATE_SCROLL : 2,		//循环播放
 	
+	/**
+	 * 组件名称
+	 */
 	COMPONENT_ANIMATE : 'animate',
 	COMPONENT_MOTION : 'motion',
 	COMPONENT_HURT : 'hurt',
 	COMPONENT_HIT : 'hit',
 	COMPONENT_TIMER : 'timer',
 	
+	/**
+	 * 单位类型
+	 */
 	GAMEOBJECT_TILE : 0,
 	GAMEOBJECT_CHARACTER : 1,
+	
+	/**
+	 * 输入指令
+	 */
+	CMD_UP : 128, 
+	CMD_DOWN : 64,
+	CMD_LEFT : 32,
+	CMD_RIGHT : 16,
+	CMD_ALL_DIRECTION : 240,	//用于判断是否按下了任一方向键，不用每次判断都用 "|"运算
+	CMD_ATTACK_ONCE : 1,		//按一下攻击
+	CMD_ATTACK_HOLD_ON : 2,		//按住攻击（比如蓄力）
+	CMD_ATTACK_ALL : 3,			//单击或按住
+	CMD_JUMP : 4,
+	
+	/**
+	 * 帧时间
+	 */
+	TICK_FPS60 : 0.0166,
+	TICK_FPS48 : 0.02,
+	TICK_FPS36 : 0.027,
+	TICK_FPS30 : 0.0333,
+	TICK_FPS24 : 0.041,
+	TICK_FPS20 : 0.05,
+	TICK_FPS12 : 0.083,
+	TICK_FPS10 : 0.1,
+	TICK_FPS05 : 0.2,
 	
 	Action : {
 		Feature : {
@@ -50,16 +90,6 @@ Constant = {
 			MOTION : "motion"
 		}
 	},
-
-	CMD_UP : 128, 
-	CMD_DOWN : 64,
-	CMD_LEFT : 32,
-	CMD_RIGHT : 16,
-	CMD_ALL_DIRECTION : 240,	//用于判断是否按下了任一方向键，不用每次判断都用 "|"运算
-	CMD_ATTACK_ONCE : 1,		//按一下攻击
-	CMD_ATTACK_HOLD_ON : 2,		//按住攻击（比如蓄力）
-	CMD_ATTACK_ALL : 3,			//单击或按住
-	CMD_JUMP : 4,
 	
 	Group : {
 		TYPE_NONE : 0,
@@ -103,16 +133,6 @@ Constant = {
 			MOTION : 16,
 		}
 	},
-
-	TICK_FPS60 : 0.0166,
-	TICK_FPS48 : 0.02,
-	TICK_FPS36 : 0.027,
-	TICK_FPS30 : 0.0333,
-	TICK_FPS24 : 0.041,
-	TICK_FPS20 : 0.05,
-	TICK_FPS12 : 0.083,
-	TICK_FPS10 : 0.1,
-	TICK_FPS05 : 0.2,
 	
 	MsgType : {
 		Unit : {

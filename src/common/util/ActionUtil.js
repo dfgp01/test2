@@ -20,7 +20,10 @@ ActionUtil = {
 		action.init(null,null);
 		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
 		this.actions.start[Constant.GAMEOBJECT_CHARACTER] = action;
-		this.systems.animate[0] = new SimpleAnimateSystem();
+		//this.systems.animate[0] = new SimpleAnimateSystem();
+		this.systems.animte[ANIMATE_STATIC] = new AnimateOneFrame();
+		this.systems.animte[ANIMATE_NORMAL] = new AnimateSystem();
+		this.systems.animte[ANIMATE_SCROLL] = new AnimateLoop();
 	},
 
 	preparedToChange : function(obj, action){
