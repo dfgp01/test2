@@ -36,7 +36,6 @@ AnimateLoop = AnimateSystem.extend({
 		this._super(dt, gameObj, animateCom);
 		if(this._view.frameIndex >= animateCom.frames.length){
 			this._view.frameIndex = 0;
-			this._view.delay = 0;
 			EngineUtil.setFrame(this._view.sprite, this._animate.frames[0]);
 		}
 	}
