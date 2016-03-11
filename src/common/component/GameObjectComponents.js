@@ -29,7 +29,7 @@ ViewComponent = Component.extend({
  */
 ActionsComponent = Component.extend({
 	name : "actions",
-	action : null,			//当前action引用
+	current : null,			//当前action引用
 	repeatFlag : 0,
 	endFlag : false,
 	phase : 0,

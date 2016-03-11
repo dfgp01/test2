@@ -30,7 +30,7 @@ System = cc.Class.extend({
 		if(this._head != null){
 			this._curr = this._head;
 			do{
-				this.executeUpdate(dt, this._curr);
+				this.execute(dt, this._curr);
 				this._curr = this._curr.next;
 			}while(this._curr != this._end);
 		}
@@ -162,7 +162,7 @@ MainSystem = System.extend({
 /**
  * 主循环中的动作系统
  */
-ActionUpdateSystem = System.extend({
+ActionUpdateSystemOld = System.extend({
 	name : "action",
 	tick : Constant.TICK_FPS30,
 	_currObj : null,
@@ -220,6 +220,32 @@ ActionUpdateSystem = System.extend({
 	}
 });
 
+ActionUpdateSystem = System.extend({
+	name : "action",
+	tick : Constant.TICK_FPS30,
+	_currObj : null,
+	_currAct : null,
+
+	execute : function(dt, actionCom){
+		this._currAct = actionCom.current;
+		this._currObj = actionCom.owner;
+		if(actionCom.endFlag){
+			this._currAct.end(this._currObj);
+			if(actionCom.next != null){
+				actionCom.next.start(this._currObj);
+				actionCom.next = null;//还原为空状态，原因你懂，不信的话把这句注释看看。
+			}
+		}else{
+			this._currAct.update(dt, this._currObj);
+		}
+		//还有重置逻辑以后补上
+	},
+	
+	end : function(){
+		//remove
+	}
+});
+
 /**
  * 事件消息分发系统
  */
@@ -268,14 +294,13 @@ MotionUpdateSystem = System.extend({
 	_unit : null,
 	_sprite : null,
 
-	callback : function(dt, component){
+	execute : function(dt, component){
 		EngineUtil.setPosition(component.owner.coms.view.sprite, component);
 	}
 });
 
 /**
  * 主循环中的动画系统（新版）
- * com是复合类型的
  */
 AnimateUpdateSystem = System.extend({
 	tick : Constant.TICK_FPS05,
@@ -303,7 +328,7 @@ AnimateUpdateSystem = System.extend({
 			viewCom.delay = 0;
 			if(viewCom.frameIndex < this._animate.frames.length){
 				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
-			}else if(viewCom.animate.type & Constant.animate.type.LOOP){
+			}else if(viewCom.animate.type & Constant.ANIMATE_SCROLL){
 				viewCom.frameIndex = 0;
 				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
 			}else{
