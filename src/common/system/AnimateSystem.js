@@ -18,10 +18,10 @@ AnimateSystem = ActionSystem.extend({
 	update : function(dt, gameObj, animateCom){
 		this._view = gameObj.coms.view;
 		if(this._view.frameIndex < animateCom.frames.length){
-			this._view.delay += dt;
-			if(this.view.delay >= animateCom.delays[this._view.frameIndex]){
+			this._view.interval += dt;
+			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
 				this._view.frameIndex++;
-				this._view.delay = 0;
+				this._view.interval = 0;
 				if(this._view.frameIndex < animateCom.frames.length){
 					EngineUtil.setFrame(this._view.sprite, animateCom.frames[this._view.frameIndex]);
 				}
@@ -36,7 +36,7 @@ AnimateLoop = AnimateSystem.extend({
 		this._super(dt, gameObj, animateCom);
 		if(this._view.frameIndex >= animateCom.frames.length){
 			this._view.frameIndex = 0;
-			EngineUtil.setFrame(this._view.sprite, this._animate.frames[0]);
+			EngineUtil.setFrame(this._view.sprite, animateCom.frames[0]);
 		}
 	}
 });

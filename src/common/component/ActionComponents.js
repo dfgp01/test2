@@ -9,12 +9,8 @@
 AnimateComponent = Component.extend({
 	name : "animate",
 	frames : null,
-	delays : null,
-	type : 0,
-	ctor : function(){
-		this.frames = [];
-		this.delays = [];
-	}
+	intervals : null,
+	type : 0
 });
 
 /**

@@ -29,7 +29,7 @@ GameObjectTemplate = cc.Class.extend({
 		if(unit == null){
 			unit = new GameObject();
 			unit.name = this.name;
-			
+			unit.coms = {};
 			//注意，单位的ID是 名字+id序号 的组合
 			unit.id = this.name + this.nextId;
 			this.nextId++;
@@ -37,10 +37,13 @@ GameObjectTemplate = cc.Class.extend({
 			for(var i in this.coms){
 				var name = this.coms[i].name;
 				unit.coms[name] = this.coms[i].clone();
+				unit.coms[name].owner = unit;
 			}
 			unit.coms.view = new ViewComponent();
+			unit.coms.view.owner = unit;
 			EngineUtil.setFrame(unit.coms.view.sprite, this.frame);
 			unit.actions = new ActionsComponent();
+			unit.actions.owner = unit;
 			unit.template = this;
 		}
 		else{

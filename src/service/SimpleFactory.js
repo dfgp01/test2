@@ -33,13 +33,13 @@ SimpleFactory = {
 			return template;
 		},
 		
-		createStandAction : function(data, template){
+		createStandAction : function(data){
 			data.name = "stand";
 			if(data.animate && !DataUtil.checkArrayNull(data.animate,"frames")){
 				if(data.animate.frames.length>1){
-					data.type = Constant.ANIMATE_STATIC;
+					data.animate.type = Constant.ANIMATE_SCROLL;
 				}else{
-					data.type = Constant.ANIMATE_SCROLL;
+					data.animate.type = Constant.ANIMATE_STATIC;
 				}
 			}else{
 				cc.log("SimpleFactory.createStandAction error. animte & animate.frames is necessary.");

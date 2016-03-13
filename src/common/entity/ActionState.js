@@ -17,7 +17,7 @@ ActionState = cc.Class.extend({
 	 * @param data
 	 * @param template
 	 */
-	init : function(data, template){
+	init : function(data){
 		cc.log("info: creating action:[" + this.name + "].");
 		this.coms = {};
 		this.systemList = [];
@@ -47,7 +47,7 @@ ActionState = cc.Class.extend({
 	},
 	
 	//运行时
-	run : function(dt, unit){
+	update : function(dt, unit){
 		for(var i in this.systemList){
 			this.systemList[i].update(dt, unit, this.coms[this.systemList[i].name]);
 		}

@@ -5,8 +5,9 @@ characterData = {
 
 	stand : {
 		animate : {
-			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
-			inteval : 1
+			//frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
+			frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
+			intervals : [0.1,0.1,0.1,0.3]
 		},
 	},
 	walk : {
@@ -28,7 +29,7 @@ characterData = {
 		actions : [{
 			animate : {
 				frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"],
-				intevals : [1,1,1]
+				intervals : [1,1,1]
 			},
 			hit : {
 				style : 0,	//利器、钝器、拳头等等

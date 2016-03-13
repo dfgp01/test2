@@ -21,6 +21,9 @@ System = cc.Class.extend({
 		this._end = new Component();
 		this._head.next = this._end;
 		this._end.prep = this._head;*/
+		/*this._head = null;
+		this._curr = null;
+		this._end = null;*/
 	},
 	
 	/**
@@ -32,7 +35,7 @@ System = cc.Class.extend({
 			do{
 				this.execute(dt, this._curr);
 				this._curr = this._curr.next;
-			}while(this._curr != this._end);
+			}while(this._curr != null);
 		}
 	},
 	
@@ -111,7 +114,7 @@ MainSystem = System.extend({
 			Service.gameTimeAfter(dt);
 			for(var i in this.systemList){
 				this._currSys = this.systemList[i];
-				this._currSys.remainDt += dt;
+				/*this._currSys.remainDt += dt;
 				if(this._currSys.remainDt < this._currSys.tick){
 					//cc.log("  break " + this._currSys.remainDt);
 				}else{
@@ -119,7 +122,8 @@ MainSystem = System.extend({
 					//cc.log("update " + this._currSys.remainDt);
 					this._currSys.update(this._currSys.tick);
 					this._currSys.remainDt = this._currSys.remainDt - this._currSys.tick;
-				}
+				}*/
+				this._currSys.update(dt);
 			}
 		},
 
@@ -260,7 +264,7 @@ EventMessageSystem = System.extend({
 		this._unitEvt = new UnitEventScheduler();
 	},
 	
-	update : function(dt){
+	/*update : function(dt){
 		while(this._currEvt = this._quene.shift()){
 			switch(_currEvt.name){
 			case Constant.MsgType.Unit.Type:
@@ -272,7 +276,7 @@ EventMessageSystem = System.extend({
 			}
 			
 		}
-	},
+	},*/
 	
 	addListener : function(name, callback){
 		EngineUtil.addListener(name, callback);

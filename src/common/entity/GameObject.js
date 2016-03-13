@@ -10,11 +10,5 @@ GameObject = cc.Class.extend({
 	actions : null,		//action组件是必须有的，不需要放在coms中
 	active : false,		//判断对象是否在场景中
 	coms : null,				//其他组件列表，map<name, com>型存储方式
-	
-	template : null,	//每个单位都应该有一个模板的引用，因为里面存放了默认的数值
-	
-	ctor : function(){
-		this.actions = {};
-		this.coms = {};
-	}
+	template : null	//每个单位都应该有一个模板的引用，因为里面存放了默认的数值
 });

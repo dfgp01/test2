@@ -8,7 +8,7 @@
  */
 Component = cc.Class.extend({
 	name : "component",
-	owner : null,		//所属unit或action
+	owner : null,		//所属unit
 	prev : null,		//用于链表结构的前指针
 	next : null,		//用于链表结构的后指针
 	//克隆对象接口而已

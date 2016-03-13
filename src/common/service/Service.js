@@ -52,7 +52,7 @@ Service = {
 	/**
 	 * 	从指定模板中创建新对象
 	 */
-	newObject : function(tempName, _x, _y, _z, ccNode){
+	newObject : function(tempName){
 		var tmp = this.Container.templates[tempName];
 		if(!tmp){
 			cc.log("template: " + tempName + " not found!");
