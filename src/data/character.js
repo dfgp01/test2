@@ -5,8 +5,7 @@ characterData = {
 
 	stand : {
 		animate : {
-			//frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
-			frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
+			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
 			intervals : [0.1,0.1,0.1,0.3]
 		},
 	},
@@ -32,8 +31,7 @@ characterData = {
 				intervals : [1,1,1]
 			},
 			hit : {
-				style : 0,	//利器、钝器、拳头等等
-				type : Constant.HitType.MOTION,	//普通后退、倒地等
+				type : Constant.HIT_TYPE_MOTION,	//普通后退、倒地等
 				damage : 10.2,
 				rect : [10,10,100,100],
 				frame : 1,

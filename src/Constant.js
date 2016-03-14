@@ -18,6 +18,11 @@ Constant = {
 	ANIMATE_SCROLL : 2,		//循环播放
 	
 	/**
+	 * 运动类型枚举
+	 */
+	MOVEMENT_STABLE : 0,	//固定的移动方式
+	
+	/**
 	 * 组件名称
 	 */
 	COMPONENT_ANIMATE : 'animate',
@@ -57,6 +62,16 @@ Constant = {
 	TICK_FPS12 : 0.083,
 	TICK_FPS10 : 0.1,
 	TICK_FPS05 : 0.2,
+	
+	/**
+	 * 攻击类型
+	 */
+	HIT_TYPE_NONE : 0,			//无任何受击动作影响
+	HIT_TYPE_MOTION : 1,		//是否位移
+	HIT_TYPE_KNOCK_DOWN : 2,	//是否倒地攻击
+	HIT_TYPE_REMOTE : 4,		//是否远程攻击
+	HIT_TYPE_PAUSE : 8,			//是否停顿
+	HIT_TYPE_SHAKE : 16,		//是否震动
 	
 	Action : {
 		Feature : {
@@ -148,14 +163,7 @@ Constant = {
 			TYPE : "system"
 		}
 	},
-	HitType : {
-		NONE : 0,			//无任何受击动作影响
-		MOTION : 1,			//是否位移
-		KNOCK_DOWN : 2,		//是否倒地攻击
-		REMOTE : 4,			//是否远程攻击
-		PAUSE : 8,			//是否停顿
-		SHAKE : 16			//是否震动
-	},
+	
 	Collide : {
 		TARGET_NODE : 0,
 		TARGET_BLOCK : 1,
