@@ -55,18 +55,6 @@ ComponentUtil = {
 		}
 	},
 	
-	createByKeys : function(keys, template, data){
-		var coms = template.coms;
-		var actions = template.actions;
-		if(keys.motion){
-			coms.motion = this.createMotion(data.motion);
-		}
-		if(keys.hit){
-			coms.hit = this.createHit(data.hit);
-		}
-		return;
-	},
-	
 	createMotion : function(data){
 		var motion = new UnitMotionComponent();
 		motion.speedFactor = DataUtil.checkIsNumber(data, "factor") ? data.factor : this.factor;

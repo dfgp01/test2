@@ -2,34 +2,6 @@
  * 工厂类，用于建造游戏组件。
  */
 Factory = {
-
-		/**
-		 * 创建一个单位模板（旧方法，待删）
-		 */
-		createUnitTemplate : function(data){
-
-			//必要性检查
-			// !DataUtil.checkIsString(data, "res") 这个检查不应该写在这里，应该有个统一的资源表要填
-			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name")){
-				cc.log("create Unit error, lack of necessary data! data is null or noname.");
-				return null;
-			}
-			//这个也不是必须的
-			if(!DataUtil.checkNotNull(data, "actions")){
-				cc.log("create UnitTemplate error, must has actions.");
-				return null;
-			}
-
-			var unitTemplate = new UnitTemplate();
-			unitTemplate.name = data.name;
-			unitTemplate.availableList = [];
-			unitTemplate.coms = {};
-			
-			//其他初始化操作，通常是子类实现
-			unitTemplate.init(data);
-
-			return unitTemplate;
-		},
 		
 		/**
 		 * 创建一个动作节点
@@ -55,7 +27,7 @@ Factory = {
 		},
 		
 		/**
-		 * 创建一个单位模板
+		 * 初始化一个单位模板
 		 */
 		createGameObjectTemplate : function(data){
 			if(!DataUtil.checkIsString(data,"name",true)){
@@ -78,22 +50,5 @@ Factory = {
 			}
 			//template.coms.view = new ViewComponent();
 			return template;
-		},
-		
-		/**
-		 * 创建动作组件
-		 */
-		createActionComponent : function(data){
-			if(!DataUtil.checkIsString(data, "name")){
-				cc.log("Factory.createActionComponent error. no name.");
-				return null;
-			}
-			if(data.name == Constant.COMPONENT_ANIMATE){
-				return ComponentUtil.createActionAnimate(data);
-			}else if(data.name == Constant.COMPONENT_MOTION){
-				return ComponentUtil.createActionMotion(data);
-			}else if(data.name == Constant.COMPONENT_HIT){
-				return ComponentUtil.createActionHit(data);
-			}
 		}
 };

@@ -17,38 +17,7 @@ Service = {
 	gameTimeAfter : function(dt){
 		this.gameTime += dt;
 	},
-	
-	logicTick : function(){
-		return this.GameSetting.logicTick;
-	},
-	
-	/**
-	 * 轮询所有单位
-	 * @param
-	 * 		callbackFunc 回调函数，func(gameObj)
-	 */
-	loopAllObjects : function(callbackFunc){
-		for(var i in this.Container.groups){
-			for(var j in this.Container.groups[i].list){
-				callbackFunc(this.Container.groups[i].list[j]);
-			}
-		}
-	},
-	
-	/**
-	 * 根据名称和id号的联合串获取缓存中的对象
-	 */
-	findObj : function(nameId){
-		return this.Container.units[nameId];
-	},
-	
-	/**
-	 * 根据下标索引查找组，通常unit.group就是下标索引
-	 */
-	findGroup : function(index){
-		return this.Container.groups[index];
-	},
-	
+
 	/**
 	 * 	从指定模板中创建新对象
 	 */
@@ -77,15 +46,17 @@ Service = {
 		Service.Container.templates[character.name] = character;
 		var object = this.newObject(character.name);
 		this.Container.player.unit = object;
-	},
-	
-	getPlayer : function(){
-		return this.Container.player;
+		this.mainSystem = SystemUtil.systems.main;
 	},
 	
 	start : function(){
-		SystemUtil.systems.main.start();
+		this.mainSystem.start();
 	},
+	
+	update : function(dt){
+		this.gameTime += dt;
+		this.mainSystem.update(dt);
+	}
 	
 	//加入到 消息/事件 列表中，等待执行
 	dispatchEvent : function(evt){

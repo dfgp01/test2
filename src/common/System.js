@@ -111,7 +111,7 @@ MainSystem = System.extend({
 		update : function(dt){
 			//dt = Math.floor(dt * 10000) / 10000);	保留4位小数的办法
 			//dt = dt.toFixed(4)			另一种保留4位小数，第4位会四舍五入，但类型会变为string
-			Service.gameTimeAfter(dt);
+			//Service.gameTimeAfter(dt);
 			for(var i in this.systemList){
 				this._currSys = this.systemList[i];
 				/*this._currSys.remainDt += dt;

@@ -17,13 +17,42 @@ ActionUtil = {
 
 	init : function(){
 		var action = new CharacterStartAction();
-		action.init(null,null);
+		action.init(null);
 		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
 		this.actions.start[Constant.GAMEOBJECT_CHARACTER] = action;
 		//this.systems.animate[0] = new SimpleAnimateSystem();
 		this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
 		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateSystem();
 		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateLoop();
+	},
+	
+	/**
+	 * 组成动作的组件系统
+	 */
+	bulid : function(data, action){
+		if(!data){
+			return;
+		}
+		//穷举组件检测
+		if(DataUtil.checkNotNull(data,"animate")){
+			action.coms.animate = ActionComponentUtil.createAnimate(data.animate);
+			this.addSystem(action, this.systems.animate[data.animate.type]);
+		}
+		if(DataUtil.checkNotNull(data,"motion")){
+			action.coms.motion = ActionComponentUtil.createMotion(data.motion);
+			this.addSystem(action, this.systems.motion[data.motion.type]);
+		}
+		if(DataUtil.checkNotNull(data,"timer")){
+			component = ActionComponentUtil.createTimer(data.timer);
+			system = ActionSystemUtil.getTimer(component);
+			//this.build(action, component, system);
+		}
+		if(DataUtil.checkNotNull(data,"switchable")){
+			component = ActionComponentUtil.createSwitchable(data.switchable);
+			system = this.systems.switchable;
+			//this.build(action, component, system);
+		}
+		return;
 	},
 
 	preparedToChange : function(obj, action){
@@ -55,69 +84,6 @@ ActionUtil = {
 			//上面的循环未return时，说明system的优先级是最小的，要补加到列表尾
 			action.systemList.push(system);
 		}
-	},
-	
-	bulidComponentSystem : function(data, action){
-		if(!data){
-			return;
-		}
-		var component = null;
-		var system = null;
-		//穷举组件检测
-		if(DataUtil.checkNotNull(data,"animate")){
-			component = ActionComponentUtil.createAnimate(data.animate);
-			system = this.systems.animate[component.type];
-			this.build(action, component, system);
-		}
-		if(DataUtil.checkNotNull(data,"motion")){
-			component = ActionComponentUtil.createMotion(data.motion);
-			system = ActionSystemUtil.getMotion(component);
-			this.build(action, component, system);
-		}
-		if(DataUtil.checkNotNull(data,"timer")){
-			component = ActionComponentUtil.createTimer(data.timer);
-			system = ActionSystemUtil.getTimer(component);
-			this.build(action, component, system);
-		}
-		if(DataUtil.checkNotNull(data,"switchable")){
-			component = ActionComponentUtil.createSwitchable(data.switchable);
-			system = this.systems.switchable;
-			this.build(action, component, system);
-		}
-		return;
-	},
-	
-	build : function(action, component, system){
-		action.coms[component.name] = component;
-		this.addSystem(action, system);
-	},
-	
-	//和上面一样，暂定个名称，有好的再改
-	buildActions : function(template, data){
-		var keys = {};	//用于存储所有关联action的组件名称并集，然后统一构建unit的组件
-		var action = null;
-		for(var i in template.actions){
-			action = template.actions[i];
-			for(var k in action.coms){
-				if(!keys[k]){
-					keys[k] = k;
-				}
-			}
-			if(action.coms.switchable){
-				var k = action.coms.switchable.keys;
-				var name = null;
-				for(var cmd in k){
-					name = k[cmd];
-					if(template.actions[name]){
-						k[cmd] = template.actions[name];
-					}else{
-						cc.log("build switchable error. action:"+name+" not found.");
-						return;
-					}
-				}
-			}
-		}
-		ComponentUtil.createByKeys(keys, template, data);
 	},
 
 	/**

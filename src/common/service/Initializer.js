@@ -70,7 +70,7 @@ Initializer = {
 		},
 
 		/**
-		 * 初始化单位的构建模板
+		 * 初始化单位的构建模板（待删，或待改进）
 		 */
 		initUnitTemplate : function(data){
 

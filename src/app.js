@@ -1,8 +1,6 @@
 
 var HelloWorldLayer = cc.Layer.extend({
 	
-	mainSystem : null,
-	
     ctor:function () {
         //////////////////////////////
         // 1. super init first
@@ -80,13 +78,12 @@ var HelloWorldLayer = cc.Layer.extend({
         //this.schedule(this.updateCustom, 0.45, cc.REPEAT_FOREVER, 5);
 
         Service.start();
-        this.mainSystem = SystemUtil.systems.main;
         this.scheduleUpdate();
         return true;
     },
     
     update : function(dt){
-    	this.mainSystem.update(dt);
+    	Service.update(dt);
     },
     
     updateCustom : function(dt){

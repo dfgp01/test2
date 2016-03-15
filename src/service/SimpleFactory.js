@@ -29,10 +29,48 @@ SimpleFactory = {
 			var template = Factory.createGameObjectTemplate(data);
 			template.actions.start = ActionUtil.actions.start[Constant.GAMEOBJECT_CHARACTER];
 			template.actions.stand = this.createStandAction(data.stand);
-			ActionUtil.buildActions(template, data);
-			return template;
+			
+			/**
+			 * 统一构建template的组件
+			 */
+			var keys = {};
+			var action = null;
+			for(var i in template.actions){
+				action = template.actions[i];
+				for(var kName in action.coms){
+					if(!keys[kName]){
+						keys[kName] = kName;
+					}
+				}
+				//顺便初始化切换组件
+				if(action.coms.switchable){
+					var k = action.coms.switchable.keys;
+					var name = null;
+					for(var cmd in k){
+						name = k[cmd];
+						if(template.actions[name]){
+							k[cmd] = template.actions[name];
+							//未完。。。
+						}else{
+							cc.log("build switchable error. action:"+name+" not found.");
+							return;
+						}
+					}
+				}
+			}
+			var coms = template.coms;
+			if(keys.motion){
+				coms.motion = ComponentUtil.createMotion(data.motion);
+			}
+			if(keys.hit){
+				coms.hit = ComponentUtil.createHit(data.hit);
+			}
+			return;
 		},
 		
+		/**
+		 * 创建站立动作节点
+		 */
 		createStandAction : function(data){
 			data.name = "stand";
 			if(data.animate && !DataUtil.checkArrayNull(data.animate,"frames")){
