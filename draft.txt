@@ -1,95 +1,116 @@
 
 ***	edit by Hugo-Fu 2016.03.15 10:12 am
 
-
+Ä¿Â¼£º
 1.ÊõÓï½éÉÜ£º
+	ECS
+	GameObject
+	Component
+	System
+	Action
+	data£º¶¨ÒåÓÎÏ·¶ÔÏóµÄÊý¾Ý±í¸ñ£¬Ê¹ÓÃjson¸ñÊ½¡£
+	time-scope£º²»Í¬µÄÊ±¼ä×é¼þÉú´æÖÜÆÚ¡£
 
-ECS£ºÊµÌå×é¼þÏµÍ³¼Ü¹¹£¬ÒÑ³ÉÎª¿ª·¢ÓÎÏ·µÄÖ÷Á¦Éè¼ÆÄ£Ê½
+2.³£ÓÃ×é¼þÀàÐÍ½éÉÜ£º
+	¶¯»­ÀàÐÍ
+	ÒÆ¶¯ÀàÐÍ
+	¹¥»÷ÀàÐÍ
+	ÊÜ»÷ÀàÐÍ
+	µ¥Î»ÀàÐÍ
 
-GameObject£ºÓÎÏ·¶ÔÏóÊµÌå£¬ÔÚECSÖÐ£¬Ã»ÓÐÀàµÄ¸ÅÄî£¬ËùÓÐµÄ¶ÔÏó¶¼ÓÉ×é¼þ×é³É£¬¿ÉÒÔ°Ñ´ËÀà¿´×÷×é¼þµÄ¼¯ºÏ¡£
+3.³£ÓÃÏµÍ³ÀàÐÍ½éÉÜ£º
+	ÊÂ¼þÀàÐÍ
 
-Component£º´æ´¢²»Í¬µÄÊý¾Ý£¬ÊÇ×é³ÉGameObjectµÄ»ù´¡µ¥Ôª¡£×é¼þÖ»´æ´¢Êý¾Ý£¬Ã»ÓÐÂß¼­¡£
+4.ÓÎÏ·¶ÔÏóÐÐÎªÔÓÌ¸£º
+	ÈËÎï½ÇÉ«
+	×Óµ¯
+	Ê°È¡»ñµÃµÀ¾ß
+	½Ó´¥»ñµÃµÀ¾ß
+	ÕÙ»½ÊÞ
+	ÇøÓò
 
-System£ºÔËÐÐcomponentµÄÂß¼­µ¥Ôª¡£ÏµÍ³Ö»ÔËÐÐÂß¼­£¬²»´æ´¢Êý¾Ý£¬Ã¿¸öÏµÍ³Ö»ÓÐÒ»¸öÊµÀý¡£
+5.¹¤³§½Ó¿Ú£º
+	´´½¨¶¯×÷
+	´´½¨µ¥Î»Ä£°å
+	´´½¨ÈËÎï
 
-Action£º´ú±íÒ»¸ö¶¯×÷×´Ì¬£¬ÓÉ¶à¸ö×é¼þºÍÏµÍ³¹¹³É¡£
+6.Êý¾Ý¹æ·¶£º
+	¶¯×÷Êý¾Ý
+	ÈËÎïÊý¾Ý
 
-data£º¶¨ÒåÓÎÏ·¶ÔÏóµÄÊý¾Ý±í¸ñ£¬Ê¹ÓÃjson¸ñÊ½¡£
+7.Ö÷Ñ­»·½á¹¹£º
+	¶¯×÷Âß¼­ÏµÍ³
+	Íæ¼ÒÊäÈë´¦ÀíÏµÍ³
+	ÊÂ¼þÏµÍ³
+	6.4.ÏµÍ³²¢ÐÐºÍ´®ÐÐ
 
-time-scope£º²»Í¬µÄÊ±¼ä×é¼þÉú´æÖÜÆÚ¡£
+8.Ê±¼ä²î£º
+	Âß¼­Ö¡
+	¶¯»­Ö¡
+
+9.À©Õ¹¹¦ÄÜ£º
+	¸´ÔÓ¼¼ÄÜÁÐ¾Ù
+
+10.¼òÒ×AI£º
+	ÓÐÏÞ×´Ì¬»ú
+
+11.ÍøÂçÍ¬²½£º
+	ÍøÂçÐ­ÒéTCP/UDP
+
+*²Ý¸åA£ºDNFÈ«¼¼ÄÜÊµÏÖ·½°¸
 
 
-2.GameObject£º
-ÓÎÏ·µÄ¿ª·¢²»ÏñÆäËûÈí¼þÏîÄ¿£¬ÓÎÏ·ÕâÖÖÓéÀÖÔ­ÔòÉÏ²»ÊÜÈÎºÎ¹æÔòÔ¼Êø£¬Òò´ËÔÚ³ÌÐò¿ÉÒÔ´¦ÀíµÄÇ°ÌáÏÂ£¬ÈÎºÎÐèÇóµÄ¸Ä¶¯¶¼ÊÇºÏÀíµÄ¡£
-¹ØÓÚÎªºÎÒªÓÃECS´úÌæOOPµÄÎÊÌâ¾Í²»ÔÙÌÖÂÛÁË¡£µ«°´ÕÕECSµÄË¼Ïë£¬ËùÓÐµÄ¶ÔÏó¶¼¿ÉÒÔ¹éÀà³ÉGameObjectÀà£º
-ËüµÄ½á¹¹´óÖÂÈçÏÂ£º
+1.1.ECS£º
+ÊµÌå×é¼þÏµÍ³¼Ü¹¹£¬ÒÑ³ÉÎª¿ª·¢ÓÎÏ·µÄÖ÷Á¦Éè¼ÆÄ£Ê½
+
+1.2.GameObject£º
+ÓÎÏ·µÄ¿ª·¢²»ÏñÆäËûÈí¼þÏîÄ¿£¬ÓÎÏ·ÕâÖÖÓéÀÖÔ­ÔòÉÏ²»ÊÜÈÎºÎ¹æÔòÔ¼Êø£¬Òò´ËÔÚ³ÌÐò¿ÉÒÔ´¦ÀíµÄÇ°ÌáÏÂ£¬ÈÎºÎÐèÇóµÄ¸Ä¶¯¶¼ÊÇºÏÀíµÄ¡£ÔÚECSÖÐ£¬Ã»ÓÐÀàµÄ¸ÅÄî£¬ËùÓÐµÄ¶ÔÏó¶¼ÓÉ×é¼þ×é³É£¬¶ÔÏó¾ÍÊÇ×é¼þµÄ¼¯ºÏ¡£¹ØÓÚÎªºÎÒªÓÃECS´úÌæOOPµÄÎÊÌâ¾Í²»ÔÙÌÖÂÛÁË¡£µ«°´ÕÕECSµÄË¼Ïë£¬¶ÔÏó¶¼¿ÉÒÔ¹éÀà³ÉGameObjectÀà£¬ËüµÄ½á¹¹´óÖÂÈçÏÂ£º
 GameObject:{
 	id:
 	name:
 	frame:	//³õÊ¼Ö¡£¬ÒòÎª±ØÐëÒªäÖÈ¾µ½³¡¾°ÖÐ£¬ÖÁÉÙÒªÓÐÒ»Ö¡
 	components:	//¶¯Ì¬Êý¾Ý×é¼þ£¬map½á¹¹,keyÊÇ×é¼þµÄname,valueÊÇ×é¼þ±¾Éí
 }
+¿ÉÒÔ¿´³ö£¬GameObjectÊÇECSÖÐµÄE¡£
 
-¿ÉÒÔ¿´³ö£¬GameObjectÊÇECSÄ£Ê½ÖÐµÄE¡£
+1.3.Component:
+×é¼þÊÇ×é³ÉGameObjectºÍActionµÄ»ù´¡µ¥ÔªÊý¾Ý£¬Ò²ÊÇ¹©system´¦ÀíµÄÊý¾ÝÔ´£¬Ö÷Òª´æ´¢»ù´¡Êý¾Ý¡£Ô­ÔòÉÏ£¬×é¼þ²»´¦ÀíÂß¼­¡£
 
-3.Component:
-×é¼þÊÇ×é³ÉGameObjectºÍActionµÄ»ù´¡µ¥ÔªÊý¾Ý£¬Ò²ÊÇ¹©system´¦ÀíµÄÊý¾ÝÔ´£¬Ö÷Òª´æ´¢»ù´¡Êý¾Ý¡£
+1.4.System
+ÏµÍ³ÊÇÔËÐÐ¶ÔÓ¦×é¼þÂß¼­µÄ´¦ÀíÆ÷£¬Ëü²»´æ´¢Êý¾Ý£¬Ö»ÔËÐÐÂß¼­£¬Òò´Ë£¬Ã¿¸öÏµÍ³Ö»»áÓÐÒ»¸öÊµÀý¡£
+Ä¿Ç°ÏµÍ³·ÖÎªÁ½´óÀà£ºÖ÷Ñ­»·systemºÍActionSystem£¬Ö÷Ñ­»·SystemÖ÷ÒªÎ¬»¤×Ô¼º¶ÔÓ¦µÄ×é¼þÁ´±íºÍ½øÐÐupdateÂß¼­£¬ActionSystemÊÇÔÚÒ»¸ö¶¯×÷½ÚµãÄÚ¶Ô×é¼þµÄÂß¼­²Ù×÷¡£
 
-ÁÐ¾ÙÒ»Ð©³£ÓÃµÄ×é¼þ£º
-animate:{
-	type:	//¾²Ö¹Ö¡¡¢ÆÕÍ¨¶¯»­¡¢ÖØ¸´¶¯»­
-	frames:
-	*delays:
-}
-motion:{
-	dx:
-	dy:
-	factor:	//ËÙ¶ÈÏµÊý
-}
-hurt:{
-	type:	//ÆÕÍ¨ÈË¡¢°ÔÌå¡¢²»µ¹µØµÈµÈ
-}
+1.5.Action
+±íÊ¾Ò»¸öµ¥Î»µÄ¶¯×÷×´Ì¬½Úµã£¬Ã¿¸ö¶¯×÷ÓÉ¶à¸ö¶ÀÁ¢µÄ×é¼þºÍÏµÍ³¹¹³É¡£
 
 
-4.System:
-ÏµÍ³·ÖÎªÁ½´óÀà£ºÖ÷systemºÍActionSystem
+2.1.¶¯»­ÀàÐÍ
 
-SystemÖ÷ÒªÎ¬»¤×Ô¼º¶ÔÓ¦µÄ×é¼þÁ´±íºÍ½øÐÐupdateÂß¼­
+	Ö»²¥·ÅÒ»´Î£¬Íê³É¾Í½áÊøÕâ¸ö¶¯×÷£¬ÕâÀïÐèÒª²Ù×÷±êÖ¾Î»ÒÔÈÃaction½áÊø
 
-ActionSystemÊÇÔÚ¶¯×÷½ÚµãÄÚµÄÂß¼­²Ù×÷£¬ÕâÐ©Âß¼­ÊÇ¿ÉÒÔ²¢ÐÐµÄ£¬ÓÐÒÔÏÂ¼¸ÖÖ²¢ÐÐ·ÖÀà¡£
+	Ö»²¥·ÅÒ»´ÎºóÒþ²Ø£¬±ÈÈçÒ»Ð©¶¯×÷ÌØÐ§¡£
 
-****¶¯»­ÏµÍ³ÐèÒª´¦ÀíÒÔÏÂÀàÐÍ£º
+	Ñ­»·²¥·Å£¬½áÊøÊ±£¬frameIndex=0
 
-Ö»²¥·ÅÒ»´Î£¬Íê³É¾Í½áÊøÕâ¸ö¶¯×÷
-	ÕâÀïÐèÒª²Ù×÷±êÖ¾Î»ÒÔÈÃaction½áÊø
+	×îºóÒ»Ö¡Í£Ö¹£¬ÒÆ³ý½Úµã£¬Ê£ÏÂµÄ½»¸øÆäËûÂß¼­´¦Àí£¨timerµÈ£©
 
-Ñ­»·²¥·Å
-	½áÊøÊ±£¬frameIndex=0
-
-×îºóÒ»Ö¡Í£Ö¹
-	ÒÆ³ý½Úµã£¬Ê£ÏÂµÄ½»¸øÆäËûÂß¼­´¦Àí£¨timerµÈ£©
-
-*²¥·ÅÊ±»áÒÆ¶¯
-	Èý¶ÎÕ¶£¬µÚÒ»Ö¡ÒÆ¶¯ºÜÂý£¬µÚ¶þÖ¡£¨Ö÷ÅÐ¶¨Ö¡ÒÆ¶¯ºÜ¿ì£©£¬µÚÈýÖ¡ÊÕÎ²Ö¡ÒÆ¶¯ºÜÂý
-	ÒÔÉÏÃ¿Ö¡¾ùÒÆ¶¯¶à´Î£¬ÒÆ¶¯´ÎÊýºÍÖ¡ÊýÎÞ¹Ø£¬»òÐíºÍÂß¼­Ö¡Ö¡ÓÐ¹Ø£¬Õâ¸öËµµÄÍ¨£¬µ«Èç¹û¶¯»­±ä¿ì£¿
+	*²¥·ÅÊ±»áÒÆ¶¯£¬ÀýÈçÈý¶ÎÕ¶£¬µÚÒ»Ö¡ÒÆ¶¯ºÜÂý£¬µÚ¶þÖ¡£¨Ö÷ÅÐ¶¨Ö¡ÒÆ¶¯ºÜ¿ì£©£¬µÚÈýÖ¡ÊÕÎ²Ö¡ÒÆ¶¯ºÜÂý£¬ÒÔÉÏÃ¿Ö¡¾ùÒÆ¶¯¶à´Î£¬ÒÆ¶¯´ÎÊýºÍÖ¡ÊýÎÞ¹Ø£¬»òÐíºÍÂß¼­Ö¡Ö¡ÓÐ¹Ø£¬Õâ¸öËµµÄÍ¨£¬µ«Èç¹û¶¯»­±ä¿ì£¿
 
 
-****ÒÆ¶¯ÏµÍ³ÐèÒª´¦ÀíÒÔÏÂÀàÐÍ£º
+2.2.ÒÆ¶¯ÀàÐÍ
 
-ÎÈ¶¨ÒÆ¶¯
-	ÒÔ¹Ì¶¨ËÙ¶Èµ¥ÏòÒÆ¶¯¡£
+	ÎÈ¶¨ÒÆ¶¯£¬ÒÔ¹Ì¶¨ËÙ¶Èµ¥ÏòÒÆ¶¯¡£
 
-Ö¸ÁîÒÆ¶¯
-	ÒÔ¹Ì¶¨ËÙ¶Èµ¥ÏòÒÆ¶¯£¬Èç×ßÂ·¡¢¿ÕÖÐÒÆ¶¯£¨·ÇÏÂÂä£©µÈ£¬·½Ïò¼ü¿É¸Ä±ä³¯Ïò
+	*Ö¸ÁîÒÆ¶¯£¬ÒÔ¹Ì¶¨ËÙ¶Èµ¥ÏòÒÆ¶¯£¬Èç×ßÂ·¡¢¿ÕÖÐÒÆ¶¯£¨·ÇÏÂÂä£©µÈ£¬·½Ïò¼ü¿É¸Ä±ä³¯Ïò
 
-»º¶¯
-	Öð½¥±äÂý¡¢Öð½¥±ä¿ì¡¢Á½Õß»ìÓÃ
+	*Ö¸ÁîÒÆ¶¯2£¬Âß¼­Í¬ÉÏ£¬µ«Ö»¸Ä±äÔË¶¯·½Ïò£¬²»¸Ä±ä³¯Ïò
 
-*ËæÖ¡ÒÆ¶¯Ò»´Î
-	ÕùÒéÔÚÓÚÉÏÃæµÄ *²¥·ÅÊ±»áÒÆ¶¯£¬ÖØµãÊÇÔÚÇÐ»»Ö¡µÄÊ±ºòÖ´ÐÐÒ»´Î£¬»¹ÊÇ¸ù¾ÝframeIndexÀ´Ö´ÐÐ²»Í¬ËÙ¶È¡£
+	»º¶¯£¬Öð½¥±äÂý¡¢Öð½¥±ä¿ì¡¢Á½Õß»ìÓÃ
+
+	*ËæÖ¡ÒÆ¶¯Ò»´Î£¬ÕùÒéÔÚÓÚÉÏÃæµÄ *²¥·ÅÊ±»áÒÆ¶¯£¬ÖØµãÊÇÔÚÇÐ»»Ö¡µÄÊ±ºòÖ´ÐÐÒ»´Î£¬»¹ÊÇ¸ù¾ÝframeIndexÀ´Ö´ÐÐ²»Í¬ËÙ¶È¡£
 
 
-ÊÂ¼þ»ã×Ü£º
+3.1.ÊÂ¼þÀàÐÍ
 1.µ¥Î»ÊÂ¼þ
 	1.1µ¥Î»Î»ÖÃ¸Ä±äÊÂ¼þ/ÒÆ¶¯
 	1.2µ¥Î»·¢Æð¹¥»÷
@@ -99,8 +120,60 @@ ActionSystemÊÇÔÚ¶¯×÷½ÚµãÄÚµÄÂß¼­²Ù×÷£¬ÕâÐ©Âß¼­ÊÇ¿ÉÒÔ²¢ÐÐµÄ£¬ÓÐÒÔÏÂ¼¸ÖÖ²¢ÐÐ·ÖÀà¡£
 	1.6µ¥Î»ÊôÐÔ¸Ä±ä£¨BUFF£©
 	1.7µ¥Î»»ñµÃÒì³£×´Ì¬
 	1.8µ¥Î»ÊÜµ½³ÖÐøÐÔÉËº¦
+	1.9µ¥Î»½øÈë/Àë¿ªÇøÓò
 
-²Ý¸å4£º¶¯×÷ÌØÐ§
+4.2.×Óµ¯
+
+×î¼òµ¥µÄ×Óµ¯£¬Ö»ÓÐÒ»Ö¡£¬ÎÈ¶¨ÏòÇ°£¬Ã»´òÖÐÈËµÄ»°£¬·ÉÐÐÒ»¶Î¾àÀëºóÏûÊ§/»òÕßÊÇ³ÖÐøÒ»¶ÎÊ±¼äºóÏûÊ§£¬»ò´òÖÐÒ»¸öÈËºó£¬²¥·Å»÷ÖÐ¶¯»­ºóÏûÊ§/Ò²¿ÉÒÔÊÇÏµÍ³ÌØÐ§¡£
+¸´ÔÓµÄ×Óµ¯ÏÖÏó¾ÙÀý£º
+*ÐÞÂÞÐ°¹âÕ¶£ºÃ¿¸öµ¥Î»×î¶àÅö×²Èý´Î£¬Ã¿´ÎÓÐ¼ä¸ô¡£ÎÞ¶¯»­
+*¹íÓ¡Öé£º ÎÞÂÛÅö×²¶àÉÙµ¥Î»£¬×Ü¹²Ö»ÄÜÅö×²20´Î¡£ÓÐ¸öÑ­»·¶¯»­
+*·´Ì¹¿ËÅÚ£ºÃüÖÐÒ»¸öµ¥Î»ºó£¬»áÕ³ÔÚÆäÉíÉÏ£¬Ò»¶ÎÊ±¼äºó±¬Õ¨¡£
+
+Òò´Ë£¬ÎÒÃÇÄÜ¶Ô×Óµ¯×é¼þ½øÐÐ»ã×Ü³éÏó
+
+*·½Ïò£ºÒ»Ö±ÏòÇ°¡¢À´À´»Ø»Ø¡¢Å×ÎïÏßµÈ¶¼ÐèÒª×Ô¼ºÖ´ÐÐÂß¼­
+*ËÙ¶È£º²»½âÊÍ
+*ÓÐÐ§¾àÀë/Ê±¼ä£ºÉú´æÖÜÆÚ¿©
+*Åö×²£º±ØÐëÖ¸¶¨Åö×²ºóÒªÖ´ÐÐµÄÂß¼­
+*½áÊøÂß¼­£º±ØÐëÖ¸¶¨£¬Ò»°ã¶¼ÊÇ×Óµ¯Åö×²³É¹¦ºó
+
+
+5.1.¶¯×÷Êý¾Ý
+action:{
+	name:"stand",
+	animate:{
+		type:1,
+		frames["1.png","2.png","3.png"],
+		interval:0.3
+	},
+	motion:{
+		dx:1.2,
+		dy:0
+	}
+}
+
+5.2.ÈËÎïÊý¾Ý
+character:{
+	frame:"1.png",
+	name:"hero",
+	motion:{
+		basic
+	}
+	stand:{
+		frames["1.png","2.png","3.png"],
+		interval:0.3,
+		switchable:["walk","hit","jump"]
+	},
+	actions:[...]
+}
+
+6.1¶¯×÷Âß¼­ÏµÍ³
+ActionUpdataSystemÖ÷Òª¸ºÔð±éÀúËùÓÐactions½Úµã£¬Ö´ÐÐaciton.update(dt)¡£
+actionµÄÖ´ÐÐ·ÖÎªÈý¸ö½×¶Î£ºstart(unit),update(dt,unit),end(unit)
+¹ØÓÚend²¿·Ö£¬ËäÈ»´ó²¿·Ö×é¼þÔÚstartÖÐ³õÊ¼»¯£¬µ«ÓÐÐ©×é¼þÊÇÐèÒªÔËÐÐendµÄ£¬±ÈÈçÒ»¸öÅç»ð¶¯×÷£¬Í»È»±»´ò¶Ï£¬ÄÇÃ´ÌØÐ§ÊÇÒªËæÖ®ÏûÊ§µÄ¡£
+
+²Ý¸å£º¶¯×÷ÌØÐ§
 1.ÌØÐ§Ö»×öÏÔÊ¾£¬²»º¬ÆäËüÂß¼­
 2.ÌØÐ§²»Ò»¶¨ºÍÖ÷¶¯»­Í¬²½
 animate:{
@@ -112,78 +185,11 @@ effect:{
 	intervals : [2,2,3,2,3]
 }
 
-²Ý¸å5£ºÊý¾Ý¸ñÊ½
-»ù´¡Êý¾Ý²¿·Ö:{
-	name : "deep",			//Ãû³Æ£¬ÓÃ×÷¿ìËÙ²éÕÒµÄ»º´æ£¬Ò²ÊÇIDµÄÇ°×º
-	frame : "deep_stand_0.png",		//³õÊ¼ÏÔÊ¾Ö¡
-	res : [res.deep_0_plist,res.deep_1_plist]	//ËØ²ÄÒýÓÃ
-}
-ÈËÎï:{
-	title : "Íæ¼Ò",
-	action : ...		//Ïê¼ûÏÂÃæaction¸ñÊ½½éÉÜ
-}
-ÈËÎïactionÊý¾Ý¸ñÊ½:{
-	stand : {
-		animate : {
-			//framesÊý×é¿ÉÒÔÎª1Ö¡»ò¶àÖ¡£¬ÏµÍ³ÅÐ¶Ï1Ö¡Ê±ÊÇ¾²Ì¬¶¯»­£¬¶àÖ¡Ê±ÊÇÑ­»·¶¯»­
-			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
-			// intervalºÍintervalsÑ¡ÆäÒ»£¬µ±¶àÖ¡Ê±£¬intervalÎªÃ¿Ö¡Ö¸¶¨Í¬ÑùÊýÖµ£¬¶øintervalsÔò°´ÏÂ±ê·ÖÅä
-			inteval : 1
-			intervals : [1,1,2,1]
-		}
-		walk : {
-			animate : {
-				//Í¬ÉÏ
-				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
-				inteval : 1
-			},
-			motion : {
-				//Ã¿Ö¡ÒÆ¶¯¾àÀë£¬FPSÒÔ60ÎªÖ÷
-				dx : 10,
-				dy : 50
-			}
-		},
-	}
-}
-
 5.¹¤³§£º
 Ê¹ÓÃ¹¤³§½Ó¿Ú·Ö±ð¶Ô²»Í¬µÄÊý¾Ý¶ÔÏó½øÐÐ¹¹Ôì£º
 
-createTile(data)
-ÎÒÃÇ¶ÔtileµÄÌØÕ÷½øÐÐÁËÒ»Ð©³éÏó»ã×Ü£¬
-¾²Ì¬»òÕßÑ­»·¶¯»­£¬Èç¾²Ö¹µÄ»¨ºÍ²»¶Ï°Ú¶¯µÄ²Ý
-¿ÉÒÔÊÇ£¬¶¯»­A-->ÀäÈ´Ò»¶¨Ê±¼ä-->¶¯»­AÑ­»·
-
-Êý¾ÝÑùÊ½£º
-tile:{
-	name: "obj1",
-	frame: "1.png",
-
-	*animate:{
-		frames:[...]
-		cd:5 //ÀäÈ´5Ãëºó¼ÌÐø
-	}
-}
-´Ó´Ë½Ó¿Ú´´½¨µÄobj²»»á¼ÓÈëµ½action½Úµã
-
-createCharacter(data)
-
 createBullet(data)
-¹éÄÉ×Óµ¯µÄÌØÕ÷£º
-×î¼òµ¥µÄ×Óµ¯£¬ÓÐÒ»¸öÖ¡£¬³¯Ç°·¢Éä£¬Ò»¶Î¾àÀëºóÏûÊ§£¬»ò´òÖÐÒ»¸öÈËºóÏûÊ§
 
-À©Õ¹µÄ×Óµ¯ÏÖÏó¾ÙÀý£º
-*ÐÞÂÞÐ°¹âÕ¶£ºÃ¿¸öµ¥Î»×î¶àÅö×²Èý´Î£¬Ã¿´ÎÓÐ¼ä¸ô¡£
-*¹íÓ¡Öé£º ÎÞÂÛÅö×²¶àÉÙµ¥Î»£¬×Ü¹²Ö»ÄÜÅö×²20´Î¡£
-*·´Ì¹¿ËÅÚ£ºÃüÖÐÒ»¸öµ¥Î»ºó£¬»áÕ³ÔÚÆäÉíÉÏ£¬Ò»¶ÎÊ±¼äºó±¬Õ¨¡£
-
-Òò´Ë£¬ÎÒÃÇÄÜ¶Ô×Óµ¯×é¼þ½øÐÐ»ã×Ü³éÏó
-
-*·½Ïò£ºÒ»Ö±ÏòÇ°¡¢À´À´»Ø»Ø¡¢Å×ÎïÏßµÈ¶¼ÐèÒª×Ô¼ºÖ´ÐÐÂß¼­
-*ËÙ¶È£º²»½âÊÍ
-*ÓÐÐ§¾àÀë/Ê±¼ä£ºÉú´æÖÜÆÚ¿©
-*Åö×²£º±ØÐëÖ¸¶¨Åö×²ºóÒªÖ´ÐÐµÄÂß¼­
-*½áÊøÂß¼­£º±ØÐëÖ¸¶¨£¬Ò»°ã¶¼ÊÇ×Óµ¯Åö×²³É¹¦ºó
 
 createSimpleBullet(data)
 ´Ë½Ó¿Ú»á´´½¨·É»úÓÎÏ·ÖÐ×îÆÕÍ¨µÄ×Óµ¯£¬¼´Ö»»á³¯Ò»¸ö·½Ïò£¬²¢Ö»ÃüÖÐÒ»´ÎµÄ×Óµ¯¡£±ØÌîµÄÊý¾ÝÑùÊ½£º
@@ -357,3 +363,17 @@ AIÊÇÊÂ¼þ·´À¡´¥·¢ÐÎÊ½µÄ£¬ÈçÔÚÍøÂçÖÐ£¬Ã¿¸öAIµ¥Î»ÓÉ²»Í¬Éè±¸CPU´¦Àí£¬·¢³öÏàÓ¦Ö¸Áî£¬Æ
 
 ÑÓÉì¼Ü¹¹£º
 µ¥Î»---Ö¸Áî---ÊÂ¼þ{µ¥Î»²Ù×÷£¬AI·¢ËÍ}
+
+
+²Ý¸åA£ºÏµÍ³ÊµÏÖDNFÈ«¼¼ÄÜ·½°¸
+
+1.ËùÓÐÈË
+	Õ¾Á¢£ºÑ­»·¶¯»­¡¢¿ÉÇÐ»»¶¯×÷¡¢Ä¬ÈÏ³õÊ¼¶¯×÷
+	×ßÂ·/ÅÜ²½£ºÑ­»·¶¯»­¡¢Ö¸ÁîÒÆ¶¯1¡¢¿ÉÇÐ»»¶¯×÷
+	ÌøÔ¾£º*Âß¼­¿ØÖÆÖ¡¡¢Ö¸ÁîÒÆ¶¯1¡¢¿ÉÇÐ»»¹¥»÷¶¯×÷1´Î¡¢ÖØÁ¦ÏÂÂä¡¢³õÊ¼»¯ÆðÌøÁ¦¡¢ÌøÇ°ÒªÏÂ¶×
+	ÊÜÉí¶×·ü£ºÖ¸ÁîËÉ¿ª»òÕß³ÖÐøÒ»¶ÎÊ±¼äºó½áÊø¡¢ÆÚ¼äÎÞµÐ¡£
+2.¹í½£Ê¿
+	¹¥»÷£ºÆÕÍ¨¹¥»÷£¨ºóÍË£©¡¢Ö¸ÁîÅÐ¶ÏÇ°ÒÆ¡¢¿ÉÇÐ»»ÏÂÒ»¸ö¹¥»÷¡¢¿ÉÇÐ»»ÆäËû¼¼ÄÜ
+	ÉÏÌô£ºÆÕÍ¨¹¥»÷£¨µ¹µØ£©¡¢Ö¸ÁîÅÐ¶ÏÇ°ÒÆ¡¢ÆðÊÖºÍÅÐ¶¨½×¶ÎÎª°ÔÌå£¬ÊÕÎ²½×¶ÎÈ¡Ïû°ÔÌå
+	Èý¶ÎÕ¶£º·ÖÎªÈý¸ö¶¯×÷£¬ÒòÎªÃ¿¸ö¶¯×÷¶¼ÐèÒª°´¼ü¡¢¶¼ÐèÒªÏûºÄMP¡£Ö¸ÁîÅÐ¶Ï·½Ïò¡¢·Ö½×¶ÎÒÆ¶¯
+	¹íÕ¶£ºÂß¼­ÀàËÆÉÏÌô¡¢ÓÐÌØÐ§¡¢ÓÐ¸½¼ÓÒì³£×´Ì¬
