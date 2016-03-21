@@ -10,13 +10,11 @@ AnimateSystem = ActionSystem.extend({
 	start : function(gameObj,animateCom){
 		this._view = gameObj.coms.view;
 		this._view.frameIndex = 0;
-		this._view.delay = 0;
-		this._view.animate = animateCom;
-		this._view.isNewFrame = true;
+		this._view.interval = 0;
 	},
 	
 	update : function(dt, gameObj, animateCom){
-		this._view = gameObj.coms.view;
+		/*this._view = gameObj.coms.view;
 		if(this._view.frameIndex < animateCom.frames.length){
 			this._view.interval += dt;
 			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
@@ -26,6 +24,23 @@ AnimateSystem = ActionSystem.extend({
 					EngineUtil.setFrame(this._view.sprite, animateCom.frames[this._view.frameIndex]);
 				}
 			}
+		}*/
+		
+		if(gameObj.actions.endFlag){
+			return;
+		}
+		
+		this._view = gameObj.coms.view;
+		this._view.interval += dt;
+		if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
+			this._view.interval -= animateCom.intervals[this._view.frameIndex];
+			this._view.frameIndex++;
+			if(this._view.frameIndex < animateCom.frames.length){
+				EngineUtil.setFrame(this._view.sprite, animateCom.frames[this._view.frameIndex]);
+			}else{
+				gameObj.actions.endFlag = true;
+				return;
+			}
 		}
 	}
 });
@@ -33,10 +48,21 @@ AnimateSystem = ActionSystem.extend({
 AnimateLoop = AnimateSystem.extend({
 	
 	update : function(dt, gameObj, animateCom){
-		this._super(dt, gameObj, animateCom);
+		/*this._super(dt, gameObj, animateCom);
 		if(this._view.frameIndex >= animateCom.frames.length){
 			this._view.frameIndex = 0;
 			EngineUtil.setFrame(this._view.sprite, animateCom.frames[0]);
+		}*/
+		
+		this._view = gameObj.coms.view;
+		this._view.interval += dt;
+		if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
+			this._view.interval -= animateCom.intervals[this._view.frameIndex];
+			this._view.frameIndex++;
+			if(this._view.frameIndex > animateCom.frames.length-2){
+				this._view.frameIndex = 0;
+			}
+			EngineUtil.setFrame(this._view.sprite, animateCom.frames[this._view.frameIndex]);
 		}
 	}
 });

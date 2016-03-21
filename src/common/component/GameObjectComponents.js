@@ -9,6 +9,7 @@
 ViewComponent = Component.extend({
 	name : "view",
 	animate : null,			//当前动画组件引用
+	effect : null,			//动画特效组件
 	z : 0,					//在地上的Y值，用于空中状态落地判断
 	frameIndex : 0,
 	interval : 0,

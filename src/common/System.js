@@ -317,19 +317,18 @@ AnimateUpdateSystem = System.extend({
 	addComponent : function(viewCom){
 		this._super(viewCom);
 		viewCom.frameIndex = 0;
-		viewCom.delay = 0;
+		viewCom.interval = 0;
 		EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
 	},
 
 	execute : function(dt, viewCom){
 		
-		//冷却计时
-		if(viewCom.delay < viewCom.animate.delays[viewCom.frameIndex]){
-			viewCom.delay += dt;
+		/*if(viewCom.interval < viewCom.animate.intervals[viewCom.frameIndex]){
+			viewCom.interval += dt;
 			return;
 		}else{
 			viewCom.frameIndex++;
-			viewCom.delay = 0;
+			viewCom.interval = 0;
 			if(viewCom.frameIndex < this._animate.frames.length){
 				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
 			}else if(viewCom.animate.type & Constant.ANIMATE_SCROLL){
@@ -338,6 +337,30 @@ AnimateUpdateSystem = System.extend({
 			}else{
 				this.removeComponent(viewCom);
 			}
+		}*/
+		
+		if(viewCom.frameIndex > viewCom.animate.frames.length-1){
+			if(viewCom.animate.type == Constant.ANIMATE_SCROLL){
+				viewCom.frameIndex = 0;
+				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
+			}else{
+				this.removeComponent(viewCom);
+				return;
+			}
 		}
+		
+		viewCom.interval += dt;
+		if(viewCom.frameIndex < viewCom.animate.frames.length-1){
+			if(viewCom.interval >= viewCom.animate.intervals[viewCom.frameIndex]){
+				viewCom.interval = viewCom.interval - viewCom.animate.intervals[viewCom.frameIndex];
+				viewCom.frameIndex++;
+				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
+			}
+		}else if(viewCom.frameIndex == viewCom.animate.frames.length-1){
+			if(viewCom.interval >= viewCom.animate.intervals[viewCom.frameIndex]){
+				viewCom.frameIndex++;
+			}
+		}
+		
 	}
 });
