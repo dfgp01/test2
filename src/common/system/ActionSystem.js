@@ -263,24 +263,54 @@ ActionPhaseSystem = ActionSystem.extend({
 	}
 });
 
-/**
- * 组合型动作系统
- */
-/*ActionSystemGroup = ActionSystem.extend({
-	name : "group",
-	list : null,		//ActionSystem对象
-	
-	ctor : function(){
-		this.list = [];
-	},
-	add : function(system){
-		this.list.push(system);
-	},
-	start : function(gameObj, groupCom){
-		var system = null;
-		for(var i in this.list){
-			system = this.list[i];
-			system.start(gameObj, groupCom.coms[system.name]);
+MoveCommandSystem = ActionSystem.extend({
+	start : function(gameObj, moveCom){
+		//左右方向不共存
+		if(gameObj.cmd & Constant.CMD_RIGHT){
+			gameObj.coms.motion.vx = 1;
+			//unit.viewCom.sprite._scaleX = 1;
+			//unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
 		}
-	}
-});*/
+		else if(gameObj.cmd & Constant.CMD_LEFT){
+			gameObj.coms.motion.vx = -1;
+			//unit.viewCom.sprite.setFlippedX(true);
+		}
+		//上下方向也不共存
+		if(gameObj.cmd & Constant.CMD_UP){
+			gameObj.coms.motion.vy = 1;	//注意，在openGL坐标系中，起点在屏幕左下角，Y正轴是向上的
+		}
+		else if(gameObj.cmd & Constant.CMD_DOWN){
+			gameObj.coms.motion.vy = -1;	//同理，Y负轴是向下的
+		}
+	},
+
+	//这一部分应该要更完善 2015.10.09
+	update : function(dt, gameObj, actionCom){
+		if(gameObj.cmd==0){
+			ActionUtil.preparedToChange(gameObj, gameObj.actions.names["stand"]);
+			return;
+		}
+
+		//行走中改变左右方向
+		if(gameObj.coms.motion.vx = 1 && (gameObj.cmd & Constant.CMD_LEFT)){
+			gameObj.coms.motion.vx = -1;
+			gameObj.coms.view.sprite._scaleX = -1;
+		}
+		else if(gameObj.coms.motion.vx = -1 && (gameObj.cmd & Constant.CMD_RIGHT)){
+			gameObj.coms.motion.vx = 1;
+			gameObj.coms.view.sprite._scaleX = 1;
+		}
+		//行走中改变上下方向
+		if(gameObj.coms.motion.vy = -1 && (gameObj.cmd & Constant.CMD_UP)){
+			gameObj.coms.motion.vy = 1;
+		}
+		else if(gameObj.coms.motion.vy = 1 && (gameObj.cmd & Constant.CMD_DOWN)){
+			gameObj.coms.motion.vy = -1;
+		}
+		
+		//因为一般角色的步行速度是会受BUFF影响的
+		gameObj.coms.motion.dx *= gameObj.coms.motion.speedFactor;
+		gameObj.coms.motion.dy *= gameObj.coms.motion.speedFactor;
+	},
+
+});
