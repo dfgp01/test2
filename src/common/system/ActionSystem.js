@@ -263,28 +263,59 @@ ActionPhaseSystem = ActionSystem.extend({
 	}
 });
 
+/**
+ * 移动逻辑系统
+ */
+MoveSystem = ActionSystem.extend({
+	name : "move",
+	
+	start : function(gameObj, actionCom){
+		//初始化速度
+		gameObj.coms.move.dx = actionCom.dx;
+		gameObj.coms.move.dy = actionCom.dy;
+	},
+	
+	// 每帧移动公式：
+	// 单位的dx = action的dx * 帧延时，因为数据设定是每秒移动距离，所以这里要乘以dt
+	// 例如帧延时为200ms时， dx = 30 * 0.2 = 6px
+	update : function(dt, gameObj, actionCom){
+		gameObj.coms.motion.dx = gameObj.coms.motion.vx * actionCom.dx * dt;
+		gameObj.coms.motion.dy = gameObj.coms.motion.vy * actionCom.dy * dt;
+	},
+	
+	end : function(gameObj, actionCom){
+		gameObj.coms.motion.dx = 0;
+		gameObj.coms.motion.dy = 0;
+	}
+});
+
+/**
+ * 根据输入指令移动
+ */
 MoveCommandSystem = ActionSystem.extend({
 	start : function(gameObj, moveCom){
 		//左右方向不共存
 		if(gameObj.cmd & Constant.CMD_RIGHT){
-			gameObj.coms.motion.vx = 1;
+			gameObj.coms.move.vx = 1;
 			//unit.viewCom.sprite._scaleX = 1;
 			//unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
 		}
 		else if(gameObj.cmd & Constant.CMD_LEFT){
-			gameObj.coms.motion.vx = -1;
+			gameObj.coms.move.vx = -1;
 			//unit.viewCom.sprite.setFlippedX(true);
 		}
 		//上下方向也不共存
 		if(gameObj.cmd & Constant.CMD_UP){
-			gameObj.coms.motion.vy = 1;	//注意，在openGL坐标系中，起点在屏幕左下角，Y正轴是向上的
+			gameObj.coms.move.vy = 1;	//注意，在openGL坐标系中，起点在屏幕左下角，Y正轴是向上的
 		}
 		else if(gameObj.cmd & Constant.CMD_DOWN){
-			gameObj.coms.motion.vy = -1;	//同理，Y负轴是向下的
+			gameObj.coms.move.vy = -1;	//同理，Y负轴是向下的
 		}
+		gameObj.coms.move.dx *= gameObj.coms.move.vx;
+		gameObj.coms.move.dy *= gameObj.coms.move.vy;
 	},
 
-	//这一部分应该要更完善 2015.10.09
+	//这一部分应该要更完善 2016.03.25
 	update : function(dt, gameObj, actionCom){
 		if(gameObj.cmd==0){
 			ActionUtil.preparedToChange(gameObj, gameObj.actions.names["stand"]);
@@ -294,23 +325,23 @@ MoveCommandSystem = ActionSystem.extend({
 		//行走中改变左右方向
 		if(gameObj.coms.motion.vx = 1 && (gameObj.cmd & Constant.CMD_LEFT)){
 			gameObj.coms.motion.vx = -1;
+			gameObj.coms.move.dx *= -1;
 			gameObj.coms.view.sprite._scaleX = -1;
 		}
 		else if(gameObj.coms.motion.vx = -1 && (gameObj.cmd & Constant.CMD_RIGHT)){
 			gameObj.coms.motion.vx = 1;
+			gameObj.coms.move.dx *= -1;		//这里没有错，就是-1，下面类似
 			gameObj.coms.view.sprite._scaleX = 1;
 		}
 		//行走中改变上下方向
 		if(gameObj.coms.motion.vy = -1 && (gameObj.cmd & Constant.CMD_UP)){
 			gameObj.coms.motion.vy = 1;
+			gameObj.coms.move.dy *= -1;
 		}
 		else if(gameObj.coms.motion.vy = 1 && (gameObj.cmd & Constant.CMD_DOWN)){
 			gameObj.coms.motion.vy = -1;
+			gameObj.coms.move.dy *= -1;
 		}
-		
-		//因为一般角色的步行速度是会受BUFF影响的
-		gameObj.coms.motion.dx *= gameObj.coms.motion.speedFactor;
-		gameObj.coms.motion.dy *= gameObj.coms.motion.speedFactor;
 	},
 
 });
