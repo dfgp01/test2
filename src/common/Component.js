@@ -31,8 +31,8 @@ TimerComponent = Component.extend({
 /**
  * 动作运动组件
  */
-MotionComponent = Component.extend({
-	name : "motion",
+ActionMoveComponent = Component.extend({
+	name : "move",
 	dx : 0,					//dx,dy,dz 代表移动增量
 	dy : 0,
 	dz : 0,

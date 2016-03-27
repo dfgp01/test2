@@ -64,7 +64,8 @@ ActionsComponent = Component.extend({
 /**
  * 单位运动组件
  */
-UnitMotionComponent = Component.extend({
+MoveComponent = Component.extend({
+	name : "move",
 	motion : null,	//当前motion组件引用
 	factor : 1,		//速度比例系数
 	vx : 0,			//vx,vy,vz 代表方向向量

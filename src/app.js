@@ -29,7 +29,7 @@ var HelloWorldLayer = cc.Layer.extend({
     	sprite._scaleX = -1;
     	this.addChild(sprite, 1);*/
         
-        var character = Service.getPlayer().unit;
+        var character = Service.Container.player.unit;
         EngineUtil.addSprite(character.coms.view, 150, 0, 250, this);
         var sprite = character.coms.view.sprite;
         

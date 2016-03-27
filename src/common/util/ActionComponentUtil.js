@@ -56,6 +56,22 @@ ActionComponentUtil = {
 		return animate;
 	},
 	
+	createMove : function(data){
+		if(!DataUtil.checkIsInt(data, "type")){
+			cc.log("ComponentUtil.createMove error. move.type error.");
+			return null;
+		}
+		var move = new ActionMoveComponent();
+		move.type = data.type;
+		if(DataUtil.checkIsNumber(data, "dx")){
+			move.dx = data.dx / Constant.TICK_FPS60;
+		}
+		if(DataUtil.checkIsNumber(data, "dy")){
+			move.dy = data.dy / Constant.TICK_FPS60;
+		}
+		return move;
+	},
+	
 	createSwitchable : function(data){
 		var switchable = new SwitchableComponent();
 		for(var cmd in data){

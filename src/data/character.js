@@ -11,10 +11,11 @@ characterData = {
 	},
 	walk : {
 		animate : {
-			frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"]
+			frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
+			intervals : [0.1,0.1,0.1,0.3]
 		},
-		motion : {
-			dx : 10,
+		move : {
+			dx : 100,
 			dy : 50
 		}
 	},

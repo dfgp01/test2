@@ -56,7 +56,7 @@ Service = {
 	update : function(dt){
 		this.gameTime += dt;
 		this.mainSystem.update(dt);
-	}
+	},
 	
 	//加入到 消息/事件 列表中，等待执行
 	dispatchEvent : function(evt){

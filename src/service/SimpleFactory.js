@@ -29,6 +29,7 @@ SimpleFactory = {
 			var template = Factory.createGameObjectTemplate(data);
 			template.actions.start = ActionUtil.actions.start[Constant.GAMEOBJECT_CHARACTER];
 			template.actions.stand = this.createStandAction(data.stand);
+			template.actions.walk = this.createWalkAction(data.walk);
 			
 			/**
 			 * 统一构建template的组件
@@ -58,14 +59,13 @@ SimpleFactory = {
 					}
 				}
 			}
-			var coms = template.coms;
 			if(keys.motion){
-				coms.motion = ComponentUtil.createMotion(data.motion);
+				template.coms.motion = ComponentUtil.createMotion(data.motion);
 			}
 			if(keys.hit){
-				coms.hit = ComponentUtil.createHit(data.hit);
+				template.coms.hit = ComponentUtil.createHit(data.hit);
 			}
-			return;
+			return template;
 		},
 		
 		/**
@@ -83,6 +83,13 @@ SimpleFactory = {
 				cc.log("SimpleFactory.createStandAction error. animte & animate.frames is necessary.");
 				return null;
 			}
+			var action = Factory.createAction(data);
+			return action;
+		},
+		
+		createWalkAction : function(data){
+			data.name = "walk";
+			data.move.type = Constant.MOVEMENT_STABLE;
 			var action = Factory.createAction(data);
 			return action;
 		}

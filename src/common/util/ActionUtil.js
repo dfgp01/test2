@@ -12,7 +12,7 @@ ActionUtil = {
 	//system缓存
 	systems:{
 		animate:[],
-		motion:[]
+		move:[]
 	},
 
 	init : function(){
@@ -24,6 +24,8 @@ ActionUtil = {
 		this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
 		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateSystem();
 		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateLoop();
+		
+		this.systems.move[Constant.MOVEMENT_STABLE] = new MoveSystem();
 	},
 	
 	/**
@@ -38,9 +40,9 @@ ActionUtil = {
 			action.coms.animate = ActionComponentUtil.createAnimate(data.animate);
 			this.addSystem(action, this.systems.animate[data.animate.type]);
 		}
-		if(DataUtil.checkNotNull(data,"motion")){
-			action.coms.motion = ActionComponentUtil.createMotion(data.motion);
-			this.addSystem(action, this.systems.motion[data.motion.type]);
+		if(DataUtil.checkNotNull(data,"move")){
+			action.coms.motion = ActionComponentUtil.createMove(data.move);
+			this.addSystem(action, this.systems.move[data.move.type]);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){
 			component = ActionComponentUtil.createTimer(data.timer);
