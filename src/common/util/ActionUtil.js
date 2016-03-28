@@ -25,7 +25,8 @@ ActionUtil = {
 		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateSystem();
 		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateLoop();
 		
-		this.systems.move[Constant.MOVEMENT_STABLE] = new MoveSystem();
+		this.systems.move[Constant.MOVE_STABLE] = new MoveSystem();
+		this.systems.move[Constant.MOVE_BY_CMD] = new MoveCommandSystem();
 	},
 	
 	/**
@@ -41,7 +42,7 @@ ActionUtil = {
 			this.addSystem(action, this.systems.animate[data.animate.type]);
 		}
 		if(DataUtil.checkNotNull(data,"move")){
-			action.coms.motion = ActionComponentUtil.createMove(data.move);
+			action.coms.move = ActionComponentUtil.createMove(data.move);
 			this.addSystem(action, this.systems.move[data.move.type]);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){

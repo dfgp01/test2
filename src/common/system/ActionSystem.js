@@ -270,9 +270,9 @@ MoveSystem = ActionSystem.extend({
 	name : "move",
 	
 	start : function(gameObj, actionCom){
-		//初始化速度
-		gameObj.coms.move.dx = actionCom.dx;
-		gameObj.coms.move.dy = actionCom.dy;
+		//初始化速度和向量
+		gameObj.coms.move.dx = actionCom.dx * gameObj.coms.move.vx;
+		gameObj.coms.move.dy = actionCom.dy * gameObj.coms.move.vy;
 	},
 	
 	// 每帧移动公式：
@@ -280,7 +280,6 @@ MoveSystem = ActionSystem.extend({
 	// 例如帧延时为200ms时， dx = 30 * 0.2 = 6px
 	update : function(dt, gameObj, actionCom){
 		gameObj.coms.motion.dx = gameObj.coms.motion.vx * actionCom.dx * dt;
-		gameObj.coms.motion.dy = gameObj.coms.motion.vy * actionCom.dy * dt;
 	},
 	
 	end : function(gameObj, actionCom){
@@ -293,26 +292,30 @@ MoveSystem = ActionSystem.extend({
  * 根据输入指令移动
  */
 MoveCommandSystem = ActionSystem.extend({
+	name: "move",
 	start : function(gameObj, moveCom){
 		//左右方向不共存
 		if(gameObj.cmd & Constant.CMD_RIGHT){
 			gameObj.coms.move.vx = 1;
+			gameObj.coms.move.dx = actionCom.dx;
 			//unit.viewCom.sprite._scaleX = 1;
 			//unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
 		}
 		else if(gameObj.cmd & Constant.CMD_LEFT){
 			gameObj.coms.move.vx = -1;
+			gameObj.coms.move.dx = actionCom.dx * -1;
 			//unit.viewCom.sprite.setFlippedX(true);
 		}
+		
 		//上下方向也不共存
 		if(gameObj.cmd & Constant.CMD_UP){
 			gameObj.coms.move.vy = 1;	//注意，在openGL坐标系中，起点在屏幕左下角，Y正轴是向上的
+			gameObj.coms.move.dy = actionCom.dy;
 		}
 		else if(gameObj.cmd & Constant.CMD_DOWN){
 			gameObj.coms.move.vy = -1;	//同理，Y负轴是向下的
+			gameObj.coms.move.dy = actionCom.dy * -1;
 		}
-		gameObj.coms.move.dx *= gameObj.coms.move.vx;
-		gameObj.coms.move.dy *= gameObj.coms.move.vy;
 	},
 
 	//这一部分应该要更完善 2016.03.25

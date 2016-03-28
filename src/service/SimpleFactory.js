@@ -89,7 +89,7 @@ SimpleFactory = {
 		
 		createWalkAction : function(data){
 			data.name = "walk";
-			data.move.type = Constant.MOVEMENT_STABLE;
+			data.move.type = Constant.MOVE_BY_CMD;
 			var action = Factory.createAction(data);
 			return action;
 		}

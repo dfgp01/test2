@@ -21,7 +21,8 @@ Constant = {
 	/**
 	 * 运动类型枚举
 	 */
-	MOVEMENT_STABLE : 0,	//固定的移动方式
+	MOVE_STABLE : 0,	//固定的移动方式
+	MOVE_BY_CMD : 1,	//指令输入移动
 	
 	/**
 	 * 组件名称

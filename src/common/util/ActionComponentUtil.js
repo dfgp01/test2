@@ -61,14 +61,14 @@ ActionComponentUtil = {
 			cc.log("ComponentUtil.createMove error. move.type error.");
 			return null;
 		}
+		if(!DataUtil.checkIsNumber(data,"dx") || !DataUtil.checkIsNumber(data,"dy")){
+			cc.log("ComponentUtil.createMove error. dx or dy must be number.");
+			return null;
+		}
 		var move = new ActionMoveComponent();
 		move.type = data.type;
-		if(DataUtil.checkIsNumber(data, "dx")){
-			move.dx = data.dx / Constant.TICK_FPS60;
-		}
-		if(DataUtil.checkIsNumber(data, "dy")){
-			move.dy = data.dy / Constant.TICK_FPS60;
-		}
+		move.dx = DataUtil.checkIsNumber(data, "dx") ? data.dx / Constant.TICK_FPS60 : 0;
+		move.dy = DataUtil.checkIsNumber(data, "dy") ? data.dy / Constant.TICK_FPS60 : 0;
 		return move;
 	},
 	
