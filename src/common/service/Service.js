@@ -32,6 +32,11 @@ Service = {
 				//如果缓存内没有此单位，则加入
 				this.Container.units[obj.id] = obj;
 			}
+			//如果此单位可以移动，就加入到移动节点
+			if(obj.coms.move){
+				SystemUtil.systems.move.addComponent(obj.coms.move);
+			}
+			//默认的初始动作
 			tmp.actions.start.start(obj);
 			return obj;
 		}

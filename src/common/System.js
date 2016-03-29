@@ -293,13 +293,11 @@ EventMessageSystem = System.extend({
  */
 MotionUpdateSystem = System.extend({
 	name : "motion",
-	dx : 0,
-	dy : 0,
-	_unit : null,
-	_sprite : null,
 
 	execute : function(dt, component){
-		EngineUtil.setPosition(component.owner.coms.view.sprite, component);
+		if(component.dx !=0 || component.dy != 0){
+			EngineUtil.setPosition(component.owner.coms.view.sprite, component);
+		}
 	}
 });
 
