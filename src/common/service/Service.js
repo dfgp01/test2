@@ -96,6 +96,7 @@ Service = {
 	 * 全局游戏设置
 	 */
 	Gobal : {
+		gameTick : 0,
 		gravityCom : null,
 		hitBackMotion : null,
 		hitDownMotion : null,

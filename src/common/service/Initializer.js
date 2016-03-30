@@ -31,6 +31,9 @@ Initializer = {
 			
 			Service.Gobal.animateFrameRate = GameSetting.animateFrameRate;
 			Service.Gobal.logicFrameRate = GameSetting.logicFrameRate;
+			
+			//逻辑帧频设置
+			Service.Gobal.gameTick = Constant.TICK_FPS25;
 		},
 		
 		/**
