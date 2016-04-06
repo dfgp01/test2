@@ -44,6 +44,8 @@ GameObjectTemplate = cc.Class.extend({
 			EngineUtil.setFrame(unit.coms.view.sprite, this.frame);
 			unit.actions = new ActionsComponent();
 			unit.actions.owner = unit;
+			unit.command = new CommandComponent();
+			unit.command.owner = unit;
 			unit.template = this;
 		}
 		else{

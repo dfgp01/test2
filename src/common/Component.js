@@ -29,35 +29,6 @@ TimerComponent = Component.extend({
 });
 
 /**
- * 动作运动组件
- */
-ActionMoveComponent = Component.extend({
-	name : "move",
-	dx : 0,					//dx,dy,dz 代表移动增量
-	dy : 0,
-	dz : 0,
-	maxDx : 0,
-	maxDy : 0,
-	maxDz : 0,
-	clone : function(){
-		var com = new ActionMotionComponent();
-		com.dx = this.dx;
-		com.dy = this.dy;
-		com.dz = this.dz;
-		com.maxDx = this.maxDx;
-		com.maxDy = this.maxDy;
-		com.maxDz = this.maxDz;
-		return com;
-	},
-	
-	init : function(data){
-		//数据上的增量是每秒移动的距离
-		this.dx = data.dx;
-		this.dy = data.dy;
-	}
-});
-
-/**
  * 矩形交互组件，如会阻碍通行、可拾取、可接触等
  */
 CollideComponent = Component.extend({

@@ -8,20 +8,20 @@ Initializer = {
 		 */
 		initGobalParam : function(){
 			//引力设置
-			var motionCom = new MotionComponent();
+			var motionCom = new ActionMoveComponent();
 			motionCom.dy = GameSetting.gravity;
 			motionCom.maxDy = GameSetting.maxGravity;
-			Service.Gobal.gravityCom = motionCom;
+			Service.Gobal.gravity = motionCom;
 
 			//被击中相关设置
-			motionCom = new MotionComponent();
+			motionCom = new ActionMoveComponent();
 			motionCom.dx = GameSetting.hitBack;
 			Service.Gobal.hitBackMotion = motionCom;
 			var timerCom = new TimerComponent();
 			timerCom.total = GameSetting.stiffTime;
 			Service.Gobal.stiffTimer = timerCom;
 
-			motionCom = new MotionComponent();
+			motionCom = new ActionMoveComponent();
 			motionCom.dx = GameSetting.hitDownX;
 			motionCom.dy = GameSetting.hitDownY;
 			Service.Gobal.hitDownMotion = motionCom;

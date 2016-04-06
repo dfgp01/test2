@@ -77,7 +77,7 @@ MainSystem = System.extend({
 	systemList : [],	//子系统列表
 	_currSys : null,
 	_tick : 0,
-	_tickCount,
+	_tickCount : 0,
 	_coefficient : 0,
 	
 	start : function(){
@@ -92,7 +92,7 @@ MainSystem = System.extend({
 		this._tickCount += dt;
 		this._coefficient = this._tickCount / this._tick;
 		if(this._tickCount > this._tick){
-			this._coefficient = this._tickCount /this._tick;
+			this._coefficient = this._tickCount / this._tick;
 			this._tickCount = this._tickCount - this._tick * this._coefficient;
 			for(var i in this.systemList){
 				this._currSys = this.systemList[i];

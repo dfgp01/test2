@@ -83,8 +83,6 @@ Service = {
 			//存储单位缓存、以name+id作为索引，如：monster1,monster2
 			units : {},
 
-			data : {},			//存储原始数据
-
 			groups : [],		//存储单位组信息，对象是Group
 			
 			teamMask : 0,		//阵营的掩码
@@ -97,9 +95,9 @@ Service = {
 	 */
 	Gobal : {
 		gameTick : 0,
-		gravityCom : null,
-		hitBackMotion : null,
-		hitDownMotion : null,
+		gravity : null,			//ActionMoveComponent类型引用
+		hitBack : null,			//同上
+		hitDown : null,		//同上
 		stiffTimer : null,
 		stiffDownTimer : null,
 		animateFrameRate : 0,

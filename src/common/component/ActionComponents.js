@@ -85,3 +85,26 @@ GroupComponent = Component.extend({
 		this.coms[com.name] = com;
 	}
 });
+
+/**
+ * 动作运动组件
+ */
+ActionMoveComponent = Component.extend({
+	name : "move",
+	dx : 0,					//dx,dy,dz 代表移动增量
+	dy : 0,
+	dz : 0,
+	maxDx : 0,			//这三个代表最高速度
+	maxDy : 0,
+	maxDz : 0,
+	clone : function(){
+		var com = new ActionMotionComponent();
+		com.dx = this.dx;
+		com.dy = this.dy;
+		com.dz = this.dz;
+		com.maxDx = this.maxDx;
+		com.maxDy = this.maxDy;
+		com.maxDz = this.maxDz;
+		return com;
+	}
+});

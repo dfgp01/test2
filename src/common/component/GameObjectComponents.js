@@ -66,7 +66,7 @@ ActionsComponent = Component.extend({
  */
 MoveComponent = Component.extend({
 	name : "move",
-	motion : null,	//当前motion组件引用
+	move : null,	//当前motion组件引用
 	factor : 1,		//速度比例系数
 	vx : 0,			//vx,vy,vz 代表方向向量
 	vy : 0,

@@ -90,6 +90,7 @@ SimpleFactory = {
 		createWalkAction : function(data){
 			data.name = "walk";
 			data.move.type = Constant.MOVE_BY_CMD;
+			data.animate.type = Constant.ANIMATE_SCROLL;
 			var action = Factory.createAction(data);
 			return action;
 		}
