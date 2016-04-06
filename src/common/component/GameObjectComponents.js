@@ -174,3 +174,12 @@ MasterComponent = Component.extend({
 		return com;
 	}
 });
+
+/**
+ * 指令输入组件
+ */
+CommandComponent = Component.extend({
+	name : "command",
+	curr : 0,
+	last : 0
+});

@@ -295,50 +295,60 @@ MoveSystem = ActionSystem.extend({
  */
 MoveCommandSystem = MoveSystem.extend({
 	
+	_command : null,
+	
 	start : function(gameObj, moveCom){
+		this._command = gameObj.command;
 		//左右方向不共存
-		if(gameObj.cmd & Constant.CMD_RIGHT){
+		if(this._command.curr & Constant.CMD_RIGHT){
 			gameObj.coms.move.vx = 1;
 			//unit.viewCom.sprite._scaleX = 1;
 			//unit.viewCom.sprite.setFlippedX(false);		//暂时用这个办法
 		}
-		else if(gameObj.cmd & Constant.CMD_LEFT){
+		else if(this._command.curr & Constant.CMD_LEFT){
 			gameObj.coms.move.vx = -1;
 			//unit.viewCom.sprite.setFlippedX(true);
 		}
 		
 		//上下方向也不共存
-		if(gameObj.cmd & Constant.CMD_UP){
+		if(this._command.curr & Constant.CMD_UP){
 			gameObj.coms.move.vy = 1;	//注意，在openGL坐标系中，起点在屏幕左下角，Y正轴是向上的
 		}
-		else if(gameObj.cmd & Constant.CMD_DOWN){
+		else if(this._command.curr & Constant.CMD_DOWN){
 			gameObj.coms.move.vy = -1;	//同理，Y负轴是向下的
 		}
 	},
 
 	//这一部分应该要更完善 2016.03.25
 	update : function(dt, gameObj, actionCom){
-		if(gameObj.cmd==0){
-			ActionUtil.preparedToChange(gameObj, gameObj.actions.names["stand"]);
+		this._command = gameObj.command;
+		
+		if(this._command.curr==0){
+			gameObj.actions.endFlag = true;
+			//ActionUtil.preparedToChange(gameObj, gameObj.actions.names["stand"]);
 			return;
 		}
-
-		//行走中改变左右方向
-		if(gameObj.coms.motion.vx = 1 && (gameObj.cmd & Constant.CMD_LEFT)){
-			gameObj.coms.motion.vx = -1;
-			gameObj.coms.view.sprite._scaleX = -1;
+		
+		//指令有变化，重新设定方向
+		if(this._command.curr != this._command.last){
+			//左右不共存
+			if(this._command.curr & Constant.CMD_LEFT){
+				gameObj.coms.motion.vx = -1;
+				gameObj.coms.view.sprite._scaleX = -1;
+			}
+			else if(this._command.curr & Constant.CMD_RIGHT){
+				gameObj.coms.motion.vx = 1;
+				gameObj.coms.view.sprite._scaleX = 1;
+			}
+			//上下不共存
+			if(this._command.curr & Constant.CMD_UP){
+				gameObj.coms.motion.vy = 1;
+			}
+			else if(this._command.curr & Constant.CMD_DOWN){
+				gameObj.coms.motion.vy = -1;
+			}
 		}
-		else if(gameObj.coms.motion.vx = -1 && (gameObj.cmd & Constant.CMD_RIGHT)){
-			gameObj.coms.motion.vx = 1;
-			gameObj.coms.view.sprite._scaleX = 1;
-		}
-		//行走中改变上下方向
-		if(gameObj.coms.motion.vy = -1 && (gameObj.cmd & Constant.CMD_UP)){
-			gameObj.coms.motion.vy = 1;
-		}
-		else if(gameObj.coms.motion.vy = 1 && (gameObj.cmd & Constant.CMD_DOWN)){
-			gameObj.coms.motion.vy = -1;
-		}
+		//每帧重新计算速度，感觉这一步可以优化的
 		gameObj.coms.move.dx = actionCom.dx * gameObj.coms.move.vx;
 		gameObj.coms.move.dy = actionCom.dy * gameObj.coms.move.vy;
 	}

@@ -6,25 +6,11 @@ System = cc.Class.extend({
 	priority : 0,
 	tick : Constant.TICK_FPS60,			//不能少于这个数
 	remainDt : 0,
-	start : function(){},
-	//update : function(dt){},
-	end : function(){},
 	
 	//这三个以后要
 	_head : null,
 	_curr : null,
 	_end : null,
-	
-	ctor : function(){
-		//初始化头尾两个空内容的指针
-		/*this._head = new Component();
-		this._end = new Component();
-		this._head.next = this._end;
-		this._end.prep = this._head;*/
-		/*this._head = null;
-		this._curr = null;
-		this._end = null;*/
-	},
 	
 	/**
 	 * 主函数，循环整个链表
@@ -38,24 +24,12 @@ System = cc.Class.extend({
 			}while(this._curr != null);
 		}
 	},
-	
+	start : function(){},
+	end : function(){},
 	/**
 	 * 子类重写此方法，用于执行一次详细逻辑
 	 */
-	execute : function(dt, node){return;},
-
-	/**
-	 * 其他组件和本系统的链表进行遍历
-	 */
-	iterator : function(com, func){
-		if(this._head.next != this._end){
-			this._curr = this._head.next;
-			do{
-				func(com, this._curr);
-				this._curr = this._curr.next;
-			}while(this._curr != this._end);
-		}
-	},
+	execute : function(dt, node){},
 	
 	/**
 	 * 将组件添加进链表

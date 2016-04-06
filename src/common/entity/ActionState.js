@@ -5,12 +5,10 @@
 ActionState = cc.Class.extend({
 	name : null,
 	key : null,					//用于存放在父节点children属性中的key
-	children : null,			//子节点，树状结构（待删）
 	next : null,				//改用直接后驱节点（未实行）
 	systemList : null,				//系统列表
 	state : 0,
 	type : 0,
-	
 	coms : null,
 	
 	/**
@@ -24,17 +22,6 @@ ActionState = cc.Class.extend({
 		this.systemList = [];
 		//初始化动作组件系统
 		ActionUtil.bulid(data, this);
-	},
-	
-	//设置直接下一个节点，需要改
-	addChild : function(node){
-		if(this.children==null){
-			this.children = {};
-		}
-		if(this.children[node.key]){
-			cc.log("key: " + node.key + " has exists in parent node. parent:"+this.name+" child:"+node.name);
-		}
-		this.children[node.key] = node;
 	},
 	
 	//加载时
