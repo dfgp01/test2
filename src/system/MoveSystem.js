@@ -94,7 +94,7 @@ MoveCommandSystem = MoveSystem.extend({
  * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
  */
 MotionUpdateSystem = System.extend({
-	name : "motion",
+	name : "move",
 	execute : function(dt, component){
 		if(component.dx !=0 || component.dy != 0){
 			EngineUtil.setPosition(component.owner.coms.view.sprite, component);

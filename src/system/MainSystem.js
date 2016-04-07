@@ -1,7 +1,7 @@
 /**
- * 系统管理器，主循环
+ * 系统管理器，主循环（旧版）
  */
-MainSystem = System.extend({
+MainSystemOld = System.extend({
 	name : "main",
 	systemList : [],	//子系统列表
 	_currSys : null,
@@ -63,5 +63,45 @@ MainSystem = System.extend({
 		}
 		cc.log("MainSystem findSystemByName error~! system-name:[" + name + "] not found.");
 		return null;
+	}
+});
+
+/**
+ * 新版
+ */
+MainSystem = System.extend({
+	name : "main",
+	logicTick : 0,
+	renderTick : 0,
+	_logicTickCount : 0,
+	_renderTickCount : 0,
+	_actionUpdate : null,
+	_animateUpdate : null,
+	_moveUpdate : null,
+
+	start : function(){
+		this.logicTick = Service.Gobal.logicTick;
+		this.renderTick = Service.Gobal.renderTick;
+		this._actionUpdate = SystemUtil.systems.action;
+		this._animateUpdate = SystemUtil.systems.animate;
+		this._moveUpdate = SystemUtil.systems.move;
+		this._actionUpdate.start();
+		this._animateUpdate.start();
+		this._moveUpdate.start();
+	},
+
+	//固定逻辑帧频，使主循环在固定的频率下运行，理论上通吃所有手机...
+	update : function(dt){
+		this._logicTickCount += dt;
+		this._renderTickCount += dt;
+		if(this._logicTickCount > this.logicTick){
+			this._actionUpdate.update(dt);
+			this._logicTickCount -= this.logicTick;
+		}
+		if(this._renderTickCount > this.renderTick){
+			this._animateUpdate.update(this.renderTick);
+			this._moveUpdate.update(this.renderTick);
+			this._renderTickCount -= this.renderTick;
+		}
 	}
 });

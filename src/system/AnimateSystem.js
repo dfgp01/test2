@@ -140,3 +140,13 @@ AnimateUpdateSystem = System.extend({
 		
 	}
 });
+
+RenderUpdateSystem = System.extend({
+	name : "view",
+	execute : function(dt, viewCom){
+		if(viewCom.frameIndex != viewCom.lastFrameIndex){
+			EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
+			viewCom.lastFrameIndex = viewCom.frameIndex;
+		}
+	}
+});

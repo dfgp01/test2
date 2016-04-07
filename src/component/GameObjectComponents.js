@@ -12,6 +12,7 @@ ViewComponent = Component.extend({
 	effect : null,			//动画特效组件
 	z : 0,					//在地上的Y值，用于空中状态落地判断
 	frameIndex : 0,
+	lastFrameIndex : 0,		//上次的帧索引，用于判断是否更新帧
 	interval : 0,
 	displayName : "unit",	//显示的名字
 	sprite : null,			//cc.sprite的引用

@@ -20,11 +20,11 @@ SystemUtil = {
 		this.systems.move = new MotionUpdateSystem();
 		this.systems.action = new ActionUpdateSystem();
 		//this.systems.EvtMsg = new EventMessageSystem();
-		var mainSystem = this.systems.main;
-		mainSystem.addSystem(this.systems.player);
-		mainSystem.addSystem(this.systems.move);
-		mainSystem.addSystem(this.systems.action);
+		//var mainSystem = this.systems.main;
+		//mainSystem.addSystem(this.systems.player);
+		//mainSystem.addSystem(this.systems.move);
+		//mainSystem.addSystem(this.systems.action);
 		//mainSystem.addSystem(this.systems.EvtMsg);
-		mainSystem.addSystem(this.systems.animate);
+		//mainSystem.addSystem(this.systems.animate);
 	}
 };

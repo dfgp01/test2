@@ -53,7 +53,7 @@ Service = {
 		this.Container.player.unit = object;
 		this.mainSystem = SystemUtil.systems.main;
 	},
-	
+
 	start : function(){
 		this.mainSystem.start();
 	},
@@ -94,14 +94,13 @@ Service = {
 	 * 全局游戏设置
 	 */
 	Gobal : {
-		gameTick : 0,
+		logicTick : 0,
+		renderTick : 0,
 		gravity : null,			//ActionMoveComponent类型引用
 		hitBack : null,			//同上
 		hitDown : null,		//同上
 		stiffTimer : null,
-		stiffDownTimer : null,
-		animateFrameRate : 0,
-		logicFrameRate : 0
+		stiffDownTimer : null
 	}
 
 };
