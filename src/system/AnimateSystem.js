@@ -94,3 +94,49 @@ SimpleAnimateSystem = ActionSystem.extend({
 		return;
 	}
 });
+
+/**
+ * 主循环中的动画系统（新版）
+ */
+AnimateUpdateSystem = System.extend({
+	tick : Constant.TICK_FPS05,
+	name : "animate",
+	_dt : 0,
+	
+	/**
+	 * 加入到链表中，并初始化第一帧
+	 */
+	addComponent : function(viewCom){
+		this._super(viewCom);
+		viewCom.frameIndex = 0;
+		viewCom.interval = 0;
+		EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
+	},
+
+	execute : function(dt, viewCom){
+		
+		if(viewCom.frameIndex > viewCom.animate.frames.length-1){
+			if(viewCom.animate.type == Constant.ANIMATE_SCROLL){
+				viewCom.frameIndex = 0;
+				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
+			}else{
+				this.removeComponent(viewCom);
+				return;
+			}
+		}
+		
+		viewCom.interval += dt;
+		if(viewCom.frameIndex < viewCom.animate.frames.length-1){
+			if(viewCom.interval >= viewCom.animate.intervals[viewCom.frameIndex]){
+				viewCom.interval = viewCom.interval - viewCom.animate.intervals[viewCom.frameIndex];
+				viewCom.frameIndex++;
+				EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
+			}
+		}else if(viewCom.frameIndex == viewCom.animate.frames.length-1){
+			if(viewCom.interval >= viewCom.animate.intervals[viewCom.frameIndex]){
+				viewCom.frameIndex++;
+			}
+		}
+		
+	}
+});

@@ -8,7 +8,7 @@
 Button = cc.Class.extend({
 	sprite : null,
 	rect : null,
-	cmd : 0,
+	command : 0,
 	
 	init : function(sprite, posX, posY){
 		sprite.attr({
@@ -24,9 +24,9 @@ Button = cc.Class.extend({
 				sprite.width, sprite.height);
 	},
 	
-	press : function(locationInNode){
-		return;
-	}
+	press : function(locationInNode){},
+	move : function(locationInNode){},
+	release : function(locationInNode){}
 });
 
 
@@ -35,7 +35,8 @@ Button = cc.Class.extend({
  */
 Arrows = Button.extend({
 	buttons : [],
-
+	lastCmd : 0,
+	
 	init : function(sprite, posX, posY){
 		this._super(sprite, posX, posY);
 		this.initButtons_1(sprite.getContentSize().width, sprite.getContentSize().height);
@@ -48,16 +49,17 @@ Arrows = Button.extend({
 	press : function(locationInNode){
 		for(var i in this.buttons){
 			if(cc.rectContainsPoint(this.buttons[i].rect, locationInNode)){
-				this.cmd = this.cmd | this.buttons[i].cmd;
+				this.command = this.command | this.buttons[i].command;
 			}
 		}
+		this.lastCmd = this.command;
 	},
 
 	/**
 	 * 放开按键
 	 */
 	release : function(){
-		this.cmd = 0;
+		this.command = 0;
 	},
 
 	/**
@@ -98,25 +100,25 @@ Arrows = Button.extend({
 		var bt = new Button();
 		//左边矩形
 		bt.rect = cc.rect(0, 0, width / 3, height);
-		bt.cmd = Constant.CMD_LEFT;
+		bt.command = Constant.CMD_LEFT;
 		this.buttons.push(bt);
 
 		//上边矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, height * 2 / 3, width, height / 3);
-		bt.cmd = Constant.CMD_UP;
+		bt.command = Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//右边矩形
 		bt = new Button();
 		bt.rect = cc.rect(width * 2 / 3, 0, width / 3, height);
-		bt.cmd = Constant.CMD_RIGHT;
+		bt.command = Constant.CMD_RIGHT;
 		this.buttons.push(bt);
 
 		//下边矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, 0, width, height / 3);
-		bt.cmd = Constant.CMD_DOWN;
+		bt.command = Constant.CMD_DOWN;
 		this.buttons.push(bt);
 
 	},
@@ -129,49 +131,49 @@ Arrows = Button.extend({
 		var bt = new Button();
 		//左上矩形
 		bt.rect = cc.rect(0, height *2 / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD_LEFT | Constant.CMD_UP;
+		bt.command = Constant.CMD_LEFT | Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//左中矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, height / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD_LEFT;
+		bt.command = Constant.CMD_LEFT;
 		this.buttons.push(bt);
 
 		//左下矩形
 		bt = new Button();
 		bt.rect = cc.rect(0, 0, width / 3, height / 3);
-		bt.cmd = Constant.CMD_LEFT | Constant.CMD_DOWN;
+		bt.command = Constant.CMD_LEFT | Constant.CMD_DOWN;
 		this.buttons.push(bt);
 
 		//中上矩形
 		bt = new Button();
 		bt.rect = cc.rect(width / 3, height *2 / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD_UP;
+		bt.command = Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//中下矩形
 		bt = new Button();
 		bt.rect = cc.rect(width / 3, 0, width / 3, height / 3);
-		bt.cmd = Constant.CMD_DOWN;
+		bt.command = Constant.CMD_DOWN;
 		this.buttons.push(bt);
 
 		//右上矩形
 		bt = new Button();
 		bt.rect = cc.rect(width *2 / 3, height *2 / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD_RIGHT | Constant.CMD_UP;
+		bt.command = Constant.CMD_RIGHT | Constant.CMD_UP;
 		this.buttons.push(bt);
 
 		//右中矩形
 		bt = new Button();
 		bt.rect = cc.rect(width *2 / 3, height / 3, width / 3, height / 3);
-		bt.cmd = Constant.CMD_RIGHT;
+		bt.command = Constant.CMD_RIGHT;
 		this.buttons.push(bt);
 
 		//右下矩形
 		bt = new Button();
 		bt.rect = cc.rect(width *2 / 3, 0, width / 3, height / 3);
-		bt.cmd = Constant.CMD_RIGHT | Constant.CMD_DOWN;
+		bt.command = Constant.CMD_RIGHT | Constant.CMD_DOWN;
 		this.buttons.push(bt);
 	}
 });

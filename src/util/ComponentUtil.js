@@ -53,11 +53,5 @@ ComponentUtil = {
 				}
 			}
 		}
-	},
-	
-	createMotion : function(data){
-		var motion = new UnitMotionComponent();
-		motion.speedFactor = DataUtil.checkIsNumber(data, "factor") ? data.factor : this.factor;
-		return motion;
 	}
 };

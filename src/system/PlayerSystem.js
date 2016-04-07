@@ -16,9 +16,12 @@ PlayerSystem = System.extend({
 
 	//被控制的目标，Unit类型
 	target : null,
+	
+	_command : null,
 
 	start : function(){
 		this.target = Service.Container.player.unit;
+		this._command = this.target.command;
 	},
 
 	update : function(dt){
@@ -51,8 +54,10 @@ PlayerSystem = System.extend({
 		}
 	},
 
-	pressDirection : function(key){
-		this.key = this.key | key;
+	directionStart : function(command){
+		//this.key = this.key | key;
+		this._command.curr = this._command.curr | command;
+		this._command.last = this._command.curr;
 		if(key==Constant.CMD_UP){
 			this.addCombo("U");
 		}
@@ -65,6 +70,15 @@ PlayerSystem = System.extend({
 			this.addCombo("R");
 		}
 	},
+	
+	directionUpdate : function(command){
+		this._command.last = this._command.curr;
+		this._command.curr = command;
+	},
+	
+	directionEnd : function(){
+		this._command.curr = 0;
+	}
 
 	checkCombo : function(){
 		if(this.comboTimeCount > this.comboTimeInteval){

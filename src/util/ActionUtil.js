@@ -38,20 +38,20 @@ ActionUtil = {
 		}
 		//穷举组件检测
 		if(DataUtil.checkNotNull(data,"animate")){
-			action.coms.animate = ActionComponentUtil.createAnimate(data.animate);
+			action.coms.animate = Factory.createAnimate(data.animate);
 			this.addSystem(action, this.systems.animate[data.animate.type]);
 		}
 		if(DataUtil.checkNotNull(data,"move")){
-			action.coms.move = ActionComponentUtil.createMove(data.move);
+			action.coms.move = Factory.createMove(data.move);
 			this.addSystem(action, this.systems.move[data.move.type]);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){
-			component = ActionComponentUtil.createTimer(data.timer);
+			component = Factory.createTimer(data.timer);
 			system = ActionSystemUtil.getTimer(component);
 			//this.build(action, component, system);
 		}
 		if(DataUtil.checkNotNull(data,"switchable")){
-			component = ActionComponentUtil.createSwitchable(data.switchable);
+			component = Factory.createSwitchable(data.switchable);
 			system = this.systems.switchable;
 			//this.build(action, component, system);
 		}

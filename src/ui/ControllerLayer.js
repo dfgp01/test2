@@ -57,23 +57,18 @@ ControllerLayer = cc.Layer.extend({
         		var location = touch.getLocation();
         		if(cc.rectContainsPoint(selfPointer.arrows.rect, location)){
         			selfPointer.arrows.press(selfPointer.arrows.sprite.convertToNodeSpace(location));
-        			selfPointer.playerSys.pressDirection(selfPointer.arrows.cmd);
+        			selfPointer.playerSys.directionStart(selfPointer.arrows.command);
         			return true;
         		}
         		else if(cc.rectContainsPoint(selfPointer.attButton.rect, location)){
-        			Service.tt = Service.gameTime;
-        			Service.begin = selfPointer.playerSys.target.viewCom.sprite.getPositionX();
-        			Service.dis = selfPointer.playerSys.target.viewCom.sprite.getPositionX();
-        			cc.log("开始：");
-        			selfPointer.playerSys.pressKey(Constant.CMD_RIGHT);
         			return false;
         		}
         		return false;
         	},
-        	//onTouchMoved: function (touch, event) {},
+        	onTouchMoved: function (touch, event) {},
         	onTouchEnded: function (touch, event) {
         		selfPointer.arrows.release();
-        		selfPointer.playerSys.releaseKey(Constant.CMD_ALL_DIRECTION);
+        		selfPointer.playerSys.directionEnd();
         	}
         });
         cc.eventManager.addListener(listener, this);
