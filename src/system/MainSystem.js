@@ -93,15 +93,21 @@ MainSystem = System.extend({
 	//固定逻辑帧频，使主循环在固定的频率下运行，理论上通吃所有手机...
 	update : function(dt){
 		this._logicTickCount += dt;
-		this._renderTickCount += dt;
 		if(this._logicTickCount > this.logicTick){
 			this._actionUpdate.update(dt);
 			this._logicTickCount -= this.logicTick;
+		}else{
+			//此方案：逻辑帧在不运行的时候才渲染，可以正确模拟卡机跳帧情况
+			this._animateUpdate.update(this.renderTick);
+			this._moveUpdate.update(this.renderTick);
 		}
+		
+		//此方案：渲染帧按固定频率运行，与逻辑帧并行
+		/*this._renderTickCount += dt;
 		if(this._renderTickCount > this.renderTick){
 			this._animateUpdate.update(this.renderTick);
 			this._moveUpdate.update(this.renderTick);
 			this._renderTickCount -= this.renderTick;
-		}
+		}*/
 	}
 });

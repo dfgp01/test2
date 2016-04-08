@@ -3,29 +3,30 @@
  */
 CharacterStartAction = ActionState.extend({
 	name : "start",
-	_actionSys : null,
-	_motionSys : null,
 	
+	//人物进入场景时调用此方法
 	start : function(unit){
-		//人物进场初始化时调用此方法
-		this._actionSys.addComponent(unit.actions);
-		//this._motionSys.addComponent(unit.coms.motion);
+		SystemUtil.systems.action.addComponent(unit.actions);
+		if(unit.coms.move){
+			SystemUtil.systems.move.addComponent(unit.coms.move);
+		}
 		this.update(0, unit, null);
 	},
 	
+	//人物动作重置时调用此方法
 	update : function(dt, unit, com){
-		//人物动作重置时调用此方法
 		unit.template.actions.stand.start(unit);
 	},
 	
+	//人物被清场时调用此方法
 	end : function(unit){
-		//人物被清场时调用此方法
-		this._system.removeComponent(unit.coms.actions);
+		SystemUtil.systems.action.removeComponent(unit.actions);
+		if(unit.coms.move){
+			SystemUtil.systems.move.removeComponent(unit.coms.move);
+		}
 	},
 
 	init : function(data, template){
 		this._super(data, template);
-		this._actionSys = SystemUtil.systems.action;
-		this._motionSys = SystemUtil.systems.motion;
 	}
 });

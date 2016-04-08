@@ -1,7 +1,7 @@
 /**
- * 核心系统-动画播放，以下是新的
+ * 核心系统-动画播放
  */
-AnimateSystem = ActionSystem.extend({
+AnimateSystemOld = ActionSystem.extend({
 	name : "animate",
 	
 	//局部变量
@@ -45,7 +45,7 @@ AnimateSystem = ActionSystem.extend({
 	}
 });
 
-AnimateLoop = AnimateSystem.extend({
+AnimateScrollOld = AnimateSystem.extend({
 	
 	update : function(dt, gameObj, animateCom){
 		/*this._super(dt, gameObj, animateCom);
@@ -141,9 +141,80 @@ AnimateUpdateSystem = System.extend({
 	}
 });
 
+/**
+ * 核心系统-动画播放，以下是新的
+ */
+AnimateSystem = ActionSystem.extend({
+	name : "animate",
+	
+	//局部变量
+	_view : null,
+	
+	start : function(gameObj,animateCom){
+		this._view = gameObj.coms.view;
+		this._view.animate = animateCom;
+		SystemUtil.systems.view.addComponent(this._view);
+	},
+	
+	update : function(dt, gameObj, animateCom){
+		this._view = gameObj.coms.view;
+		if(this._view.frameIndex < animateCom.frames.length){
+			this._view.interval += dt;
+			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
+				this._view.frameIndex++;
+				this._view.interval -= animateCom.intervals[this._view.frameIndex];
+				if(this._view.frameIndex >= animateCom.frames.length){
+					gameObj.actions.endFlag = true;
+					SystemUtil.systems.view.removeComponent(this._view);
+				}
+			}
+		}
+	}
+});
+
+AnimateScroll = AnimateSystem.extend({
+	
+	update : function(dt, gameObj, animateCom){
+		this._view = gameObj.coms.view;
+		if(this._view.frameIndex < animateCom.frames.length){
+			this._view.interval += dt;
+			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
+				this._view.frameIndex++;
+				this._view.interval -= animateCom.intervals[this._view.frameIndex];
+				if(this._view.frameIndex >= animateCom.frames.length){
+					this._view.frameIndex = 0;
+				}
+			}
+		}
+	},
+	
+	end : function(gameObj,animateCom){
+		SystemUtil.systems.view.removeComponent(gameObj.coms.view);
+	}
+});
+
+/**
+ * 渲染主系统
+ */
 RenderUpdateSystem = System.extend({
 	name : "view",
+	
+	/**
+	 * 加入到链表中，并初始化第一帧
+	 */
+	addComponent : function(viewCom){
+		this._super(viewCom);
+		viewCom.frameIndex = 0;
+		viewCom.lastFrameIndex = -1;	//这里设为-1，可以触发update时渲染新帧
+		viewCom.interval = 0;
+	},
+	
 	execute : function(dt, viewCom){
+		if(viewCom.vx != viewCom.lastVx){
+			//unit.viewCom.sprite._scaleX = 1;
+			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
+			viewCom.lastVx = viewCom.vx;
+		}
 		if(viewCom.frameIndex != viewCom.lastFrameIndex){
 			EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
 			viewCom.lastFrameIndex = viewCom.frameIndex;

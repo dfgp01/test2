@@ -76,6 +76,24 @@ Constant = {
 	HIT_TYPE_PAUSE : 8,			//是否停顿
 	HIT_TYPE_SHAKE : 16,		//是否震动
 	
+	/**
+	 * 事件类型
+	 */
+	EVT_PLAYER_INPUT : 0,		//玩家输入指令
+	EVT_UNIT_CHANGE_PLACE : 0,	//单位改变位置
+	EVT_UNIT_ATTACK : 0,		//单位发起攻击
+	EVT_UNIT_HIT : 0,			//单位击中目标
+	EVT_UNIT_HURT : 0,			//单位受到攻击
+	EVT_UNIT_START_ACTION : 0,	//单位开始执行新动作
+	EVT_UNIT_ENTER : 0,			//单位进入场景
+	EVT_UNIT_CLEAR : 0,			//单位被系统清除
+	EVT_UNIT_DIE : 0,			//单位死亡
+	EVT_UNIT_CHANGE_STATE : 0,	//单位改变状态（Buff）
+	EVT_UNIT_CHANGE_HP : 0,		//单位体力值发生变化
+	EVT_UNIT_TAKE_ITEM : 0,		//单位拾取物品
+	EVT_SYS_SCENE_SWITCH : 0,	//场景开始切换
+	EVT_SYS_SCENE_LOADED : 0,	//场景加载完毕
+	
 	Action : {
 		Feature : {
 			MOTION : 1,
