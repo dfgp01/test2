@@ -59,8 +59,8 @@ SimpleFactory = {
 					}
 				}
 			}
-			if(keys.motion){
-				template.coms.motion = ComponentUtil.createMotion(data.motion);
+			if(keys.move){
+				template.coms.move = Factory.createUnitMove(data.move);
 			}
 			if(keys.hit){
 				template.coms.hit = ComponentUtil.createHit(data.hit);

@@ -6,7 +6,7 @@ characterData = {
 	stand : {
 		animate : {
 			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
-			intervals : [0.1,0.1,0.1,0.3]
+			intervals : [0.2,0.2,0.2,0.2]
 		},
 	},
 	walk : {

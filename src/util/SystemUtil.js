@@ -9,7 +9,8 @@ SystemUtil = {
 		move : null,
 		action : null,
 		EvtMsg : null,
-		animate : null	
+		animate : null,
+		view : null
 	},
 	
 	init : function(){
@@ -19,6 +20,7 @@ SystemUtil = {
 		this.systems.animate = new AnimateUpdateSystem();
 		this.systems.move = new MotionUpdateSystem();
 		this.systems.action = new ActionUpdateSystem();
+		this.systems.view = new RenderUpdateSystem();
 		//this.systems.EvtMsg = new EventMessageSystem();
 		//var mainSystem = this.systems.main;
 		//mainSystem.addSystem(this.systems.player);

@@ -9,6 +9,7 @@ ControllerLayer = cc.Layer.extend({
 	
 	ctor : function(){
 		this.playerSys = SystemUtil.systems.player;
+		this.playerSys.start();
 		this._super();
 		var winSize = cc.winSize;
 		

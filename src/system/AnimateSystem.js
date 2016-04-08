@@ -45,7 +45,7 @@ AnimateSystemOld = ActionSystem.extend({
 	}
 });
 
-AnimateScrollOld = AnimateSystem.extend({
+AnimateScrollOld = AnimateSystemOld.extend({
 	
 	update : function(dt, gameObj, animateCom){
 		/*this._super(dt, gameObj, animateCom);
@@ -179,8 +179,8 @@ AnimateScroll = AnimateSystem.extend({
 		if(this._view.frameIndex < animateCom.frames.length){
 			this._view.interval += dt;
 			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
-				this._view.frameIndex++;
 				this._view.interval -= animateCom.intervals[this._view.frameIndex];
+				this._view.frameIndex++;
 				if(this._view.frameIndex >= animateCom.frames.length){
 					this._view.frameIndex = 0;
 				}

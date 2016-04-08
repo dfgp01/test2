@@ -52,7 +52,7 @@ Factory = {
 			return template;
 		},
 		
-		createMove : function(data){
+		createActionMove : function(data){
 			if(!DataUtil.checkIsInt(data, "type")){
 				cc.log("ComponentUtil.createMove error. move.type error.");
 				return null;
@@ -69,10 +69,12 @@ Factory = {
 		},
 		
 		createUnitMove : function(data){
-			var motion = new UnitMotionComponent();
-			motion.speedFactor = DataUtil.checkIsNumber(data, "factor") ? data.factor : this.factor;
-			return motion;
-		}
+			var move = new UnitMoveComponent();
+			if(data && DataUtil.checkIsNumber(data, "coefficient")){
+				move.coefficient = data.coefficient;
+			}
+			return move;
+		},
 		
 		createSwitchable : function(data){
 			var switchable = new SwitchableComponent();

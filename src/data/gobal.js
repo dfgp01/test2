@@ -4,8 +4,6 @@
 GameSetting = {
 
 		framerate : 60,				//cocos2d默认fps是60
-		logicFrameRate : Constant.TICK_FPS30,			//默认逻辑帧fps:30
-		animateFrameRate : Constant.TICK_FPS24,		//默认动画帧fps:24
 
 		gravity : -2,				//一般重力，一些组件可设置自定义重力
 		maxGravity : -10,			//最大引力

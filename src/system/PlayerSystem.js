@@ -58,7 +58,7 @@ PlayerSystem = System.extend({
 		//this.key = this.key | key;
 		this._command.curr = this._command.curr | command;
 		this._command.last = this._command.curr;
-		if(key==Constant.CMD_UP){
+		/*if(key==Constant.CMD_UP){
 			this.addCombo("U");
 		}
 		else if(key==Constant.CMD_DOWN){
@@ -68,7 +68,7 @@ PlayerSystem = System.extend({
 			this.addCombo("L");
 		}else{
 			this.addCombo("R");
-		}
+		}*/
 	},
 	
 	directionUpdate : function(command){
@@ -78,7 +78,7 @@ PlayerSystem = System.extend({
 	
 	directionEnd : function(){
 		this._command.curr = 0;
-	}
+	},
 
 	checkCombo : function(){
 		if(this.comboTimeCount > this.comboTimeInteval){

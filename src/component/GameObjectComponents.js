@@ -67,23 +67,17 @@ ActionsComponent = Component.extend({
 /**
  * 单位运动组件
  */
-MoveComponent = Component.extend({
+UnitMoveComponent = Component.extend({
 	name : "move",
-	move : null,	//当前motion组件引用
-	factor : 1,		//速度比例系数
-	vx : 0,			//vx,vy,vz 代表方向向量
-	vy : 0,
-	vz : 0,
-	dx : 0,			//dx,dy,dz 代表移动增量
+	move : null,			//当前actionMove组件引用
+	coefficient : 1,		//速度比例系数
+	dx : 0,					//dx,dy,dz 代表移动增量
 	dy : 0,
 	dz : 0,
 
 	clone : function(){
-		var com = this._super();
-		com.speedFactor = this.speedFactor;
-		com.vx = this.vx;
-		com.vy = this.vy;
-		com.vz = this.vz;
+		var com = new UnitMoveComponent();
+		com.coefficient = this.coefficient;
 		com.dx = this.dx;
 		com.dy = this.dy;
 		com.dz = this.dz;

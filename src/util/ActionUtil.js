@@ -23,7 +23,7 @@ ActionUtil = {
 		//this.systems.animate[0] = new SimpleAnimateSystem();
 		this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
 		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateSystem();
-		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateLoop();
+		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateScroll();
 		
 		this.systems.move[Constant.MOVE_STABLE] = new MoveSystem();
 		this.systems.move[Constant.MOVE_BY_CMD] = new MoveCommandSystem();
@@ -42,7 +42,7 @@ ActionUtil = {
 			this.addSystem(action, this.systems.animate[data.animate.type]);
 		}
 		if(DataUtil.checkNotNull(data,"move")){
-			action.coms.move = Factory.createMove(data.move);
+			action.coms.move = Factory.createActionMove(data.move);
 			this.addSystem(action, this.systems.move[data.move.type]);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){

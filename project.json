@@ -32,6 +32,7 @@
     "src/service/SimpleFactory.js",
     "src/system/ActionSystem.js",
     "src/system/AnimateSystem.js",
+    "src/system/MainSystem.js",
     "src/system/MoveSystem.js",
     "src/system/PlayerSystem.js",
     "src/action/TileStartAction.js",
