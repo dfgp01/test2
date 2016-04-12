@@ -32,21 +32,22 @@ ActionUpdateSystem = System.extend({
 */
 StandActionSystem = ActionSystem.extend({
 	name : "stand",
+	_command : null,
 	update : function(dt, gameObj, actionCom){
-		
-		if(gameObj.cmd != 0){
+		this._command = gameObj.command.curr;
+		if(this._command != 0){
 			//检测是否按下方向键
-			if(gameObj.cmd & Constant.CMD.ALL_DIRECTION){
+			if(this._command & Constant.CMD.ALL_DIRECTION){
 				ActionUtil.preparedToChange(gameObj, gameObj.actions.names["walk"]);
 				//这里return是保证代码不会跑到下面的if语句中，不然就乱套了
 				return;
 			}
-			if(gameObj.cmd & Constant.CMD.ATTACK_ALL){
+			if(this._command & Constant.CMD.ATTACK_ALL){
 				ActionUtil.preparedToChange(gameObj, gameObj.actions.names["attack"]);
 				//同上
 				return;
 			}
-			if(gameObj.cmd & Constant.CMD.JUMP){
+			if(this._command & Constant.CMD.JUMP){
 				return;
 			}
 		}

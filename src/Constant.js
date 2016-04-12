@@ -13,10 +13,9 @@ Constant = {
 	/**
 	 * 动画类型枚举
 	 */
-	ANIMATE_STATIC : 0,		//只有一帧
-	ANIMATE_ONCE : 1,		//只播放一次
+	ANIMATE_STATIC : 0,		//播放完之后会停在最后一帧，不会结束动作
+	ANIMATE_ONCE : 1,		//播放完之后会结束动作
 	ANIMATE_SCROLL : 2,		//循环播放
-	ANIMATE_STATIC_LAST : 3,//最后一帧静止
 	
 	/**
 	 * 运动类型枚举

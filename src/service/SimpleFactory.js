@@ -73,26 +73,42 @@ SimpleFactory = {
 		 */
 		createStandAction : function(data){
 			data.name = "stand";
-			if(data.animate && !DataUtil.checkArrayNull(data.animate,"frames")){
-				if(data.animate.frames.length>1){
-					data.animate.type = Constant.ANIMATE_SCROLL;
-				}else{
-					data.animate.type = Constant.ANIMATE_STATIC;
-				}
-			}else{
-				cc.log("SimpleFactory.createStandAction error. animte & animate.frames is necessary.");
+			if(DataUtil.checkArrayNull(data.animate.frames)){
+				cc.log("SimpleFactory.createStandAction error. frames is null.");
 				return null;
 			}
+			if(!DataUtil.checkIsInt(data.animate.type)){
+				data.animate.type = this._defaultAnimateType(data.animate.frames);
+			}
 			var action = Factory.createAction(data);
+			ActionUtil.addSystem(action, ActionUtil.systems.stand[Constant.GAMEOBJECT_CHARACTER]);
 			return action;
 		},
 		
 		createWalkAction : function(data){
 			data.name = "walk";
 			data.move.type = Constant.MOVE_BY_CMD;
-			data.animate.type = Constant.ANIMATE_SCROLL;
+			if(DataUtil.checkArrayNull(data.animate.frames)){
+				cc.log("SimpleFactory.createWalkAction error. frames is null.");
+				return null;
+			}
+			if(!DataUtil.checkIsInt(data.animate.type)){
+				data.animate.type = this._defaultAnimateType(data.animate.frames);
+			}
 			var action = Factory.createAction(data);
+			ActionUtil.addSystem(action, ActionUtil.systems.move[Constant.MOVE_BY_CMD]);
 			return action;
-		}
+		},
 		
+		/**
+		 * 默认动画类型
+		 * frames: 字符串数组
+		 * 专为 stand,walk这样的action来提供默认动画类型
+		 */
+		_defaultAnimateType : function(frames){
+			if(frames.length > 1){
+				return Constant.ANIMATE_SCROLL;
+			}
+			return Constant.ANIMATE_STATIC;
+		}
 };

@@ -125,21 +125,16 @@ DataUtil = {
 			}
 			return true;
 		},
-
-		copyArray : function(arr){
-			var newArr = [];
-			for(var i=0; i<arr.length; i++){
-				newArr[i] = arr[i];
-			}
-			return newArr;
-		},
 		
-		iterObj : function(obj){
-			var str = "";
-			for(var key in obj){
-				str += "key : " + key + ", value : " + obj[key] + "\n";
+		/**
+		 * 检查数组内容情况
+		 * 空，返回0，否则返回size
+		 */
+		checkArraySize : function(data, fieldName, isShowLog){
+			if(this.checkIsArray(data, fieldName, isShowLog)){
+				var field =this.getValue(data, fieldName);
+				return field.length;
 			}
-			cc.log(str);
-			return;
+			return 0;
 		}
 };

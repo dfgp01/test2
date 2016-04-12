@@ -377,3 +377,23 @@ AIÊÇÊÂ¼þ·´À¡´¥·¢ÐÎÊ½µÄ£¬ÈçÔÚÍøÂçÖÐ£¬Ã¿¸öAIµ¥Î»ÓÉ²»Í¬Éè±¸CPU´¦Àí£¬·¢³öÏàÓ¦Ö¸Áî£¬Æ
 	ÉÏÌô£ºÆÕÍ¨¹¥»÷£¨µ¹µØ£©¡¢Ö¸ÁîÅÐ¶ÏÇ°ÒÆ¡¢ÆðÊÖºÍÅÐ¶¨½×¶ÎÎª°ÔÌå£¬ÊÕÎ²½×¶ÎÈ¡Ïû°ÔÌå
 	Èý¶ÎÕ¶£º·ÖÎªÈý¸ö¶¯×÷£¬ÒòÎªÃ¿¸ö¶¯×÷¶¼ÐèÒª°´¼ü¡¢¶¼ÐèÒªÏûºÄMP¡£Ö¸ÁîÅÐ¶Ï·½Ïò¡¢·Ö½×¶ÎÒÆ¶¯
 	¹íÕ¶£ºÂß¼­ÀàËÆÉÏÌô¡¢ÓÐÌØÐ§¡¢ÓÐ¸½¼ÓÒì³£×´Ì¬
+
+
+Èí¼þÏîÄ¿²ã´Î£º
+
+ÒýÇæµ×²ã
+	cocos2d-jsÒýÇæ
+	EngineUtil½Ó¿Ú,app.js,ui×é¼þÇ¶ÈëµÄÊÂ¼þµÈ
+
+Âß¼­²ã(ECS¼Ü¹¹)
+	GameObject,Action,Component,ActionSystem,System
+	MainSystem¸ºÔðÖ÷Ñ­»·
+
+ÒµÎñ½Ó¿Ú²ã£¨ÕâÀï¿ÉÒÔ¿ªÊ¼Ê¹ÓÃOOP¿ª·¢£©
+	Service,Factory,SimpleFactory
+
+UI×é¼þ²ã
+	ControllerLayer,Button,Arrows
+
+Êý¾Ý½Å±¾²ã£¨Ê¹ÓÃJson»òxmlµÈÐ­ÒéÔ¤ÑÔ¶¨Òå£©
+	gobal.js,data.js,character.js

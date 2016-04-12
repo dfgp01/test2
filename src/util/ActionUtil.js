@@ -12,7 +12,8 @@ ActionUtil = {
 	//system缓存
 	systems:{
 		animate:[],
-		move:[]
+		move:[],
+		stand:[]
 	},
 
 	init : function(){
@@ -27,6 +28,7 @@ ActionUtil = {
 		
 		this.systems.move[Constant.MOVE_STABLE] = new MoveSystem();
 		this.systems.move[Constant.MOVE_BY_CMD] = new MoveCommandSystem();
+		this.systems.stand[Constant.GAMEOBJECT_CHARACTER] = new StandActionSystem();
 	},
 	
 	/**
