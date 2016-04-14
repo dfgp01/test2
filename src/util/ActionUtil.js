@@ -60,7 +60,7 @@ ActionUtil = {
 		return;
 	},
 
-	preparedToChange : function(obj, action){
+	next : function(obj, action){
 		obj.actions.next = action;
 		obj.actions.endFlag = true;
 	},

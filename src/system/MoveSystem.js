@@ -52,8 +52,7 @@ MoveCommandSystem = MoveSystem.extend({
 		this._command = gameObj.command;
 		
 		if(this._command.curr==0){
-			gameObj.actions.endFlag = true;
-			//ActionUtil.preparedToChange(gameObj, gameObj.actions.names["stand"]);
+			ActionUtil.next(gameObj, gameObj.template.actions.stand);
 			return;
 		}
 		

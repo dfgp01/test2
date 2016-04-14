@@ -8,18 +8,19 @@ ActionUpdateSystem = System.extend({
 	_currAct : null,
 
 	execute : function(dt, actionCom){
-		this._currAct = actionCom.current;
-		this._currObj = actionCom.owner;
 		if(actionCom.endFlag){
-			this._currAct.end(this._currObj);
+			actionCom.current.end(actionCom.owner);
 			if(actionCom.next != null){
-				actionCom.next.start(this._currObj);
+				actionCom.current = actionCom.next;
 				actionCom.next = null;//还原为空状态，原因你懂，不信的话把这句注释看看。
+				actionCom.current.start(actionCom.owner);
+			}else{
+				//还有重置逻辑以后补上
 			}
+			actionCom.endFlag = false;
 		}else{
-			this._currAct.update(dt, this._currObj);
+			actionCom.current.update(dt, actionCom.owner);
 		}
-		//还有重置逻辑以后补上
 	},
 	
 	end : function(){
@@ -38,16 +39,8 @@ StandActionSystem = ActionSystem.extend({
 		if(this._command != 0){
 			//检测是否按下方向键
 			if(this._command & Constant.CMD.ALL_DIRECTION){
-				ActionUtil.preparedToChange(gameObj, gameObj.actions.names["walk"]);
+				ActionUtil.next(gameObj, gameObj.template.actions.walk);
 				//这里return是保证代码不会跑到下面的if语句中，不然就乱套了
-				return;
-			}
-			if(this._command & Constant.CMD.ATTACK_ALL){
-				ActionUtil.preparedToChange(gameObj, gameObj.actions.names["attack"]);
-				//同上
-				return;
-			}
-			if(this._command & Constant.CMD.JUMP){
 				return;
 			}
 		}

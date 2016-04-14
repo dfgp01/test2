@@ -5,16 +5,14 @@ PlayerSystem = System.extend({
 	name : "player",
 	tick : Constant.TICK_FPS30,
 	key : 0,
-	combo : [],
-	maxLength : 6,
 
 	//用于计算连续按键的时间间隔的
-	comboTimeCount : 0,
+	lastTime : 0,
 
 	//连续按键的最大时间间隔(秒)
-	comboTimeInteval : 1.5,
+	maxInputInteval : 1.5,
 
-	//被控制的目标，Unit类型
+	//被控制的目标，Unit类型,avatar
 	target : null,
 	
 	_command : null,
@@ -24,6 +22,9 @@ PlayerSystem = System.extend({
 		this._command = this.target.command;
 	},
 
+	/**
+	 * 暂时废弃
+	 */
 	update : function(dt){
 		this.target.cmd = 0;
 
@@ -43,75 +44,32 @@ PlayerSystem = System.extend({
 		}
 	},
 
-	releaseKey : function(key){
-		this.key = this.key & (~key);
-	},
-
-	pressKey : function(key){
-		this.key = this.key | key;
-		if(key==Constant.CMD_ATTACK_ONCE){
-			this.addCombo("A");
+	_maxFlag = 32768; //2^15, 1000-0000-0000-0000，可存放5个连续指令，每个方向指令是0~7，三位二进制数
+	_rearFlag = 4095; //0000-111-111-111-111
+	pressDirection : function(command){
+		//计算间隔，加入到连续指令中
+		if(this.key != 0 && Service.gameTime - this.lastTime < this.maxInputInteval){
+			//如果连续指令存储满了，就把最前面的清掉，把新的加入到尾部
+			if(this.key & this._maxFlag){
+				this.key = this._maxFlag + (this.key & this._rearFlag)<<3) + command;
+			}else{
+				this.key = this.key<<3 + command;
+			}
+		}else{
+			//初始化连续指令
+			this.key = 1<<3 + command;
 		}
-	},
-
-	directionStart : function(command){
-		//this.key = this.key | key;
+		this.lastTime = Service.gameTime;
 		this._command.curr = this._command.curr | command;
 		this._command.last = this._command.curr;
-		/*if(key==Constant.CMD_UP){
-			this.addCombo("U");
-		}
-		else if(key==Constant.CMD_DOWN){
-			this.addCombo("D");
-		}
-		else if(key==Constant.CMD_LEFT){
-			this.addCombo("L");
-		}else{
-			this.addCombo("R");
-		}*/
+	},
+	
+	releaseDirection : function(){
+		this._command.curr = 0;
 	},
 	
 	directionUpdate : function(command){
 		this._command.last = this._command.curr;
 		this._command.curr = command;
-	},
-	
-	directionEnd : function(){
-		this._command.curr = 0;
-	},
-
-	checkCombo : function(){
-		if(this.comboTimeCount > this.comboTimeInteval){
-			this.combo.length = 0;
-			this.fowardFlag = "X";
-			this.comboTimeCount = 0;
-			return false;
-		}
-		return true;
-	},
-
-	addCombo : function(keyStr){
-		if(this.checkCombo() && this.combo.length >= this.maxLength){
-			this.combo.shift();
-		}
-		//像DNF那样，左右方向就算反过来也可以执行的
-		if(keyStr=="L" || keyStr == "R"){
-			if(this.fowardFlag == "X"){
-				this.fowardFlag = keyStr;
-			}
-			keyStr = this.fowardFlag==keyStr ? "F" : "B";
-		}
-
-		//shift是删除第一个，pop是删除最后一个
-		this.combo.push(keyStr);
-		//重新计时
-		this.comboTimeCount = 0;
-	},
-
-	getComboStr : function(){
-		if(this.checkCombo()){
-			return this.combo.join("");
-		}
-		return null;
 	}
 });
