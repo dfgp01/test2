@@ -108,3 +108,9 @@ ActionMoveComponent = Component.extend({
 		return com;
 	}
 });
+
+ActionCommandComponent = Component.extend({
+	name : "command",
+	type : 0,
+	table : null
+});

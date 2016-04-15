@@ -119,7 +119,7 @@ MoveCommandSystemOld = MoveSystem.extend({
 		}
 		
 		//指令有变化，重新设定方向
-		if(this._command.curr != this._command.last){
+		if(GameUtil.isChangeDirection(this._command)){
 			//左右不共存
 			if(this._command.curr & Constant.CMD_LEFT){
 				gameObj.coms.motion.vx = -1;

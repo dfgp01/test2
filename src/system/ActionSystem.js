@@ -48,6 +48,52 @@ StandActionSystem = ActionSystem.extend({
 });
 
 /**
+ * 指令系统，默认为攻击指令触发
+ */
+CommandSystem = ActionSystem.extend({
+	name : "command",
+	_key : 0,
+	start : function(gameObj, commandCom){
+	},
+	update : function(gameObj, commandCom){
+		//1.根据key查找table
+		//2.跳转action
+		//3.清除key
+		if(gameObj.command.curr=='attack'){//暂时这么写
+			this._key = gameObj.command.key;
+			
+			if(this._key == 0){
+				ActionUtil.next(gameObj, commandCom.table[1]);
+			}
+			var flag = 0;
+			//2^15=32768, 2^12=4096, 2^9=1024, 2^6=64, 2^3=8
+			for(var i=15;i>1;i-=3){
+				flag = 2^i;
+				if(this._key & flag){
+					flag -= 1;
+					break;
+				}
+			}
+			var next = null;
+			while(this._key>1){
+				next = commandCom.table[this._key]
+				if(next){ 
+					break;
+				}
+				flag = flag>>3;
+				this._key = flag + 1 + (this.key&flag);
+			}
+			if(next==null){
+				next = commandCom.table[1];
+			}
+			ActionUtil.next(gameObj, next);
+			return;
+		}
+	}
+});
+
+
+/**
  * 移动逻辑系统
  */
 MotionSystem = ActionSystem.extend({
@@ -131,27 +177,6 @@ WalkMotionSystem = MotionSystem.extend({
 });
 
 /**
-*	跳跃动作系统
-*/
-JumpActionSystem = ActionSystem.extend({
-	name : "jump",
-	
-	start : function(unit){
-		unit.motionCom.dy = this.speedCom.factorH * this.motionCom.dh;
-		unit.viewCom.groundY = unit.viewCom.sprite.getPositionY();
-		unit.actionsCom.state = unit.actionsCom.state | Constant.ACTION_STATE.AIR;
-	},
-	
-	update : function(dt, unit){
-		
-	},
-	
-	end : function(unit){
-		unit.actionsCom.state = unit.actionsCom.state & ~(Constant.ACTION_STATE.AIR);
-	}
-});
-
-/**
  * 最初的碰撞系统，只检测指定帧，有效碰撞1次
  */
 CollideSystem = ActionSystem.extend({
@@ -218,25 +243,3 @@ HitSystem = ActionSystem.extend({
 		}
 	}
 });
-
-/**
- * 阶段性动作系统，动作组形式
- */
-ActionPhaseSystem = ActionSystem.extend({
-	name : "phase",
-	list : null,		//ActionSystem子类对象
-	
-	ctor : function(){
-		this.list = [];
-	},
-	
-	start : function(gameObj, phaseCom){
-		var phase = gameObj.actions.phase;
-		this.list[phase].start(gameObj, phaseCom.list[phase]);
-	},
-	
-	add : function(system){
-		this.list.push(system);
-	}
-});
-

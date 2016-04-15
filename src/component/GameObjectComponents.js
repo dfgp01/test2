@@ -178,5 +178,6 @@ MasterComponent = Component.extend({
 CommandComponent = Component.extend({
 	name : "command",
 	curr : 0,
-	last : 0
+	last : 0,
+	key : 0
 });

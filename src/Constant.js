@@ -41,7 +41,7 @@ Constant = {
 	/**
 	 * 输入指令
 	 */
-	CMD_UP : 128, 
+	/*CMD_UP : 128, 
 	CMD_DOWN : 64,
 	CMD_LEFT : 32,
 	CMD_RIGHT : 16,
@@ -49,28 +49,51 @@ Constant = {
 	CMD_ATTACK_ONCE : 1,		//按一下攻击
 	CMD_ATTACK_HOLD_ON : 2,		//按住攻击（比如蓄力）
 	CMD_ATTACK_ALL : 3,			//单击或按住
-	CMD_JUMP : 4,
+	CMD_JUMP : 4,*/
 	
 	/**
-	 * 新版的指令，未使用
+	 * 新版的指令
 	 */
-	_CMD_RIGHT : 0,	//000
-	_CMD_LEFT : 1,	//001
-	_CMD_UP : 2,	//010
-	_CMD_DOWN : 3,	//011
-	_CMD_DR : 4,	//100
-	_CMD_DL : 5,	//101
-	_CMD_UR : 6,	//110
-	_CMD_UL : 7,	//111
+	KEY_RIGHT : 0,	//000
+	KEY_LEFT : 1,	//001
+	KEY_UP : 2,	//010
+	KEY_DOWN : 3,	//011
+	KEY_RIGHT_DOWN : 4,	//100
+	KEY_LEFT_DOWN : 5,	//101
+	KEY_RIGHT_UP : 6,	//110
+	KEY_LEFT_UP : 7,	//111
+	
+	CMD_RIGHT : 8,	//1000
+	CMD_LEFT : 9,	//1001
+	CMD_UP : 10,	//1010
+	CMD_DOWN : 11,	//1011
+	CMD_RIGHT_DOWN : 12,	//1100
+	CMD_LEFT_DOWN : 13,	//1101
+	CMD_RIGHT_UP : 14,	//1110
+	CMD_LEFT_UP : 15,	//1111
 	
 	/**
-	 * 技能摇键，懒得计算，RL可表示右左，也可以是前后，有些版本是不分左右，只有前后的
+	 * 技能摇键组合，懒得计算，RL可表示右左，也可以是前后，有些版本是不分左右，只有前后的
 	 */
-	CMD_RR : 64,	//1000000
-	CMD_RL : 65,	//1000001
-	CMD_DU : 90,	//1011010
-	CMD_RDL : 537,	//1000011001
-	CMD_DUR : 720,	//1011010000
+	KEY_RIGHT_RIGHT			: 64,	//1000000
+	KEY_RIGHT_LEFT 			: 65,	//1000001
+	KEY_UP_UP 				: 82,	//1010010
+	KEY_UP_DOWN 			: 83,	//1010011
+	KEY_DOWN_UP 			: 90,	//1011010
+	KEY_DOWN_DOWN 			: 91,	//1011011
+
+	KEY_RIGHT_RIGHT_RIGHT	: 512,	//1000000000
+	KEY_RIGHT_RIGHT_LEFT	: 513,	//1000000001
+	KEY_RIGHT_LEFT_LEFT 	: 521,	//1000001001
+	KEY_RIGHT_DOWN_LEFT 	: 537,	//1000011001
+	KEY_UP_DOWN_RIGHT 		: 664,	//1010011000
+	KEY_DOWN_UP_RIGHT 		: 720,	//1011010000
+	KEY_DOWN_UP_UP 			: 722,	//1011010010
+	KEY_DOWN_DOWN_UP 		: 730,	//1011011010
+	
+	
+	
+	
 	
 	/**
 	 * 帧时间

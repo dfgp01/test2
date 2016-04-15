@@ -60,12 +60,14 @@ PlayerSystem = System.extend({
 			this.key = 1<<3 + command;
 		}
 		this.lastTime = Service.gameTime;
-		this._command.curr = this._command.curr | command;
+		this._command.key = this.key;
+		this._command.curr = command | 8;
 		this._command.last = this._command.curr;
 	},
 	
 	releaseDirection : function(){
-		this._command.curr = 0;
+		//将方向指令位置0
+		this._command.curr = this._command.curr>>4<<4;
 	},
 	
 	directionUpdate : function(command){
