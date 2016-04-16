@@ -42,16 +42,17 @@ PlayerSystem = System.extend({
 		if(this.key > 0){
 			this.target.cmd = this.key;
 		}
+		cc.log("player");
 	},
 
-	_maxFlag = 32768; //2^15, 1000-0000-0000-0000，可存放5个连续指令，每个方向指令是0~7，三位二进制数
-	_rearFlag = 4095; //0000-111-111-111-111
+	_maxFlag : 32768, //2^15, 1000-0000-0000-0000，可存放5个连续指令，每个方向指令是0~7，三位二进制数
+	_rearFlag : 4095, //0000-111-111-111-111
 	pressDirection : function(command){
 		//计算间隔，加入到连续指令中
 		if(this.key != 0 && Service.gameTime - this.lastTime < this.maxInputInteval){
 			//如果连续指令存储满了，就把最前面的清掉，把新的加入到尾部
 			if(this.key & this._maxFlag){
-				this.key = this._maxFlag + (this.key & this._rearFlag)<<3) + command;
+				this.key = this._maxFlag + (this.key & this._rearFlag)<<3 + command;
 			}else{
 				this.key = this.key<<3 + command;
 			}

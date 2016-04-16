@@ -35,6 +35,10 @@ System = cc.Class.extend({
 	 * 将组件添加进链表
 	 */
 	addComponent : function(node){
+		if(node.prep!=null || node.next!=null || node==this._head || node==this._end){
+			//已经在链表里面了
+			return;
+		}
 		if(this._head == null){
 			this._head = node;
 			this._end = node;

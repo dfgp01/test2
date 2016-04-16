@@ -61,7 +61,7 @@ ActionUtil = {
 	},
 
 	next : function(obj, action){
-		obj.actions.next = action;
+		obj.actions.nextAct = action;
 		obj.actions.endFlag = true;
 	},
 	

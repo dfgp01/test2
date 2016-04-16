@@ -87,7 +87,6 @@ SimpleFactory = {
 		
 		createWalkAction : function(data){
 			data.name = "walk";
-			data.move.type = Constant.MOVE_BY_CMD;
 			if(DataUtil.checkArrayNull(data.animate.frames)){
 				cc.log("SimpleFactory.createWalkAction error. frames is null.");
 				return null;
@@ -95,8 +94,8 @@ SimpleFactory = {
 			if(!DataUtil.checkIsInt(data.animate.type)){
 				data.animate.type = this._defaultAnimateType(data.animate.frames);
 			}
+			data.move.type = Constant.MOVE_BY_CMD;
 			var action = Factory.createAction(data);
-			ActionUtil.addSystem(action, ActionUtil.systems.move[Constant.MOVE_BY_CMD]);
 			return action;
 		},
 		

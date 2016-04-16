@@ -18,8 +18,8 @@ MoveSystem = ActionSystem.extend({
 	},
 	
 	end : function(gameObj, actionCom){
-		gameObj.coms.motion.dx = 0;
-		gameObj.coms.motion.dy = 0;
+		gameObj.coms.move.dx = 0;
+		gameObj.coms.move.dy = 0;
 	}
 });
 

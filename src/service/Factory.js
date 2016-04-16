@@ -63,8 +63,8 @@ Factory = {
 			}
 			var move = new ActionMoveComponent();
 			move.type = data.type;
-			move.dx = DataUtil.checkIsNumber(data, "dx") ? data.dx / Service.Gobal.gameTick : 0;
-			move.dy = DataUtil.checkIsNumber(data, "dy") ? data.dy / Service.Gobal.gameTick : 0;
+			move.dx = DataUtil.checkIsNumber(data, "dx") ? (data.dx * Service.Gobal.logicTick) : 0;
+			move.dy = DataUtil.checkIsNumber(data, "dy") ? (data.dy * Service.Gobal.logicTick) : 0;
 			return move;
 		},
 		

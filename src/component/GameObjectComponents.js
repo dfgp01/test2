@@ -37,7 +37,7 @@ ActionsComponent = Component.extend({
 	repeatFlag : 0,
 	endFlag : false,
 	phase : 0,
-	next : null,
+	nextAct : null,
 	timer : null,			//timerCom组件
 	names : null,			//Action索引
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）

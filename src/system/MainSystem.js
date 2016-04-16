@@ -97,10 +97,14 @@ MainSystem = System.extend({
 		if(this._logicTickCount > this.logicTick){
 			this._actionUpdate.update(dt);
 			this._logicTickCount -= this.logicTick;
-		}else{
-			//此方案：逻辑帧在不运行的时候才渲染，可以正确模拟卡机跳帧情况
+		}
+		
+		this._renderTickCount += dt;
+		if(this._renderTickCount > this.renderTick){
+			//可以正确模拟卡机跳帧情况
 			this._renderUpdate.update(dt);
 			//this._moveUpdate.update(this.renderTick);
+			this._renderTickCount -= this.renderTick;
 		}
 		
 		//此方案：渲染帧按固定频率运行，与逻辑帧并行

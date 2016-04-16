@@ -69,7 +69,7 @@ ControllerLayer = cc.Layer.extend({
         	onTouchMoved: function (touch, event) {},
         	onTouchEnded: function (touch, event) {
         		selfPointer.arrows.release();
-        		selfPointer.playerSys.directionEnd();
+        		selfPointer.playerSys.releaseDirection();
         	}
         });
         cc.eventManager.addListener(listener, this);

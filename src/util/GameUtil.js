@@ -45,7 +45,7 @@ GameUtil = {
 			//待实现
 		},
 		
-		_allDirectionFlag : 15; //1111
+		_allDirectionFlag : 15, 	//1111
 		isChangeDirection : function(commandCom){
 			return (commandCom.curr & this._allDirectionFlag) != (commandCom.last & this._allDirectionFlag);
 		}

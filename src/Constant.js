@@ -63,6 +63,7 @@ Constant = {
 	KEY_RIGHT_UP : 6,	//110
 	KEY_LEFT_UP : 7,	//111
 	
+	CMD_DIRECTION_FLAG : 8,
 	CMD_RIGHT : 8,	//1000
 	CMD_LEFT : 9,	//1001
 	CMD_UP : 10,	//1010

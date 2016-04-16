@@ -109,6 +109,7 @@ AnimateUpdateSystem = System.extend({
 	addComponent : function(viewCom){
 		this._super(viewCom);
 		viewCom.frameIndex = 0;
+		viewCom.lastFrameIndex = -1;
 		viewCom.interval = 0;
 		EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[0]);
 	},
@@ -189,7 +190,7 @@ AnimateScroll = AnimateSystem.extend({
 	},
 	
 	end : function(gameObj,animateCom){
-		SystemUtil.systems.view.removeComponent(gameObj.coms.view);
+		//SystemUtil.systems.view.removeComponent(gameObj.coms.view);
 	}
 });
 

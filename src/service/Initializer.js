@@ -29,9 +29,6 @@ Initializer = {
 			timerCom.total = GameSetting.knockDownTime;
 			Service.Gobal.stiffDownTimer = timerCom;
 			
-			Service.Gobal.animateFrameRate = GameSetting.animateFrameRate;
-			Service.Gobal.logicFrameRate = GameSetting.logicFrameRate;
-			
 			//逻辑帧、渲染帧的FPS
 			Service.Gobal.logicTick = Constant.TICK_FPS30;
 			Service.Gobal.renderTick = Constant.TICK_FPS24;

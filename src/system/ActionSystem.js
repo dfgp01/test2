@@ -10,12 +10,12 @@ ActionUpdateSystem = System.extend({
 	execute : function(dt, actionCom){
 		if(actionCom.endFlag){
 			actionCom.current.end(actionCom.owner);
-			if(actionCom.next != null){
-				actionCom.current = actionCom.next;
-				actionCom.next = null;//还原为空状态，原因你懂，不信的话把这句注释看看。
+			if(actionCom.nextAct != null){
+				actionCom.current = actionCom.nextAct;
 				actionCom.current.start(actionCom.owner);
+				actionCom.nextAct = null;//还原为空状态，原因你懂，不信的话把这句注释看看。
 			}else{
-				//还有重置逻辑以后补上
+				actionCom.owner.template.actions.start.update(0, actionCom.owner, null);
 			}
 			actionCom.endFlag = false;
 		}else{
@@ -36,13 +36,11 @@ StandActionSystem = ActionSystem.extend({
 	_command : null,
 	update : function(dt, gameObj, actionCom){
 		this._command = gameObj.command.curr;
-		if(this._command != 0){
-			//检测是否按下方向键
-			if(this._command & Constant.CMD.ALL_DIRECTION){
-				ActionUtil.next(gameObj, gameObj.template.actions.walk);
-				//这里return是保证代码不会跑到下面的if语句中，不然就乱套了
-				return;
-			}
+		//检测是否按下方向键
+		if(this._command & 8){
+			ActionUtil.next(gameObj, gameObj.template.actions.walk);
+			//这里return是保证代码不会跑到下面的if语句中，不然就乱套了
+			return;
 		}
 	}
 });
@@ -63,7 +61,7 @@ CommandSystem = ActionSystem.extend({
 			this._key = gameObj.command.key;
 			
 			if(this._key == 0){
-				ActionUtil.next(gameObj, commandCom.table[1]);
+				ActionUtil.next(gameObj, commandCom.table["#1"]);
 			}
 			var flag = 0;
 			//2^15=32768, 2^12=4096, 2^9=1024, 2^6=64, 2^3=8
@@ -76,7 +74,7 @@ CommandSystem = ActionSystem.extend({
 			}
 			var next = null;
 			while(this._key>1){
-				next = commandCom.table[this._key]
+				next = commandCom.table["#"+this._key]
 				if(next){ 
 					break;
 				}
@@ -84,7 +82,7 @@ CommandSystem = ActionSystem.extend({
 				this._key = flag + 1 + (this.key&flag);
 			}
 			if(next==null){
-				next = commandCom.table[1];
+				next = commandCom.table["#1"];
 			}
 			ActionUtil.next(gameObj, next);
 			return;

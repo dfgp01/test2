@@ -15,7 +15,8 @@ CharacterStartAction = ActionState.extend({
 	
 	//人物动作重置时调用此方法
 	update : function(dt, unit, com){
-		unit.template.actions.stand.start(unit);
+		unit.actions.current = unit.template.actions.stand;
+		unit.actions.current.start(unit);
 	},
 	
 	//人物被清场时调用此方法

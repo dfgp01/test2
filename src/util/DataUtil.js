@@ -136,5 +136,16 @@ DataUtil = {
 				return field.length;
 			}
 			return 0;
+		},
+		
+		/**
+		 * 用于检查的
+		 * @param action
+		 */
+		showArray : function(array){
+			cc.log("### showArray");
+			for(var i in array){
+				cc.log(array[i].name);
+			}
 		}
 };
