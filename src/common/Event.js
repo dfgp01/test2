@@ -1,4 +1,20 @@
 /**
+ * 事件基类定义
+ */
+Event = cc.Class.extend({
+	type : 0,
+	source : null,
+	data : null
+});
+
+/**
+ * 事件响应处理
+ */
+EventCallback = cc.Class.extend({
+	response : function(event){	/**子类实现接口**/		}
+});
+
+/**
  * 事件调度器，分发器
  */
 EventScheduler = cc.Class.extend({
@@ -30,12 +46,4 @@ EventScheduler = cc.Class.extend({
 			}
 		}
 	}
-});
-
-/**
- * 事件响应类
- */
-EventCallback = cc.Class.extend({
-	name : "callback",
-	response : function(content){	/**子类实现接口**/		}
 });
