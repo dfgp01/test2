@@ -41,11 +41,11 @@ ActionUtil = {
 		//穷举组件检测
 		if(DataUtil.checkNotNull(data,"animate")){
 			action.coms.animate = Factory.createAnimate(data.animate);
-			this.addSystem(action, this.systems.animate[data.animate.type]);
+			action.addSystem(this.systems.animate[data.animate.type]);
 		}
 		if(DataUtil.checkNotNull(data,"move")){
 			action.coms.move = Factory.createActionMove(data.move);
-			this.addSystem(action, this.systems.move[data.move.type]);
+			action.addSystem(this.systems.move[data.move.type]);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){
 			component = Factory.createTimer(data.timer);
@@ -73,22 +73,6 @@ ActionUtil = {
 			cc.log("key: " + key + " has exists in parent node. parent:"+pre.name+" child:"+next.name);
 		}
 		this.children[key] = next;
-	},
-	
-	/**
-	 * 添加一个子系统到action中，根据优先级决定插入的位置，越高越靠前
-	 */
-	addSystem :function(action, system){
-		if(action){
-			for(var i in action.systemList){
-				if(system.priority > action.systemList[i].priority){
-					action.systemList.splice(i, 0, system);
-					return;
-				}
-			}
-			//上面的循环未return时，说明system的优先级是最小的，要补加到列表尾
-			action.systemList.push(system);
-		}
 	},
 
 	/**

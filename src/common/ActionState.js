@@ -16,13 +16,13 @@ ActionState = cc.Class.extend({
 	 * @param data
 	 * @param template
 	 */
-	init : function(data){
+	/*init : function(data){
 		cc.log("info: creating action:[" + this.name + "].");
 		this.coms = {};
 		this.systemList = [];
 		//初始化动作组件系统
 		ActionUtil.bulid(data, this);
-	},
+	},*/
 	
 	//加载时
 	start : function(unit){
@@ -43,5 +43,30 @@ ActionState = cc.Class.extend({
 		for(var i in this.systemList){
 			this.systemList[i].end(unit);
 		}
+	},
+	
+	addComponent : function(com){
+		if(this.coms==null){
+			this.coms = {};
+		}
+		if(this.coms[com.name]){
+			cc.log("error: action:[" + this.name + "].coms:" + com.name + " exists!");
+			return;
+		}
+		this.coms[com.name] = com;
+	},
+	
+	addSystem : function(system){
+		if(this.systemList==null){
+			this.systemList = [];
+		}
+		for(var i in this.systemList){
+			if(system.priority > this.systemList[i].priority){
+				this.systemList.splice(i, 0, system);
+				return;
+			}
+		}
+		//上面的循环未return时，说明system的优先级是最小的，要补加到列表尾
+		this.systemList.push(system);
 	}
 });

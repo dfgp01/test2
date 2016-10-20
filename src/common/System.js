@@ -79,9 +79,9 @@ System = cc.Class.extend({
 ActionSystem = cc.Class.extend({
 	name : null,
 	priority : 0,
-	start : function(gameObject, actionCom){return;},
-	update : function(dt, gameObject, actionCom){return;},
-	end : function(gameObject, actionCom){return;},
+	start : function(unitCom, actionCom){return;},
+	update : function(dt, unitCom, actionCom){return;},
+	end : function(unitCom, actionCom){return;},
 	
 	/**
 	 * 将单位组件加入到主系统遍历链表内

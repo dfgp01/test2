@@ -23,12 +23,16 @@ MoveSystem = ActionSystem.extend({
 	}
 });
 
-MoveCommandSystem = MoveSystem.extend({
+MoveByCmdSystem = MoveSystem.extend({
 	
 	_command : null,
 	
-	start : function(gameObj, moveCom){
-		this._command = gameObj.command;
+	/**
+	 * unitCom = unit.coms.move
+	 * actionCom = action.coms.move
+	 */
+	start : function(unitCom, actionCom){
+		this._command = unitCom.owner.command;
 		//左右方向不共存
 		if(this._command.curr & Constant.CMD_RIGHT){
 			gameObj.coms.move.dx = moveCom.dx;
@@ -63,19 +67,6 @@ MoveCommandSystem = MoveSystem.extend({
 		//每帧重新计算速度，感觉这一步可以优化的
 		//gameObj.coms.move.dx = actionCom.dx * gameObj.coms.view.vx;
 		//gameObj.coms.move.dy = actionCom.dy;
-	}
-});
-
-/**
- * 更新坐标的系统（新版，暂不使用）
- * 因为调用setPosition会发生重绘操作，影响性能，所以不要在其他地方频繁用setPosition
- */
-MotionUpdateSystem = System.extend({
-	name : "move",
-	execute : function(dt, component){
-		if(component.dx !=0 || component.dy != 0){
-			EngineUtil.setPosition(component.owner.coms.view.sprite, component);
-		}
 	}
 });
 
