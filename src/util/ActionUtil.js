@@ -3,33 +3,6 @@
  */
 
 ActionUtil = {
-		
-	//公共action缓存
-	actions:{
-		start:[]
-	},
-	
-	//system缓存
-	systems:{
-		animate:[],
-		move:[],
-		stand:[]
-	},
-
-	init : function(){
-		var action = new CharacterStartAction();
-		action.init(null);
-		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
-		this.actions.start[Constant.GAMEOBJECT_CHARACTER] = action;
-		//this.systems.animate[0] = new SimpleAnimateSystem();
-		this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
-		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateSystem();
-		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateScroll();
-		
-		this.systems.move[Constant.MOVE_STABLE] = new MoveSystem();
-		this.systems.move[Constant.MOVE_BY_CMD] = new MoveCommandSystem();
-		this.systems.stand[Constant.GAMEOBJECT_CHARACTER] = new StandActionSystem();
-	},
 	
 	/**
 	 * 组成动作的组件系统
@@ -41,11 +14,11 @@ ActionUtil = {
 		//穷举组件检测
 		if(DataUtil.checkNotNull(data,"animate")){
 			action.coms.animate = Factory.createAnimate(data.animate);
-			action.addSystem(this.systems.animate[data.animate.type]);
+			action.addSystem(ObjectManager.systems.animate[data.animate.type]);
 		}
 		if(DataUtil.checkNotNull(data,"move")){
 			action.coms.move = Factory.createActionMove(data.move);
-			action.addSystem(this.systems.move[data.move.type]);
+			action.addSystem(ObjectManager.systems.move[data.move.type]);
 		}
 		if(DataUtil.checkNotNull(data,"timer")){
 			component = Factory.createTimer(data.timer);
@@ -54,15 +27,15 @@ ActionUtil = {
 		}
 		if(DataUtil.checkNotNull(data,"switchable")){
 			component = Factory.createSwitchable(data.switchable);
-			system = this.systems.switchable;
+			system = ObjectManager.systems.switchable;
 			//this.build(action, component, system);
 		}
 		return;
 	},
 
-	next : function(obj, action){
-		obj.actions.nextAct = action;
-		obj.actions.endFlag = true;
+	next : function(actionCom, action){
+		actionCom.nextAct = action;
+		actionCom.endFlag = true;
 	},
 	
 	addNext : function(pre, key, next){

@@ -44,8 +44,7 @@ Service = {
 	
 	initialize : function(){
 		Initializer.initGobalParam();	//全局默认数值（引力、帧频等）
-		SystemUtil.init();	//主系统
-		ActionUtil.init();	//动作系统和公共动作
+		ObjectManager.init();			//公共对象、系统组件初始化
 		//初始化玩家
 		var character = SimpleFactory.createCharacter(characterData);
 		Service.Container.templates[character.name] = character;

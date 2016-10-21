@@ -200,16 +200,17 @@ AnimateScroll = AnimateSystem.extend({
 RenderUpdateSystem = System.extend({
 	name : "view",
 	_view : null,
+	tick : Constant.TICK_FPS24,
 	
 	/**
 	 * 加入到链表中，并初始化第一帧
 	 */
-	addComponent : function(viewCom){
+	/*addComponent : function(viewCom){
 		this._super(viewCom);
 		viewCom.frameIndex = 0;
 		viewCom.lastFrameIndex = -1;	//这里设为-1，可以触发update时渲染新帧
 		viewCom.interval = 0;
-	},
+	},*/
 	
 	update : function(dt){
 		
@@ -231,6 +232,7 @@ RenderUpdateSystem = System.extend({
 		if(viewCom.vx != 0){
 			//unit.viewCom.sprite._scaleX = 1;
 			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
+			viewCom.vx = 0;
 		}
 		EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
 	},

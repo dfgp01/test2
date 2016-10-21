@@ -18,11 +18,8 @@ Factory = {
 			//cc.log("info: creating action:[" + data.name + "].");
 			var actionState = new ActionState();
 			actionState.name = data.name;
-			//actionState.coms = {};
-			//actionState.systemList = [];
 			actionState.init(data);
-			//初始化动作组件系统
-			//ActionUtil.bulidComponentSystem(data, actionState);
+			ActionUtil.bulid(data, actionState);
 			return actionState;
 		},
 		

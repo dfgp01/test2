@@ -10,10 +10,10 @@ ActionUpdateSystem = System.extend({
 	execute : function(dt, actionCom){
 		if(actionCom.endFlag){
 			actionCom.current.end(actionCom.owner);
-			if(actionCom.nextAct != null){
-				actionCom.current = actionCom.nextAct;
+			if(actionCom.next != null){
+				actionCom.current = actionCom.next;
 				actionCom.current.start(actionCom.owner);
-				actionCom.nextAct = null;//还原为空状态，原因你懂，不信的话把这句注释看看。
+				actionCom.next = null;//还原为空状态，原因你懂，不信的话把这句注释看看。
 			}else{
 				actionCom.owner.template.actions.start.update(0, actionCom.owner, null);
 			}

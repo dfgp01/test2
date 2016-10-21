@@ -64,7 +64,6 @@ cc.game.onStart = function(){
         scene.addChild(new HelloWorldLayer());
         scene.addChild(new ControllerLayer());
         cc.director.runScene(scene);
-        //cc.director.runScene(new HelloWorldScene());
     }, this);
 };
 cc.game.run();
