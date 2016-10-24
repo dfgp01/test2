@@ -16,7 +16,7 @@ ViewComponent = Component.extend({
 	frameIndex : 0,
 	lastFrameIndex : 0,		//上次的帧索引，用于判断是否更新帧
 	interval : 0,
-	displayName : "unit",	//显示的名字
+	title : "unname",			//显示的名字
 	sprite : null,			//cc.sprite的引用
 
 	ctor : function(){

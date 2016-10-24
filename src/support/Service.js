@@ -22,20 +22,12 @@ Service = {
 	 * 	从指定模板中创建新对象
 	 */
 	newObject : function(tempName){
-		var tmp = this.Container.templates[tempName];
+		var tmp = ObjectManager.templates[tempName];
 		if(!tmp){
 			cc.log("template: " + tempName + " not found!");
 			return null;
 		}else{
 			var obj = tmp.getNewInstance();
-			if(!this.Container.units[obj.id]){
-				//如果缓存内没有此单位，则加入
-				this.Container.units[obj.id] = obj;
-			}
-			//如果此单位可以移动，就加入到移动节点
-			if(obj.coms.move){
-				SystemUtil.systems.move.addComponent(obj.coms.move);
-			}
 			//默认的初始动作
 			tmp.actions.start.start(obj);
 			return obj;
@@ -46,11 +38,9 @@ Service = {
 		Initializer.initGobalParam();	//全局默认数值（引力、帧频等）
 		ObjectManager.init();			//公共对象、系统组件初始化
 		//初始化玩家
-		var character = SimpleFactory.createCharacter(characterData);
-		Service.Container.templates[character.name] = character;
-		var object = this.newObject(character.name);
-		this.Container.player.unit = object;
-		this.mainSystem = SystemUtil.systems.main;
+		var character = Initializer.initCharacter(characterData);
+		ObjectManager.templates[character.name] = character;
+		this.mainSystem = ObjectManager.systems.main;
 	},
 
 	start : function(){

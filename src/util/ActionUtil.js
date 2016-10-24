@@ -3,35 +3,6 @@
  */
 
 ActionUtil = {
-	
-	/**
-	 * 组成动作的组件系统
-	 */
-	bulid : function(data, action){
-		if(!data){
-			return;
-		}
-		//穷举组件检测
-		if(DataUtil.checkNotNull(data,"animate")){
-			action.coms.animate = Factory.createAnimate(data.animate);
-			action.addSystem(ObjectManager.systems.animate[data.animate.type]);
-		}
-		if(DataUtil.checkNotNull(data,"move")){
-			action.coms.move = Factory.createActionMove(data.move);
-			action.addSystem(ObjectManager.systems.move[data.move.type]);
-		}
-		if(DataUtil.checkNotNull(data,"timer")){
-			component = Factory.createTimer(data.timer);
-			system = ActionSystemUtil.getTimer(component);
-			//this.build(action, component, system);
-		}
-		if(DataUtil.checkNotNull(data,"switchable")){
-			component = Factory.createSwitchable(data.switchable);
-			system = ObjectManager.systems.switchable;
-			//this.build(action, component, system);
-		}
-		return;
-	},
 
 	next : function(actionCom, action){
 		actionCom.nextAct = action;

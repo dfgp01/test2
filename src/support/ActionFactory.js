@@ -1,7 +1,7 @@
 /**
- * 工厂类，用于建造游戏组件。
+ * 用于建造动作及组件的工厂类
  */
-Factory = {
+ActionFactory = {
 		
 		/**
 		 * 创建一个动作节点
@@ -19,57 +19,23 @@ Factory = {
 			var actionState = new ActionState();
 			actionState.name = data.name;
 			actionState.init(data);
-			ActionUtil.bulid(data, actionState);
+			this._bulid(data, actionState);
 			return actionState;
 		},
 		
-		/**
-		 * 初始化一个单位模板
-		 */
-		createGameObjectTemplate : function(data){
-			if(!DataUtil.checkIsString(data,"name",true)){
-				cc.log("Factory.createGameObjectTemplate error. data or name is null.");
-				return null;
-			}
-			var template = new GameObjectTemplate();
-			template.name = data.name;
-			template.frame = EngineUtil.getFrame(data.frame);
-			template.availableList = [];
-			template.coms = {};
-			template.actions = {};
-			template.init(data);
-			if(!DataUtil.checkArrayNull(data,"actions")){
-				var action = null;
-				for(var i in data.actions){
-					action = this.createAction(data.actions[i]);
-					template.actions[action.name] = action;
-				}
-			}
-			//template.coms.view = new ViewComponent();
-			return template;
-		},
-		
-		createActionMove : function(data){
+		createMove : function(data){
 			if(!DataUtil.checkIsInt(data, "type")){
-				cc.log("ComponentUtil.createMove error. move.type error.");
+				cc.log("createMove error. move.type error.");
 				return null;
 			}
 			if(!DataUtil.checkIsNumber(data,"dx") || !DataUtil.checkIsNumber(data,"dy")){
-				cc.log("ComponentUtil.createMove error. dx or dy must be number.");
+				cc.log("createMove error. dx or dy must be number.");
 				return null;
 			}
 			var move = new ActionMoveComponent();
 			move.type = data.type;
 			move.dx = DataUtil.checkIsNumber(data, "dx") ? (data.dx * Service.Gobal.logicTick) : 0;
 			move.dy = DataUtil.checkIsNumber(data, "dy") ? (data.dy * Service.Gobal.logicTick) : 0;
-			return move;
-		},
-		
-		createUnitMove : function(data){
-			var move = new UnitMoveComponent();
-			if(data && DataUtil.checkIsNumber(data, "coefficient")){
-				move.coefficient = data.coefficient;
-			}
 			return move;
 		},
 		
@@ -86,11 +52,11 @@ Factory = {
 		 */
 		createAnimate : function(data){
 			if(!DataUtil.checkIsInt(data, "type")){
-				cc.log("ComponentUtil.createAnimate error. animate.type error.");
+				cc.log("createAnimate error. animate.type error.");
 				return null;
 			}
 			if(DataUtil.checkArrayNull(data,"frames")){
-				cc.log("ComponentUtil.createAnimate error. animate.frames error.");
+				cc.log("createAnimate error. animate.frames error.");
 				return null;
 			}
 			var animate = new AnimateComponent();
@@ -132,5 +98,34 @@ Factory = {
 				}
 			}
 			return animate;
+		},
+		
+		/**
+		 * 组成动作的组件系统
+		 */
+		_bulid : function(data, action){
+			if(!data){
+				return;
+			}
+			//穷举组件检测
+			if(DataUtil.checkNotNull(data,"animate")){
+				action.coms.animate = this.createAnimate(data.animate);
+				action.addSystem(ObjectManager.systems.animate[data.animate.type]);
+			}
+			if(DataUtil.checkNotNull(data,"move")){
+				action.coms.move = this.createMove(data.move);
+				action.addSystem(ObjectManager.systems.move[data.move.type]);
+			}
+			if(DataUtil.checkNotNull(data,"timer")){
+				component = this.createTimer(data.timer);
+				//system = ActionSystemUtil.getTimer(component);
+				//this.build(action, component, system);
+			}
+			if(DataUtil.checkNotNull(data,"switchable")){
+				component = this.createSwitchable(data.switchable);
+				system = ObjectManager.systems.switchable;
+				//this.build(action, component, system);
+			}
+			return;
 		}
 };

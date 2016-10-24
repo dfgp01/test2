@@ -10,6 +10,7 @@ ObjectManager = {
 		ComponentManager.init();
 		SystemManager.init();
 		ActionManager.init();
+		ObjectQueneManager.init();
 		this.comLinks = ComponentManager;
 		this.systems = SystemManager;
 		this.actions = ActionManager;

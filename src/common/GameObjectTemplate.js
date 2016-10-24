@@ -9,7 +9,8 @@ GameObjectTemplate = cc.Class.extend({
 	name : null,
 	frame : null,				//初始frame
 	featureCode : 0,
-	availableList : null,		//对象池
+	_objHead : null,	//对象池队列的头指针
+	_objTail : null,	//对象池队列的尾指针
 
 	actions : null,		//动作集合
 	firstAct : null,
@@ -18,6 +19,19 @@ GameObjectTemplate = cc.Class.extend({
 	nextId : 1,
 
 	init : function(data){
+		this.actions = {};
+		this.coms = {};
+	},
+	
+	/**
+	 * 回收，归对象池队列内
+	 */
+	recycle : function(unit){
+		if(this._objHead==null){
+			this._objTail = this._objHead = unit;
+		}else{
+			this._objTail = this._objTail.next = unit;
+		}
 	},
 	
 	/**
@@ -25,14 +39,13 @@ GameObjectTemplate = cc.Class.extend({
 	 * @returns unit
 	 */
 	getNewInstance : function(){
-		var unit = this.availableList.pop();
+		var unit = this._objHead;
 		if(unit == null){
 			unit = new GameObject();
 			unit.name = this.name;
 			unit.coms = {};
 			//注意，单位的ID是 名字+id序号 的组合
-			unit.id = this.name + this.nextId;
-			this.nextId++;
+			unit.id = this.name + this.nextId++;
 			
 			for(var i in this.coms){
 				var name = this.coms[i].name;
@@ -44,8 +57,6 @@ GameObjectTemplate = cc.Class.extend({
 			//EngineUtil.setFrame(unit.coms.view.sprite, this.frame);
 			unit.actions = new ActionsComponent();
 			unit.actions.owner = unit;
-			unit.command = new CommandComponent();
-			unit.command.owner = unit;
 			unit.template = this;
 		}
 		else{
@@ -54,8 +65,9 @@ GameObjectTemplate = cc.Class.extend({
 				unit.coms[i].reset();
 			}
 			unit.actions.reset();
+			this._objHead = unit.next;
+			unit.next = null;
 		}
-		unit.active = true;
 		return unit;
 	}
 });
