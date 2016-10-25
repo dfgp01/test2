@@ -76,31 +76,31 @@ MainSystem = System.extend({
 	renderTick : 0,
 	_logicTickCount : 0,
 	_renderTickCount : 0,
-	_action : null,
-	_render : null,
+	_actionSys : null,
+	_renderSys : null,
 
 	start : function(){
 		this.logicTick = Service.Gobal.logicTick;
 		this.renderTick = Service.Gobal.renderTick;
-		this._action = ObjectManager.systems.action;
-		this._render = SystemUtil.systems.view;
+		this._actionSys = ObjectManager.systems.action;
+		this._renderSys = ObjectManager.systems.view;
 		
-		this._action.start();
-		this._render.start();
+		this._actionSys.start();
+		this._renderSys.start();
 	},
 
 	//固定逻辑帧频，使主循环在固定的频率下运行，理论上通吃所有手机...
 	update : function(dt){
 		this._logicTickCount += dt;
 		if(this._logicTickCount > this.logicTick){
-			this._action.update(dt);
+			this._actionSys.update(this._logicTickCount);
 			this._logicTickCount -= this.logicTick;
 		}
 		
+		//可以正确模拟卡机跳帧情况
 		this._renderTickCount += dt;
 		if(this._renderTickCount > this.renderTick){
-			//可以正确模拟卡机跳帧情况
-			this._render.update(dt);
+			this._renderSys.update(this._renderTickCount);
 			this._renderTickCount -= this.renderTick;
 		}
 	}

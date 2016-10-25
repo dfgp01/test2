@@ -21,13 +21,14 @@ Service = {
 	/**
 	 * 	从指定模板中创建新对象
 	 */
-	newObject : function(tempName){
+	newObject : function(tempName, x,y,z, cc_layer){
 		var tmp = ObjectManager.templates[tempName];
 		if(!tmp){
 			cc.log("template: " + tempName + " not found!");
 			return null;
 		}else{
 			var obj = tmp.getNewInstance();
+			EngineUtil.addSprite(obj.coms.view, x,y,z, cc_layer)
 			//默认的初始动作
 			tmp.actions.start.start(obj);
 			return obj;
@@ -38,8 +39,7 @@ Service = {
 		Initializer.initGobalParam();	//全局默认数值（引力、帧频等）
 		ObjectManager.init();			//公共对象、系统组件初始化
 		//初始化玩家
-		var character = Initializer.initCharacter(characterData);
-		ObjectManager.templates[character.name] = character;
+		Initializer.initCharacter(characterData);
 		this.mainSystem = ObjectManager.systems.main;
 	},
 

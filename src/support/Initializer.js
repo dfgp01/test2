@@ -30,8 +30,8 @@ Initializer = {
 		Service.Gobal.stiffDownTimer = timerCom;
 		
 		//逻辑帧、渲染帧的FPS
-		Service.Gobal.logicTick = Constant.TICK_FPS30;
-		Service.Gobal.renderTick = Constant.TICK_FPS24;
+		Service.Gobal.logicTick = GameSetting.logicTick;
+		Service.Gobal.renderTick = GameSetting.renderTick;
 	},
 	
 	/**
@@ -127,10 +127,10 @@ Initializer = {
 	initCharacter : function(data){
 		//人物必须要有stand动作
 		if(!data.stand){
-			cc.log("createCharacter error. stand action is necessary.");
+			cc.log("initCharacter error. stand action is necessary.");
 			return null;
 		}
-		var template = GameObjectFactory.createGameObjectTemplate(data);
+		var template = GameObjectFactory.createTemplate(data);
 		template.actions.start = ObjectManager.actions.start[Constant.GAMEOBJECT_CHARACTER];
 		template.actions.stand = ActionFactory.createStandAction(data.stand);
 		template.actions.walk = ActionFactory.createWalkAction(data.walk);
@@ -148,7 +148,7 @@ Initializer = {
 				}
 			}
 			//顺便初始化切换组件
-			if(action.coms.switchable){
+			/*if(action.coms.switchable){
 				var k = action.coms.switchable.keys;
 				var name = null;
 				for(var cmd in k){
@@ -161,14 +161,22 @@ Initializer = {
 						return;
 					}
 				}
-			}
+			}*/
+		}
+		this._buildTemplateComponents(keys, template);
+		ObjectManager.templates[template.name] = template;
+		return;
+	},
+	
+	_buildTemplateComponents : function(keys, template){
+		if(keys.command){
+			template.coms.command = GameObjectFactory.createCommand(null);
 		}
 		if(keys.move){
-			template.coms.move = Factory.createUnitMove(data.move);
+			template.coms.move = GameObjectFactory.createMove(data.move);
 		}
 		if(keys.hit){
-			template.coms.hit = ComponentUtil.createHit(data.hit);
+			template.coms.hit = GameObjectFactory.createHit(data.hit);
 		}
-		return template;
 	}
 }

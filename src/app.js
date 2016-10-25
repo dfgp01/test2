@@ -30,8 +30,8 @@ var HelloWorldLayer = cc.Layer.extend({
     	this.addChild(sprite, 1);*/
         
         var character = Service.Container.player.unit;
-        EngineUtil.addSprite(character.coms.view, 150, 0, 250, this);
-        var sprite = character.coms.view.sprite;
+        var unit = Service.newObject("deep", 150, 0, 250, this);
+        var sprite = unit.coms.view.sprite;
         
         var selfPointer = this;
         var listener = cc.EventListener.create({

@@ -22,49 +22,65 @@ ObjectManager = {
  */
 ComponentManager = {
 
-	viewHead : null,
-	moveHead : null,	//头结点是个空心节点，只保留前后指针，后指针指向第一个元素，前指针指向最后一个元素
+	_viewHead : null,
+	_viewTail : null,
+	_moveHead : null,
+	_moveTail : null,
 	
-	_pushTolinks : function(head, node){
+	_add : function(node, head, tail){
 		if(node.prep==null && node.next==null){
-			node.prep = head.prep;
-			node.next = head;
-			head.prep.next = node;
-			head.prep = node;
+			if(head==null){
+				tail = head = node;
+			}else{
+				tail.next = node;
+				node.prep = tail;
+				tail = node;
+			}
 		}
 	},
 	
-	_newHead : function(head){
-		var head = new Compoment();
-		head.prep = head.next = head;
-		return head;
-	},
-	
-	deleteNode : function(node){
-		if(node.prep==null&&node.next==null){
-			node.prep.next = node.next;
-			node.next.prep = node.prep;
+	_remove : function(node, head, tail){
+		if(node.prep!=null||node.next!=null){
+			if(head==node){
+				head = node.next;
+			}else if(tail==node){
+				tail = node.prep;
+				tail.next = null;
+			}else{
+				node.prep.next = node.next;
+				node.next.prep = node.prep;
+			}
 			node.prep = null;
 			node.next = null;
 		}
 	},
-
-	init : function(){
-		this.moveHead = this._newHead();
-		this.viewHead = this._newHead();
-	},
 	
+	/**
+	 * 移动组件链表系列操作
+	 */
 	addMoveNode : function(moveCom){
-		_pushTolinks(moveHead, moveCom.node);
+		_add(moveCom, _moveHead, _moveTail);
 	},
-	
-	getViewFirstNode : function(){
-		return this.viewHead.next;
+	removeMoveNode : function(moveCom){
+		_remove(moveCom, _moveHead, _moveTail);
 	},
-	
 	getMoveFirstNode : function(){
-		return this.moveHead.next;
+		return this._moveHead;
+	},
+	
+	/**
+	 * 显示组件链表系列操作
+	 */
+	addViewNode : function(viewCom){
+		_add(viewCom, _viewHead, _viewTail);
+	},
+	removeViewNode : function(viewCom){
+		_reView(viewCom, _viewHead, _viewTail);
+	},
+	getViewFirstNode : function(){
+		return this._viewHead;
 	}
+	
 };
 
 SystemManager = {

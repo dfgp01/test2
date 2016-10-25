@@ -2,6 +2,9 @@
  * 全局游戏设置
  */
 GameSetting = {
+		
+		logicTick : Constant.TICK_FPS30,
+		renderTick : Constant.TICK_FPS24,
 
 		framerate : 60,				//cocos2d默认fps是60
 
