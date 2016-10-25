@@ -9,14 +9,12 @@ System = cc.Class.extend({
 	
 	_curr : null,
 	_next : null,	//此引用是防止在execute()中有移除链表队列的操作，到时_curr.next就为null而异常，先备份好。
-	_head : null,	//对应的链表队列头
 	
 	/**
 	 * 主函数，循环整个链表
 	 */
 	update : function(dt){
-		this._curr = this._head.next;
-		while(this._curr.name != null){
+		while(this._curr != null){
 			this._next = this._curr.next;
 			this.execute(dt, this._curr);
 			this._curr = this._next;

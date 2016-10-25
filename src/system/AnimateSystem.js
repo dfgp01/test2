@@ -1,7 +1,7 @@
 /**
  * 核心系统-动画播放
  */
-AnimateSystemOld = ActionSystem.extend({
+/*AnimateSystemOld = ActionSystem.extend({
 	name : "animate",
 	
 	//局部变量
@@ -14,7 +14,7 @@ AnimateSystemOld = ActionSystem.extend({
 	},
 	
 	update : function(dt, gameObj, animateCom){
-		/*this._view = gameObj.coms.view;
+		this._view = gameObj.coms.view;
 		if(this._view.frameIndex < animateCom.frames.length){
 			this._view.interval += dt;
 			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
@@ -24,7 +24,7 @@ AnimateSystemOld = ActionSystem.extend({
 					EngineUtil.setFrame(this._view.sprite, animateCom.frames[this._view.frameIndex]);
 				}
 			}
-		}*/
+		}
 		
 		if(gameObj.actions.endFlag){
 			return;
@@ -48,11 +48,11 @@ AnimateSystemOld = ActionSystem.extend({
 AnimateScrollOld = AnimateSystemOld.extend({
 	
 	update : function(dt, gameObj, animateCom){
-		/*this._super(dt, gameObj, animateCom);
+		this._super(dt, gameObj, animateCom);
 		if(this._view.frameIndex >= animateCom.frames.length){
 			this._view.frameIndex = 0;
 			EngineUtil.setFrame(this._view.sprite, animateCom.frames[0]);
-		}*/
+		}
 		
 		this._view = gameObj.coms.view;
 		this._view.interval += dt;
@@ -65,47 +65,19 @@ AnimateScrollOld = AnimateSystemOld.extend({
 			EngineUtil.setFrame(this._view.sprite, animateCom.frames[this._view.frameIndex]);
 		}
 	}
-});
-
-/**
- * 只有一帧的
- */
-AnimateOneFrame = ActionSystem.extend({
-	name : "animate",
-	start : function(gameObj,animateCom){
-		EngineUtil.setFrame(gameObj.coms.view.sprite, animateCom.frames[0]);
-	}
-});
-
-/**
- * 简易版，把逻辑交给主系统去做
- */
-SimpleAnimateSystem = ActionSystem.extend({
-	name : "animate",
-	system : null,
-	ctor : function(){
-		this.system = SystemUtil.systems.animate;
-	},
-	start : function(gameObj,animateCom){
-		gameObj.coms.view.animate = animateCom;
-		this.system.addComponent(gameObj.coms.view);
-	},
-	update : function(dt, gameObj, animateCom){
-		return;
-	}
-});
+});*/
 
 /**
  * 主循环中的动画系统（新版）
  */
-AnimateUpdateSystem = System.extend({
+/*AnimateUpdateSystem = System.extend({
 	tick : Constant.TICK_FPS05,
 	name : "animate",
 	_dt : 0,
 	
-	/**
+	*//**
 	 * 加入到链表中，并初始化第一帧
-	 */
+	 *//*
 	addComponent : function(viewCom){
 		this._super(viewCom);
 		viewCom.frameIndex = 0;
@@ -140,56 +112,61 @@ AnimateUpdateSystem = System.extend({
 		}
 		
 	}
+});*/
+
+AnimateSystem = ActionSystem.extend({
+	name : "animate",
+	
+	start : function(viewCom, animateCom){
+		viewCom.animate = animateCom;
+		viewCom.frameIndex = 0;
+		viewCom.interval = 0;
+		ObjectManager.coms.addViewNode(viewCom);
+	},
+	
+	update : function(dt, viewCom, animateCom){
+		viewCom.interval += dt;
+		if(viewCom.interval >= animateCom.intervals[viewCom.frameIndex]){
+			viewCom.interval -= animateCom.intervals[viewCom.frameIndex];
+			viewCom.frameIndex++;
+			if(viewCom.frameIndex < animateCom.frames.length){
+				ObjectManager.coms.addViewNode(viewCom);
+			}
+		}
+	}
+});
+
+/**
+ * 只有一帧的
+ */
+AnimateOneFrame = AnimateSystem.extend({
+	update : function(dt, viewCom, animateCom){
+		return;
+	}
 });
 
 /**
  * 核心系统-动画播放，以下是新的
  */
-AnimateSystem = ActionSystem.extend({
-	name : "animate",
+AnimateNormal = AnimateSystem.extend({
 	
-	//局部变量
-	_view : null,
-	
-	start : function(gameObj,animateCom){
-		this._view = gameObj.coms.view;
-		this._view.animate = animateCom;
-		SystemUtil.systems.view.addComponent(this._view);
-	},
-	
-	update : function(dt, gameObj, animateCom){
-		this._view = gameObj.coms.view;
-		if(this._view.frameIndex < animateCom.frames.length){
-			this._view.interval += dt;
-			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
-				this._view.frameIndex++;
-				this._view.interval -= animateCom.intervals[this._view.frameIndex];
-				if(this._view.frameIndex >= animateCom.frames.length){
-					gameObj.actions.endFlag = true;
-					SystemUtil.systems.view.removeComponent(this._view);
-				}
-			}
+	update : function(dt, viewCom, animateCom){
+		if(viewCom.frameIndex == animateCom.frames.length){
+			viewCom.owner.actions.endFlag = true;
+			ObjectManager.coms.removeViewNode(viewCom);
+			return;
 		}
+		this._super(dt, viewCom, animateCom);
 	}
 });
 
 AnimateScroll = AnimateSystem.extend({
 	
 	update : function(dt, gameObj, animateCom){
-		this._view = gameObj.coms.view;
-		if(this._view.frameIndex < animateCom.frames.length){
-			this._view.interval += dt;
-			if(this._view.interval >= animateCom.intervals[this._view.frameIndex]){
-				this._view.interval -= animateCom.intervals[this._view.frameIndex];
-				this._view.frameIndex++;
-				if(this._view.frameIndex >= animateCom.frames.length){
-					this._view.frameIndex = 0;
-				}
-			}
+		if(viewCom.frameIndex == animateCom.frames.length){
+			viewCom.frameIndex = 0;
+			ObjectManager.coms.addViewNode(viewCom);
 		}
-	},
-	
-	end : function(gameObj,animateCom){
-		//SystemUtil.systems.view.removeComponent(gameObj.coms.view);
+		this._super(dt, viewCom, animateCom);
 	}
 });

@@ -34,8 +34,8 @@ ActionFactory = {
 			}
 			var move = new ActionMoveComponent();
 			move.type = data.type;
-			move.dx = DataUtil.checkIsNumber(data, "dx") ? (data.dx * Service.Gobal.logicTick) : 0;
-			move.dy = DataUtil.checkIsNumber(data, "dy") ? (data.dy * Service.Gobal.logicTick) : 0;
+			move.dx = data.dx * Service.Gobal.logicTick;
+			move.dy = data.dy * Service.Gobal.logicTick;
 			return move;
 		},
 		

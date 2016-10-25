@@ -2,7 +2,7 @@
  * 对象管理器，缓存游戏中所有系统对象（非游戏元素对象）
  */
 ObjectManager = {
-	comLinks : null,
+	coms : null,
 	systems : null,
 	actions : null,
 	
@@ -11,7 +11,7 @@ ObjectManager = {
 		SystemManager.init();
 		ActionManager.init();
 		ObjectQueneManager.init();
-		this.comLinks = ComponentManager;
+		this.coms = ComponentManager;
 		this.systems = SystemManager;
 		this.actions = ActionManager;
 	}
@@ -59,12 +59,12 @@ ComponentManager = {
 	 * 移动组件链表系列操作
 	 */
 	addMoveNode : function(moveCom){
-		_add(moveCom, _moveHead, _moveTail);
+		_add(moveCom, this._moveHead, this._moveTail);
 	},
 	removeMoveNode : function(moveCom){
-		_remove(moveCom, _moveHead, _moveTail);
+		_remove(moveCom, this._moveHead, this._moveTail);
 	},
-	getMoveFirstNode : function(){
+	getFirstMoveNode : function(){
 		return this._moveHead;
 	},
 	
@@ -72,12 +72,12 @@ ComponentManager = {
 	 * 显示组件链表系列操作
 	 */
 	addViewNode : function(viewCom){
-		_add(viewCom, _viewHead, _viewTail);
+		_add(viewCom, this._viewHead, this._viewTail);
 	},
 	removeViewNode : function(viewCom){
-		_reView(viewCom, _viewHead, _viewTail);
+		_reView(viewCom, this._viewHead, this._viewTail);
 	},
-	getViewFirstNode : function(){
+	getFirstViewNode : function(){
 		return this._viewHead;
 	}
 	
@@ -129,7 +129,7 @@ ActionManager = {
 		this.start[Constant.GAMEOBJECT_CHARACTER] = action;
 		//this.systems.animate[0] = new SimpleAnimateSystem();
 		this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
-		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateSystem();
+		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateNormal();
 		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateScroll();
 		
 		this.systems.move[Constant.MOVE_STABLE] = new MoveSystem();

@@ -18,14 +18,14 @@ RenderUpdateSystem = System.extend({
 	
 	update : function(dt){
 		
-		this._view = ComponentManager.viewFirstNode();
+		this._view = ObjectManager.coms.getFirstViewNode();
 		while(this._view!=null){
 			this.renderFrame(this._view);
 			this._view = this._view.next;
-			ComponentManager.deleteNode(this._view.prep);
+			ObjectManager.coms.removeViewNode(this._view.prep);
 		}
 		
-		this._move = ComponentManager.moveFirstNode();
+		this._move = ObjectManager.coms.getFirstMoveNode();
 		while(this._move!=null){
 			this.renderPosition(this._move);
 			this._move = this._move.next;
@@ -44,18 +44,6 @@ RenderUpdateSystem = System.extend({
 	renderPosition : function(moveCom){
 		if(moveCom.dx!=0 || moveCom.dy!=0){
 			EngineUtil.setPosition(moveCom.owner.viewCom.sprite, moveCom);
-		}
-	},
-	
-	execute : function(dt, viewCom){
-		if(viewCom.vx != viewCom.lastVx){
-			//unit.viewCom.sprite._scaleX = 1;
-			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
-			viewCom.lastVx = viewCom.vx;
-		}
-		if(viewCom.frameIndex != viewCom.lastFrameIndex){
-			EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
-			viewCom.lastFrameIndex = viewCom.frameIndex;
 		}
 	}
 });

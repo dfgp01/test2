@@ -25,15 +25,6 @@ ComponentUtil = {
 	},
 	
 	/**
-	 * 移除此节点
-	 * 	组件对应的主系统是一定有头尾指针的，所以不用担心component的前后指针为空的问题
-	 */
-	remove : function(component){
-		component.prep.next = component.next;
-		component.next.prep = component.prep;
-	},
-	
-	/**
 	 * JS特有的赋值方法
 	 * 不递归，只保存引用，不深层赋值
 	 */

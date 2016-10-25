@@ -42,19 +42,6 @@ ActionsComponent = Component.extend({
 	names : null,			//Action索引
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
 	
-	clone : function(){
-		var com = new ActionsComponent();
-		com.repeatFlag = this.repeatFlag;
-		com.endFlag = this.endFlag;
-		com.phase = this.phase;
-		com.current = this.current;
-		com.next = this.next;
-		com.names = this.names;
-		com.state = this.state;
-		com.timer = this.timer;
-		return com;
-	},
-	
 	ctor : function(){
 		this.repeatFlag = 0;
 		this.endFlag = false;
