@@ -8,7 +8,7 @@ MoveSystem = ActionSystem.extend({
 		//初始化速度和向量
 		unitCom.dx = actionCom.dx * unitCom.vx;
 		unitCom.dy = actionCom.dy;
-		ComponentManager.addMoveNode(unitCom);
+		ObjectManager.coms.addMoveNode(unitCom);
 	},
 	
 	// 每帧移动公式：
@@ -22,13 +22,13 @@ MoveSystem = ActionSystem.extend({
 	},
 	
 	end : function(unitCom, actionCom){
-		ComponentManager.deleteNode(unitCom);
+		ObjectManager.coms.removeMoveNode(unitCom);
 		unitCom.dx = 0;
 		unitCom.dy = 0;
 	}
 });
 
-WalkSystem = MoveSystem.extend({
+/*WalkSystem = MoveSystem.extend({
 
 	_command : null,
 	_cmdRight : Constant.CMD_RIGHT,
@@ -69,9 +69,9 @@ WalkSystem = MoveSystem.extend({
 		}
 		
 		//指令有变化，重新设定方向
-		/*if(this._command.curr != this._command.last){
+		if(this._command.curr != this._command.last){
 			this.start(gameObj, actionCom);
-		}*/
+		}
 		
 		//每帧重新计算，感觉这一步可以优化的
 		if(this._command & this._cmdRight){
@@ -99,4 +99,4 @@ WalkSystem = MoveSystem.extend({
 			unitCom.dy -= actionCom.dy;
 		}
 	}
-});
+});*/

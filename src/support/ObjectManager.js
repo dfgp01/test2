@@ -119,7 +119,8 @@ ActionManager = {
 	systems:{
 		animate:[],
 		move:[],
-		stand:[]
+		stand:[],
+		command:[]
 	},
 
 	init : function(){
@@ -132,8 +133,10 @@ ActionManager = {
 		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateNormal();
 		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateScroll();
 		
-		this.systems.move[Constant.MOVE_STABLE] = new MoveSystem();
-		this.systems.move[Constant.MOVE_WALK] = new WalkSystem();
+		this.systems.move[Constant.MOVE_NORMAL] = new MoveSystem();
 		this.systems.stand[Constant.GAMEOBJECT_CHARACTER] = new StandActionSystem();
+		
+		this.systems.command[Constant.COMMAND_STAND] = new StandCommandSystem();
+		this.systems.command[Constant.COMMAND_WALK] = new WalkCommandSystem();
 	}
 };

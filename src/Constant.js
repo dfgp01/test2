@@ -20,8 +20,14 @@ Constant = {
 	/**
 	 * 运动类型枚举
 	 */
-	MOVE_STABLE : 0,	//固定的移动方式
-	MOVE_WALK : 1,		//单位走动(根据指令)
+	MOVE_NORMAL : 0,	//固定直线匀速移动方式
+	
+	/**
+	 * 指令逻辑类型（用于action系统）
+	 */
+	COMMAND_STAND : 0,
+	COMMAND_WALK : 1,
+	COMMAND_MOVE : 2,
 	
 	/**
 	 * 组件名称
