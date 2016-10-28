@@ -58,7 +58,25 @@ Constant = {
 	CMD_JUMP : 4,*/
 	
 	/**
-	 * 新版的指令
+	 * 2016.10.28拍板指令
+	 */
+	CMD_RIGHT : 1,
+	CMD_LEFT : 2,
+	CMD_UP : 4,
+	CMD_DOWN : 8,
+	CMD_ATTACK : 16,
+	CMD_ATTACK_CHARGE : 32,
+	CMD_JUMP : 64,
+	CMD_JUMP_CHARGE : 128,
+	
+	KEY_RIGHT : 1,
+	KEY_LEFT : 2,
+	KEY_UP : 4,
+	KEY_DOWN : 8,
+	KEY_ATTACK : 16,
+	
+	/**
+	 * 新版的指令(老的)
 	 */
 	KEY_RIGHT : 0,	//000
 	KEY_LEFT : 1,	//001
