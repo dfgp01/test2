@@ -108,3 +108,11 @@ ActionMoveComponent = Component.extend({
 		return com;
 	}
 });
+
+ActionCommandComponent = Component.extend({
+	name : "command",
+	table : null,
+	ctor : function(){
+		this.table = {};
+	}
+});

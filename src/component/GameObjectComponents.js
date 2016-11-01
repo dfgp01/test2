@@ -164,6 +164,8 @@ MasterComponent = Component.extend({
  */
 CommandComponent = Component.extend({
 	name : "command",
-	input : 0,
-	sys : 0
+	direction : 0,
+	attack : 0,
+	jump : 0,
+	comboKey : 0
 });

@@ -58,22 +58,22 @@ Constant = {
 	CMD_JUMP : 4,*/
 	
 	/**
-	 * 2016.10.28拍板指令
+	 * 2016.11.01拍板指令
 	 */
 	CMD_RIGHT : 1,
 	CMD_LEFT : 2,
 	CMD_UP : 4,
 	CMD_DOWN : 8,
-	CMD_ATTACK : 16,
-	CMD_ATTACK_CHARGE : 32,
-	CMD_JUMP : 64,
-	CMD_JUMP_CHARGE : 128,
+	CMD_PLAYER_ATTACK : 11,
+	CMD_AI_ATTACK : 1,
+	CMD_ATTACK_CHARGE : 10,
+	CMD_JUMP_ONCE : 11,
+	CMD_JUMP_CHARGE : 10,
 	
-	KEY_RIGHT : 1,
-	KEY_LEFT : 2,
-	KEY_UP : 4,
-	KEY_DOWN : 8,
-	KEY_ATTACK : 16,
+	COMBO_KEY_FRONT : 4,
+	COMBO_KEY_BACK : 5,
+	COMBO_KEY_UP : 6,
+	COMBO_KEY_DOWN : 7,
 	
 	/**
 	 * 新版的指令(老的)
@@ -138,7 +138,7 @@ Constant = {
 	 * 攻击类型
 	 */
 	HIT_TYPE_NONE : 0,			//无任何受击动作影响
-	HIT_TYPE_MOTION : 1,		//是否位移
+	HIT_TYPE_MOVE : 1,		//是否位移
 	HIT_TYPE_KNOCK_DOWN : 2,	//是否倒地攻击
 	HIT_TYPE_REMOTE : 4,		//是否远程攻击
 	HIT_TYPE_PAUSE : 8,			//是否停顿

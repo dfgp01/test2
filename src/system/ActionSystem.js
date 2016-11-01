@@ -22,8 +22,7 @@ StandActionSystem = ActionSystem.extend({
 CommandSystem = ActionSystem.extend({
 	name : "command",
 	_key : 0,
-	start : function(gameObj, commandCom){
-	},
+	
 	update : function(gameObj, commandCom){
 		//1.根据key查找table
 		//2.跳转action

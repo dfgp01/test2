@@ -2,11 +2,46 @@
  * 指令逻辑处理
  */
 CommandSystem = ActionSystem.extend({
-	
+
 	name : "command",
+	_attack : Constant.CMD_AI_ATTACK,
+	_action : null,
 	
 	update : function(dt, unitCmdCom, actCmdCom){
-		
+		if(unitCmdCom.attack & this._attack){
+			this._action = this._findByKey(actCmdCom.table, unitCmdCom.comboKey);
+			if(this._action){
+				//logic here...
+				this._action = null;
+			}
+			unitCmdCom.comboKey = 0;
+		}
+	},
+	
+	//comboKey要先对称化才能使用
+	_findByKey : function(table, comboKey){
+		if(comboKey > 0){
+			var key = this._symmetry(comboKey);
+			return table[key] ? table[key] : this._findByKey(table, comboKey >> 3);
+		}else{
+			return null;
+		}
+	},
+	
+	//对称处理（这个有点玄）
+	_symmetry : function(comboKey){
+		var key = 0;
+		var result = 0;
+		var front = 0;
+		while(comboKey>0){
+			key = comboKey & 7;	//取最右边三位
+			if(key==Constant.COMBO_KEY_FRONT||result==Constant.COMBO_KEY_BACK){
+				front = front==0 ? key : front;
+				result = result << 3 + (front==key ? Constant.COMBO_KEY_FRONT : Constant.COMBO_KEY_BACK);
+			}
+			comboKey = comboKey >> 3;
+		}
+		return result;
 	}
 });
 
