@@ -5,8 +5,8 @@
 ActionUtil = {
 
 	next : function(actionCom, action){
-		actionCom.nextAct = action;
-		actionCom.endFlag = true;
+		actionCom.next = action;
+		actionCom.isEnd = true;
 	},
 	
 	addNext : function(pre, key, next){

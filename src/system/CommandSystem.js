@@ -11,9 +11,10 @@ CommandSystem = ActionSystem.extend({
 		if(unitCmdCom.attack & this._attack){
 			this._action = this._findByKey(actCmdCom.table, unitCmdCom.comboKey);
 			if(this._action){
-				//logic here...
+				ActionUtil.next(unitCmdCom.owner.action, this._action);
 				this._action = null;
 			}
+			unitCmdCom.attack = 0;
 			unitCmdCom.comboKey = 0;
 		}
 	},
@@ -46,13 +47,14 @@ CommandSystem = ActionSystem.extend({
 });
 
 StandCommandSystem = CommandSystem.extend({
-	
+	type : 1,
+	_cmdAllDirection : Constant.CMD_ALL_DIRECTION,
 	update : function(dt, unitCmdCom, actCmdCom){
 		if(unitCmdCom.key ==0){
 			return;
 		}
 		if(unitCmdCom.key & this._cmdAllDirection){
-			//into walk
+			ActionUtil.next(unitCmdCom.owner.action, unitCmdCom.owner.template.actions['walk']);
 			return;
 		}
 		this._super(dt, unitCmdCom, actCmdCom);
@@ -60,62 +62,52 @@ StandCommandSystem = CommandSystem.extend({
 });
 
 WalkCommandSystem = CommandSystem.extend({
-	_cmdAllDirection : Constant.CMD_ALL_DIRECTION,
+	type : 2,
+	_cmdDirectionFlag : Constant.CMD_DIRECTION_CHARGE,
 	_cmdRight : Constant.CMD_RIGHT,
 	_cmdLeft : Constant.CMD_LEFT,
 	_cmdUp : Constant.CMD_UP,
 	_cmdDown : Constant.CMD_DOWN,
-
-	start : function(unitCmdCom, actCmdCom){
+	
+	_init : function(unitCmdCom){
 		//左右方向不共存
-		if(unitCmdCom.key & this._cmdRight){
+		if(unitCmdCom.direction & this._cmdRight){
 			unitCmdCom.owner.view.vx = 1;
 			unitCmdCom.vx = 1;
-		}else if(unitCmdCom.key & this._cmdLeft){
+		}else if(unitCmdCom.direction & this._cmdLeft){
 			unitCmdCom.owner.view.vx = -1;
 			unitCmdCom.vx = -1;
 		}
 		
 		//上下方向也不共存
-		if(unitCmdCom.key & Constant.CMD_UP){
+		if(unitCmdCom.direction & Constant.CMD_UP){
 			unitCmdCom.vy = 1;	//注意，在openGL坐标系中，起点在屏幕左下角，Y正轴是向上的
 		}
-		else if(unitCmdCom.key & Constant.CMD_DOWN){
+		else if(unitCmdCom.direction & Constant.CMD_DOWN){
 			unitCmdCom.vy = -1;	//同理，Y负轴是向下的
 		}
+	}
+
+	start : function(unitCmdCom, actCmdCom){
+		this._init(unitCmdCom);
+		unitCmdCom.direction = unitCmdCom.direction & this._cmdDirectionFlag;	//吞噬指令
 	},
 
 	//这一部分应该要更完善 2016.03.25
 	update : function(dt, unitCmdCom, actCmdCom){
 		
-		if(unitCmdCom.key & this._cmdAllDirection ==0){
+		if(unitCmdCom.direction == 0){
 			//这里应调用end，而不是直接钦定下个action
 			//ActionUtil.next(gameObj, gameObj.template.actions.stand);
+			unitCmdCom.owner.action.isEnd = true;
 			return;
 		}
 		
-		this._super(dt, unitCmdCom, actCmdCom);
+		if(unitCmdCom.direction > this._cmdDirectionFlag){
+			//指令有变化，应重新设定
+			this._init(unitCmdCom);
+		}
 		
-		//每帧重新计算，感觉这一步可以优化的
-		if(unitCmdCom.key & this._cmdRight){
-			if(unitCmdCom.vx==-1){
-				unitCmdCom.vx = 1;
-				unitCmdCom.owner.coms.view.vx = 1;
-			}
-		}else if(unitCmdCom.key & this._cmdLeft){
-			if(unitCmdCom.vx==1){
-				unitCmdCom.vx = -1;
-				unitCmdCom.owner.coms.view.vx = -1;
-			}
-		}
-		if(unitCmdCom.key & this._cmdUp){
-			if(unitCmdCom.vy==-1){
-				unitCmdCom.vy = 1;
-			}
-		}else if(unitCmdCom.key & this._cmdDown){
-			if(unitCmdCom.vy==1){
-				unitCmdCom.vy = -1;
-			}
-		}
+		this._super(dt, unitCmdCom, actCmdCom);
 	}
 });

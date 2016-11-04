@@ -7,8 +7,8 @@ GameObjectFactory = {
 	 * 初始化一个单位模板
 	 */
 	createTemplate : function(data){
-		if(!DataUtil.checkIsString(data,"name",true)){
-			cc.log("createTemplate error. data or name is null.");
+		if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data.name)){
+			cc.log("createTemplate error, lack of necessary data!");
 			return null;
 		}
 		var template = new GameObjectTemplate();
@@ -18,7 +18,7 @@ GameObjectFactory = {
 		template.coms = {};
 		template.actions = {};
 		template.init(data);
-		if(!DataUtil.checkArrayNull(data,"actions")){
+		if(DataUtil.checkArrayNotNullForLog(data.actions,"data.actions")){
 			var action = null;
 			for(var i in data.actions){
 				action = this.createAction(data.actions[i]);
@@ -29,10 +29,10 @@ GameObjectFactory = {
 	},
 	
 	createMove : function(data){
-		var move = new UnitMoveComponent();
+		/*var move = new UnitMoveComponent();
 		if(data && DataUtil.checkIsNumber(data, "coefficient")){
 			move.coefficient = data.coefficient;
 		}
-		return move;
+		return move;*/
 	}
 }

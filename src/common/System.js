@@ -35,6 +35,7 @@ System = cc.Class.extend({
  */
 ActionSystem = cc.Class.extend({
 	name : null,
+	type : 0,		//因为每种逻辑的actionsystem都有多种类型，所以默认为0
 	priority : 0,
 	start : function(unitCom, actionCom){return;},
 	update : function(dt, unitCom, actionCom){return;},

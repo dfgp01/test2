@@ -134,9 +134,9 @@ ActionManager = {
 		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateScroll();
 		
 		this.systems.move[Constant.MOVE_NORMAL] = new MoveSystem();
-		this.systems.stand[Constant.GAMEOBJECT_CHARACTER] = new StandActionSystem();
 		
-		this.systems.command[Constant.COMMAND_STAND] = new StandCommandSystem();
-		this.systems.command[Constant.COMMAND_WALK] = new WalkCommandSystem();
+		this.systems.command[Constant.COMMAND_NORMAL] = new CommandSystem();
+		this.systems.command[Constant.COMMAND_CHARACTER_STAND] = new StandCommandSystem();
+		this.systems.command[Constant.COMMAND_CHARACTER_WALK] = new WalkCommandSystem();
 	}
 };

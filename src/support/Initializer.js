@@ -28,10 +28,6 @@ Initializer = {
 		timerCom = new TimerComponent();
 		timerCom.total = GameSetting.knockDownTime;
 		Service.Gobal.stiffDownTimer = timerCom;
-		
-		//逻辑帧、渲染帧的FPS
-		Service.Gobal.logicTick = GameSetting.logicTick;
-		Service.Gobal.renderTick = GameSetting.renderTick;
 	},
 	
 	/**
@@ -142,26 +138,32 @@ Initializer = {
 		var action = null;
 		for(var i in template.actions){
 			action = template.actions[i];
-			for(var kName in action.coms){
-				if(!keys[kName]){
-					keys[kName] = kName;
+			for(var comName in action.coms){
+				if(!keys[comName]){
+					keys[comName] = comName;
 				}
 			}
 			//顺便初始化切换组件
-			/*if(action.coms.switchable){
-				var k = action.coms.switchable.keys;
-				var name = null;
-				for(var cmd in k){
-					name = k[cmd];
-					if(template.actions[name]){
-						k[cmd] = template.actions[name];
-						//未完。。。
-					}else{
-						cc.log("build switchable error. action:"+name+" not found.");
+			var command = action.coms.command;
+			if(command){
+				var action = null;
+				for(var name in command.list){
+					action = template.actions[name];
+					if(!action){
+						cc.log("build command-tree error. action:"+name+" not found.");
 						return;
 					}
+					if(action.key==0){
+						cc.log("build command-tree error. key is 0.");
+						return;
+					}
+					if(command.table[action.key]){
+						cc.log("build command-tree error. key:"+action.key+" exists. action:"+command.table[action.key].name);
+						return;
+					}
+					command.table[action.key] = action;
 				}
-			}*/
+			}
 		}
 		this._buildTemplateComponents(keys, template);
 		ObjectManager.templates[template.name] = template;

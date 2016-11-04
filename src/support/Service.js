@@ -77,19 +77,6 @@ Service = {
 			teamMask : 0,		//阵营的掩码
 
 			templates : {},		//存储已初始化的原始数据的模板
-	},
-	
-	/**
-	 * 全局游戏设置
-	 */
-	Gobal : {
-		logicTick : 0,
-		renderTick : 0,
-		gravity : null,			//ActionMoveComponent类型引用
-		hitBack : null,			//同上
-		hitDown : null,		//同上
-		stiffTimer : null,
-		stiffDownTimer : null
 	}
 
 };

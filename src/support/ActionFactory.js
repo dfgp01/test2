@@ -11,24 +11,29 @@ ActionFactory = {
 		 *  2016.03.05 有改动，详见 ActionState.init()注释
 		 */
 		createAction : function(data){
-			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name", true)){
+			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data.name)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
 			//cc.log("info: creating action:[" + data.name + "].");
 			var actionState = new ActionState();
 			actionState.name = data.name;
+			actionState.key = DataUtil.checkIsInt(data.key) ? data.key : 0;
 			actionState.init(data);
 			this._bulid(data, actionState);
 			return actionState;
 		},
 		
 		createMove : function(data){
-			if(!DataUtil.checkIsInt(data, "type")){
+			if(!DataUtil.checkNotNull(data)){
+				cc.log("createMove error. lack of necessary data!");
+				return null;
+			}
+			if(!DataUtil.checkIsInt(data.type, "type")){
 				cc.log("createMove error. move.type error.");
 				return null;
 			}
-			if(!DataUtil.checkIsNumber(data,"dx") || !DataUtil.checkIsNumber(data,"dy")){
+			if(!DataUtil.checkIsNumber(data.dx) || !DataUtil.checkIsNumber(data.dy)){
 				cc.log("createMove error. dx or dy must be number.");
 				return null;
 			}
@@ -39,28 +44,46 @@ ActionFactory = {
 			return move;
 		},
 		
-		createSwitchable : function(data){
-			var switchable = new SwitchableComponent();
-			for(var cmd in data){
-				switchable.keys[cmd] = data[cmd];
+		/**
+		 * 动作指令组件
+		 */
+		createCommand : function(data){
+			var type = DataUtil.checkIsInt(data.type) ? data.type : 0;
+			if(!DataUtil.checkArrayNotNullForLog(data.list,"data.list")){
+				cc.log("createCommand error. list error.");
+				return null;
 			}
-			return switchable;
+			var command = new ActionCommandComponent();
+			command.type = type;
+			command.list = [];
+			for(var name : data.list){
+				if(!DataUtil.checkIsStringForLog(name,"data.list.name")){
+					cc.log("createCommand error. list error.");
+					return null;
+				}
+				command.list.push(name);
+			}
+			return command;
 		},
 		
 		/**
 		 * 创建动画组件
 		 */
 		createAnimate : function(data){
-			if(!DataUtil.checkIsInt(data, "type")){
+			if(!DataUtil.checkNotNull(data)){
+				cc.log("createAnimate error. lack of necessary data!");
+				return null;
+			}
+			if(!DataUtil.checkIsIntForLog(data.type, "data.type")){
 				cc.log("createAnimate error. animate.type error.");
 				return null;
 			}
-			if(DataUtil.checkArrayNull(data,"frames")){
+			if(!DataUtil.checkArrayNotNullForLog(data.frames,"data.frames")){
 				cc.log("createAnimate error. animate.frames error.");
 				return null;
 			}
 			var animate = new AnimateComponent();
-			animate.type = DataUtil.checkIsInt(data,"type") ? data.type : 0;
+			animate.type = DataUtil.checkIsInt(data.type) ? data.type : 0;
 			animate.frames = [];
 			for(var i in data.frames){
 				var frame = cc.spriteFrameCache.getSpriteFrame(data.frames[i]);
@@ -76,12 +99,12 @@ ActionFactory = {
 			if(animate.type != Constant.ANIMATE_STATIC){
 				//interval或intervals属性必须有其中一个，否则用默认的间隔
 				animate.intervals = [];
-				if(DataUtil.checkIsNumber(data, "interval")){
+				if(DataUtil.checkIsNumber(data.interval)){
 					for(var i=0; i<data.frames.length; i++){
 						animate.intervals.push(data.interval);
 					}
 				}
-				else if(!DataUtil.checkArrayNull(data,"intervals")){
+				else if(DataUtil.checkArrayNotNullForLog(data.intervals,"data.intervals")){
 					if(data.intervals.length != data.frames.length){
 						cc.log("animate.intervals 数组和frame数量不对等.");
 						return null;
@@ -90,10 +113,10 @@ ActionFactory = {
 						animate.intervals.push(data.intervals[i]);
 					}
 				}else{
-					for(var i=0; i<frameList.length; i++){
+					for(var i=0; i<data.frames.length; i++){
 						//设置默认动画帧时长
-						animate.delays.push(
-								Service.Gobal.animateFrameTick);
+						animate.intervals.push(
+								GameSetting.Default.animateFrameTick);
 					}
 				}
 			}
@@ -108,23 +131,21 @@ ActionFactory = {
 				return;
 			}
 			//穷举组件检测
-			if(DataUtil.checkNotNull(data,"animate")){
+			if(DataUtil.checkNotNull(data.animate)){
 				action.coms.animate = this.createAnimate(data.animate);
 				action.addSystem(ObjectManager.systems.animate[data.animate.type]);
 			}
-			if(DataUtil.checkNotNull(data,"move")){
+			if(DataUtil.checkNotNull(data.move)){
 				action.coms.move = this.createMove(data.move);
 				action.addSystem(ObjectManager.systems.move[data.move.type]);
 			}
-			if(DataUtil.checkNotNull(data,"timer")){
+			if(DataUtil.checkNotNull(data.timer)){
 				component = this.createTimer(data.timer);
 				//system = ActionSystemUtil.getTimer(component);
-				//this.build(action, component, system);
 			}
-			if(DataUtil.checkNotNull(data,"switchable")){
-				component = this.createSwitchable(data.switchable);
-				system = ObjectManager.systems.switchable;
-				//this.build(action, component, system);
+			if(DataUtil.checkNotNull(data.command)){
+				component = this.createCommand(data.command);
+				action.addSystem(ObjectManager.systems.command[data.command.type]);
 			}
 			return;
 		},
@@ -134,41 +155,18 @@ ActionFactory = {
 		 */
 		createStandAction : function(data){
 			data.name = "stand";
-			if(DataUtil.checkArrayNull(data.animate.frames)){
-				cc.log("SimpleFactory.createStandAction error. frames is null.");
-				return null;
-			}
-			if(!DataUtil.checkIsInt(data.animate.type)){
-				data.animate.type = this._defaultAnimateType(data.animate.frames);
-			}
-			var action = Factory.createAction(data);
-			ActionUtil.addSystem(action, ActionUtil.systems.stand[Constant.GAMEOBJECT_CHARACTER]);
-			return action;
-		},
-		
-		createWalkAction : function(data){
-			data.name = "walk";
-			if(DataUtil.checkArrayNull(data.animate.frames)){
-				cc.log("SimpleFactory.createWalkAction error. frames is null.");
-				return null;
-			}
-			if(!DataUtil.checkIsInt(data.animate.type)){
-				data.animate.type = this._defaultAnimateType(data.animate.frames);
-			}
-			data.move.type = Constant.MOVE_BY_CMD;
-			var action = Factory.createAction(data);
-			return action;
+			data.animate.type = data.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
+			data.command.type = Constant.COMMAND_CHARACTER_STAND;
+			return Factory.createAction(data);
 		},
 		
 		/**
-		 * 默认动画类型
-		 * frames: 字符串数组
-		 * 专为 stand,walk这样的action来提供默认动画类型
+		 * 创建走路/奔跑动作节点
 		 */
-		_defaultAnimateType : function(frames){
-			if(frames.length > 1){
-				return Constant.ANIMATE_SCROLL;
-			}
-			return Constant.ANIMATE_STATIC;
+		createWalkAction : function(data){
+			data.name = "walk";
+			data.animate.type = data.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
+			data.command.type = Constant.COMMAND_CHARACTER_WALK;
+			return Factory.createAction(data);
 		}
 };

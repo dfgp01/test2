@@ -111,7 +111,9 @@ ActionMoveComponent = Component.extend({
 
 ActionCommandComponent = Component.extend({
 	name : "command",
+	type : 0,
 	table : null,
+	list : null,	//临时存放data数据
 	ctor : function(){
 		this.table = {};
 	}

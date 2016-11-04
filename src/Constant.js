@@ -11,23 +11,23 @@ Constant = {
 	BOOLEAN_FALSE : 0,
 	
 	/**
-	 * 动画类型枚举
+	 * 动画组件系统类型枚举
 	 */
 	ANIMATE_STATIC : 0,		//播放完之后会停在最后一帧，不会结束动作
 	ANIMATE_ONCE : 1,		//播放完之后会结束动作
 	ANIMATE_SCROLL : 2,		//循环播放
 	
 	/**
-	 * 运动类型枚举
+	 * 运动组件系统类型枚举
 	 */
 	MOVE_NORMAL : 0,	//固定直线匀速移动方式
 	
 	/**
-	 * 指令逻辑类型（用于action系统）
+	 * 指令组件系统类型枚举
 	 */
-	COMMAND_STAND : 0,
-	COMMAND_WALK : 1,
-	COMMAND_MOVE : 2,
+	COMMAND_NORMAL : 0,
+	COMMAND_CHARACTER_STAND : 1,
+	COMMAND_CHARACTER_WALK : 2,
 	
 	/**
 	 * 组件名称
@@ -64,6 +64,7 @@ Constant = {
 	CMD_LEFT : 2,
 	CMD_UP : 4,
 	CMD_DOWN : 8,
+	CMD_DIRECTION_CHARGE : 16,
 	CMD_PLAYER_ATTACK : 11,
 	CMD_AI_ATTACK : 1,
 	CMD_ATTACK_CHARGE : 10,
