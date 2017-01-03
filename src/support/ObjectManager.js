@@ -27,6 +27,8 @@ ComponentManager = {
 	_moveHead : null,
 	_moveTail : null,
 	
+	init :function(){},
+	
 	_add : function(node, head, tail){
 		if(node.prep==null && node.next==null){
 			if(head==null){
@@ -129,7 +131,8 @@ ActionManager = {
 		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
 		this.start[Constant.GAMEOBJECT_CHARACTER] = action;
 		//this.systems.animate[0] = new SimpleAnimateSystem();
-		this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
+		
+		/*this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
 		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateNormal();
 		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateScroll();
 		
@@ -137,6 +140,6 @@ ActionManager = {
 		
 		this.systems.command[Constant.COMMAND_NORMAL] = new CommandSystem();
 		this.systems.command[Constant.COMMAND_CHARACTER_STAND] = new StandCommandSystem();
-		this.systems.command[Constant.COMMAND_CHARACTER_WALK] = new WalkCommandSystem();
+		this.systems.command[Constant.COMMAND_CHARACTER_WALK] = new WalkCommandSystem();*/
 	}
 };

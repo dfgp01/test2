@@ -28,7 +28,7 @@ PlayerSystem = System.extend({
 	},
 
 	pressDirection : function(command){
-		this._command.direction = command | Constant.CMD_DIRECTION_CHARGE;	//便于commandSystem吞噬指令
+		this._command.direction = command;
 		
 		//暂时只支持四方向
 		if(command!=1&&command!=2&&command!=4&&command!=8){

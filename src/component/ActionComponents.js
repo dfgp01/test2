@@ -4,16 +4,6 @@
  **/
 
 /**
- * 	动画组件
- */
-AnimateComponent = Component.extend({
-	name : "animate",
-	frames : null,
-	intervals : null,
-	type : 0
-});
-
-/**
  * 可切换动作的组件
  */
 SwitchableComponent = Component.extend({
@@ -83,38 +73,5 @@ GroupComponent = Component.extend({
 	},
 	add : function(com){
 		this.coms[com.name] = com;
-	}
-});
-
-/**
- * 动作运动组件
- */
-ActionMoveComponent = Component.extend({
-	name : "move",
-	dx : 0,					//dx,dy,dz 代表移动增量
-	dy : 0,
-	dz : 0,
-	maxDx : 0,			//这三个代表最高速度
-	maxDy : 0,
-	maxDz : 0,
-	clone : function(){
-		var com = new ActionMotionComponent();
-		com.dx = this.dx;
-		com.dy = this.dy;
-		com.dz = this.dz;
-		com.maxDx = this.maxDx;
-		com.maxDy = this.maxDy;
-		com.maxDz = this.maxDz;
-		return com;
-	}
-});
-
-ActionCommandComponent = Component.extend({
-	name : "command",
-	type : 0,
-	table : null,
-	list : null,	//临时存放data数据
-	ctor : function(){
-		this.table = {};
 	}
 });
