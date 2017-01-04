@@ -5,17 +5,48 @@ ObjectManager = {
 	coms : null,
 	systems : null,
 	actions : null,
+	actionStacks : null,
 	
 	init : function(){
 		ComponentManager.init();
 		SystemManager.init();
 		ActionManager.init();
-		ObjectQueneManager.init();
+		ActionStackManager.init();
 		this.coms = ComponentManager;
 		this.systems = SystemManager;
 		this.actions = ActionManager;
+		this.actionStacks = ActionStackManager;
+	},
+
+	getActionStackInfo : function(name){
+		return this.actionStacks.getStack(name);
 	}
 };
+
+ActionStackManager = {
+	quene : null,
+	init : function(){
+		this.quene = [];
+	},
+	getStack : function(){
+		var stack = this.quene.pop();
+		if(stack){
+			stack.index = 0;
+			stack.repeat = 0;
+			stack.isEnd = false;
+		}else{
+			stack = createStack();
+		}
+		return stack;
+	},
+	createStack : function(){
+		var stack = new Object();
+		stack.index = 0;
+		stack.repeat = 0;
+		stack.isEnd = false;
+		return stack;
+	}
+}
 
 /**
  * 组件管理器，提供快速筛选组件
@@ -92,7 +123,7 @@ SystemManager = {
 	action : null,
 	EvtMsg : null,
 	animate : null,
-	view : null
+	view : null,
 	
 	init : function(){
 		//初始化主系统
