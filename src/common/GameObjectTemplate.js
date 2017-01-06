@@ -13,8 +13,7 @@ GameObjectTemplate = cc.Class.extend({
 	_objTail : null,	//对象池队列的尾指针
 
 	actions : null,		//动作集合
-	firstAct : null,
-	coms : null,
+	propertys : null,	//属性集合
 	
 	nextId : 1,
 
@@ -44,8 +43,7 @@ GameObjectTemplate = cc.Class.extend({
 			unit = new GameObject();
 			unit.name = this.name;
 			unit.coms = {};
-			//注意，单位的ID是 名字+id序号 的组合
-			unit.id = this.name + this.nextId++;
+			unit.id = this.nextId++;
 			
 			for(var i in this.coms){
 				var name = this.coms[i].name;

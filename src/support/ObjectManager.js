@@ -2,7 +2,7 @@
  * 对象管理器，缓存游戏中所有系统对象（非游戏元素对象）
  */
 ObjectManager = {
-	coms : null,
+	propertys : null,
 	systems : null,
 	actions : null,
 	actionStacks : null,
@@ -12,17 +12,23 @@ ObjectManager = {
 		SystemManager.init();
 		ActionManager.init();
 		ActionStackManager.init();
-		this.coms = ComponentManager;
+		this.propertys = PropertyManager;
 		this.systems = SystemManager;
 		this.actions = ActionManager;
 		this.actionStacks = ActionStackManager;
 	},
 
-	getActionStackInfo : function(name){
-		return this.actionStacks.getStack(name);
+	getActionStackInfo : function(){
+		return this.actionStacks.getStack();
+	},
+	recycleActionStackInfo : function(stackInfo){
+		this.actionStacks.recycle(stackInfo);
 	}
 };
 
+/**
+ * 动作栈对象缓存队列
+ */
 ActionStackManager = {
 	quene : null,
 	init : function(){
@@ -30,28 +36,23 @@ ActionStackManager = {
 	},
 	getStack : function(){
 		var stack = this.quene.pop();
-		if(stack){
-			stack.index = 0;
-			stack.repeat = 0;
-			stack.isEnd = false;
-		}else{
-			stack = createStack();
+		if(!stack){
+			stack = new Object();
 		}
-		return stack;
-	},
-	createStack : function(){
-		var stack = new Object();
 		stack.index = 0;
 		stack.repeat = 0;
-		stack.isEnd = false;
+		stack.status = 0;
 		return stack;
+	},
+	recycle : function(stackInfo){
+		this.quene.push(stackInfo);
 	}
 }
 
 /**
- * 组件管理器，提供快速筛选组件
+ * 单位属性队列
  */
-ComponentManager = {
+PropertyManager = {
 
 	_viewHead : null,
 	_viewTail : null,

@@ -15,7 +15,7 @@ GameObjectFactory = {
 		template.name = data.name;
 		template.frame = EngineUtil.getFrame(data.frame);
 		template.availableList = [];
-		template.coms = {};
+		template.propertys = {};
 		template.actions = {};
 		template.init(data);
 		if(DataUtil.checkArrayNotNullForLog(data.actions,"data.actions")){
@@ -23,10 +23,23 @@ GameObjectFactory = {
 			for(var i in data.actions){
 				action = this.createAction(data.actions[i]);
 				template.actions[action.name] = action;
+				if(action.components.length > 0){
+					for(var component in action.components){
+						this._addProperty(template, component.name);
+					}
+				}
 			}
 		}
 		return template;
 	},
+	
+	addProperty : function(template, name){
+		if(!template.propertys.name){
+			if(name=='move'){
+				template.propertys.move = new MoveProperty();
+			}
+		}
+	}
 	
 	createMove : function(data){
 		/*var move = new UnitMoveComponent();

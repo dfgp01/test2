@@ -2,7 +2,7 @@
  * 	普通动画组件，关于显示和动画这一块，以后还有很多要改的。。。2017.01.03
  */
 AnimateComponent = Component.extend({
-	name : "animate",
+	name : "view",
 	frames : null,
 	intervals : null,
 	
@@ -11,7 +11,7 @@ AnimateComponent = Component.extend({
 	},
 	
 	start : function(viewCom){
-		//viewCom.animate = animateCom;
+		viewCom.frame = this.frames[0];
 		viewCom.frameIndex = 0;
 		viewCom.interval = 0;
 		ObjectManager.coms.addViewNode(viewCom);
@@ -23,9 +23,8 @@ AnimateComponent = Component.extend({
 			viewCom.interval -= this.intervals[viewCom.frameIndex];
 			viewCom.frameIndex++;
 			if(viewCom.frameIndex < this.frames.length){
+				viewCom.frame = this.frames[viewCom.frameIndex];
 				ObjectManager.coms.addViewNode(viewCom);
-			}else{
-				//end
 			}
 		}
 	}

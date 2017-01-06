@@ -69,5 +69,14 @@ ActionState = cc.Class.extend({
 		}
 		//上面的循环未return时，说明system的优先级是最小的，要补加到列表尾
 		this.systemList.push(system);
+	},
+	
+	getStackInfo : function(unit){
+		var stackInfo = unit.actions.stacks[this.name];
+		if(!stackInfo){
+			stackInfo = ObjectManager.getActionStackInfo();
+			unit.actions.stacks[this.name] = stackInfo;
+		}
+		return stackInfo;
 	}
 });

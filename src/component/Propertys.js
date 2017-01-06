@@ -1,12 +1,22 @@
 /**
- * 		用于游戏单位中的组件
- * 		Hugo-Fu 2015.11.11	
+ * 		定义游戏单位中的各种属性组件
+ * 		Hugo-Fu 2017.01.06
  */
+
+/**
+ * 	GameObject/Unit 对象属性集抽象类
+ */
+Property = cc.Class.extend({
+	name : "property",
+	owner : null,		//所属unit
+	prev : null,		//前驱指针
+	next : null,		//后驱指针
+});
 
 /**
  *  可视元素组件
  */
-ViewComponent = Component.extend({
+ViewProperty = Property.extend({
 	name : "view",
 	animate : null,			//当前动画组件引用
 	effect : null,			//动画特效组件
@@ -17,7 +27,8 @@ ViewComponent = Component.extend({
 	lastFrameIndex : 0,		//上次的帧索引，用于判断是否更新帧
 	interval : 0,
 	title : "unname",			//显示的名字
-	sprite : null,			//cc.sprite的引用
+	sprite : null,			//cc.Sprite的引用
+	frame : null,			//cc.SpriteFrame的引用
 
 	ctor : function(){
 		this.sprite = EngineUtil.newSprite();
@@ -31,30 +42,26 @@ ViewComponent = Component.extend({
 /**
  * 动作管理组件
  */
-ActionsComponent = Component.extend({
+ActionsProperty = Property.extend({
 	name : "actions",
 	current : null,			//当前action引用
-	repeatFlag : 0,
 	endFlag : false,
-	phase : 0,
 	next : null,
-	timer : null,			//timerCom组件
-	names : null,			//Action索引
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
+	stacks : null,			//map<name, stackInfo>结构
 	
 	ctor : function(){
-		this.repeatFlag = 0;
 		this.endFlag = false;
-		this.phase = 0;
 		this.next = null;
 		this.state = 0;
+		this.stacks = {};
 	}
 });
 
 /**
  * 单位运动组件
  */
-UnitMoveComponent = Component.extend({
+MoveProperty = Property.extend({
 	name : "move",
 	move : null,			//当前actionMove组件引用
 	coefficient : 1,		//速度比例系数
@@ -75,7 +82,7 @@ UnitMoveComponent = Component.extend({
 /**
  * 单位的攻击组件
  */
-UnitHitComponent = Component.extend({
+HitProperty = Property.extend({
 	name : "hit",
 	hit : null,			//当前action.hit的引用
 	strength : 0,
@@ -91,7 +98,7 @@ UnitHitComponent = Component.extend({
 /**
  * 单位的挨打组件
  */
-HurtComponent = Component.extend({
+HurtComponent = Property.extend({
 	name : "hurt",
 	hp : 0,
 	defence : 0,		//防御值
@@ -106,7 +113,7 @@ HurtComponent = Component.extend({
 /**
  * 单位的碰撞组件
  */
-UnitCollideComponent = Component.extend({
+UnitCollideComponent = Property.extend({
 	name : "collide",
 	collide : null,		//action.collide的引用
 	total : 0,			//记录一共碰撞了多少unit
@@ -125,7 +132,7 @@ UnitCollideComponent = Component.extend({
  * 单位状态存储组件
  * 	stateIds 存储buff和其他状态的信息，key为effect.name，effect分别分布在hitCom,hurtCom和stateCom.timer中
  */
-UnitStateComponent = Component.extend({
+UnitStateComponent = Property.extend({
 	stateIds : null,
 	timer : null,
 	
@@ -139,7 +146,7 @@ UnitStateComponent = Component.extend({
 *	单位从属关系组件
 *	用于召唤兽和子弹之类
 */
-MasterComponent = Component.extend({
+MasterComponent = Property.extend({
 	name : "master",
 	top : null,			//顶级所属
 	parent : null,		//上一级所属
@@ -162,7 +169,7 @@ MasterComponent = Component.extend({
 /**
  * 指令输入组件
  */
-CommandComponent = Component.extend({
+CommandProperty = Property.extend({
 	name : "command",
 	direction : 0,
 	attack : 0,

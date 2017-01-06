@@ -6,22 +6,19 @@ CommandComponent = Component.extend({
 	type : 0,
 	table : null,
 	list : null,	//临时存放data数据
+	
 	init : function(data){
 		this.table = {};
 	},
 	
-	_attack : Constant.CMD_AI_ATTACK,
-	_action : null,
-	
-	update : function(dt, unitCmdCom){
-		if(unitCmdCom.attack & this._attack){
-			this._action = this._findByKey(this.table, unitCmdCom.comboKey);
+	update : function(dt, unitCmd){
+		if(unitCmd.attack & Constant.CMD_AI_ATTACK){
+			var action = this._findByKey(this.table, unitCmd.comboKey);
 			if(this._action){
-				ActionUtil.next(unitCmdCom.owner.action, this._action);
-				this._action = null;
+				ActionUtil.next(unitCmd.owner.actions, action);
 			}
-			unitCmdCom.attack = 0;
-			unitCmdCom.comboKey = 0;
+			unitCmd.attack = 0;
+			unitCmd.comboKey = 0;
 		}
 	},
 	
@@ -52,17 +49,22 @@ CommandComponent = Component.extend({
 	}
 });
 
+/**
+ * 站立动作时的指令处理
+ */
 StandCommandComponent = CommandComponent.extend({
-	_cmdAllDirection : Constant.CMD_ALL_DIRECTION,
-	update : function(dt, unitCmdCom){
-		if(unitCmdCom.direction & this._cmdAllDirection){
-			ActionUtil.next(unitCmdCom.owner.action, unitCmdCom.owner.template.actions['walk']);
+	update : function(dt, unitCmd){
+		if(unitCmd.direction & Constant.CMD_ALL_DIRECTION){
+			ActionUtil.next(unitCmd.owner.action, unitCmd.owner.template.actions['walk']);
 			return;
 		}
-		this._super(dt, unitCmdCom);
+		this._super(dt, unitCmd);
 	}
 });
 
+/**
+ * 走动动作时的指令处理
+ */
 WalkCommandComponent = CommandComponent.extend({
 	_init : function(unitCmdCom){
 		//左右方向不共存
@@ -87,7 +89,6 @@ WalkCommandComponent = CommandComponent.extend({
 		this._init(unitCmdCom);
 	},
 
-	//这一部分应该要更完善 2016.03.25
 	update : function(dt, unitCmdCom){
 		
 		if(unitCmdCom.direction == 0){
@@ -100,6 +101,7 @@ WalkCommandComponent = CommandComponent.extend({
 		if(unitCmdCom.direction > Constant.CMD_DIRECTION_CHARGE){
 			//指令有变化，应重新设定
 			this._init(unitCmdCom);
+			return;
 		}
 		
 		this._super(dt, unitCmdCom);
