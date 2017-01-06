@@ -3,6 +3,17 @@
  */
 ComponentFactory = {
 	
+	addComponent : function(action, component){
+		for(var i in action.components){
+			if(component.priority > action.components[i].priority){
+				this.systemList.splice(i, 0, system);
+				return;
+			}
+		}
+		//上面的循环未return时，说明优先级是最小的，要补加到列表尾
+		action.components.push(component);
+	},
+
 	/**
 	 * 移动组件
 	 */
@@ -41,7 +52,7 @@ ComponentFactory = {
 		var command = new ActionCommandComponent();
 		command.type = type;
 		command.list = [];
-		for(var name : data.list){
+		for(var name in data.list){
 			if(!DataUtil.checkIsStringForLog(name,"data.list.name")){
 				cc.log("createCommand error. list error.");
 				return null;

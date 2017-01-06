@@ -15,7 +15,7 @@ ActionFactory = {
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
-			//cc.log("info: creating action:[" + data.name + "].");
+			cc.log("info: creating action:[" + data.name + "].");
 			var actionState = new ActionState();
 			actionState.name = data.name;
 			actionState.key = DataUtil.checkIsInt(data.key) ? data.key : 0;
@@ -33,12 +33,13 @@ ActionFactory = {
 			}
 			//穷举组件检测
 			if(DataUtil.checkNotNull(data.animate)){
-				action.coms.animate = this.createAnimate(data.animate);
-				action.addSystem(ObjectManager.systems.animate[data.animate.type]);
+				ComponentFactory.addComponent(action,
+					ComponentFactory.createAnimate(data.animate));
+				//action.addSystem(ObjectManager.systems.animate[data.animate.type]);
 			}
 			if(DataUtil.checkNotNull(data.move)){
-				action.coms.move = this.createMove(data.move);
-				action.addSystem(ObjectManager.systems.move[data.move.type]);
+				ComponentFactory.addComponent(action,
+					ComponentFactory.createMove(data.move));
 			}
 			if(DataUtil.checkNotNull(data.timer)){
 				component = this.createTimer(data.timer);
