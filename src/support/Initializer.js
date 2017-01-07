@@ -130,55 +130,7 @@ Initializer = {
 		template.actions.start = ObjectManager.actions.start[Constant.GAMEOBJECT_CHARACTER];
 		template.actions.stand = ActionFactory.createStandAction(data.stand);
 		template.actions.walk = ActionFactory.createWalkAction(data.walk);
-		
-		/**
-		 * 统一构建template的组件
-		 */
-		var keys = {};
-		var action = null;
-		for(var i in template.actions){
-			action = template.actions[i];
-			for(var comName in action.coms){
-				if(!keys[comName]){
-					keys[comName] = comName;
-				}
-			}
-			//顺便初始化切换组件
-			var command = action.coms.command;
-			if(command){
-				var action = null;
-				for(var name in command.list){
-					action = template.actions[name];
-					if(!action){
-						cc.log("build command-tree error. action:"+name+" not found.");
-						return;
-					}
-					if(action.key==0){
-						cc.log("build command-tree error. key is 0.");
-						return;
-					}
-					if(command.table[action.key]){
-						cc.log("build command-tree error. key:"+action.key+" exists. action:"+command.table[action.key].name);
-						return;
-					}
-					command.table[action.key] = action;
-				}
-			}
-		}
-		this._buildTemplateComponents(keys, template);
 		ObjectManager.templates[template.name] = template;
 		return;
-	},
-	
-	_buildTemplateComponents : function(keys, template){
-		if(keys.command){
-			template.coms.command = GameObjectFactory.createCommand(null);
-		}
-		if(keys.move){
-			template.coms.move = GameObjectFactory.createMove(data.move);
-		}
-		if(keys.hit){
-			template.coms.hit = GameObjectFactory.createHit(data.hit);
-		}
 	}
 }

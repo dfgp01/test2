@@ -21,7 +21,7 @@ GameObjectFactory = {
 		if(DataUtil.checkArrayNotNullForLog(data.actions,"data.actions")){
 			var action = null;
 			for(var i in data.actions){
-				action = this.createAction(data.actions[i]);
+				action = ActionFactory.createAction(data.actions[i]);
 				template.actions[action.name] = action;
 				if(action.components.length > 0){
 					for(var component in action.components){
@@ -39,13 +39,5 @@ GameObjectFactory = {
 				template.propertys.move = new MoveProperty();
 			}
 		}
-	}
-	
-	createMove : function(data){
-		/*var move = new UnitMoveComponent();
-		if(data && DataUtil.checkIsNumber(data, "coefficient")){
-			move.coefficient = data.coefficient;
-		}
-		return move;*/
 	}
 }
