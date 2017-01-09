@@ -19,20 +19,54 @@ Service = {
 	},
 
 	/**
-	 * 	从指定模板中创建新对象
+	 * 回收，归对象池队列内
 	 */
-	newObject : function(tempName, x,y,z, cc_layer){
-		var tmp = ObjectManager.templates[tempName];
-		if(!tmp){
+	recycleUnit : function(unit){
+		unit.template.availableList.push(unit);
+	},
+	
+	/**
+	 * 	从指定模板中创建新单位
+	 */
+	newUnit : function(templateName, x,y,z, cc_layer){
+		var template = ObjectManager.templates[templateName];
+		if(!template){
 			cc.log("template: " + tempName + " not found!");
 			return null;
-		}else{
-			var obj = tmp.getNewInstance();
-			EngineUtil.addSprite(obj.coms.view, x,y,z, cc_layer)
-			//默认的初始动作
-			tmp.actions.start.start(obj);
-			return obj;
 		}
+		var unit = null,
+		if(template.availableList.length > 0){
+			unit = template.availableList.pop();
+		}else{
+			unit = new GameObject();
+			unit.init({
+				name : this.name,
+				id : this.nextId++
+			},this);
+			for(var i in this.propertys){
+				var name = this.propertys[i].name;
+				var property = GameObjectFactory.createProperty(name);
+				property.owner = unit;
+				property.prev = null;
+				property.next = null;
+				unit.propertys[property.name] = property;
+			}
+			unit.view = GameObjectFactory.createProperty("view");
+			unit.view.owner = unit;
+			unit.actions = GameObjectFactory.createProperty("actions");
+			unit.actions.owner = unit;
+			unit.template = this;
+		}
+		//初始化所有属性值，需要额外的封装方法（对象拷贝或对象值拷贝）
+		for(var i in this.propertys){
+			var name = this.propertys[i].name;
+			for(var j in this.propertys[i]){
+				unit.propertys[j] = this.propertys[i][j];
+			}
+		}
+		EngineUtil.addSprite(unit.view, x,y,z, cc_layer);
+		template.actions.boot.start(unit);
+		return unit;
 	},
 	
 	initialize : function(){
@@ -58,25 +92,16 @@ Service = {
 	},
 	
 	/**
-	 * 全局数据容器，存储所有游戏对象，用于数据共享，方便对象间的访问
+	 * 全局数据对象，用于数据共享
 	 */
-	Container : {
-		
+	Gobal : {
 			//玩家数据
 			player : {
 				unit : null,
-				unitState : 0,
 				score : 0
 			},
 			
-			//存储单位缓存、以name+id作为索引，如：monster1,monster2
-			units : {},
-
-			groups : [],		//存储单位组信息，对象是Group
-			
-			teamMask : 0,		//阵营的掩码
-
-			templates : {},		//存储已初始化的原始数据的模板
+			gravity : null
 	}
 
 };

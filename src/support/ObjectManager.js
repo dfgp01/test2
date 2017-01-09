@@ -119,18 +119,13 @@ PropertyManager = {
 
 SystemManager = {
 	main : null,
-	player : null,
 	move : null,
 	action : null,
-	EvtMsg : null,
-	animate : null,
 	view : null,
 	
 	init : function(){
 		//初始化主系统
-		//this.main = new MainSystem();
-		this.player = new PlayerSystem();
-		//this.animate = new AnimateUpdateSystem();
+		this.main = new MainSystem();
 		//this.move = new MotionUpdateSystem();
 		this.action = new ActionUpdateSystem();
 		this.view = new RenderUpdateSystem();
@@ -144,6 +139,9 @@ SystemManager = {
 	}
 };
 
+/**
+ * 公共动作对象
+ */
 ActionManager = {
 	
 	//公共action缓存

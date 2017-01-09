@@ -3,7 +3,6 @@
  */
 RenderUpdateSystem = System.extend({
 	name : "view",
-	_view : null,
 	tick : Constant.TICK_FPS24,
 	
 	/**
@@ -17,9 +16,9 @@ RenderUpdateSystem = System.extend({
 	},*/
 	
 	update : function(dt){
-		
-		this._view = ObjectManager.coms.getFirstViewNode();
-		while(this._view!=null){
+		this._curr = ObjectManager.propertys.getFirstViewNode();
+		this._super(dt);
+		/*while(this._view!=null){
 			this.renderFrame(this._view);
 			this._view = this._view.next;
 			ObjectManager.coms.removeViewNode(this._view.prep);
@@ -29,7 +28,13 @@ RenderUpdateSystem = System.extend({
 		while(this._move!=null){
 			this.renderPosition(this._move);
 			this._move = this._move.next;
-		}
+		}*/
+	},
+	
+	execute : function(dt, unitViewNode){
+		this.renderFrame(this.unitViewNode);
+		this.renderPosition(this.unitViewNode);
+		ObjectManager.propertys.removeViewNode(this.unitViewNode);
 	},
 	
 	renderFrame : function(viewCom){
@@ -38,12 +43,13 @@ RenderUpdateSystem = System.extend({
 			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
 			viewCom.vx = 0;
 		}
-		EngineUtil.setFrame(viewCom.sprite, viewCom.animate.frames[viewCom.frameIndex]);
+		EngineUtil.setFrame(viewCom.sprite, viewCom.frame);
 	},
 	
-	renderPosition : function(moveCom){
-		if(moveCom.dx!=0 || moveCom.dy!=0){
-			EngineUtil.setPosition(moveCom.owner.viewCom.sprite, moveCom);
+	renderPosition : function(viewCom){
+		if(viewCom.dx!=0 || viewCom.dy!=0){
+			EngineUtil.setPosition(viewCom.sprite, moveCom);
+			viewCom.dx = viewCom.dy = 0;
 		}
 	}
 });

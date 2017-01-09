@@ -27,7 +27,6 @@ MoveComponent = Component.extend({
 	},
 	
 	update : function(dt, unitMoveCom){
-		//gameObj.coms.motion.dx = gameObj.coms.motion.vx * actionCom.dx * dt;
 		unitMoveCom.dx += this.dx * unitMoveCom.vx;
 		unitMoveCom.dy += this.dy;
 	},

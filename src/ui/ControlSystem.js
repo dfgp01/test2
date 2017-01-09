@@ -1,9 +1,7 @@
 /**
  *	玩家操作控制系统
  */
-PlayerSystem = System.extend({
-	name : "player",
-	tick : Constant.TICK_FPS30,
+ControlSystem = {
 	
 	comboKey : 0,
 
@@ -22,8 +20,8 @@ PlayerSystem = System.extend({
 	
 	_command : null,
 
-	start : function(){
-		this.target = Service.Container.player.unit;
+	init : function(){
+		this.target = Service.Gobal.player.unit;
 		this._command = this.target.command;
 	},
 
@@ -82,4 +80,4 @@ PlayerSystem = System.extend({
 	releaseAttack : function(){
 		this._command.attack = 0;
 	}
-});
+};

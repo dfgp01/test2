@@ -11,6 +11,7 @@ Property = cc.Class.extend({
 	owner : null,		//所属unit
 	prev : null,		//前驱指针
 	next : null,		//后驱指针
+	init : function(data){}	//初始化函数，注意data对象可能是空的，必须做好判断
 });
 
 /**
@@ -20,16 +21,17 @@ ViewProperty = Property.extend({
 	name : "view",
 	animate : null,			//当前动画组件引用
 	effect : null,			//动画特效组件
-	z : 0,					//在地上的Y值，用于空中状态落地判断
-	vx : 1,					//面向，1为右边，-1为左边
-	lastVx : 0,				//上次的面向，用于判断是否更新面向
 	frameIndex : 0,
-	lastFrameIndex : 0,		//上次的帧索引，用于判断是否更新帧
 	interval : 0,
 	title : "unname",			//显示的名字
 	sprite : null,			//cc.Sprite的引用
 	frame : null,			//cc.SpriteFrame的引用
-
+	
+	z : 0,					//在地上的Y值，用于空中状态落地判断
+	vx : 1,					//面向，1为右边，-1为左边，用于渲染
+	dx : 0,					//x偏移量，用于渲染
+	dy : 0,					//y偏移量，用于渲染
+	
 	ctor : function(){
 		this.sprite = EngineUtil.newSprite();
 		this.z = 0;
@@ -50,7 +52,7 @@ ActionsProperty = Property.extend({
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
 	stacks : null,			//map<name, stackInfo>结构
 	
-	ctor : function(){
+	init : function(data){
 		this.endFlag = false;
 		this.next = null;
 		this.state = 0;
@@ -63,19 +65,15 @@ ActionsProperty = Property.extend({
  */
 MoveProperty = Property.extend({
 	name : "move",
-	move : null,			//当前actionMove组件引用
 	coefficient : 1,		//速度比例系数
 	dx : 0,					//dx,dy,dz 代表移动增量
 	dy : 0,
 	dz : 0,
 
-	clone : function(){
-		var com = new UnitMoveComponent();
-		com.coefficient = this.coefficient;
-		com.dx = this.dx;
-		com.dy = this.dy;
-		com.dz = this.dz;
-		return com;
+	init : function(data){
+		if(data){
+			this.coefficient = data.coefficient;
+		}
 	}
 });
 

@@ -8,13 +8,10 @@ Initializer = {
 	 */
 	initGobalParam : function(){
 		//引力设置
-		var motionCom = new ActionMoveComponent();
-		motionCom.dy = GameSetting.gravity;
-		motionCom.maxDy = GameSetting.maxGravity;
-		Service.Gobal.gravity = motionCom;
+		Service.Gobal.gravity = GameObjectFactory.createProperty("move", {dy:GameSetting.gravity, maxDy:GameSetting.maxGravity});
 
 		//被击中相关设置
-		motionCom = new ActionMoveComponent();
+		/*motionCom = new ActionMoveComponent();
 		motionCom.dx = GameSetting.hitBack;
 		Service.Gobal.hitBackMotion = motionCom;
 		var timerCom = new TimerComponent();
@@ -27,7 +24,7 @@ Initializer = {
 		Service.Gobal.hitDownMotion = motionCom;
 		timerCom = new TimerComponent();
 		timerCom.total = GameSetting.knockDownTime;
-		Service.Gobal.stiffDownTimer = timerCom;
+		Service.Gobal.stiffDownTimer = timerCom;*/
 	},
 	
 	/**
@@ -65,57 +62,6 @@ Initializer = {
 		}*/
 		Service.Container.teamMask = teamCharacterMask;
 	},
-
-	/**
-	 * 初始化单位的构建模板（待删，或待改进）
-	 */
-	initUnitTemplate : function(data){
-
-		//必要性检查
-		if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data, "name")){
-			cc.log("create Character error, lack of necessary data! data is null or no name.");
-			return;
-		}
-		if(!DataUtil.checkIsArray(data, "actions")){
-			cc.log("create Character error, must has actions!");
-			return;
-		}
-
-		cc.log("initial unit template, name:" + data.name);
-		var unitTemplate = Factory.createUnitTemplate(data);
-
-		cc.log("initial actions data......");
-		for(var i in data.actions){
-			var act = Factory.createActionState(data.actions[i]);
-			unitTemplate.actions.names[act.name] = act;
-		}
-
-		//默认第一个action就是初始动作
-		var firstActName = data.actions[0].name;
-		unitTemplate.firstAct = unitTemplate.actions.names[firstActName];
-
-		//根据不同种类的游戏对象补充各自的动作系统
-		switch(unitTemplate.type){
-		case Constant.GameObject.Type.MONSTER :
-		case Constant.GameObject.Type.HERO :
-			this.buildCharacterActionSys(unitTemplate.actions.names);
-			break;
-		default:
-			break;
-		}
-
-		if(!DataUtil.checkArrayNull(data, "actLamda")){
-			cc.log("initial action & skill link relationship......");
-			for(var i in data.actLamda){
-				cc.log("  initial : " + data.actLamda[i]);
-				ActionUtil.linkForExpress(data.actLamda[i], unitTemplate.actions.names);
-			}
-			//检测闭环
-			ActionUtil.treeMap([], unitTemplate.actions.names, "");
-			cc.log(" lamda express finish.");
-		}
-		Service.Container.templates[unitTemplate.name] = unitTemplate;
-	},
 	
 	/**
 	 * 初始化人物
@@ -127,9 +73,14 @@ Initializer = {
 			return null;
 		}
 		var template = GameObjectFactory.createTemplate(data);
-		template.actions.start = ObjectManager.actions.start[Constant.GAMEOBJECT_CHARACTER];
-		template.actions.stand = ActionFactory.createStandAction(data.stand);
-		template.actions.walk = ActionFactory.createWalkAction(data.walk);
+		var action = ObjectManager.actions.start[Constant.GAMEOBJECT_CHARACTER];
+		template.actions.start = action;
+		
+		GameObjectFactory.addActionAndProperty(ActionFactory.createStandAction(data.stand));
+		if(data.walk){
+			GameObjectFactory.addActionAndProperty(ActionFactory.createWalkAction(data.walk));
+		}
+		
 		ObjectManager.templates[template.name] = template;
 		return;
 	}

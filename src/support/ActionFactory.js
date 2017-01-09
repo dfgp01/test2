@@ -43,7 +43,6 @@ ActionFactory = {
 			}
 			if(DataUtil.checkNotNull(data.timer)){
 				component = this.createTimer(data.timer);
-				//system = ActionSystemUtil.getTimer(component);
 			}
 			if(DataUtil.checkNotNull(data.command)){
 				component = this.createCommand(data.command);
