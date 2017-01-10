@@ -19,25 +19,20 @@ Property = cc.Class.extend({
  */
 ViewProperty = Property.extend({
 	name : "view",
-	animate : null,			//当前动画组件引用
-	effect : null,			//动画特效组件
+	title : "unname",			//显示的名字
 	frameIndex : 0,
 	interval : 0,
-	title : "unname",			//显示的名字
-	sprite : null,			//cc.Sprite的引用
+	body : null,			//cc.Sprite的引用
 	frame : null,			//cc.SpriteFrame的引用
-	
+
 	z : 0,					//在地上的Y值，用于空中状态落地判断
 	vx : 1,					//面向，1为右边，-1为左边，用于渲染
 	dx : 0,					//x偏移量，用于渲染
 	dy : 0,					//y偏移量，用于渲染
 	
-	ctor : function(){
-		this.sprite = EngineUtil.newSprite();
+	init : function(){
+		this.body = EngineUtil.newSprite();
 		this.z = 0;
-		this.frameIndex = 0;
-		this.delay = 0;
-		return this;
 	}
 });
 

@@ -8,7 +8,6 @@ ObjectManager = {
 	actionStacks : null,
 	
 	init : function(){
-		ComponentManager.init();
 		SystemManager.init();
 		ActionManager.init();
 		ActionStackManager.init();
@@ -56,8 +55,8 @@ PropertyManager = {
 
 	_viewHead : null,
 	_viewTail : null,
-	_moveHead : null,
-	_moveTail : null,
+	_actionsHead : null,
+	_actionsTail : null,
 	
 	init :function(){},
 	
@@ -90,16 +89,16 @@ PropertyManager = {
 	},
 	
 	/**
-	 * 移动组件链表系列操作
+	 * 动作组件链表系列操作
 	 */
-	addMoveNode : function(moveCom){
-		_add(moveCom, this._moveHead, this._moveTail);
+	addActionsNode : function(actionsPropertyNode){
+		_add(actionsPropertyNode, this._actionsHead, this._actionsTail);
 	},
-	removeMoveNode : function(moveCom){
-		_remove(moveCom, this._moveHead, this._moveTail);
+	removeActionsNode : function(actionsPropertyNode){
+		_remove(actionsPropertyNode, this._actionsHead, this._actionsTail);
 	},
-	getFirstMoveNode : function(){
-		return this._moveHead;
+	getFirstActionsNode : function(){
+		return this._actionsHead;
 	},
 	
 	/**

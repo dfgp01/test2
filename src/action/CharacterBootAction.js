@@ -1,15 +1,16 @@
 /**
  * 	占个坑 2016.03.03
+ * update 2017.01.10
  */
-CharacterStartAction = ActionState.extend({
-	name : "start",
+CharacterBootAction = ActionState.extend({
+	name : "boot",
 	
 	//人物进入场景时调用此方法
 	start : function(unit){
-		SystemUtil.systems.action.addComponent(unit.actions);
-		if(unit.coms.move){
-			SystemUtil.systems.move.addComponent(unit.coms.move);
-		}
+		//加入到主循环-动作逻辑节点
+		ObjectManager.propertys.addActionsNode(unit.actions);
+		//加入到渲染节点
+		ObjectManager.propertys.addViewNode(unit.propertys.view);
 		this.update(0, unit, null);
 	},
 	

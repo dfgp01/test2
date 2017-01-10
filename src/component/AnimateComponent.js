@@ -24,7 +24,7 @@ AnimateComponent = Component.extend({
 			viewCom.frameIndex++;
 			if(viewCom.frameIndex < this.frames.length){
 				viewCom.frame = this.frames[viewCom.frameIndex];
-				ObjectManager.coms.addViewNode(viewCom);
+				//ObjectManager.coms.addViewNode(viewCom);
 			}
 		}
 	}

@@ -34,22 +34,35 @@ RenderUpdateSystem = System.extend({
 	execute : function(dt, unitViewNode){
 		this.renderFrame(this.unitViewNode);
 		this.renderPosition(this.unitViewNode);
-		ObjectManager.propertys.removeViewNode(this.unitViewNode);
 	},
 	
-	renderFrame : function(viewCom){
-		if(viewCom.vx != 0){
+	/**
+	 * 更新帧
+	 */
+	renderFrame : function(viewProperty){
+		if(viewProperty.vx != 0){
 			//unit.viewCom.sprite._scaleX = 1;
 			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
-			viewCom.vx = 0;
+			viewProperty.vx = 0;
 		}
-		EngineUtil.setFrame(viewCom.sprite, viewCom.frame);
+		if(viewProperty.frame != null){
+			EngineUtil.setFrame(viewProperty.body, viewProperty.frame);
+			viewProperty.frame = null;
+		}
 	},
 	
-	renderPosition : function(viewCom){
-		if(viewCom.dx!=0 || viewCom.dy!=0){
-			EngineUtil.setPosition(viewCom.sprite, moveCom);
-			viewCom.dx = viewCom.dy = 0;
+	/**
+	 * 更新位置
+	 */
+	renderPosition : function(viewProperty){
+		var moveProperty = viewProperty.owner.propertys.move;
+		if(moveProperty){
+			viewProperty.dx += moveProperty.dx;
+			viewProperty.dy += moveProperty.dy;
+		}
+		if(viewProperty.dx!=0 || viewProperty.dy!=0){
+			EngineUtil.setPosition(viewProperty.body, viewProperty);
+			viewProperty.dx = viewProperty.dy = 0;
 		}
 	}
 });
