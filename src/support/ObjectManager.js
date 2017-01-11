@@ -6,6 +6,7 @@ ObjectManager = {
 	systems : null,
 	actions : null,
 	actionStacks : null,
+	templates : null,
 	
 	init : function(){
 		SystemManager.init();
@@ -15,6 +16,7 @@ ObjectManager = {
 		this.systems = SystemManager;
 		this.actions = ActionManager;
 		this.actionStacks = ActionStackManager;
+		this.templates = {};
 	},
 
 	getActionStackInfo : function(){
@@ -144,7 +146,7 @@ SystemManager = {
 ActionManager = {
 	
 	//公共action缓存
-	start:[],
+	boot:[],
 	
 	//action-system缓存
 	systems:{
@@ -155,10 +157,10 @@ ActionManager = {
 	},
 
 	init : function(){
-		var action = new CharacterStartAction();
+		var action = new CharacterBootAction();
 		action.init(null);
 		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
-		this.start[Constant.GAMEOBJECT_CHARACTER] = action;
+		this.boot[Constant.GAMEOBJECT_CHARACTER] = action;
 		//this.systems.animate[0] = new SimpleAnimateSystem();
 		
 		/*this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();

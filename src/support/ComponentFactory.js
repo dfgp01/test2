@@ -45,7 +45,7 @@ ComponentFactory = {
 	 */
 	createCommand : function(data){
 		var type = DataUtil.checkIsInt(data.type) ? data.type : 0;
-		if(!DataUtil.checkArrayNotNullForLog(data.list,"data.list")){
+		if(!DataUtil.checkArrayNotNull(data.list,"data.list")){
 			cc.log("createCommand error. list error.");
 			return null;
 		}
@@ -79,7 +79,7 @@ ComponentFactory = {
 			cc.log("createAnimate error. lack of necessary data!");
 			return null;
 		}
-		if(!DataUtil.checkArrayNotNullForLog(data.frames,"data.frames")){
+		if(!DataUtil.checkArrayNotNull(data.frames,"data.frames")){
 			cc.log("createAnimate error. animate.frames error.");
 			return null;
 		}
@@ -116,8 +116,7 @@ ComponentFactory = {
 			for(var i=0; i<data.frames.length; i++){
 				animate.intervals.push(data.interval);
 			}
-		}
-		else if(DataUtil.checkArrayNotNullForLog(data.intervals,"data.intervals")){
+		}else if(DataUtil.checkArrayNotNull(data.intervals,"data.intervals")){
 			if(data.intervals.length != data.frames.length){
 				cc.log("animate.intervals 数组和frame数量不对等.");
 				return null;

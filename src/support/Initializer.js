@@ -73,14 +73,15 @@ Initializer = {
 			return null;
 		}
 		var template = GameObjectFactory.createTemplate(data);
-		var action = ObjectManager.actions.start[Constant.GAMEOBJECT_CHARACTER];
-		template.actions.start = action;
+		var action = ObjectManager.actions.boot[Constant.GAMEOBJECT_CHARACTER];
+		template.actions.boot = action;
 		
-		GameObjectFactory.addActionAndProperty(ActionFactory.createStandAction(data.stand));
+		GameObjectFactory.addActionAndProperty(
+			template, ActionFactory.createStandAction(data.stand));
 		if(data.walk){
-			GameObjectFactory.addActionAndProperty(ActionFactory.createWalkAction(data.walk));
+			GameObjectFactory.addActionAndProperty(
+				template, ActionFactory.createWalkAction(data.walk));
 		}
-		
 		ObjectManager.templates[template.name] = template;
 		return;
 	}

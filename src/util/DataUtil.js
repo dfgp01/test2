@@ -74,9 +74,6 @@ DataUtil = {
 		 * 检查对象是否数字
 		 */
 		checkIsNumber : function(data){
-			if(!this.checkNotNull(data)){
-				return false;
-			}
 			return typeof(data) == "number";
 		},
 		
@@ -113,7 +110,7 @@ DataUtil = {
 		},
 		
 		checkArrayNotNullForLog : function(data, fieldMsg){
-			if(!checkArrayNotNull(data)){
+			if(!this.checkArrayNotNull(data)){
 				cc.log(fieldMsg + " is empty.");
 			}
 		},

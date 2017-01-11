@@ -45,8 +45,8 @@ ActionFactory = {
 					ComponentFactory.createMove(data.move));
 			}
 			if(DataUtil.checkNotNull(data.command)){
-				component = this.createCommand(data.command);
-				action.addSystem(ObjectManager.systems.command[data.command.type]);
+				ComponentFactory.addComponent(action,
+					ComponentFactory.createCommand(data.command));
 			}
 			return;
 		},
@@ -57,8 +57,10 @@ ActionFactory = {
 		createStandAction : function(data){
 			data.name = "stand";
 			data.view.animate.type = data.view.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
-			data.command.type = Constant.COMMAND_CHARACTER_STAND;
-			return Factory.createAction(data);
+			if(data.command){
+				data.command.type = Constant.COMMAND_CHARACTER_STAND;
+			}
+			return this.createAction(data);
 		},
 		
 		/**
@@ -67,7 +69,9 @@ ActionFactory = {
 		createWalkAction : function(data){
 			data.name = "walk";
 			data.view.animate.type = data.view.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
-			data.command.type = Constant.COMMAND_CHARACTER_WALK;
-			return Factory.createAction(data);
+			if(data.command){
+				data.command.type = Constant.COMMAND_CHARACTER_WALK;
+			}
+			return this.createAction(data);
 		}
 };

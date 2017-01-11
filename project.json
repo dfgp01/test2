@@ -32,6 +32,7 @@
     
     "src/system/ActionUpdateSystem.js",
     "src/system/RenderUpdateSystem.js",
+    "src/system/MainSystem.js",
     
     "src/support/ActionFactory.js",
     "src/support/ComponentFactory.js",

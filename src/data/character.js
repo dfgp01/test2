@@ -21,10 +21,6 @@ characterData = {
 		move : {
 			dx : 100,
 			dy : 50
-		},
-		command : {
-			type : 2,
-			list : []
 		}
 	}
 	/*hurt : {

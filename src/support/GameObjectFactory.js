@@ -14,7 +14,7 @@ GameObjectFactory = {
 		var template = new GameObjectTemplate();
 		template.init(data);
 		//动作集合
-		if(DataUtil.checkArrayNotNullForLog(data.actions,"data.actions")){
+		if(DataUtil.checkArrayNotNull(data.actions,"data.actions")){
 			for(var i in data.actions){
 				this.addActionAndProperty(
 						ActionFactory.createAction(
@@ -30,7 +30,7 @@ GameObjectFactory = {
 		if(action.components.length > 0){
 			for(var component in action.components){
 				if(!template.propertys[component.name]){
-					template.propertys[component.name] = createProperty(component.name);
+					template.propertys[component.name] = this.createProperty(component.name);
 				}
 			}
 		}
@@ -48,7 +48,6 @@ GameObjectFactory = {
 		}else if(name=='view'){
 			p = new ViewProperty();
 		}
-		p.init(data);
 		return p;
 	},
 	
