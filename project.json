@@ -45,8 +45,9 @@
     "src/action/RepeatAction.js",
     "src/action/SequenceAction.js",
     
-    "src/ui/UI.js",
     "src/ui/ControllerLayer.js",
+    "src/ui/ControlSystem.js",
+    "src/ui/UI.js",
     "src/resource.js",
     "src/app.js"
   ]

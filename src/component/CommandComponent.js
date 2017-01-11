@@ -83,7 +83,7 @@ WalkCommandComponent = CommandComponent.extend({
 			unitCmdCom.vy = -1;	//同理，Y负轴是向下的
 		}
 		unitCmdCom.direction = Constant.CMD_DIRECTION_CHARGE;	//转为一个持续指令，在输入新指令时可在update()中判断变化
-	}
+	},
 
 	start : function(unitCmdCom){
 		this._init(unitCmdCom);

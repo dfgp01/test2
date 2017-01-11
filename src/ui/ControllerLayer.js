@@ -9,8 +9,8 @@ ControllerLayer = cc.Layer.extend({
 	
 	ctor : function(){
 		this._super();
-		this.playerSys = SystemUtil.systems.player;
-		this.playerSys.start();
+		this.playerSys = ControlSystem;
+		this.playerSys.init();
 		var winSize = cc.winSize;
 		
 		//close button

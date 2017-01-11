@@ -37,7 +37,7 @@ ActionFactory = {
 			}
 			//穷举组件检测
 			if(DataUtil.checkNotNull(data.view)){
-				action.view = ComponentFactory.createView(data.view));
+				action.view = ComponentFactory.createView(data.view);
 				//action.addSystem(ObjectManager.systems.animate[data.animate.type]);
 			}
 			if(DataUtil.checkNotNull(data.move)){
