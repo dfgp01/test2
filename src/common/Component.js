@@ -2,7 +2,7 @@
  * 动作组件父类抽象
  */
 Component = cc.Class.extend({
-	name : "component",
+	name : null,
 	priority : 0,
 	//克隆对象接口而已
 	clone : function(){		cc.log("看到这一句说明你还没重写Component.clone接口 name:" + this.name);	},

@@ -4,11 +4,8 @@
  */
 ActionState = cc.Class.extend({
 	name : null,
-	key : null,					//用于存放在父节点children属性中的key
 	next : null,				//改用直接后驱节点（未实行）
 	//systemList : null,				//系统列表
-	state : 0,
-	type : 0,
 	components : null,
 	
 	/**
@@ -25,7 +22,7 @@ ActionState = cc.Class.extend({
 	start : function(unit){
 		unit.actions.endFlag = false;
 		if(this.components.length > 0){
-			for(var i in this.systemList){
+			for(var i in this.components){
 				this.components[i].start(
 					unit.propertys[this.components[i].name]);
 			}
@@ -35,7 +32,7 @@ ActionState = cc.Class.extend({
 	//运行时
 	update : function(dt, unit){
 		if(this.components.length > 0){
-			for(var i in this.systemList){
+			for(var i in this.components){
 				this.components[i].update(dt,
 					unit.propertys[this.components[i].name]);
 			}
@@ -45,7 +42,7 @@ ActionState = cc.Class.extend({
 	//结束时
 	end : function(unit){
 		if(this.components.length > 0){
-			for(var i in this.systemList){
+			for(var i in this.components){
 				this.components[i].end(
 					unit.propertys[this.components[i].name]);
 			}

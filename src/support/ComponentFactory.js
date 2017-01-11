@@ -63,6 +63,15 @@ ComponentFactory = {
 	},
 	
 	/**
+	 * 显示组件
+	 */
+	createView : function(data){
+		var view = new ViewComponent();
+		view.animate = this.createAnimate(data.animate);
+		return view;
+	},
+	
+	/**
 	 * 创建动画组件
 	 */
 	createAnimate : function(data){

@@ -45,8 +45,31 @@ GameObjectFactory = {
 			p = new MoveProperty();
 		}else if(name=='command'){
 			p = new CommandProperty();
+		}else if(name=='view'){
+			p = new ViewProperty();
 		}
 		p.init(data);
 		return p;
+	},
+	
+	createGameObject : function(template){
+		var unit = new GameObject();
+		unit.id = template.nextId++
+		unit.name = template.name;
+		unit.propertys = {};
+		unit.template = template;
+		for(var i in template.propertys){
+			var name = template.propertys[i].name;
+			var property = this.createProperty(name);
+			property.owner = unit;
+			property.prev = null;
+			property.next = null;
+			unit.propertys[property.name] = property;
+		}
+		unit.view = this.createProperty("view");
+		unit.view.owner = unit;
+		unit.actions = this.createProperty("actions");
+		unit.actions.owner = unit;
+		return unit;
 	}
 }

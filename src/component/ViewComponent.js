@@ -1,20 +1,31 @@
 /**
- * 	普通动画组件，关于显示和动画这一块，以后还有很多要改的。。。2017.01.03
+ * 显示组件，关于显示和动画这一块，以后还有很多要改的 2017.01.11
+ */
+ViewComponent = Component.extend({
+	name : "view",
+	animate : null,		//动画组件引用，其他属性想到再加
+	
+	start : function(viewProperty){
+		this.animate.start(viewProperty);
+	},
+	
+	update : function(dt, viewProperty){
+		this.animate.update(dt, viewProperty);
+	}
+});
+
+/**
+ * 	普通动画组件
  */
 AnimateComponent = Component.extend({
-	name : "view",
+	name : "animate",
 	frames : null,
 	intervals : null,
-	
-	init : function(data){
-		
-	},
 	
 	start : function(viewCom){
 		viewCom.frame = this.frames[0];
 		viewCom.frameIndex = 0;
 		viewCom.interval = 0;
-		ObjectManager.coms.addViewNode(viewCom);
 	},
 	
 	update : function(dt, viewCom){
@@ -30,12 +41,18 @@ AnimateComponent = Component.extend({
 	}
 });
 
+/**
+ * 静态动画，只有一帧
+ */
 AnimateStaticComponent = AnimateComponent.extend({
 	update : function(dt, viewCom){
 		return;
 	}
 });
 
+/**
+ * 循环播放
+ */
 AnimateScrollComponent = AnimateComponent.extend({
 	update : function(dt, gameObj, animateCom){
 		viewCom.interval += dt;

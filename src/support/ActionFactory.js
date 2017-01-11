@@ -16,9 +16,13 @@ ActionFactory = {
 				return null;
 			}
 			cc.log("info: creating action:[" + data.name + "].");
-			var actionState = new ActionState();
+			var actionState = null;
+			if(data.view){
+				actionState = new GameAction();
+			}else{
+				actionState = new ActionState();
+			}
 			actionState.name = data.name;
-			actionState.key = DataUtil.checkIsInt(data.key) ? data.key : 0;
 			actionState.init(data);
 			this._bulid(data, actionState);
 			return actionState;
@@ -32,17 +36,13 @@ ActionFactory = {
 				return;
 			}
 			//穷举组件检测
-			if(DataUtil.checkNotNull(data.animate)){
-				ComponentFactory.addComponent(action,
-					ComponentFactory.createAnimate(data.animate));
+			if(DataUtil.checkNotNull(data.view)){
+				action.view = ComponentFactory.createView(data.view));
 				//action.addSystem(ObjectManager.systems.animate[data.animate.type]);
 			}
 			if(DataUtil.checkNotNull(data.move)){
 				ComponentFactory.addComponent(action,
 					ComponentFactory.createMove(data.move));
-			}
-			if(DataUtil.checkNotNull(data.timer)){
-				component = this.createTimer(data.timer);
 			}
 			if(DataUtil.checkNotNull(data.command)){
 				component = this.createCommand(data.command);

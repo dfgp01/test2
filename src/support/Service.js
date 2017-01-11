@@ -38,24 +38,7 @@ Service = {
 		if(template.availableList.length > 0){
 			unit = template.availableList.pop();
 		}else{
-			unit = new GameObject();
-			unit.init({
-				name : this.name,
-				id : this.nextId++
-			},this);
-			for(var i in this.propertys){
-				var name = this.propertys[i].name;
-				var property = GameObjectFactory.createProperty(name);
-				property.owner = unit;
-				property.prev = null;
-				property.next = null;
-				unit.propertys[property.name] = property;
-			}
-			unit.view = GameObjectFactory.createProperty("view");
-			unit.view.owner = unit;
-			unit.actions = GameObjectFactory.createProperty("actions");
-			unit.actions.owner = unit;
-			unit.template = this;
+			unit = GameObjectFactory.createGameObject(template);
 		}
 		//初始化所有属性值，需要额外的封装方法（对象拷贝或对象值拷贝）
 		for(var i in this.propertys){
