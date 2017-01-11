@@ -25,10 +25,10 @@
     "src/util/DataUtil.js",
     "src/util/EngineUtil.js",
 
-	"src/component/CommandComponents.js",
-    "src/component/MoveComponents.js",
-    "src/component/Property.js",
-    "src/component/ViewComponents.js",
+	"src/component/CommandComponent.js",
+    "src/component/MoveComponent.js",
+    "src/component/Propertys.js",
+    "src/component/ViewComponent.js",
     
     "src/system/ActionUpdateSystem.js",
     "src/system/RenderUpdateSystem.js",
@@ -40,7 +40,7 @@
     "src/support/ObjectManager.js",
     "src/support/Service.js",
 
-    "src/action/CharacterStartAction.js",
+    "src/action/CharacterBootAction.js",
     "src/action/GameAction.js",
     "src/action/RepeatAction.js",
     "src/action/SequenceAction.js",

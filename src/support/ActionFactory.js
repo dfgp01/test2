@@ -56,7 +56,7 @@ ActionFactory = {
 		 */
 		createStandAction : function(data){
 			data.name = "stand";
-			data.animate.type = data.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
+			data.view.animate.type = data.view.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
 			data.command.type = Constant.COMMAND_CHARACTER_STAND;
 			return Factory.createAction(data);
 		},
@@ -66,7 +66,7 @@ ActionFactory = {
 		 */
 		createWalkAction : function(data){
 			data.name = "walk";
-			data.animate.type = data.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
+			data.view.animate.type = data.view.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
 			data.command.type = Constant.COMMAND_CHARACTER_WALK;
 			return Factory.createAction(data);
 		}

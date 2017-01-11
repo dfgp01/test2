@@ -34,7 +34,7 @@ Service = {
 			cc.log("template: " + tempName + " not found!");
 			return null;
 		}
-		var unit = null,
+		var unit = null;
 		if(template.availableList.length > 0){
 			unit = template.availableList.pop();
 		}else{

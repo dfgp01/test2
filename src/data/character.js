@@ -4,19 +4,19 @@ characterData = {
 	title : "玩家",
 
 	stand : {
-		animate : {
-			frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
-			intervals : [0.2,0.2,0.2,0.2]
-		},
-		command : {
-			type : 1,
-			list : []
+		view : {
+			animate : {
+				frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
+				intervals : [0.2,0.2,0.2,0.2]
+			}
 		}
 	},
 	walk : {
-		animate : {
-			frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
-			intervals : [0.1,0.1,0.1,0.3]
+		view : {
+			animate : {
+				frames : ["deep_run_0.png","deep_run_1.png","deep_run_2.png","deep_run_1.png"],
+				intervals : [0.1,0.1,0.1,0.3]
+			}
 		},
 		move : {
 			dx : 100,
@@ -26,12 +26,12 @@ characterData = {
 			type : 2,
 			list : []
 		}
-	},
-	hurt : {
+	}
+	/*hurt : {
 		type : 1,
 		frames : ["deep_hurt_0.png","deep_hurt_1.png","deep_hurt_2.png","deep_hurt_3.png","deep_hurt_4.png"]
-	},
-	hit : {
+	},*/
+	/*hit : {
 		actions : [
 		  {
 			  animate : {
@@ -66,7 +66,7 @@ characterData = {
 			    {key:2, action:"roundCutA"}
 			]
 		}
-	}
+	}*/
 };
 
 extendActions = [
