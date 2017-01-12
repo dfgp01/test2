@@ -6,6 +6,11 @@ RepeatAction = ActionState.extend({
 	action : null,
 	repeat : 0,
 	
+	init : function(data){
+		this.action = data.action;
+		this.input = this.action.input;
+	},
+	
 	start : function(unit){
 		var stackInfo = getStackInfo(unit);
 		stackInfo.repeat = 0;

@@ -1,7 +1,7 @@
 /**
  * 连续序列动作，也称动作组或复合动作
  */
-SequenceAction = ActionState.extend({
+CommandSequenceAction = ActionState.extend({
 	name : "sequence",
 	actions : null,
 
@@ -17,6 +17,10 @@ SequenceAction = ActionState.extend({
 		this.actions[0].start(unit);
 	},
 
+	//判断是否可转入下一动作
+	//1.action到达后摇阶段且输入正确指令
+	//2.action.endFlag == true
+	//3.index<length-1
 	update : function(dt, unit){
 		this._super(dt, unit);
 		var stackInfo = getStackInfo(unit);
@@ -26,6 +30,7 @@ SequenceAction = ActionState.extend({
 			if(stackInfo.index < this.actions.length){
 				this.actions[stack.index].start(unit);
 			}
+			return;
 		}
 	}
 });

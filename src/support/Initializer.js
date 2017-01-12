@@ -9,7 +9,9 @@ Initializer = {
 	initGobalParam : function(){
 		//引力设置
 		Service.Gobal.gravity = GameObjectFactory.createProperty("move", {dy:GameSetting.gravity, maxDy:GameSetting.maxGravity});
-
+		Service.Gobal.logicTick = GameSetting.logicTick;
+		Service.Gobal.renderTick = GameSetting.renderTick;
+		
 		//被击中相关设置
 		/*motionCom = new ActionMoveComponent();
 		motionCom.dx = GameSetting.hitBack;

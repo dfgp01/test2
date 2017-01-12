@@ -22,7 +22,7 @@ ControlSystem = {
 
 	init : function(){
 		this.target = Service.Gobal.player.unit;
-		this._command = this.target.command;
+		this._command = this.target.propertys.command;
 	},
 
 	pressDirection : function(command){

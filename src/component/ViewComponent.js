@@ -4,6 +4,7 @@
 ViewComponent = Component.extend({
 	name : "view",
 	animate : null,		//动画组件引用，其他属性想到再加
+	section : null,		//区段，用于标识动画的三个阶段：前摇、攻击、后摇
 	
 	start : function(viewProperty){
 		this.animate.start(viewProperty);

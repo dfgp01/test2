@@ -5,6 +5,13 @@ Constant = {
 	DIRECT_CHILDNODE : "-",
 	
 	/**
+	 * 动作状态（暂定）
+	 */
+	ACTION_STATE_DEFAULT : 0,	//默认或前摇
+	ACTION_STATE_ATTACK : 1,	//触发攻击
+	ACTION_STATE_ENDING : 2,	//后摇，收尾
+	
+	/**
 	 * 用于表示文本数据的逻辑
 	 */
 	BOOLEAN_TRUE : 1,

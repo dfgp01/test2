@@ -4,7 +4,8 @@
  */
 ActionState = cc.Class.extend({
 	name : null,
-	next : null,				//改用直接后驱节点（未实行）
+	next : null,			//改用直接后驱节点（未实行）
+	input : 0,				//需由指令触发
 	//systemList : null,				//系统列表
 	components : null,
 	
@@ -16,6 +17,7 @@ ActionState = cc.Class.extend({
 	init : function(data){
 		//cc.log("info: creating action:[" + this.name + "].");
 		this.components = [];
+		this.input = DataUtil.checkIsNumber(data.input) ? data.input : 0;
 	},
 	
 	//加载时

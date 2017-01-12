@@ -78,13 +78,16 @@ Service = {
 	 * 全局数据对象，用于数据共享
 	 */
 	Gobal : {
+			logicTick : 0,
+			renderTick : 0,
+			
 			//玩家数据
 			player : {
 				unit : null,
 				score : 0
 			},
 			
-			gravity : null
+			gravity : null		//moveProperty组件
 	}
 
 };
