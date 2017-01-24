@@ -124,8 +124,13 @@ Constant = {
 	KEY_DOWN_UP_UP 			: 722,	//1011010010
 	KEY_DOWN_DOWN_UP 		: 730,	//1011011010
 	
-	
-	
+	/**
+	 * 指令控制类型，指令组件枚举
+	 */
+	COMMAND_DEFAULT = 0,
+	COMMAND_STAND = 1,
+	COMMAND_WALK = 2,
+	COMMAND_ATTACK = 3,
 	
 	
 	/**

@@ -24,6 +24,31 @@ ObjectManager = {
 	},
 	recycleActionStackInfo : function(stackInfo){
 		this.actionStacks.recycle(stackInfo);
+	},
+	
+	//这一块以后要优化
+	_cmdStack : [],
+	addCommandStack : function(commandComponent, table){
+		this._cmdStack.push({c:commandComponent, t:table});
+	},
+	dealCommandStack : function(actions){
+		for(var i in this._cmdStack){
+			var cmd = this._cmdStack[i].c;
+			var table = this._cmdStack[i].t;
+			for(var j in table){
+				var actionName = table[j];
+				if(!DataUtil.checkIsString(actionName)){
+					cc.log("ObjectManager.dealCommandStack error. not a string.");
+					return;
+				}
+				var action = actions[actionName];
+				if(!action){
+					cc.log("ObjectManager.dealCommandStack error. action:["+actionName+"] not found");
+				}
+				cmd.table[actionName] = action;
+			}
+		}
+		this._cmdStack = [];
 	}
 };
 

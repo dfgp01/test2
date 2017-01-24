@@ -6,7 +6,7 @@ SequenceAction = ActionState.extend({
 	actions : null,
 
 	init : function(data){
-		this.actions = data.actions;
+		//this.actions = data.actions;
 		this.input = this.actions[0].input;
 	},
 	

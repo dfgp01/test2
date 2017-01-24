@@ -9,6 +9,9 @@ characterData = {
 				frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
 				intervals : [0.2,0.2,0.2,0.2]
 			}
+		},
+		command : {
+			table:["hit","crossCutA","roundCutA"]
 		}
 	},
 	walk : {
@@ -21,18 +24,22 @@ characterData = {
 		move : {
 			dx : 100,
 			dy : 50
+		},
+		command : {
+			table:["hit","crossCutA","roundCutA"]
 		}
 	},
 	hit : {
 		action : {
-			sequence : {
-				actions : [{
+			sequence : [{
 					repeat : {
 						action : "deep_attack_1",
 						repeat : 3
 					}
 				},"deep_attack_2","deep_attack_3"]
-			}
+		},
+		command : {
+			table:["crossCutA","roundCutA"]
 		}
 	},
 	actions : [
@@ -93,7 +100,7 @@ characterData = {
 				type : 1,	//普通后退、倒地等		枚举HIT_TYPE_MOVE
 				damage : 10.2,
 				rect : [10,10,100,100],
-				frame : 1,
+				frameIndex : 1,
 				num : 1
 			}
 		},

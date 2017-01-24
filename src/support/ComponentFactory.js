@@ -44,20 +44,26 @@ ComponentFactory = {
 	 * 动作指令组件
 	 */
 	createCommand : function(data){
-		var type = DataUtil.checkIsInt(data.type) ? data.type : 0;
-		if(!DataUtil.checkArrayNotNull(data.list,"data.list")){
-			cc.log("createCommand error. list error.");
-			return null;
+		data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.COMMAND_DEFAULT;
+		var command = null;
+		switch(data.rype){
+		case Constant.COMMAND_DEFAULT:
+			command = new CommandComponent();
+			break;
+		case Constant.COMMAND_STAND:
+			command = new StandCommandComponent();
+			break;
+		case Constant.COMMAND_WALK:
+			command = new WalkCommandComponent();
+			break;
+		case Constant.COMMAND_ATTACK:
+			command = new AttackCommandComponent();
+			break;
 		}
-		var command = new ActionCommandComponent();
-		command.type = type;
-		command.list = [];
-		for(var name in data.list){
-			if(!DataUtil.checkIsStringForLog(name,"data.list.name")){
-				cc.log("createCommand error. list error.");
-				return null;
-			}
-			command.list.push(name);
+		command.init(data);
+		if(DataUtil.checkArrayNotNull(data.table)){
+			//因为所有action还没初始化完毕，所以把action名推到堆栈里，待初始化后再处理
+			ObjectManager.addCommandStack(command,data.table);
 		}
 		return command;
 	},

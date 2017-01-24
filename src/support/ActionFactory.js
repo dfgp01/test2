@@ -19,8 +19,14 @@ ActionFactory = {
 			var actionState = null;
 			if(data.view){
 				actionState = new GameAction();
-			}else{
-				actionState = new ActionState();
+			}
+			else if(data.sequence){
+				actionState = new SequenceAction();
+				这一段没写好。。。
+			}
+			else{
+				//actionState = new ActionState();
+				cc.log("ActionFactory.createAction error. 无法创建匹配的action.");
 			}
 			actionState.name = data.name;
 			actionState.init(data);

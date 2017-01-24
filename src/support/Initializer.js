@@ -84,6 +84,7 @@ Initializer = {
 			GameObjectFactory.addActionAndProperty(
 				template, ActionFactory.createWalkAction(data.walk));
 		}
+		ObjectManager.dealCommandStack(template.actions);
 		ObjectManager.templates[template.name] = template;
 		return;
 	}
