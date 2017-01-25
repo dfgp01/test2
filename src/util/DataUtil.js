@@ -131,6 +131,16 @@ DataUtil = {
 		},
 		
 		/**
+		 * 检测对象是否为Object
+		 */
+		checkIsObject : function(data){
+			if(!this.checkNotNull(data)){
+				return false;
+			}
+			return data instanceof Object;
+		},
+		
+		/**
 		 * 用于检查的
 		 * @param action
 		 */

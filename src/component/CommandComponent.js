@@ -52,6 +52,13 @@ CommandComponent = Component.extend({
  * 攻击动作时输入的指令
  */
 AttackCommandComponent = CommandComponent.extend({
+	frameIndex : 0,
+	
+	init : function(data){
+		this._super(data);
+		this.frameIndex = DateUtil.checkIsInt(data.frameIndex) ? data.frameIndex : 0;
+	},
+	
 	update : function(dt, unitCmd){
 		if((unitCmd.attack & Constant.CMD_AI_ATTACK) && unitCmd.owner.view.frameIndex > this.frameIndex){
 			this._super(dt, unitCmd);

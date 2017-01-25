@@ -32,9 +32,11 @@ Constant = {
 	/**
 	 * 指令组件系统类型枚举
 	 */
-	COMMAND_NORMAL : 0,
+	COMMAND_DEFAULT : 0,
 	COMMAND_CHARACTER_STAND : 1,
 	COMMAND_CHARACTER_WALK : 2,
+	COMMAND_CHARACTER_ATTACK = 3,
+	
 	
 	/**
 	 * 组件名称
@@ -107,6 +109,8 @@ Constant = {
 	
 	/**
 	 * 技能摇键组合，懒得计算，RL可表示右左，也可以是前后，有些版本是不分左右，只有前后的
+	 * 如果只是兼容四方向（上下左右），那么两位二进制就够了，00右，01左 10上 11下
+	 * 现在使用三位二进制是为了以后兼容八方向。 如000右上，100右下，001左上，101左下
 	 */
 	KEY_RIGHT_RIGHT			: 64,	//1000000
 	KEY_RIGHT_LEFT 			: 65,	//1000001
@@ -123,15 +127,6 @@ Constant = {
 	KEY_DOWN_UP_RIGHT 		: 720,	//1011010000
 	KEY_DOWN_UP_UP 			: 722,	//1011010010
 	KEY_DOWN_DOWN_UP 		: 730,	//1011011010
-	
-	/**
-	 * 指令控制类型，指令组件枚举
-	 */
-	COMMAND_DEFAULT = 0,
-	COMMAND_STAND = 1,
-	COMMAND_WALK = 2,
-	COMMAND_ATTACK = 3,
-	
 	
 	/**
 	 * 帧时间

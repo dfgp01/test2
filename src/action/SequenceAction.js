@@ -2,13 +2,7 @@
  * 连续序列动作，也称动作组或复合动作
  */
 SequenceAction = ActionState.extend({
-	name : "sequence",
 	actions : null,
-
-	init : function(data){
-		//this.actions = data.actions;
-		this.input = this.actions[0].input;
-	},
 	
 	start : function(unit){
 		var stackInfo = getStackInfo(unit);

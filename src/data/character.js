@@ -30,21 +30,21 @@ characterData = {
 		}
 	},
 	hit : {
-		action : {
-			sequence : [{
-					repeat : {
-						action : "deep_attack_1",
-						repeat : 3
-					}
-				},"deep_attack_2","deep_attack_3"]
-		},
-		command : {
-			table:["crossCutA","roundCutA"]
+		sequence : {
+			actions : [{
+				repeat : {
+					action : "deep_attack_1",
+					count : 3
+				}
+			},"deep_attack_2","deep_attack_3"],
+			command : {
+				table:["crossCutA","roundCutA"]
+			}
 		}
 	},
 	actions : [
 		{
-	    	name : "crossCutA", input : 0,
+	    	name : "crossCutA", input : 64,
 			view : {
 				animate : {
 					frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
@@ -71,7 +71,7 @@ characterData = {
 			}
 		},
 		{
-			name : "roundCutA", input : 0,
+			name : "roundCutA", input : 82,
 			view : {
 				animate : {
 					frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"],
@@ -80,7 +80,7 @@ characterData = {
 			}
 		},
 		{
-			name : "roundCutB", input : 0,
+			name : "roundCutB", input : 82,
 			view : {
 				animate : {
 					frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"],
@@ -89,7 +89,7 @@ characterData = {
 			}
 		},
 		{
-			name : "deep_attack_1", input : 0,
+			name : "deep_attack_1",
 			view : {
 				animate : {
 					frames : ["deep_attack_1_1.png","deep_attack_1_2.png","deep_attack_1_3.png"],
@@ -105,7 +105,7 @@ characterData = {
 			}
 		},
 		{
-			name : "deep_attack_2", input : 0,
+			name : "deep_attack_2",
 			view : {
 				animate : {
 					frames : ["deep_attack_2_1.png","deep_attack_2_2.png","deep_attack_2_3.png"],
@@ -114,7 +114,7 @@ characterData = {
 			}
 		},
 		{
-			name : "deep_attack_3", input : 0,
+			name : "deep_attack_3",
 			view : {
 				animate : {
 					frames : ["deep_attack_3_1.png","deep_attack_3_2.png","deep_attack_3_3.png","deep_attack_3_4.png"],

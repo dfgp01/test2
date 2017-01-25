@@ -2,15 +2,9 @@
  * 重复执行动作
  */
 RepeatAction = ActionState.extend({
-	name : "repeat",
 	action : null,
-	repeat : 0,
-	
-	init : function(data){
-		this.action = data.action;
-		this.input = this.action.input;
-	},
-	
+	count : 0,
+
 	start : function(unit){
 		var stackInfo = getStackInfo(unit);
 		stackInfo.repeat = 0;
