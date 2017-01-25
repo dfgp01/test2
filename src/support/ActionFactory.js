@@ -8,46 +8,48 @@ ActionFactory = {
 		 * param
 		 * 	data 	 数据DNA
 		 * 	actions	 动作集合{}，创建某些action时需要引用其他action
+		 * 	baseName 父动作名称，用于创建复合动作时，取名用的
 		 * 	actClass  ActionState的子类，可缺省
 		 *  2016.03.05 有改动，详见 ActionState.init()注释
 		 */
-		createAction : function(data, actions){
-			if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data.name)){
+		createAction : function(data, actions, baseName){
+			if(!DataUtil.checkNotNull(data) && !DateUtil.checkIsString(data.name)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
-			cc.log("info: creating action:[" + data.name + "].");
+			data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.ACTION_TYPE_DEFAULT;
 			var actionState = null;
-			if(data.view){
+			cc.log("info: creating action:[" + data.name + "].");
+			switch(data.type){
+			case Constant.ACTION_TYPE_DEFAULT:
 				actionState = new GameAction();
 				actionState.name = data.name;
+				break;
+			case Constant.ACTION_TYPE_SEQUENCE:
+				actionState = this.createSequence(data, actions, baseName);
+				break;
+			case Constant.ACTION_TYPE_REPEAT:
+				actionState = this.createRepeat(data, actions, baseName);
+				break;
 			}
-			else if(data.sequence){
-				if(!DataUtil.checkIsString(data.sequence.name)){
-					data.sequence.name = data.name + "_sequence";//取默认名
-				}
-				actionState = this.createSequence(data.sequence, actions);
-			}
-			else if(data.repeat){
-				if(!DataUtil.checkIsString(data.repeat.name)){
-					data.repeat.name = data.name + "_repeat";//取默认名
-				}
-				actionState = this.createRepeat(data.repeat, actions);
-			}
-			else{
+			if(actionState==null){
 				//actionState = new ActionState();
 				cc.log("ActionFactory.createAction error. 无法创建匹配的action.");
 				return null;
 			}
+			actionState.components = [];
 			actionState.init(data);
 			this._bulid(data, actionState);
 			return actionState;
 		},
 		
-		createSequence : function(data, actions){
+		createSequence : function(data, actions, baseName){
 			if(!DataUtil.checkArrayNotNull(data.actions)){
 				cc.log("ActionFactory.createSequence error. actions is empty.");
 				return null;
+			}
+			if(!DataUtil.checkIsString(data.name)){
+				data.name = baseName + "_sequence";//取默认名
 			}
 			var action = new SequenceAction();
 			action.name = data.name;
@@ -63,24 +65,27 @@ ActionFactory = {
 				}
 				else{
 					// is a object/json
-					action.actions.push(this.createAction(act, actions));
+					action.actions.push(this.createAction(act, actions, action.name));
 				}
 			}
 			action.input = action.actions[0].input;
 			return action;
 		},
 		
-		createRepeat : function(data, actions){
+		createRepeat : function(data, actions, baseName){
 			var type = this._availableDataType(data.action);
 			if(type==null){
 				return null;
+			}
+			if(!DataUtil.checkIsString(data.name)){
+				data.name = baseName + "_repeat";//取默认名
 			}
 			var action = new RepeatAction();
 			if(type=='string'){
 				action.action = this._findByName(actions, data.action);
 			}else{
 				// is a object/json
-				action.action = this.createAction(data.action, actions);
+				action.action = this.createAction(data.action, actions, action.name);
 			}
 			action.name = data.name;
 			action.count = DataUtil.checkIsInt(data.count) ? data.count : 0;
@@ -99,10 +104,10 @@ ActionFactory = {
 				cc.log("ActionFactory._availableDataType error. param is empty.");
 				return null;
 			}
-			if(DataUtil.checkIsString(act)){
+			if(DataUtil.checkIsString(data)){
 				return 'string';
 			}
-			if(DataUtil.checkIsObject(act)){
+			if(DataUtil.checkIsObject(data)){
 				return 'object';
 			}
 			cc.log("ActionFactory._availableDataType error. please check your param data_type.");
@@ -110,7 +115,7 @@ ActionFactory = {
 		},
 		
 		_findByName : function(actions, name){
-			var action = actions[act];
+			var action = actions[name];
 			if(!action){
 				cc.log("ActionFactory.findByName error. actions["+name+"] not found");
 				return null;
@@ -169,18 +174,12 @@ ActionFactory = {
 		 * 创建普通攻击动作节点
 		 */
 		createHitAction : function(data, actions){
-			if(data.sequence){
-				data.sequence.name = "hit";
-				data.sequence.input = Constant.CMD_AI_ATTACK;
-			}else if(data.repeat){
-				data.repeat.name = "hit";
-				data.repeat.input = Constant.CMD_AI_ATTACK;
-			}else{
-				data.name = "hit";
-			}
+			data.name = "hit";
 			if(data.command){
 				data.command.type = Constant.COMMAND_CHARACTER_ATTACK;
 			}
-			return this.createAction(data, actions);
+			var action = this.createAction(data, actions);
+			action.input = Constant.CMD_AI_ATTACK;
+			return action;
 		}
 };

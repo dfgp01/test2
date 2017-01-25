@@ -16,8 +16,6 @@ ActionState = cc.Class.extend({
 	 */
 	init : function(data){
 		//cc.log("info: creating action:[" + this.name + "].");
-		this.components = [];
-		this.input = DataUtil.checkIsNumber(data.input) ? data.input : 0;
 	},
 	
 	//加载时

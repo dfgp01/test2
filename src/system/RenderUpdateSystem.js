@@ -32,8 +32,8 @@ RenderUpdateSystem = System.extend({
 	},
 	
 	execute : function(dt, unitViewNode){
-		this.renderFrame(this.unitViewNode);
-		this.renderPosition(this.unitViewNode);
+		this.renderFrame(unitViewNode);
+		this.renderPosition(unitViewNode);
 	},
 	
 	/**

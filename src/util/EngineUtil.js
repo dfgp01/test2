@@ -4,8 +4,8 @@
 
 EngineUtil = {
 		
-	newSprite : function(){
-		return new cc.Sprite();
+	newSprite : function(frame){
+		return new cc.Sprite(frame);
 	},
 	
 	setFrame : function(sprite, frame){
@@ -71,8 +71,8 @@ EngineUtil = {
 	
 	addSprite : function(viewCom, _x, _y, _z, ccNode){
 		viewCom.z = _z;
-		viewCom.sprite.attr({x: _x, y: _y+_z});
+		viewCom.body.attr({x: _x, y: _y+_z});
 		//GL坐标系，z值(Y轴)越小越排前
-		ccNode.addChild(viewCom.sprite, -(_z));
+		ccNode.addChild(viewCom.body, -(_z));
 	}
 };

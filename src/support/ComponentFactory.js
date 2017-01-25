@@ -89,7 +89,7 @@ ComponentFactory = {
 			cc.log("createAnimate error. animate.frames error.");
 			return null;
 		}
-		data.type = DataUtil.checkIsInt(data.type) ? data.type : ANIMATE_ONCE;
+		data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.ANIMATE_ONCE;
 		
 		var animate = null;
 		switch(data.type){

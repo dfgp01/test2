@@ -7,7 +7,7 @@ characterData = {
 		view : {
 			animate : {
 				frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
-				intervals : [0.2,0.2,0.2,0.2]
+				intervals : [2,2,2,2]
 			}
 		},
 		command : {
@@ -30,16 +30,14 @@ characterData = {
 		}
 	},
 	hit : {
-		sequence : {
-			actions : [{
-				repeat : {
-					action : "deep_attack_1",
-					count : 3
-				}
-			},"deep_attack_2","deep_attack_3"],
-			command : {
-				table:["crossCutA","roundCutA"]
-			}
+		type : 1,
+		actions : [{
+			type : 2,
+			action : "deep_attack_1",
+			count : 3
+		},"deep_attack_2","deep_attack_3"],
+		command : {
+			table:["crossCutA","roundCutA"]
 		}
 	},
 	actions : [

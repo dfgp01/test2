@@ -55,7 +55,7 @@ AnimateStaticComponent = AnimateComponent.extend({
  * 循环播放
  */
 AnimateScrollComponent = AnimateComponent.extend({
-	update : function(dt, gameObj, animateCom){
+	update : function(dt, viewCom){
 		viewCom.interval += dt;
 		if(viewCom.interval >= this.intervals[viewCom.frameIndex]){
 			viewCom.interval -= this.intervals[viewCom.frameIndex];
@@ -63,7 +63,8 @@ AnimateScrollComponent = AnimateComponent.extend({
 			if(viewCom.frameIndex >= this.frames.length){
 				viewCom.frameIndex = 0;
 			}
-			ObjectManager.coms.addViewNode(viewCom);
+			viewCom.frame = this.frames[viewCom.frameIndex];
+			//ObjectManager.coms.addViewNode(viewCom);
 		}
 	}
 });

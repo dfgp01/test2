@@ -62,6 +62,7 @@ ControllerLayer = cc.Layer.extend({
         			return true;
         		}
         		else if(cc.rectContainsPoint(selfPointer.attButton.rect, location)){
+        			selfPointer.playerSys.pressAttack();
         			return false;
         		}
         		return false;

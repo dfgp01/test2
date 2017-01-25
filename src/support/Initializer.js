@@ -79,17 +79,17 @@ Initializer = {
 		template.actions.boot = action;
 		
 		GameObjectFactory.addActionAndProperty(
-			template, ActionFactory.createStandAction(data.stand, template.actions));
+			template, ActionFactory.createStandAction(data.stand, template.actions, "stand"));
 		if(data.walk){
 			GameObjectFactory.addActionAndProperty(
-				template, ActionFactory.createWalkAction(data.walk, template.actions));
+				template, ActionFactory.createWalkAction(data.walk, template.actions, "walk"));
 		}
 		if(data.hit){
 			GameObjectFactory.addActionAndProperty(
-				template, ActionFactory.createHitAction(data.hit, template.actions));
+				template, ActionFactory.createHitAction(data.hit, template.actions, "hit"));
 		}
 		ObjectManager.dealCommandStack(template.actions);
 		ObjectManager.templates[template.name] = template;
-		return;
+		return template;
 	}
 }

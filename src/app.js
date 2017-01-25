@@ -29,9 +29,9 @@ var HelloWorldLayer = cc.Layer.extend({
     	sprite._scaleX = -1;
     	this.addChild(sprite, 1);*/
         
-        var character = Service.Container.player.unit;
-        var unit = Service.newObject("deep", 150, 0, 250, this);
-        var sprite = unit.coms.view.sprite;
+        var character = Service.newUnit("deep", 150, 0, 250, this);
+        Service.Gobal.player.unit = character;
+        var sprite = character.view.body;
         
         var selfPointer = this;
         var listener = cc.EventListener.create({
@@ -54,7 +54,7 @@ var HelloWorldLayer = cc.Layer.extend({
         		}*/
         		
         		//返回值是true，往下传递，触发onTouchMoved和onTouchEnded，false则不传递
-        		cc.log(" mainLayer touch id:"+touch.getID() + ", pos:[" + touch.getLocation().x + "," + touch.getLocation().y + "]");
+        		//cc.log(" mainLayer touch id:"+touch.getID() + ", pos:[" + touch.getLocation().x + "," + touch.getLocation().y + "]");
         		return true;
         	},
         	onTouchMoved: function (touch, event) {

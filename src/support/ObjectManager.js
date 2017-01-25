@@ -45,7 +45,7 @@ ObjectManager = {
 				if(!action){
 					cc.log("ObjectManager.dealCommandStack error. action:["+actionName+"] not found");
 				}
-				cmd.table[actionName] = action;
+				//cmd.table[actionName] = action; 不是这样的
 			}
 		}
 		this._cmdStack = [];
@@ -118,11 +118,33 @@ PropertyManager = {
 	/**
 	 * 动作组件链表系列操作
 	 */
-	addActionsNode : function(actionsPropertyNode){
-		_add(actionsPropertyNode, this._actionsHead, this._actionsTail);
+	addActionsNode : function(node){
+		//this._add(actionsPropertyNode, this._actionsHead, this._actionsTail); 这不是C++，指针不能传进去
+		if(node.prep==null && node.next==null){
+			if(this._actionsHead==null){
+				this._actionsTail = this._actionsHead = node;
+			}else{
+				this._actionsTail.next = node;
+				node.prep = this._actionsTail;
+				this._actionsTail = node;
+			}
+		}
 	},
 	removeActionsNode : function(actionsPropertyNode){
-		_remove(actionsPropertyNode, this._actionsHead, this._actionsTail);
+		//this._remove(actionsPropertyNode, this._actionsHead, this._actionsTail);
+		if(actionsPropertyNode.prep !=null || actionsPropertyNode.next != null){
+			if(this._actionsHead==actionsPropertyNode){
+				this._actionsHead = actionsPropertyNode.next;
+			}else if(this._actionsTail==node){
+				this._actionsTail = actionsPropertyNode.prep;
+				this._actionsTail.next = null;
+			}else{
+				actionsPropertyNode.prep.next = actionsPropertyNode.next;
+				actionsPropertyNode.next.prep = actionsPropertyNode.prep;
+			}
+			node.prep = null;
+			node.next = null;
+		}
 	},
 	getFirstActionsNode : function(){
 		return this._actionsHead;
@@ -132,10 +154,32 @@ PropertyManager = {
 	 * 显示组件链表系列操作
 	 */
 	addViewNode : function(viewCom){
-		_add(viewCom, this._viewHead, this._viewTail);
+		//this._add(viewCom, this._viewHead, this._viewTail);
+		if(viewCom.prep==null && viewCom.next==null){
+			if(this._viewHead==null){
+				this._viewTail = this._viewHead = viewCom;
+			}else{
+				this._viewTail.next = viewCom;
+				viewCom.prep = this._viewTail;
+				this._viewTail = viewCom;
+			}
+		}
 	},
 	removeViewNode : function(viewCom){
-		_reView(viewCom, this._viewHead, this._viewTail);
+		//this._reView(viewCom, this._viewHead, this._viewTail);
+		if(viewCom.prep !=null || viewCom.next != null){
+			if(this._viewHead==viewCom){
+				this._viewHead = viewCom.next;
+			}else if(this._viewTail==viewCom){
+				this._viewTail = viewCom.prep;
+				this._viewTail.next = null;
+			}else{
+				viewCom.prep.next = viewCom.next;
+				viewCom.next.prep = viewCom.prep;
+			}
+			viewCom.prep = null;
+			viewCom.next = null;
+		}
 	},
 	getFirstViewNode : function(){
 		return this._viewHead;

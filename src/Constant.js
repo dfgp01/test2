@@ -5,6 +5,13 @@ Constant = {
 	DIRECT_CHILDNODE : "-",
 	
 	/**
+	 * 动作类型
+	 */
+	ACTION_TYPE_DEFAULT : 0,
+	ACTION_TYPE_SEQUENCE : 1,
+	ACTION_TYPE_REPEAT : 2,
+	
+	/**
 	 * 动作状态（暂定）
 	 */
 	ACTION_STATE_DEFAULT : 0,	//默认或前摇
@@ -35,7 +42,7 @@ Constant = {
 	COMMAND_DEFAULT : 0,
 	COMMAND_CHARACTER_STAND : 1,
 	COMMAND_CHARACTER_WALK : 2,
-	COMMAND_CHARACTER_ATTACK = 3,
+	COMMAND_CHARACTER_ATTACK : 3,
 	
 	
 	/**

@@ -31,7 +31,7 @@ Service = {
 	newUnit : function(templateName, x,y,z, cc_layer){
 		var template = ObjectManager.templates[templateName];
 		if(!template){
-			cc.log("template: " + tempName + " not found!");
+			cc.log("template: " + templateName + " not found!");
 			return null;
 		}
 		var unit = null;

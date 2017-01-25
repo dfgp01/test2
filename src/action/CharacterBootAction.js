@@ -10,7 +10,7 @@ CharacterBootAction = ActionState.extend({
 		//加入到主循环-动作逻辑节点
 		ObjectManager.propertys.addActionsNode(unit.actions);
 		//加入到渲染节点
-		ObjectManager.propertys.addViewNode(unit.propertys.view);
+		ObjectManager.propertys.addViewNode(unit.view);
 		this.update(0, unit, null);
 	},
 	
@@ -26,9 +26,5 @@ CharacterBootAction = ActionState.extend({
 		if(unit.coms.move){
 			SystemUtil.systems.move.removeComponent(unit.coms.move);
 		}
-	},
-
-	init : function(data, template){
-		this._super(data, template);
 	}
 });

@@ -16,7 +16,7 @@ GameObjectFactory = {
 		//动作集合
 		if(DataUtil.checkArrayNotNull(data.actions,"data.actions")){
 			for(var i in data.actions){
-				this.addActionAndProperty(
+				this.addActionAndProperty(template,
 						ActionFactory.createAction(
 								data.actions[i]));
 			}
@@ -28,7 +28,8 @@ GameObjectFactory = {
 	addActionAndProperty : function(template, action){
 		template.actions[action.name] = action;
 		if(action.components.length > 0){
-			for(var component in action.components){
+			for(var i in action.components){
+				var component = action.components[i];
 				if(!template.propertys[component.name]){
 					template.propertys[component.name] = this.createProperty(component.name);
 				}
@@ -48,6 +49,7 @@ GameObjectFactory = {
 		}else if(name=='view'){
 			p = new ViewProperty();
 		}
+		p.init(data);
 		return p;
 	},
 	
@@ -66,6 +68,7 @@ GameObjectFactory = {
 			unit.propertys[property.name] = property;
 		}
 		unit.view = this.createProperty("view");
+		unit.view.body = EngineUtil.newSprite(template.frame);
 		unit.view.owner = unit;
 		unit.actions = this.createProperty("actions");
 		unit.actions.owner = unit;

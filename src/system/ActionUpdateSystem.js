@@ -21,7 +21,7 @@ ActionUpdateSystem = System.extend({
 			}
 			//unitActions.current.end(unitActions.owner);
 		}else{
-			actionCom.current.update(dt, unitActions.owner);
+			unitActions.current.update(dt, unitActions.owner);
 		}
 	}
 });

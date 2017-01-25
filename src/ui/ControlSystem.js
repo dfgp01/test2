@@ -66,11 +66,6 @@ ControlSystem = {
 		}
 	},
 	
-	directionUpdate : function(command){
-		this._command.last = this._command.curr;
-		this._command.curr = command;
-	},
-	
 	pressAttack : function(){
 		this._command.comboKey = this.comboKey;
 		this._command.attack = Constant.CMD_PLAYER_ATTACK;

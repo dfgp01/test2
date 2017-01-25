@@ -12,7 +12,7 @@ CommandComponent = Component.extend({
 	},
 	
 	update : function(dt, unitCmd){
-		if(unitCmd.input != 0){
+		if(unitCmd.attack & Constant.CMD_AI_ATTACK){
 			var action = this._findByKey(this.table, unitCmd.comboKey);
 			if(action){
 				ActionUtil.next(unitCmd.owner.actions, action);
