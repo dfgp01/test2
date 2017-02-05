@@ -8,86 +8,82 @@ ActionFactory = {
 		 * param
 		 * 	data 	 数据DNA
 		 * 	actions	 动作集合{}，创建某些action时需要引用其他action
-		 * 	baseName 父动作名称，用于创建复合动作时，取名用的
 		 * 	actClass  ActionState的子类，可缺省
 		 *  2016.03.05 有改动，详见 ActionState.init()注释
 		 */
-		createAction : function(data, actions, baseName){
+		createAction : function(data, actions){
 			if(!DataUtil.checkNotNull(data) && !DateUtil.checkIsString(data.name)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
-			data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.ACTION_TYPE_DEFAULT;
+			//data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.ACTION_TYPE_DEFAULT;
 			var actionState = null;
 			cc.log("info: creating action:[" + data.name + "].");
-			switch(data.type){
-			case Constant.ACTION_TYPE_DEFAULT:
+			if(data.view){
 				actionState = new GameAction();
-				actionState.name = data.name;
-				break;
-			case Constant.ACTION_TYPE_SEQUENCE:
-				actionState = this.createSequence(data, actions, baseName);
-				break;
-			case Constant.ACTION_TYPE_REPEAT:
-				actionState = this.createRepeat(data, actions, baseName);
-				break;
+				actionState.view = ComponentFactory.createView(data.view);
+			}else if(data.repeat){
+				if(!DataUtil.checkIsString(data.repeat.name)){
+					data.repeat.name = data.name + "_repeat";
+				}
+				actionState = this.createRepeat(data.repeat, actions);
+			}else if(data.sequence){
+				if(!DataUtil.checkIsString(data.sequence.name)){
+					data.sequence.name = data.name + "_sequence";
+				}
+				actionState = this.createSequence(data.sequence, actions);
 			}
 			if(actionState==null){
 				//actionState = new ActionState();
 				cc.log("ActionFactory.createAction error. 无法创建匹配的action.");
 				return null;
 			}
+			actionState.name = data.name;
 			actionState.components = [];
 			actionState.init(data);
 			this._bulid(data, actionState);
 			return actionState;
 		},
 		
-		createSequence : function(data, actions, baseName){
+		createSequence : function(data, actions){
 			if(!DataUtil.checkArrayNotNull(data.actions)){
 				cc.log("ActionFactory.createSequence error. actions is empty.");
 				return null;
 			}
-			if(!DataUtil.checkIsString(data.name)){
-				data.name = baseName + "_sequence";//取默认名
-			}
 			var action = new SequenceAction();
-			action.name = data.name;
 			action.actions = [];
 			for(var i in data.actions){
 				var act = data.actions[i];
 				var type = this._availableDataType(act)
-				if(type==null){
-					return null;
-				}
-				else if(type=='string'){
+				if(type=='string'){
 					action.actions.push(this._findByName(actions, act));
 				}
 				else{
 					// is a object/json
-					action.actions.push(this.createAction(act, actions, action.name));
+					if(!DataUtil.checkIsString(act.name)){
+						act.name = data.name + "_action"+i;//默认名
+					}
+					action.actions.push(this.createAction(act, actions));
 				}
 			}
 			action.input = action.actions[0].input;
 			return action;
 		},
 		
-		createRepeat : function(data, actions, baseName){
+		createRepeat : function(data, actions){
 			var type = this._availableDataType(data.action);
 			if(type==null){
 				return null;
-			}
-			if(!DataUtil.checkIsString(data.name)){
-				data.name = baseName + "_repeat";//取默认名
 			}
 			var action = new RepeatAction();
 			if(type=='string'){
 				action.action = this._findByName(actions, data.action);
 			}else{
-				// is a object/json
-				action.action = this.createAction(data.action, actions, action.name);
+				if(!DataUtil.checkIsString(data.action.name)){
+					data.action.name = data.name + "_action";//默认名
+				}
+				action.action = this.createAction(data.action, actions);
 			}
-			action.name = data.name;
 			action.count = DataUtil.checkIsInt(data.count) ? data.count : 0;
 			action.input = action.action.input;
 			return action;
@@ -131,10 +127,6 @@ ActionFactory = {
 				return;
 			}
 			//穷举组件检测
-			if(DataUtil.checkNotNull(data.view)){
-				action.view = ComponentFactory.createView(data.view);
-				//action.addSystem(ObjectManager.systems.animate[data.animate.type]);
-			}
 			if(DataUtil.checkNotNull(data.move)){
 				ComponentFactory.addComponent(action,
 					ComponentFactory.createMove(data.move));

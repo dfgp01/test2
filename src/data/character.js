@@ -30,14 +30,16 @@ characterData = {
 		}
 	},
 	hit : {
-		type : 1,
-		actions : [{
-			type : 2,
-			action : "deep_attack_1",
-			count : 3
-		},"deep_attack_2","deep_attack_3"],
-		command : {
-			table:["crossCutA","roundCutA"]
+		sequence : {
+			actions:[{
+				repeat:{
+					action : "deep_attack_1",
+					count : 3
+				}
+			},"deep_attack_2","deep_attack_3"],
+			command : {
+				table:["crossCutA","roundCutA"]
+			}
 		}
 	},
 	actions : [
