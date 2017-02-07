@@ -88,7 +88,7 @@ Initializer = {
 			GameObjectFactory.addActionAndProperty(
 				template, ActionFactory.createHitAction(data.hit, template.actions));
 		}
-		ObjectManager.dealCommandStack(template.actions);
+		GameObjectFactory.buildCommand(template.actions);
 		ObjectManager.templates[template.name] = template;
 		return template;
 	}

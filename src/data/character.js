@@ -11,7 +11,7 @@ characterData = {
 			}
 		},
 		command : {
-			table:["hit","crossCutA","roundCutA"]
+			list:["hit","crossCutA","roundCutA"]
 		}
 	},
 	walk : {
@@ -26,7 +26,7 @@ characterData = {
 			dy : 50
 		},
 		command : {
-			table:["hit","crossCutA","roundCutA"]
+			list:["hit","crossCutA","roundCutA"]
 		}
 	},
 	hit : {
@@ -38,13 +38,13 @@ characterData = {
 				}
 			},"deep_attack_2","deep_attack_3"],
 			command : {
-				table:["crossCutA","roundCutA"]
+				list:["crossCutA","roundCutA"]
 			}
 		}
 	},
 	actions : [
 		{
-	    	name : "crossCutA", input : 64,
+	    	name : "crossCutA", input : 661,
 			view : {
 				animate : {
 					frames : ["deep_crossCutA_1.png","deep_crossCutA_2.png","deep_crossCutA_3.png","deep_crossCutA_4.png"],
@@ -71,7 +71,7 @@ characterData = {
 			}
 		},
 		{
-			name : "roundCutA", input : 82,
+			name : "roundCutA", input : 461,
 			view : {
 				animate : {
 					frames : ["deep_roundCutA_1.png","deep_roundCutA_2.png","deep_roundCutA_3.png","deep_roundCutA_4.png","deep_roundCutA_5.png","deep_roundCutA_6.png"],
@@ -80,7 +80,7 @@ characterData = {
 			}
 		},
 		{
-			name : "roundCutB", input : 82,
+			name : "roundCutB", input : 461,
 			view : {
 				animate : {
 					frames : ["deep_roundCutB_1.png","deep_roundCutB_2.png","deep_roundCutB_3.png","deep_roundCutB_4.png","deep_roundCutB_5.png","deep_roundCutB_6.png"],

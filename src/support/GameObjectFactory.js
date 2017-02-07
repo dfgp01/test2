@@ -73,5 +73,29 @@ GameObjectFactory = {
 		unit.actions = this.createProperty("actions");
 		unit.actions.owner = unit;
 		return unit;
+	},
+	
+	buildCommand : function(actions){
+		for(var i in actions){
+			var act = actions[i];
+			var cmd = act.findComponent("command");
+			if(cmd && cmd.list){
+				var actionList = [];
+				for(var j in cmd.list){
+					var actionName = cmd.list[j];
+					if(!DataUtil.checkIsString(actionName)){
+						cc.log("GameObjectFactory.buildCommand error. not a string.");
+						return;
+					}
+					var action = actions[actionName];
+					if(!action){
+						cc.log("GameObjectFactory.buildCommand error. action:["+actionName+"] not found");
+						return;
+					}
+					actionList.push(action);
+				}
+				cmd.build(actionList);
+			}
+		}
 	}
 }

@@ -149,5 +149,19 @@ DataUtil = {
 			for(var i in array){
 				cc.log(array[i].name);
 			}
+		},
+		
+		/**
+		 * 计算一个数值的二进制最高位1在第几位
+		 */
+		binTopFlag : function(number){
+			if(number <= 0){
+				return -1;
+			}
+			var index = 0;
+			do{
+				index++;
+			}while((number=number>>1) > 0)
+			return index;
 		}
 };

@@ -5,13 +5,6 @@ Constant = {
 	DIRECT_CHILDNODE : "-",
 	
 	/**
-	 * 动作类型
-	 */
-	ACTION_TYPE_DEFAULT : 0,
-	ACTION_TYPE_SEQUENCE : 1,
-	ACTION_TYPE_REPEAT : 2,
-	
-	/**
 	 * 动作状态（暂定）
 	 */
 	ACTION_STATE_DEFAULT : 0,	//默认或前摇
@@ -63,19 +56,6 @@ Constant = {
 	/**
 	 * 输入指令
 	 */
-	/*CMD_UP : 128, 
-	CMD_DOWN : 64,
-	CMD_LEFT : 32,
-	CMD_RIGHT : 16,
-	CMD_ALL_DIRECTION : 240,	//用于判断是否按下了任一方向键，不用每次判断都用 "|"运算
-	CMD_ATTACK_ONCE : 1,		//按一下攻击
-	CMD_ATTACK_HOLD_ON : 2,		//按住攻击（比如蓄力）
-	CMD_ATTACK_ALL : 3,			//单击或按住
-	CMD_JUMP : 4,*/
-	
-	/**
-	 * 2016.11.01拍板指令
-	 */
 	CMD_RIGHT : 1,
 	CMD_LEFT : 2,
 	CMD_UP : 4,
@@ -87,34 +67,17 @@ Constant = {
 	CMD_JUMP_ONCE : 11,
 	CMD_JUMP_CHARGE : 10,
 	
-	COMBO_KEY_FRONT : 4,
-	COMBO_KEY_BACK : 5,
-	COMBO_KEY_UP : 6,
-	COMBO_KEY_DOWN : 7,
-	
 	/**
-	 * 新版的指令(老的)
+	 * 连续指令
 	 */
-	KEY_RIGHT : 0,	//000
-	KEY_LEFT : 1,	//001
-	KEY_UP : 2,	//010
-	KEY_DOWN : 3,	//011
-	KEY_RIGHT_DOWN : 4,	//100
-	KEY_LEFT_DOWN : 5,	//101
-	KEY_RIGHT_UP : 6,	//110
-	KEY_LEFT_UP : 7,	//111
-	
-	CMD_DIRECTION_FLAG : 8,
-	CMD_RIGHT : 8,	//1000
-	CMD_LEFT : 9,	//1001
-	CMD_UP : 10,	//1010
-	CMD_DOWN : 11,	//1011
-	CMD_RIGHT_DOWN : 12,	//1100
-	CMD_LEFT_DOWN : 13,	//1101
-	CMD_RIGHT_UP : 14,	//1110
-	CMD_LEFT_UP : 15,	//1111
+	COMBO_KEY_FRONT : 6,
+	COMBO_KEY_BACK : 4,
+	COMBO_KEY_UP : 8,
+	COMBO_KEY_DOWN : 2,
+	COMBO_KEY_ATTACK : 1,
 	
 	/**
+	 **** 以下是旧版，打算用二进制方式开发的
 	 * 技能摇键组合，懒得计算，RL可表示右左，也可以是前后，有些版本是不分左右，只有前后的
 	 * 如果只是兼容四方向（上下左右），那么两位二进制就够了，00右，01左 10上 11下
 	 * 现在使用三位二进制是为了以后兼容八方向。 如000右上，100右下，001左上，101左下

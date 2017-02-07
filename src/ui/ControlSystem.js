@@ -11,9 +11,7 @@ ControlSystem = {
 	//连续按键的最大时间间隔(秒)
 	maxInputInteval : 1.5,
 	
-	maxCombo : 2048,	// 4 * 3位二进制	111,111,111,111	2048是最高位的1
-	
-	rearCut : 511,		//	尾部切除	000,111,111,111
+	maxFlag : 8888,	//这里表示最多只能连续存储四次方向键
 
 	//被控制的目标，Unit类型,avatar
 	target : null,
@@ -21,6 +19,7 @@ ControlSystem = {
 	_command : null,
 
 	init : function(){
+		//要确保player已被初始化
 		this.target = Service.Gobal.player.unit;
 		this._command = this.target.propertys.command;
 	},
@@ -28,22 +27,17 @@ ControlSystem = {
 	pressDirection : function(command){
 		this._command.direction = command;
 		
-		//暂时只支持四方向
-		if(command!=1&&command!=2&&command!=4&&command!=8){
-			return;
-		}
-		
 		//计算间隔，加入到连续指令中
 		if(Service.gameTime - this.lastTime < this.maxInputInteval){
-			//如果连续指令存储满了，就把最前面的清掉，把新的加入到尾部
-			if(this.comboKey > this.maxCombo){
-				this.comboKey = this.comboKey & this.rearCut;
+			if(this.comboKey >= this.maxFlag){
+				this.comboKey = this.comboKey - this.comboKey/1000*1000;
 			}
 		}else{
 			this.comboKey = 0;
 		}
-		//按右往左排放，是为了方便二进制运算
-		this.comboKey = this._toComboKey(command) << 3 + this.comboKey;
+		//这是一条很复杂的运算公式
+		//this.comboKey = this.comboKey << this.step + this._toComboKey(command) + (1<<(this.index*this.step));
+		this.comboKey = this.combokey * 10 + this._toComboKey(command);
 		this.lastTime = Service.gameTime;
 	},
 	
@@ -67,12 +61,33 @@ ControlSystem = {
 	},
 	
 	pressAttack : function(){
-		this._command.comboKey = this.comboKey;
+		this._command.input = this.comboKey;//this._toUnitInput();
 		this._command.attack = Constant.CMD_PLAYER_ATTACK;
 		this.comboKey = 0;
+		this.index = 0;
 	},
 	
 	releaseAttack : function(){
 		this._command.attack = 0;
+	},
+	
+	_toUnitInput : function(){
+		var input = 0;
+		var first = -1;
+		if(this.index > 0){
+			for(var i=this.index; i>0; i--){
+				var seg = (this.cutFlag << i*this.step) & this.comboKey;
+				if(seg == Constant.COMBO_KEY_FRONT || seg == Constant.COMBO_KEY_BACK){
+					if(first < 0){
+						first = seg;
+					}
+					if(first == Constant.COMBO_KEY_BACK){
+						seg = !seg;
+					}
+				}
+				input += seg << (this.step*i);
+			}
+		}
+		return input;
 	}
 };

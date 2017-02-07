@@ -61,10 +61,6 @@ ComponentFactory = {
 			break;
 		}
 		command.init(data);
-		if(DataUtil.checkArrayNotNull(data.table)){
-			//因为所有action还没初始化完毕，所以把action名推到堆栈里，待初始化后再处理
-			ObjectManager.addCommandStack(command,data.table);
-		}
 		return command;
 	},
 	

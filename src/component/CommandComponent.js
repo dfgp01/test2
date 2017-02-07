@@ -7,13 +7,42 @@ CommandComponent = Component.extend({
 	table : null,
 	list : null,	//临时存放data数据
 	
+	_max : 8888,	//存储四个方向位的最大值（8,4,2,6）或者8方向(加上7,9,1,3)
+	_front : 6,
+	_back : 4,
+	
 	init : function(data){
 		this.table = {};
+		if(DataUtil.checkArrayNotNull(data.list)){
+			this.list = data.list;
+		}
+	},
+	
+	build : function(actionList){
+		for(var i in actionList){
+			var action = actionList[i];
+			if(this._isAvailable(action.input)){
+				this.table[action.input] = action;
+				this.table[this._symmetry(action.input)] = action;	//对称处理
+			}
+		}
+	},
+	
+	_isAvailable : function(input){
+		if(input <= 0 || input >= this._max){
+			cc.log("CommandComponent.build error. input is wrong number.");
+			return false;
+		}
+		if(this.table[input]){
+			cc.log("CommandComponent.build error. duplicate input:" + input);
+			return false;
+		}
+		return true;
 	},
 	
 	update : function(dt, unitCmd){
 		if(unitCmd.attack & Constant.CMD_AI_ATTACK){
-			var action = this._findByKey(this.table, unitCmd.comboKey);
+			var action = this._find(unitCmd.input);
 			if(action){
 				ActionUtil.next(unitCmd.owner.actions, action);
 				unitCmd.comboKey = 0;
@@ -21,18 +50,40 @@ CommandComponent = Component.extend({
 		}
 	},
 	
-	//comboKey要先对称化才能使用
-	_findByKey : function(table, comboKey){
-		if(comboKey > 0){
-			var key = this._symmetry(comboKey);
-			return table[key] ? table[key] : this._findByKey(table, comboKey >> 3);
-		}else{
-			return null;
+	_find : function(comboKey){
+		var key = comboKey;
+		var index = 1;
+		//求一共几位数
+		while(key/=10){
+			index*=10;
 		}
+		do{
+			if(this.table[comboKey])return this.table[comboKey];
+			index/=10;
+		}while(comboKey -= comboKey/index*index);
+		return null;
 	},
 	
+	//生成对称指令，主要是4-6相反
+	_symmetry : function(input){
+		var seg = 0;
+		var result = 0;
+		var index = 0;
+		do{
+			seg = input % 10;
+			if(seg == this._front){
+				seg = this._back;
+			}else if(seg == this._back){
+				seg = this._front;
+			}
+			result += seg * index;
+			index *= 10;
+		}while(input/=10);
+		return result;
+	}
+	
 	//对称处理（这个有点玄）
-	_symmetry : function(comboKey){
+	/*_symmetry : function(comboKey){
 		var key = 0;
 		var result = 0;
 		var front = 0;
@@ -45,7 +96,7 @@ CommandComponent = Component.extend({
 			comboKey = comboKey >> 3;
 		}
 		return result;
-	}
+	}*/
 });
 
 /**

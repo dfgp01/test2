@@ -56,5 +56,21 @@ ActionState = cc.Class.extend({
 			unit.actions.stacks[this.name] = stackInfo;
 		}
 		return stackInfo;
+	},
+	
+	findComponent : function(name){
+		if(!DataUtil.checkIsString(name)){
+			return null;
+		}
+		var com = null;
+		if(DataUtil.checkArrayNotNull(this.components)){
+			for(var i in this.components){
+				if(this.components[i].name == name){
+					com = this.components[i];
+					break;
+				}
+			}
+		}
+		return com;
 	}
 });
