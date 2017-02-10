@@ -7,6 +7,7 @@ ObjectManager = {
 	actions : null,
 	actionStacks : null,
 	templates : null,
+	team : null,
 	
 	init : function(){
 		SystemManager.init();
@@ -17,6 +18,7 @@ ObjectManager = {
 		this.actions = ActionManager;
 		this.actionStacks = ActionStackManager;
 		this.templates = {};
+		this.teams = TeamManager;
 	},
 
 	getActionStackInfo : function(){
@@ -24,6 +26,21 @@ ObjectManager = {
 	},
 	recycleActionStackInfo : function(stackInfo){
 		this.actionStacks.recycle(stackInfo);
+	}
+};
+
+/**
+ * 阵营管理
+ */
+TeamManager = {
+	friends:null,
+	enemyCamps:null,
+	hurts:null,
+	init : function(data){
+		this.enemyCamps = {};
+		for(var i in data.enemyCamps){
+			this.enemyCamps[i] = data.enemyCamps[i];
+		}
 	}
 };
 
@@ -54,33 +71,26 @@ ActionStackManager = {
  * 单位属性队列
  */
 PropertyManager = {
-
-	_viewHead : null,
-	_viewTail : null,
-	_actionsHead : null,
-	_actionsTail : null,
 	
-	init :function(){},
-	
-	_add : function(node, head, tail){
+	_add : function(node, p){
 		if(node.prep==null && node.next==null){
-			if(head==null){
-				tail = head = node;
+			if(p.head==null){
+				p.tail = p.head = node;
 			}else{
-				tail.next = node;
-				node.prep = tail;
-				tail = node;
+				p.tail.next = node;
+				node.prep = p.tail;
+				p.tail = node;
 			}
 		}
 	},
 	
-	_remove : function(node, head, tail){
+	_remove : function(node, p){
 		if(node.prep!=null||node.next!=null){
-			if(head==node){
-				head = node.next;
-			}else if(tail==node){
-				tail = node.prep;
-				tail.next = null;
+			if(p.head==node){
+				p.head = node.next;
+			}else if(p.tail==node){
+				p.tail = node.prep;
+				p.tail.next = null;
 			}else{
 				node.prep.next = node.next;
 				node.next.prep = node.prep;
@@ -93,73 +103,62 @@ PropertyManager = {
 	/**
 	 * 动作组件链表系列操作
 	 */
-	addActionsNode : function(node){
-		//this._add(actionsPropertyNode, this._actionsHead, this._actionsTail); 这不是C++，指针不能传进去
-		if(node.prep==null && node.next==null){
-			if(this._actionsHead==null){
-				this._actionsTail = this._actionsHead = node;
-			}else{
-				this._actionsTail.next = node;
-				node.prep = this._actionsTail;
-				this._actionsTail = node;
-			}
-		}
+	actions : {
+		head : null,
+		tail : null
 	},
-	removeActionsNode : function(actionsPropertyNode){
-		//this._remove(actionsPropertyNode, this._actionsHead, this._actionsTail);
-		if(actionsPropertyNode.prep !=null || actionsPropertyNode.next != null){
-			if(this._actionsHead==actionsPropertyNode){
-				this._actionsHead = actionsPropertyNode.next;
-			}else if(this._actionsTail==node){
-				this._actionsTail = actionsPropertyNode.prep;
-				this._actionsTail.next = null;
-			}else{
-				actionsPropertyNode.prep.next = actionsPropertyNode.next;
-				actionsPropertyNode.next.prep = actionsPropertyNode.prep;
-			}
-			node.prep = null;
-			node.next = null;
-		}
+	addActionsNode : function(node){
+		this._add(node, this.actions);
+	},
+	removeActionsNode : function(node){
+		this._remove(node, this.actions);
 	},
 	getFirstActionsNode : function(){
-		return this._actionsHead;
+		return this.actions.head;
 	},
 	
 	/**
 	 * 显示组件链表系列操作
 	 */
-	addViewNode : function(viewCom){
-		//this._add(viewCom, this._viewHead, this._viewTail);
-		if(viewCom.prep==null && viewCom.next==null){
-			if(this._viewHead==null){
-				this._viewTail = this._viewHead = viewCom;
-			}else{
-				this._viewTail.next = viewCom;
-				viewCom.prep = this._viewTail;
-				this._viewTail = viewCom;
-			}
-		}
+	view : {
+		head : null,
+		tail : null
 	},
-	removeViewNode : function(viewCom){
-		//this._reView(viewCom, this._viewHead, this._viewTail);
-		if(viewCom.prep !=null || viewCom.next != null){
-			if(this._viewHead==viewCom){
-				this._viewHead = viewCom.next;
-			}else if(this._viewTail==viewCom){
-				this._viewTail = viewCom.prep;
-				this._viewTail.next = null;
-			}else{
-				viewCom.prep.next = viewCom.next;
-				viewCom.next.prep = viewCom.prep;
-			}
-			viewCom.prep = null;
-			viewCom.next = null;
-		}
+	addViewNode : function(node){
+		this._add(node, this.view);
+	},
+	removeViewNode : function(node){
+		this._remove(node, this.view);
 	},
 	getFirstViewNode : function(){
-		return this._viewHead;
-	}
+		return this.view.head;
+	},
 	
+	/**
+	 * 受击组件链表系列操作
+	 */
+	friendCamps:null,
+	enemyCamps:{},
+	hurt : {},
+	initTeams : function(data){
+		for(var i in data.enemyCamps){
+			this.enemyCamps[i] = data.enemyCamps[i];
+			this.hurt[i].head = null;
+			this.hurt[i].tail = null;
+		}
+	},
+	findEnemyCamps : function(teamNo){
+		return this.enemyCamps[teamNo];
+	}
+	addHurtNode : function(node, teamNo){
+		this._add(node, this.hurt[teamNo]);
+	},
+	removeHurtNode : function(node, teamNo){
+		this._remove(node, this.hurt[teamNo]);
+	},
+	getFirstHurtNode : function(teamNo){
+		return this.hurt[teamNo].head;
+	}
 };
 
 SystemManager = {

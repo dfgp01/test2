@@ -43,8 +43,12 @@ ActionCollideComponent = Component.extend({
 });
 
 HitComponent = Component.extend({
-	damage : 0,
-	type : 0
+	startFrame:2,
+	endFrame:2,
+	rect:[0,0,12,12],
+	damage:300,
+	interval:0.3,
+	num : 1
 });
 
 /**

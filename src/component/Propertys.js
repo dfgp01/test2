@@ -95,12 +95,8 @@ HurtComponent = Property.extend({
 	name : "hurt",
 	hp : 0,
 	defence : 0,		//防御值
-	type : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
-	effects : null,
-	
-	ctor : function(){
-		this.effects = {};
-	}
+	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
+	state : 0,			//无敌、中毒等状态组合，二进制
 });
 
 /**
