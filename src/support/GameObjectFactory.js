@@ -48,6 +48,11 @@ GameObjectFactory = {
 			p = new CommandProperty();
 		}else if(name=='view'){
 			p = new ViewProperty();
+		}else if(name=='collide'){
+			p = new CollideProperty();
+		}else if(name=='hit'){
+			p = new HitProperty();
+			p.collide = new CollideProperty();
 		}
 		p.init(data);
 		return p;

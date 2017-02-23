@@ -230,18 +230,7 @@ Constant = {
 			TYPE : "system"
 		}
 	},
-	
-	Collide : {
-		TARGET_NODE : 0,
-		TARGET_BLOCK : 1,
-		TARGET_ENEMY : 2,
-		TARGET_FRIEND : 4,
-		TARGET_SELF : 8,
-		Amount : {
-			ONE : 1,
-			MULTI : 99
-		}
-	},
+
 	eventPriority : {
 		HIGHEST_PRIORITY : 0,
 		LOWEST_PRIORITY : 99

@@ -82,16 +82,13 @@ HitProperty = Property.extend({
 	critical : 0,		//暴击
 	speedFactor : 0,	//攻击速度
 	effects : null,
-	
-	ctor : function(){
-		this.effects = {};
-	}
+	collide : null		//碰撞属性
 });
 
 /**
  * 单位的挨打组件
  */
-HurtComponent = Property.extend({
+HurtProperty = Property.extend({
 	name : "hurt",
 	hp : 0,
 	defence : 0,		//防御值
@@ -102,19 +99,13 @@ HurtComponent = Property.extend({
 /**
  * 单位的碰撞组件
  */
-UnitCollideComponent = Property.extend({
+CollideProperty = Property.extend({
 	name : "collide",
-	collide : null,		//action.collide的引用
-	total : 0,			//记录一共碰撞了多少unit
-	targets : null,		//本次中招的人记录在这里 -_-0
-	cost : null,		//之前中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
+	num : 0,			//记录一共碰撞了多少unit
+	//targets : null,		//本次中招的人记录在这里 -_-0
+	//cost : null,		//之前中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
 	flag : false,		//是否已碰撞成功，撞到一个也算
-	
-	ctor : function(){
-		this.targets = [];
-		this.cost = {};
-		return this;
-	}
+	rect : null
 });
 
 /**

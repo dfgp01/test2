@@ -135,6 +135,10 @@ ActionFactory = {
 				ComponentFactory.addComponent(action,
 					ComponentFactory.createCommand(data.command));
 			}
+			if(DataUtil.checkNotNull(data.hit)){
+				ComponentFactory.addComponent(action,
+					ComponentFactory.createHit(data.hit));
+			}
 			return;
 		},
 		

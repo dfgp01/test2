@@ -3,7 +3,12 @@
  */
 CollideComponent = Component.extend({
 	name : "collide",
-	rect : null,	//矩形框
-	maxNum : 0,		//最大碰撞数
-	mask : 0		//目标
+	rect : null,	//原型矩形框
+	max : 0,		//最大交叠数量
+	callback : null,
+	
+	init : function(data){
+		this.rect = data.rect;
+		this.max = data.max;
+	}
 });

@@ -7,12 +7,13 @@ ObjectManager = {
 	actions : null,
 	actionStacks : null,
 	templates : null,
-	team : null,
+	teams : null,
 	
-	init : function(){
+	init : function(teamNo){
 		SystemManager.init();
 		ActionManager.init();
 		ActionStackManager.init();
+		TeamManager.init(teamNo);
 		this.propertys = PropertyManager;
 		this.systems = SystemManager;
 		this.actions = ActionManager;
@@ -33,13 +34,13 @@ ObjectManager = {
  * 阵营管理
  */
 TeamManager = {
-	friends:null,
-	enemyCamps:null,
-	hurts:null,
-	init : function(data){
-		this.enemyCamps = {};
-		for(var i in data.enemyCamps){
-			this.enemyCamps[i] = data.enemyCamps[i];
+	num : 0,
+	hurt : {},
+	init : function(teamNum){
+		this.num = teamNum;
+		for(var i in teamNum){
+			this.hurt[i].head = null;
+			this.hurt[i].tail = null;
 		}
 	}
 };
@@ -137,27 +138,14 @@ PropertyManager = {
 	/**
 	 * 受击组件链表系列操作
 	 */
-	friendCamps:null,
-	enemyCamps:{},
-	hurt : {},
-	initTeams : function(data){
-		for(var i in data.enemyCamps){
-			this.enemyCamps[i] = data.enemyCamps[i];
-			this.hurt[i].head = null;
-			this.hurt[i].tail = null;
-		}
-	},
-	findEnemyCamps : function(teamNo){
-		return this.enemyCamps[teamNo];
-	}
 	addHurtNode : function(node, teamNo){
-		this._add(node, this.hurt[teamNo]);
+		this._add(node, this.teams.hurt[teamNo]);
 	},
 	removeHurtNode : function(node, teamNo){
-		this._remove(node, this.hurt[teamNo]);
+		this._remove(node, this.teams.hurt[teamNo]);
 	},
 	getFirstHurtNode : function(teamNo){
-		return this.hurt[teamNo].head;
+		return this.teams.hurt[teamNo].head;
 	}
 };
 

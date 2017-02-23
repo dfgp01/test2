@@ -141,6 +141,21 @@ DataUtil = {
 		},
 		
 		/**
+		 * 检测是否矩形数据
+		 */
+		checkIsRect : function(data){
+			if(this.checkArrayNotNull(data) && data.length==4){
+				for(var i=0; i<data.length; i++){
+					if(!this.checkIsNumber(data[i])){
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		/**
 		 * 用于检查的
 		 * @param action
 		 */
@@ -163,5 +178,30 @@ DataUtil = {
 				index++;
 			}while((number=number>>1) > 0)
 			return index;
+		},
+		
+		/**
+		 * 对象校验
+		 */
+		validate : function(data, valJson){
+			for(var key in valJson){
+				var flag = true;
+				var value = valJson[key];
+				if(value=='int'){
+					flag = this.checkIsInt(data[key]);
+				}else if(value=='number'){
+					flag = this.checkIsNumber(data[key]);
+				}else if(value=='string'){
+					flag = this.checkIsString(data[key]);
+				}else if(value=='array'){
+					flag = this.checkArrayNotNull(data[key]);
+				}else if(value=='rect'){
+					flag = this.checkIsRect(data[key]);
+				}else{
+					flag = false;
+				}
+				if(!flag)return false;
+			}
+			return true;
 		}
 };
