@@ -175,8 +175,7 @@
 			ctx.fillRect(_curr.x, _curr.y, _curr.width, _curr.height);
 		}
 	}
-	
-	var removes = [];
+
 	function update(){
 		var _curr = null;
 		var _next = null;
@@ -219,12 +218,12 @@
 		if(x2 > x1 && y2 > y1){
 			if(x2-x1 > y2-y1){
 				//上下碰撞
-				_curr.vx *= -1;
-				_next.vx *= -1;
+				rect1.vx *= -1;
+				rect2.vx *= -1;
 			}else{
 				//左右碰撞
-				_curr.vy *= -1;
-				_next.vy *= -1;
+				rect1.vy *= -1;
+				rect2.vy *= -1;
 			}
 		}
 	}
