@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>分组碰撞检测</title>
+<script src="jquery-1.8.3.min.js"></script>
+<script src="template.js"></script>
+</head>
+<body>
+<div id="show"></div>
+<label>当前处理时间(ms)：</label><span id="delta"></span><br/>
+<label>剩余时间：</label><span id="countDown"></span><br/>
+<label>每次检测次数：</label><span id="forCount"></span><br/>
+<div id="groupDiv">
+	<label>初始化阵营(逗号分隔,最多8组)：</label>
+	<input type="text" id="groups" value="team1">
+	<input type="button" value="生成" id="gen"/><br/>
+	<table style="display: none;" id="teamTable">
+		
+	</table>
+</div>
+<label>最大矩形数量：</label><input type="text" id="number" value="10"><input type="button" value="start" id="start" disabled="disabled"/>
+<script id="teamTableHTML" type="text/html">
+	<tr>
+		<th></th>
+		{{each list as value i}}
+		<th id="team{{i}}TH" style="color:{{colors[i]}}">{{value.name}}</th>
+		{{/each}}
+	</tr>
+	{{each list as value i}}
+	<tr>
+		<td id="team{{i}}TD" style="color:{{colors[i]}}">{{value.name}}</td>
+		{{each list as item j}}
+		<td>
+			<input type="checkbox" id="c{{i}}_{{j}}" onclick="pair(this,{{i}},{{j}})" />
+		</td>
+		{{/each}}
+	</tr>
+	{{/each}}
+</script>
+<script type="text/javascript">
+
+	var colors = ["#99CCFF","#CCFF99","#6666CC","#FFCC00","#999999","#FFCCCC","#FF6666","#009966"];
+	var number = 0;
+	var rectWidth = 25;
+	var rectHeight = 25;
+	var _vxMax = 8;
+	var _vyMax = 8;
+	var time = 20000;
+	
+	// requestAnimationFrame 的浏览器兼容性处理
+	var w = window;
+	requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
+
+	var teams = [];
+	var rects = [];
+	var then = null;
+	
+	function pair(checkBox, i, j){
+		//同步勾选/取消关系
+		 if(checkBox.checked){
+			 $("#c"+j+"_"+i).attr("checked",'true');
+			 makeEnemies(teams[i], teams[j]);
+		 }else{
+			 $("#c"+j+"_"+i).removeAttr("checked");
+			 makeFrieds(teams[i], teams[j]);
+		 }
+	}
+	
+	function makeEnemies(team1, team2){
+		team1.mask |= team2.code;
+		team2.mask |= team1.code;
+	}
+	
+	function makeFrieds(team1, team2){
+		team1.mask &= !(team2.code);
+		team2.mask &= !(team1.code);
+	}
+	
+	window.onload = function(){
+		document.getElementById("gen").onclick = function(){
+			var groups = document.getElementById("groups").value;
+			groups = groups.split(",");
+			for(var i=0; i<groups.length; i++){
+				createTeam(groups[i], i);
+			}
+			$("#teamTable").html(template('teamTableHTML', {list:teams,colors:colors}));
+			$("#gen").attr('disabled',true);
+			$("#groups").attr('disabled',true);
+			$("#start").attr('disabled',false);
+			$("#teamTable").show();
+		}
+		
+		document.getElementById("start").onclick = function(){
+			number = document.getElementById("number").value;
+			document.getElementById("start").disabled=true;
+			document.getElementById("number").disabled=true;
+			
+			start(number);
+		}
+	}
+	
+	function createTeam(name, index){
+		var team = {
+			name : name,
+			code : 1 << index,
+			mask : 0,
+			color : colors[index],
+			score : 0
+		};
+		teams.push(team);
+	}
+	
+	var canvas = document.createElement("canvas");
+	var ctx = canvas.getContext("2d");
+	document.getElementById("show").appendChild(canvas);
+	canvas.width = 800;
+	canvas.height = 600;
+	
+	function start(number){
+		init(number);
+		then = Date.now();
+		requestAnimationFrame(main);
+	}
+
+	var main = function () {
+	    update();
+	    render();
+	    
+	    var now = Date.now();
+	    var delta = now - then;
+	    then = now;
+	    time -= delta;
+	    if(time < 0){
+	    	end();
+	    	return;
+	    }
+	    document.getElementById("delta").innerHTML = delta;
+	    document.getElementById("countDown").innerHTML = time;
+	    requestAnimationFrame(main);
+	};
+
+	function init(number){
+		for(var i=0; i<number; i++){
+			var x = Math.random() * canvas.width;
+			var y = Math.random() * canvas.height;
+			var vx = Math.random() * _vxMax - _vxMax * 0.5;
+			var vy = Math.random() * _vyMax - _vyMax * 0.5;
+			var team = parseInt(Math.random() * teams.length);
+			createRect(x, y, rectWidth, rectHeight, vx, vy, team);
+		}
+	}
+
+	function createRect(x, y, width, height, vx, vy, teamNo){
+		var rect = {
+			x : x,
+			y : y,
+			width : width,
+			height : height,
+			isCollide : false,
+			vx : vx,
+			vy : vy,
+			num : 0,
+			team : teamNo
+		}
+		rects.push(rect);
+	}
+	
+	function render(){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		var _curr = null;
+		for(var i in rects){
+			_curr = rects[i];
+			ctx.fillStyle = teams[_curr.team].color;
+			ctx.fillRect(_curr.x, _curr.y, _curr.width, _curr.height);
+		}
+	}
+	
+	var removes = [];
+	function update(){
+		var _curr = null;
+		var _next = null;
+		for(var i=0; i<rects.length; i++){
+			_curr = rects[i];
+			checkEdge(_curr);
+			for(var j=i+1; j<rects.length; j++){
+				_next = rects[j];
+				if((teams[_curr.team].mask & teams[_next.team].code)){
+					collide(_curr, _next);
+				}
+			}
+			_curr.x += _curr.vx;
+			_curr.y += _curr.vy;
+		}
+	}
+	
+	function checkEdge(rect){
+		if(rect.vx > 0 && rect.x + rectWidth > canvas.width){
+			rect.x = canvas.width - rect.width;
+			rect.vx *= -1;
+		}else if(rect.vx < 0 && rect.x < 0){
+			rect.x = 0;
+			rect.vx *= -1;
+		}
+		if(rect.vy > 0 && rect.y + rectHeight > canvas.height){
+			rect.y = canvas.height - rect.height;
+			rect.vy *= -1;
+		}else if(rect.vy < 0 && rect.y < 0){
+			rect.y = 0;
+			rect.vy *= -1;
+		}
+	}
+
+	function collide(rect1, rect2){
+		var x1 = max(rect1.x, rect2.x);
+		var x2 = min(rect1.x + rect1.width, rect2.x + rect2.width);
+		var y1 = max(rect1.y, rect2.y);
+		var y2 = min(rect1.y + rect1.height, rect2.y + rect2.height)
+		if(x2 > x1 && y2 > y1){
+			if(x2-x1 > y2-y1){
+				//上下碰撞
+				_curr.vx *= -1;
+				_next.vx *= -1;
+			}else{
+				//左右碰撞
+				_curr.vy *= -1;
+				_next.vy *= -1;
+			}
+		}
+	}
+	function min(num1, num2){
+		return num1 < num2 ? num1 : num2;
+	}
+	function max(num1, num2){
+		return num1 > num2 ? num1 : num2;
+	}
+	
+	function end(){
+		var max = 0;
+		var index = 0;
+		for(var i in teams){
+			if(teams[i].score > max){
+				max = teams[i].score;
+				index = i;
+			}
+		}
+		document.getElementById("countDown").innerHTML = teams[index].name + " Win~!";
+	}
+</script>
+</body>
+</html>

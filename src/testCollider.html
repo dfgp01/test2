@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>实时碰撞检测</title>
+</head>
+<body>
+<div id="show"></div>
+<label>当前处理时间(ms)：</label><span id="delta"></span><br/>
+<label>每次检测次数：</label><span id="forCount"></span><br/>
+<label>矩形数量：</label><input type="text" id="number" value="1">
+<input type="button" value="start" id="start"/>
+<script type="text/javascript">
+
+	window.onload = function(){
+		document.getElementById("start").onclick=function(){
+			var number = document.getElementById("number").value;
+			document.getElementById("start").disabled=true;
+			document.getElementById("number").disabled=true;
+			document.getElementById("forCount").innerHTML = number * (number-1) * 0.5;
+			start(number);
+		}
+	}
+	
+	var canvas = document.createElement("canvas");
+	var ctx = canvas.getContext("2d");
+	document.getElementById("show").appendChild(canvas);
+	
+	canvas.width = 800;
+	canvas.height = 600;
+	var rectWidth = 25;
+	var rectHeight = 25;
+	var _vxMax = 15;
+	var _vyMax = 15;
+	
+	// requestAnimationFrame 的浏览器兼容性处理
+	var w = window;
+	requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
+	var then = Date.now();
+
+	function start(number){
+		init(number);
+		requestAnimationFrame(main);
+	}
+	
+	var main = function () {
+	    var now = Date.now();
+	    document.getElementById("delta").innerHTML = now - then
+
+	    update(delta / 1000);
+	    render();
+	    then = now;
+	    requestAnimationFrame(main);
+	};
+	
+	
+	function init(number){
+		for(var i=0; i<number; i++){
+			var x = Math.random() * canvas.width;
+			var y = Math.random() * canvas.height;
+			var vx = Math.random() * _vxMax - _vxMax * 0.5;
+			var vy = Math.random() * _vyMax - _vyMax * 0.5;
+			createRect(x, y, rectWidth, rectHeight, vx, vy);
+		}
+	}
+	
+	var rects = [];
+	function createRect(x, y, width, height, vx, vy){
+		var rect = {
+			x : x,
+			y : y,
+			width : width,
+			height : height,
+			isCollide : false,
+			vx : vx,
+			vy : vy,
+			num : 0
+		}
+		rects.push(rect);
+	}
+	
+	var _red = "#FF0000";
+	var _green = "#00FF00";
+	function render(){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		var _curr = null;
+		for(var i in rects){
+			_curr = rects[i];
+			ctx.fillStyle = _curr.isCollide ? _green : _red;
+			ctx.fillRect(_curr.x, _curr.y, _curr.width, _curr.height);
+		}
+	}
+	
+	function update(){
+		var _curr = null;
+		for(var i in rects){
+			_curr = rects[i];
+			_curr.num = 0;
+			_curr.x += _curr.vx;
+			_curr.y += _curr.vy;
+		}
+		for(var i=0; i<rects.length; i++){
+			_curr = rects[i];
+			checkEdge(_curr);
+			for(var j=i+1; j<rects.length; j++){
+				if(checkCollide(_curr,rects[j])){
+					_curr.num ++;
+					rects[j].num++;
+				}
+			}
+			_curr.isCollide = _curr.num > 0 ? true : false;
+		}
+	}
+	
+	function checkEdge(rect){
+		if(rect.vx > 0 && rect.x + rectWidth > canvas.width){
+			rect.x = canvas.width - rect.width;
+			rect.vx *= -1;
+		}else if(rect.vx < 0 && rect.x < 0){
+			rect.x = 0;
+			rect.vx *= -1;
+		}
+		if(rect.vy > 0 && rect.y + rectHeight > canvas.height){
+			rect.y = canvas.height - rect.height;
+			rect.vy *= -1;
+		}else if(rect.vy < 0 && rect.y < 0){
+			rect.y = 0;
+			rect.vy *= -1;
+		}
+	}
+	
+	function checkCollide(rect1, rect2){
+		return min(rect1.x + rect1.width, rect2.x + rect2.width) > max(rect1.x, rect2.x) &&
+			min(rect1.y + rect1.height, rect2.y + rect2.height) > max(rect1.y, rect2.y);
+	}
+	function min(num1, num2){
+		return num1 < num2 ? num1 : num2;
+	}
+	function max(num1, num2){
+		return num1 > num2 ? num1 : num2;
+	}
+</script>
+</body>
+</html>
