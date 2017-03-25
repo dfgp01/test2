@@ -4,11 +4,19 @@
 CollideComponent = Component.extend({
 	name : "collide",
 	rect : null,	//原型矩形框
-	max : 0,		//最大交叠数量
-	callback : null,
+	maxNum : 0,		//最大交叠数量
+	check : null,	// func return true
 	
 	init : function(data){
 		this.rect = data.rect;
-		this.max = data.max;
+		this.maxNum = data.maxNum;
+	},
+	
+	start : function(collideProperty){
+		
+	},
+
+	update : function(dt, collideProperty){
+		
 	}
 });

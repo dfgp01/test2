@@ -97,18 +97,6 @@ HurtProperty = Property.extend({
 });
 
 /**
- * 单位的碰撞组件
- */
-CollideProperty = Property.extend({
-	name : "collide",
-	num : 0,			//记录一共碰撞了多少unit
-	//targets : null,		//本次中招的人记录在这里 -_-0
-	//cost : null,		//之前中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
-	flag : false,		//是否已碰撞成功，撞到一个也算
-	rect : null
-});
-
-/**
  * 单位状态存储组件
  * 	stateIds 存储buff和其他状态的信息，key为effect.name，effect分别分布在hitCom,hurtCom和stateCom.timer中
  */
@@ -155,4 +143,22 @@ CommandProperty = Property.extend({
 	attack : 0,
 	jump : 0,
 	comboKey : 0
+});
+
+/**
+ * 单位的碰撞组件
+ */
+CollideProperty = Property.extend({
+	name : "collide",
+	type : 0,
+	team : 0,
+	num : 0,			//当前与之交叠的矩形个数（此帧）
+	max : 0,			//累计最大交叠个数（累计帧）
+	targets : null,		//中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
+	rect : null,		//需要经过计算的实际矩形区域
+	
+	init : function(){
+		targets = {};
+		rect = [0,0,0,0];
+	}
 });
