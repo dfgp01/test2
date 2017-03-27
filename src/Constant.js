@@ -5,6 +5,14 @@ Constant = {
 	DIRECT_CHILDNODE : "-",
 	
 	/**
+	 * 碰撞刚体类型
+	 */
+	COLLIDE_TYPE_BLOCK = 1;		//障碍物
+	COLLIDE_TYPE_BODY = 2;		//单位身体
+	COLLIDE_TYPE_HIT = 4;		//攻击（红框）
+	COLLIDE_TYPE_HURT = 8;		//受击（蓝框）
+	
+	/**
 	 * 动作状态（暂定）
 	 */
 	ACTION_STATE_DEFAULT : 0,	//默认或前摇
@@ -123,10 +131,11 @@ Constant = {
 	HIT_TYPE_SHAKE : 16,		//是否震动
 	
 	/**
-	 * 事件类型
+	 * 事件类型枚举
 	 */
-	EVT_PLAYER_INPUT : 0,		//玩家输入指令
-	EVT_UNIT_CHANGE_PLACE : 0,	//单位改变位置
+	EVT_PLAYER_INPUT : 0,			//玩家输入指令
+	
+	EVT_UNIT_CHANGE_POSITION : 0,	//单位改变位置
 	EVT_UNIT_ATTACK : 0,		//单位发起攻击
 	EVT_UNIT_HIT : 0,			//单位击中目标
 	EVT_UNIT_HURT : 0,			//单位受到攻击
@@ -137,8 +146,16 @@ Constant = {
 	EVT_UNIT_CHANGE_STATE : 0,	//单位改变状态（Buff）
 	EVT_UNIT_CHANGE_HP : 0,		//单位体力值发生变化
 	EVT_UNIT_TAKE_ITEM : 0,		//单位拾取物品
+	EVT_UNIT_COLLIDE : 0,		//单位碰撞
+	
 	EVT_SYS_SCENE_SWITCH : 0,	//场景开始切换
 	EVT_SYS_SCENE_LOADED : 0,	//场景加载完毕
+	
+	/**
+	 * 优先级
+	 */
+	HIGHEST_PRIORITY : 0,
+	LOWEST_PRIORITY : 99,
 	
 	Action : {
 		Feature : {
@@ -229,10 +246,5 @@ Constant = {
 		System : {
 			TYPE : "system"
 		}
-	},
-
-	eventPriority : {
-		HIGHEST_PRIORITY : 0,
-		LOWEST_PRIORITY : 99
 	}
 };

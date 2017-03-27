@@ -7,3 +7,8 @@ Node = cc.Class.extend({
 	prep : null,
 	next : null
 });
+
+Position = cc.Class.extend({
+	x : 0,
+	y : 0
+});

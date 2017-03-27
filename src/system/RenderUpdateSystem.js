@@ -55,11 +55,11 @@ RenderUpdateSystem = System.extend({
 	 * 更新位置
 	 */
 	renderPosition : function(viewProperty){
-		var moveProperty = viewProperty.owner.propertys.move;
+		/*var moveProperty = viewProperty.owner.propertys.move;
 		if(moveProperty){
 			viewProperty.dx += moveProperty.dx;
 			viewProperty.dy += moveProperty.dy;
-		}
+		}*/
 		if(viewProperty.dx!=0 || viewProperty.dy!=0){
 			EngineUtil.setPosition(viewProperty.body, viewProperty);
 			viewProperty.dx = viewProperty.dy = 0;

@@ -7,16 +7,6 @@ Service = {
 
 	//游戏经过时间
 	gameTime : 0,
-	
-	//上一帧剩下的时间数，实际上是小数，取余运算时用整数进行。
-	remainDt : 0.0000,
-	
-	/**
-	 * 游戏经过时间递增
-	 */
-	gameTimeAfter : function(dt){
-		this.gameTime += dt;
-	},
 
 	/**
 	 * 回收，归对象池队列内
@@ -26,29 +16,30 @@ Service = {
 	},
 	
 	/**
-	 * 	从指定模板中创建新单位
+	 * 	从指定模板中创建新单位并加入到舞台中
 	 */
-	newUnit : function(templateName, x,y,z, cc_layer){
+	addUnitToStage : function(templateName, x,y,z, cc_layer){
 		var template = ObjectManager.templates[templateName];
-		if(!template){
-			cc.log("template: " + templateName + " not found!");
-			return null;
-		}
+		var unit = this.newUnit(template);
+		unit.view.x = x;
+		unit.view.y = y;
+		unit.view.z = z;
+		template.actions.boot.start(unit);
+		var pos = GameUtil.toScreenPosition(x, y, z);
+		EngineUtil.addSprite(unit.view, pos.x, pos.y, cc_layer);
+		return unit;
+	},
+	
+	/**
+	 * 从指定模板中创建新单位
+	 */
+	newUnit : function(template){
 		var unit = null;
 		if(template.availableList.length > 0){
 			unit = template.availableList.pop();
 		}else{
 			unit = GameObjectFactory.createGameObject(template);
 		}
-		//初始化所有属性值，需要额外的封装方法（对象拷贝或对象值拷贝）
-		for(var i in this.propertys){
-			var name = this.propertys[i].name;
-			for(var j in this.propertys[i]){
-				unit.propertys[j] = this.propertys[i][j];
-			}
-		}
-		EngineUtil.addSprite(unit.view, x,y,z, cc_layer);
-		template.actions.boot.start(unit);
 		return unit;
 	},
 	
@@ -67,11 +58,6 @@ Service = {
 	update : function(dt){
 		this.gameTime += dt;
 		this.mainSystem.update(dt);
-	},
-	
-	//加入到 消息/事件 列表中，等待执行
-	dispatchEvent : function(evt){
-		GameUtil.systems.sys.EvtMsg.addEvent(evt);
 	},
 	
 	/**

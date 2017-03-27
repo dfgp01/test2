@@ -40,7 +40,7 @@ EngineUtil = {
 		//这里要使用getPositionX()而不是getPosition().x这种，因为翻查源码发现，getPosition()是会有new操作的。
 		sprite.setPosition(
 			sprite.getPositionX() + viewProperty.dx,
-			sprite.getPositionY() + viewProperty.dy);
+			sprite.getPositionY() + viewProperty.dy + viewProperty.dz);
 	},
 	
 	getRectWithNode : function(node, rectData){
@@ -69,10 +69,9 @@ EngineUtil = {
 		cc.eventManager.addCustomListener(name, callback);
 	},
 	
-	addSprite : function(viewCom, _x, _y, _z, ccNode){
-		viewCom.z = _z;
-		viewCom.body.attr({x: _x, y: _y+_z});
+	addSprite : function(viewCom, _x, _y, ccNode){
+		viewCom.body.attr({x: _x, y: _y});
 		//GL坐标系，z值(Y轴)越小越排前
-		ccNode.addChild(viewCom.body, -(_z));
+		ccNode.addChild(viewCom.body, -(viewCom.y));
 	}
 };

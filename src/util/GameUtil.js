@@ -3,6 +3,36 @@
 *	CreateBy Hugo-Fu 2015.12.05
 */
 GameUtil = {
+		
+		/**
+		 * 凡是涉及移动、更新位置的统一调用这方法。
+		 * @param unit
+		 * @param dx
+		 * @param dy
+		 * @returns
+		 */
+		move : function(unit, dx, dy, dz){
+			unit.view.x += dx;
+			unit.view.y += dy;
+			unit.view.z += dz;
+			unit.view.dx += dx;
+			unit.view.dy += dy+dz;
+			this.moveRect(unit.body.rect, dx, dy+dz);
+		},
+		
+		/**
+		 * 将世界坐标转换成屏幕坐标
+		 */
+		toScreenPosition : function(x, y, z){
+			//暂时实现不了
+			new Position();
+			return [0,0];
+		},
+		
+		moveRect : function(rect, dx, dy){
+			rect.x += dx;
+			rect.y += dy;
+		},
 
 		/**
 		 * 生成碰撞标示码
@@ -43,10 +73,5 @@ GameUtil = {
 		 */
 		random : function(seek){
 			//待实现
-		},
-		
-		_allDirectionFlag : 15, 	//1111
-		isChangeDirection : function(commandCom){
-			return (commandCom.curr & this._allDirectionFlag) != (commandCom.last & this._allDirectionFlag);
 		}
 };

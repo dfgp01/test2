@@ -42,41 +42,70 @@ GameObjectFactory = {
 		var p = null;
 		if(name=="actions"){
 			p = new ActionsProperty();
+			p.stacks = {};
 		}else if(name=='move'){
 			p = new MoveProperty();
+			p.coefficient = DataUtil.checkIsNumber(data.coefficient) ? data.coefficient : p.coefficient;
 		}else if(name=='command'){
 			p = new CommandProperty();
 		}else if(name=='view'){
 			p = new ViewProperty();
+			p.body = EngineUtil.newSprite();
 		}else if(name=='collide'){
-			p = new CollideProperty();
+			p = this._createCollide(data);
 		}else if(name=='hit'){
 			p = new HitProperty();
-			p.collide = new CollideProperty();
+			p.collide = this._createCollide(data);
 		}
-		p.init(data);
 		return p;
 	},
+	
+	cloneProperty : function(name, property, unit){
+		var p = null;
+		if(name=="actions"){
+			p = new ActionsProperty();
+			p.stacks = {};
+		}else if(name=='move'){
+			p = new MoveProperty();
+			p.coefficient = property.coefficient;
+		}else if(name=='command'){
+			p = new CommandProperty();
+		}else if(name=='view'){
+			p = new ViewProperty();
+			p.body = EngineUtil.newSprite();
+		}else if(name=='collide'){
+			p = this._createCollide(data, properties);
+		}else if(name=='hit'){
+			p = new HitProperty();
+			p.collide = this._createCollide(data);
+			p.body = unit.collide;
+		}
+		return p;
+	}
+	
+	_createCollide : function(data){
+		var p = new CollideProperty();
+		p.targets = {};
+		p.rect = [0,0,0,0];
+		return p;
+	}
 	
 	createGameObject : function(template){
 		var unit = new GameObject();
 		unit.id = template.nextId++
 		unit.name = template.name;
-		unit.propertys = {};
 		unit.template = template;
-		for(var i in template.propertys){
-			var name = template.propertys[i].name;
-			var property = this.createProperty(name);
-			property.owner = unit;
-			property.prev = null;
-			property.next = null;
-			unit.propertys[property.name] = property;
-		}
 		unit.view = this.createProperty("view");
-		unit.view.body = EngineUtil.newSprite(template.frame);
+		//unit.view.body = EngineUtil.newSprite(template.frame);
 		unit.view.owner = unit;
 		unit.actions = this.createProperty("actions");
 		unit.actions.owner = unit;
+		unit.propertys = {};
+		for(var i in template.propertys){
+			var property = this.cloneProperty(template.propertys[i], unit);
+			property.owner = unit;
+			unit.propertys[property.name] = property;
+		}
 		return unit;
 	},
 	

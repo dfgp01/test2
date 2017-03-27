@@ -11,7 +11,8 @@ Property = cc.Class.extend({
 	owner : null,		//所属unit
 	prev : null,		//前驱指针
 	next : null,		//后驱指针
-	init : function(data){}	//初始化函数，注意data对象可能是空的，必须做好判断
+	init : function(data){},	//初始化函数，一般在创建template时调用，注意data对象可能是空的，必须做好判断
+	clone : function(property){}	//数据克隆，一般在创建GameObject时调用
 });
 
 /**
@@ -25,15 +26,12 @@ ViewProperty = Property.extend({
 	body : null,			//cc.Sprite的引用
 	frame : null,			//cc.SpriteFrame的引用
 
-	z : 0,					//在地上的Y值，用于空中状态落地判断
+	x : 0,					//处于世界的x坐标，非屏幕坐标
+	y : 0,					//处于世界的Y坐标，非屏幕坐标
+	z : 0,					//高度值，用于空中状态落地判断
 	vx : 1,					//面向，1为右边，-1为左边，用于渲染
 	dx : 0,					//x偏移量，用于渲染
-	dy : 0,					//y偏移量，用于渲染
-	
-	init : function(){
-		this.body = EngineUtil.newSprite();
-		this.z = 0;
-	}
+	dy : 0					//y偏移量，用于渲染
 });
 
 /**
@@ -45,14 +43,7 @@ ActionsProperty = Property.extend({
 	endFlag : false,
 	next : null,
 	state : 0,				//动作状态，空中、倒地、晕倒等		1010 binary	0=普通站立（行走等地上状态）
-	stacks : null,			//map<name, stackInfo>结构
-	
-	init : function(data){
-		this.endFlag = false;
-		this.next = null;
-		this.state = 0;
-		this.stacks = {};
-	}
+	stacks : null			//map<name, stackInfo>结构
 });
 
 /**
@@ -63,13 +54,7 @@ MoveProperty = Property.extend({
 	coefficient : 1,		//速度比例系数
 	dx : 0,					//dx,dy,dz 代表移动增量
 	dy : 0,
-	dz : 0,
-
-	init : function(data){
-		if(data){
-			this.coefficient = data.coefficient;
-		}
-	}
+	dz : 0
 });
 
 /**
@@ -82,7 +67,8 @@ HitProperty = Property.extend({
 	critical : 0,		//暴击
 	speedFactor : 0,	//攻击速度
 	effects : null,
-	collide : null		//碰撞属性
+	body : null,		//身体碰撞属性
+	collide : null		//自身碰撞属性
 });
 
 /**
@@ -94,6 +80,8 @@ HurtProperty = Property.extend({
 	defence : 0,		//防御值
 	bodyType : 1,		//0无敌，1普通(一般人物)，2伪霸体(对远程攻击霸体)，3霸体(对全部攻击霸体)，4不倒地(精灵类，对所有攻击都只向后退)
 	state : 0,			//无敌、中毒等状态组合，二进制
+	body : null,		//身体碰撞属性
+	collide : null		//自身碰撞属性
 });
 
 /**
@@ -155,10 +143,5 @@ CollideProperty = Property.extend({
 	num : 0,			//当前与之交叠的矩形个数（此帧）
 	max : 0,			//累计最大交叠个数（累计帧）
 	targets : null,		//中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
-	rect : null,		//需要经过计算的实际矩形区域
-	
-	init : function(){
-		targets = {};
-		rect = [0,0,0,0];
-	}
+	rect : null		//需要经过计算的实际矩形区域
 });
