@@ -15,7 +15,7 @@ CharacterBootAction = ActionState.extend({
 	},
 	
 	//人物动作重置时调用此方法
-	update : function(dt, unit, com){
+	update : function(dt, unit){
 		unit.actions.current = unit.template.actions.stand;
 		unit.actions.current.start(unit);
 	},

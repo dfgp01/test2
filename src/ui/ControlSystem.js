@@ -12,16 +12,28 @@ ControlSystem = {
 	maxInputInteval : 1.5,
 	
 	maxFlag : 8888,	//这里表示最多只能连续存储四次方向键
-
-	//被控制的目标，Unit类型,avatar
-	target : null,
 	
 	_command : null,
+	
+	_unit : null,	//被控制的目标
+	
+	score : 0,
 
 	init : function(){
-		//要确保player已被初始化
-		this.target = Service.Gobal.player.unit;
-		this._command = this.target.propertys.command;
+		var _self = this;
+		EventDispatcher.addEventListener(Constant.EVT_PLAYER_INITIALIZED, function(evt){
+			_self._unit = evt.unit;
+			_self._command = _self._unit.propertys.command;
+		});
+		EventDispatcher.addEventListener(Constant.EVT_PLAYER_INPUT, function(evt){
+			switch(evt.type){
+			case Constant.INPUT_TYPE_DIRECTION :
+				_self.pressDirection(evt.value);
+				break;
+			default:
+				return;
+			}
+		});
 	},
 
 	pressDirection : function(command){

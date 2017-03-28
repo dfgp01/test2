@@ -6,11 +6,9 @@
 /**
  * 	GameObject/Unit 对象属性集抽象类
  */
-Property = cc.Class.extend({
+Property = Node.extend({
 	name : "property",
 	owner : null,		//所属unit
-	prev : null,		//前驱指针
-	next : null,		//后驱指针
 	init : function(data){},	//初始化函数，一般在创建template时调用，注意data对象可能是空的，必须做好判断
 	clone : function(property){}	//数据克隆，一般在创建GameObject时调用
 });

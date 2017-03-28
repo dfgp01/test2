@@ -6,7 +6,6 @@ ActionState = cc.Class.extend({
 	name : null,
 	next : null,			//改用直接后驱节点（未实行）
 	input : 0,				//需由指令触发
-	//systemList : null,				//系统列表
 	components : null,
 	
 	/**

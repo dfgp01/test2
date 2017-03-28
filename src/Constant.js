@@ -2,7 +2,13 @@
  * 用于定义常量的
  */
 Constant = {
-	DIRECT_CHILDNODE : "-",
+	/**
+	 * 数值范围
+	 */
+	HIGHEST : 9999,
+	LOWEST : 1,
+	NONE : 0,		//默认无
+	FOREVER : -1,	//无限
 	
 	/**
 	 * 碰撞刚体类型
@@ -60,6 +66,12 @@ Constant = {
 	 */
 	GAMEOBJECT_TILE : 0,
 	GAMEOBJECT_CHARACTER : 1,
+	
+	/**
+	 * 输入类型
+	 */
+	INPUT_TYPE_DIRECTION : 1,
+	INPUT_TYPE_ATTACK : 2,
 	
 	/**
 	 * 输入指令
@@ -150,12 +162,6 @@ Constant = {
 	
 	EVT_SYS_SCENE_SWITCH : 0,	//场景开始切换
 	EVT_SYS_SCENE_LOADED : 0,	//场景加载完毕
-	
-	/**
-	 * 优先级
-	 */
-	HIGHEST_PRIORITY : 0,
-	LOWEST_PRIORITY : 99,
 	
 	Action : {
 		Feature : {

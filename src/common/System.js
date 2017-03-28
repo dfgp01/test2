@@ -8,14 +8,14 @@ System = cc.Class.extend({
 	remainDt : 0,
 	
 	_curr : null,
-	_next : null,	//此引用是防止在execute()中有移除链表队列的操作，到时_curr.next就为null而异常，先备份好。
+	//_next : null,	//此引用是防止在execute()中有移除链表队列的操作，到时_curr.next就为null而异常，先备份好。
 	
 	/**
 	 * 主函数，循环整个链表
 	 */
 	update : function(dt){
 		while(this._curr != null){
-			this._next = this._curr.next;
+			//this._next = this._curr.next;
 			this.execute(dt, this._curr);
 			this._curr = this._next;
 		}
@@ -48,42 +48,5 @@ ActionSystem = cc.Class.extend({
 		if(node.prep==null && node.next==null){
 			GameUtil.systems[this.name].addComponentNode(node);	
 		}
-	}
-});
-
-/**
- * 事件消息分发系统
- */
-EventMessageSystem = System.extend({
-	name : "EvtMsg",
-	_currEvt : null,
-	_quene : null,
-	_unitEvt : null,
-	
-	ctor : function(){
-		this._quene = [];
-		this._unitEvt = new UnitEventScheduler();
-	},
-	
-	/*update : function(dt){
-		while(this._currEvt = this._quene.shift()){
-			switch(_currEvt.name){
-			case Constant.MsgType.Unit.Type:
-				this._unitEvt.callback(this._currEvt);
-			case Constant.MsgType.System.TYPE:
-			default :
-				EngineUtil.dispatch(this._currEvt);
-				break;
-			}
-			
-		}
-	},*/
-	
-	addListener : function(name, callback){
-		EngineUtil.addListener(name, callback);
-	},
-	
-	addEvent : function(evt){
-		this._quene.push(evt);
 	}
 });

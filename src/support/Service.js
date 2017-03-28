@@ -18,22 +18,22 @@ Service = {
 	/**
 	 * 	从指定模板中创建新单位并加入到舞台中
 	 */
-	addUnitToStage : function(templateName, x,y,z, cc_layer){
-		var template = ObjectManager.templates[templateName];
-		var unit = this.newUnit(template);
+	addUnitToStage : function(unit, teamNo, x,y,z, cc_layer){
+		unit.collide.team = teamNo;
 		unit.view.x = x;
 		unit.view.y = y;
 		unit.view.z = z;
-		template.actions.boot.start(unit);
 		var pos = GameUtil.toScreenPosition(x, y, z);
 		EngineUtil.addSprite(unit.view, pos.x, pos.y, cc_layer);
+		unit.template.actions.boot.start(unit);
 		return unit;
 	},
 	
 	/**
 	 * 从指定模板中创建新单位
 	 */
-	newUnit : function(template){
+	newUnit : function(templateName){
+		var template = ObjectManager.templates[templateName];
 		var unit = null;
 		if(template.availableList.length > 0){
 			unit = template.availableList.pop();
@@ -44,9 +44,20 @@ Service = {
 	},
 	
 	initialize : function(){
-		Initializer.initGobalParam();	//全局默认数值（引力、帧频等）
-		ObjectManager.init();			//公共对象、系统组件初始化
-		//初始化玩家
+		ObjectManager.initTeams([{
+			type : Constant.COLLIDE_TYPE_BLOCK,
+			mask : Constant.COLLIDE_TYPE_BODY
+		},{
+			type : Constant.COLLIDE_TYPE_BODY,
+			mask : Constant.COLLIDE_TYPE_BLOCK
+		},{
+			type : Constant.COLLIDE_TYPE_HIT,
+			mask : Constant.COLLIDE_TYPE_HURT
+		},{
+			type : Constant.COLLIDE_TYPE_HURT,
+			mask : Constant.COLLIDE_TYPE_HIT
+		}]);
+		ObjectManager.init();
 		Initializer.initCharacter(characterData);
 		this.mainSystem = ObjectManager.systems.main;
 	},
@@ -58,22 +69,6 @@ Service = {
 	update : function(dt){
 		this.gameTime += dt;
 		this.mainSystem.update(dt);
-	},
-	
-	/**
-	 * 全局数据对象，用于数据共享
-	 */
-	Gobal : {
-			logicTick : 0,
-			renderTick : 0,
-			
-			//玩家数据
-			player : {
-				unit : null,
-				score : 0
-			},
-			
-			gravity : null		//moveProperty组件
 	}
 
 };

@@ -5,11 +5,22 @@ EventDispatcher = {
 	listeners : {},
 	evtQuene : [],
 	
+	/**
+	 * 仅用于JS方式创建监听器
+	 */
+	createEventListener : function(func){
+		var listener = new EventListener();
+		listener.execute = func;
+	},
+	
 	addEventListener : function(type, listener){
 		var nodeList = this.listeners[type];
 		if(!nodeList){
 			nodeList = [];
 			this.listeners[type] = nodeList;
+		}
+		if(listener==Function){
+			listener = this.createEventListener(listener);
 		}
 		nodeList.push(listener);
 	},

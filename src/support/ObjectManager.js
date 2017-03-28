@@ -2,24 +2,32 @@
  * 对象管理器，缓存游戏中所有系统对象（非游戏元素对象）
  */
 ObjectManager = {
-	propertys : null,
+	nodes : null,
 	systems : null,
 	actions : null,
 	actionStacks : null,
 	templates : null,
-	teams : null,
+	collideTeams : null,
 	
-	init : function(teamNo){
+	init : function(){
 		SystemManager.init();
 		ActionManager.init();
 		ActionStackManager.init();
-		TeamManager.init(teamNo);
-		this.propertys = PropertyManager;
+		this.nodes = NodeManager;
 		this.systems = SystemManager;
 		this.actions = ActionManager;
 		this.actionStacks = ActionStackManager;
 		this.templates = {};
-		this.teams = TeamManager;
+	},
+	
+	initTeams : function(teams){
+		this.collideTeams = [];
+		for(var i in teams){
+			var collideTeam = new CollideTeam();
+			collideTeam.type = teams[i].type;
+			collideTeam.mask = teams[i].mask;
+			this.collideTeams.push(collideTeam);
+		}
 	},
 
 	getActionStackInfo : function(){
@@ -27,21 +35,6 @@ ObjectManager = {
 	},
 	recycleActionStackInfo : function(stackInfo){
 		this.actionStacks.recycle(stackInfo);
-	}
-};
-
-/**
- * 阵营管理
- */
-TeamManager = {
-	num : 0,
-	hurt : {},
-	init : function(teamNum){
-		this.num = teamNum;
-		for(var i in teamNum){
-			this.hurt[i].head = null;
-			this.hurt[i].tail = null;
-		}
 	}
 };
 
@@ -69,9 +62,27 @@ ActionStackManager = {
 }
 
 /**
- * 单位属性队列
+ * 节点队列
  */
-PropertyManager = {
+NodeManager = {
+	
+	_rmList : [],
+	remove : function(node){
+		this._rmList.push(node);
+	},
+	gc : function(){
+		var _node = null;
+		while(this._rmList.length > 0){
+			_node = this._rmList.pop();
+			if(_node.name=='actions'){
+				removeActionsNode(_node);
+			}else if(_node.name=='view'){
+				removeViewNode(_node);
+			}else if(_node.name=='collide'){
+				removeCollideNode(_node);
+			}
+		}
+	},
 	
 	_add : function(node, p){
 		if(node.prep==null && node.next==null){
@@ -136,6 +147,23 @@ PropertyManager = {
 	},
 	
 	/**
+	 * 碰撞组件链表
+	 */
+	collide : {
+		head : null,
+		tail : null
+	}
+	addCollideNode : function(node){
+		this._add(node, this.collide);
+	},
+	removeCollideNode : function(node){
+		this._remove(node, this.collide);
+	},
+	getFirstCollideNode : function(){
+		return this.collide.head;
+	},
+	
+	/**
 	 * 受击组件链表系列操作
 	 */
 	addHurtNode : function(node, teamNo){
@@ -154,20 +182,15 @@ SystemManager = {
 	move : null,
 	action : null,
 	view : null,
+	collide : null,
 	
-	init : function(){
+	init : function(data){
 		//初始化主系统
 		this.main = new MainSystem();
 		//this.move = new MotionUpdateSystem();
 		this.action = new ActionUpdateSystem();
 		this.view = new RenderUpdateSystem();
-		//this.systems.EvtMsg = new EventMessageSystem();
-		//var mainSystem = this.systems.main;
-		//mainSystem.addSystem(this.systems.player);
-		//mainSystem.addSystem(this.systems.move);
-		//mainSystem.addSystem(this.systems.action);
-		//mainSystem.addSystem(this.systems.EvtMsg);
-		//mainSystem.addSystem(this.systems.animate);
+		this.collide = new CollideUpdateSystem();
 	}
 };
 
@@ -178,30 +201,11 @@ ActionManager = {
 	
 	//公共action缓存
 	boot:[],
-	
-	//action-system缓存
-	systems:{
-		animate:[],
-		move:[],
-		stand:[],
-		command:[]
-	},
 
 	init : function(){
 		var action = new CharacterBootAction();
 		action.init(null);
 		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
 		this.boot[Constant.GAMEOBJECT_CHARACTER] = action;
-		//this.systems.animate[0] = new SimpleAnimateSystem();
-		
-		/*this.systems.animate[Constant.ANIMATE_STATIC] = new AnimateOneFrame();
-		this.systems.animate[Constant.ANIMATE_NORMAL] = new AnimateNormal();
-		this.systems.animate[Constant.ANIMATE_SCROLL] = new AnimateScroll();
-		
-		this.systems.move[Constant.MOVE_NORMAL] = new MoveSystem();
-		
-		this.systems.command[Constant.COMMAND_NORMAL] = new CommandSystem();
-		this.systems.command[Constant.COMMAND_CHARACTER_STAND] = new StandCommandSystem();
-		this.systems.command[Constant.COMMAND_CHARACTER_WALK] = new WalkCommandSystem();*/
 	}
 };
