@@ -2,6 +2,34 @@
  * 用于创建单位模板及组件的工厂类
  */
 GameObjectFactory = {
+		
+	/**
+	 * 初始化人物模板
+	 */
+	createCharacter : function(data){
+		//人物必须要有stand动作
+		if(!data.stand){
+			cc.log("initCharacter error. stand action is necessary.");
+			return null;
+		}
+		var template = this.createTemplate(data);
+		var action = ObjectManager.actions.boot[Constant.GAMEOBJECT_CHARACTER];
+		template.actions.boot = action;
+		
+		this.addActionAndProperty(
+			template, ActionFactory.createStandAction(data.stand, template.actions));
+		if(data.walk){
+			this.addActionAndProperty(
+				template, ActionFactory.createWalkAction(data.walk, template.actions));
+		}
+		if(data.hit){
+			this.addActionAndProperty(
+				template, ActionFactory.createHitAction(data.hit, template.actions));
+		}
+		this.buildCommand(template.actions);
+		ObjectManager.templates[template.name] = template;
+		return template;
+	}
 
 	/**
 	 * 初始化一个单位模板

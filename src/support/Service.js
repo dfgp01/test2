@@ -16,23 +16,9 @@ Service = {
 	},
 	
 	/**
-	 * 	从指定模板中创建新单位并加入到舞台中
-	 */
-	addUnitToStage : function(unit, teamNo, x,y,z, cc_layer){
-		unit.collide.team = teamNo;
-		unit.view.x = x;
-		unit.view.y = y;
-		unit.view.z = z;
-		var pos = GameUtil.toScreenPosition(x, y, z);
-		EngineUtil.addSprite(unit.view, pos.x, pos.y, cc_layer);
-		unit.template.actions.boot.start(unit);
-		return unit;
-	},
-	
-	/**
 	 * 从指定模板中创建新单位
 	 */
-	newUnit : function(templateName){
+	newUnit : function(templateName, teamNo, posX, posY, posZ){
 		var template = ObjectManager.templates[templateName];
 		var unit = null;
 		if(template.availableList.length > 0){
@@ -40,6 +26,11 @@ Service = {
 		}else{
 			unit = GameObjectFactory.createGameObject(template);
 		}
+		unit.collide.team = teamNo;
+		unit.view.x = posX;
+		unit.view.y = posY;
+		unit.view.z = posZ;
+		template.actions.boot.start(unit);
 		return unit;
 	},
 	
@@ -58,7 +49,7 @@ Service = {
 			mask : Constant.COLLIDE_TYPE_HIT
 		}]);
 		ObjectManager.init();
-		Initializer.initCharacter(characterData);
+		GameObjectFactory.createCharacter(characterData);
 		this.mainSystem = ObjectManager.systems.main;
 	},
 

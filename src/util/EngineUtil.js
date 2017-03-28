@@ -69,9 +69,20 @@ EngineUtil = {
 		cc.eventManager.addCustomListener(name, callback);
 	},
 	
-	addSprite : function(viewCom, _x, _y, ccNode){
-		viewCom.body.attr({x: _x, y: _y});
+	addSprite : function(viewCom, ccNode){
+		var pos = GameUtil.toScreenPosition(viewCom.x, viewCom.y, viewCom.z);
+		viewCom.body.attr({x: pos.x, y: pos.y});
 		//GL坐标系，z值(Y轴)越小越排前
 		ccNode.addChild(viewCom.body, -(viewCom.y));
+	},
+	
+	/**
+	 * 将世界坐标转换成屏幕坐标
+	 */
+	toScreenPosition : function(x, y, z){
+		//暂时实现不了
+		Position.x = x;
+		Position.y = y+z;
+		return Position;
 	}
 };

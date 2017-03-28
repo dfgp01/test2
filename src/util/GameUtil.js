@@ -20,15 +20,6 @@ GameUtil = {
 			this.moveRect(unit.body.rect, dx, dy+dz);
 		},
 		
-		/**
-		 * 将世界坐标转换成屏幕坐标
-		 */
-		toScreenPosition : function(x, y, z){
-			//暂时实现不了
-			new Position();
-			return [0,0];
-		},
-		
 		moveRect : function(rect, dx, dy){
 			rect.x += dx;
 			rect.y += dy;
