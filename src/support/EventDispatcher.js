@@ -42,5 +42,13 @@ EventDispatcher = {
 				nodeList[i].execute(evt);
 			}
 		}
+	},
+	
+	_inputEvents = [];
+	getInputEvent : function(subType, command){
+		var evt = this._inputEvents.length > 0 ? this._inputEvents.pop() : new InputEvent();
+		evt.subType = subType;
+		evt.command = command;
+		return evt;
 	}
 };

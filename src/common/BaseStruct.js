@@ -12,6 +12,15 @@ CollideTeam = cc.Class.extend({
 	members : 0
 });
 
+Rect = cc.Class.extend({
+	x : 0,
+	y : 0,
+	xMax : 0,
+	yMax : 0,
+	width : 0,
+	height : 0
+});
+
 Position = {
 	x : 0,
 	y : 0

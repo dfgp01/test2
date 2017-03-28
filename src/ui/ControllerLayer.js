@@ -5,12 +5,9 @@ ControllerLayer = cc.Layer.extend({
 	arrows : null,
 	attButton : null,
 	closeSprite : null,
-	playerSys : null,
 	
 	ctor : function(){
 		this._super();
-		this.playerSys = ControlSystem;
-		this.playerSys.init();
 		var winSize = cc.winSize;
 		
 		//close button
@@ -58,7 +55,6 @@ ControllerLayer = cc.Layer.extend({
         		var location = touch.getLocation();
         		if(cc.rectContainsPoint(selfPointer.arrows.rect, location)){
         			selfPointer.arrows.press(selfPointer.arrows.sprite.convertToNodeSpace(location));
-        			selfPointer.playerSys.pressDirection(selfPointer.arrows.command);
         			return true;
         		}
         		else if(cc.rectContainsPoint(selfPointer.attButton.rect, location)){

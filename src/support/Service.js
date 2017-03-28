@@ -34,23 +34,22 @@ Service = {
 		return unit;
 	},
 	
-	initialize : function(){
-		ObjectManager.initTeams([{
-			type : Constant.COLLIDE_TYPE_BLOCK,
-			mask : Constant.COLLIDE_TYPE_BODY
-		},{
-			type : Constant.COLLIDE_TYPE_BODY,
-			mask : Constant.COLLIDE_TYPE_BLOCK
-		},{
-			type : Constant.COLLIDE_TYPE_HIT,
-			mask : Constant.COLLIDE_TYPE_HURT
-		},{
-			type : Constant.COLLIDE_TYPE_HURT,
-			mask : Constant.COLLIDE_TYPE_HIT
-		}]);
+	initialize : function(data){
+		ObjectManager.initTeams(data.collides);
 		ObjectManager.init();
-		GameObjectFactory.createCharacter(characterData);
+		for(var i in data.characters){
+			GameObjectFactory.createCharacter(data.characters[i]);
+		}
+		this.setPlayer(this.newUnit(data.player.templateName, 1, data.player.posX, data.player.posY, data.player.posZ));
 		this.mainSystem = ObjectManager.systems.main;
+	},
+	
+	setPlayer : function(unit){
+		unit.collide.type |= Constant.COLLIDE_TYPE_PLAYER;
+		var evt = new Event();
+		evt.type = Constant.EVT_PLAYER_INITIALIZED;
+		evt.unit = unit;
+		EventDispatcher.send(evt);
 	},
 
 	start : function(){

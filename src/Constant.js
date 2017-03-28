@@ -66,13 +66,7 @@ Constant = {
 	 */
 	GAMEOBJECT_TILE : 0,
 	GAMEOBJECT_CHARACTER : 1,
-	
-	/**
-	 * 输入类型
-	 */
-	INPUT_TYPE_DIRECTION : 1,
-	INPUT_TYPE_ATTACK : 2,
-	
+
 	/**
 	 * 输入指令
 	 */
@@ -145,8 +139,14 @@ Constant = {
 	/**
 	 * 事件类型枚举
 	 */
-	EVT_PLAYER_INPUT : 0,			//玩家输入指令
+	EVT_SYS : 1,				//系统事件
+	EVT_SYS_SCENE_LOADED : 2,	//场景加载完毕
 	
+	EVT_INPUT : 100,			//输入指令
+	EVT_INPUT_DIRECTION : 101,	//方向指令
+	EVT_INPUT_ATTACK : 102,		//攻击指令
+	
+	EVT_UNIT : 200,		//单位事件
 	EVT_UNIT_CHANGE_POSITION : 0,	//单位改变位置
 	EVT_UNIT_ATTACK : 0,		//单位发起攻击
 	EVT_UNIT_HIT : 0,			//单位击中目标
@@ -160,8 +160,7 @@ Constant = {
 	EVT_UNIT_TAKE_ITEM : 0,		//单位拾取物品
 	EVT_UNIT_COLLIDE : 0,		//单位碰撞
 	
-	EVT_SYS_SCENE_SWITCH : 0,	//场景开始切换
-	EVT_SYS_SCENE_LOADED : 0,	//场景加载完毕
+	
 	
 	Action : {
 		Feature : {

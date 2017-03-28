@@ -78,7 +78,28 @@ cc.game.onStart = function(){
     	cc.spriteFrameCache.addSpriteFrames(res.deep_1_plist);
     	cc.spriteFrameCache.addSpriteFrames(res.deep_2_plist);
     	
-    	Service.initialize();
+    	Service.initialize({
+    		collides : [{
+		    			type : Constant.COLLIDE_TYPE_BLOCK,
+		    			mask : Constant.COLLIDE_TYPE_BODY
+		    		},{
+		    			type : Constant.COLLIDE_TYPE_BODY,
+		    			mask : Constant.COLLIDE_TYPE_BLOCK
+		    		},{
+		    			type : Constant.COLLIDE_TYPE_HIT,
+		    			mask : Constant.COLLIDE_TYPE_HURT
+		    		},{
+		    			type : Constant.COLLIDE_TYPE_HURT,
+		    			mask : Constant.COLLIDE_TYPE_HIT
+		    		}],
+    		characters : [characterData],
+    		player : {
+    			templateName : "deep",
+    			posX : 100,
+    			posY : 100,
+    			posZ : 20
+    		}
+    	});
 
         var scene = new cc.Scene();
         scene.addChild(new HelloWorldLayer());

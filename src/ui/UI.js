@@ -35,7 +35,6 @@ Button = cc.Class.extend({
  */
 Arrows = Button.extend({
 	buttons : [],
-	lastCmd : 0,
 	
 	init : function(sprite, posX, posY){
 		this._super(sprite, posX, posY);
@@ -52,7 +51,9 @@ Arrows = Button.extend({
 				this.command = this.command | this.buttons[i].command;
 			}
 		}
-		this.lastCmd = this.command;
+		EventDispatcher.send(
+				EventDispatcher.getInputEvent(
+						Constant.EVT_INPUT_DIRECTION, this.command));
 	},
 
 	/**
@@ -60,37 +61,10 @@ Arrows = Button.extend({
 	 */
 	release : function(){
 		this.command = 0;
+		EventDispatcher.send(
+				EventDispatcher.getInputEvent(
+						Constant.EVT_INPUT_DIRECTION, this.command));
 	},
-
-	/**
-	 * 暂时不用这个方法
-	 */
-	/*initListener : function(){
-			var selfPointer = this;
-			var listener = cc.EventListener.create({
-				event: cc.EventListener.TOUCH_ONE_BY_ONE,
-				swallowTouches: true,
-				onTouchBegan: function (touch, event) {
-					var locationInNode = selfPointer.sprite.convertToNodeSpace(touch.getLocation());
-					//四矩形模式
-					for(var i in selfPointer.buttons){
-						if(cc.rectContainsPoint(selfPointer.buttons[i].rect, locationInNode)){
-							selfPointer.cmd = selfPointer.cmd | selfPointer.buttons[i].cmd;
-						}
-					}
-					selfPointer.playerSys.pressDirection(selfPointer.cmd);
-					return true;
-				},
-				onTouchMoved: function (touch, event) {
-					//cc.log("移动:" + touch.getLocation().x + "," + touch.getLocation().y );
-				},
-				onTouchEnded: function (touch, event) {
-					selfPointer.cmd = 0;
-					selfPointer.playerSys.releaseKey(Constant.CMD.ALL_DIRECTION);
-				}
-			});
-			cc.eventManager.addListener(listener, this.sprite);
-		},*/
 
 	/**
 	 * 四矩形模式
