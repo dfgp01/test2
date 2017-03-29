@@ -13,10 +13,18 @@ CollideComponent = Component.extend({
 	},
 	
 	start : function(collideProperty){
-		
+		this.setRect(collideProperty.rect, collideProperty.owner.view);
+		ObjectManager.nodes.addCollideNode(collideProperty);
 	},
 
 	update : function(dt, collideProperty){
-		
+		this.setRect(collideProperty.rect, collideProperty.owner.view);
+	},
+	
+	setRect : function(rect, view){
+		rect.x = view.vx < 0 ? view.x - this.rect.x - this.rect.width : view.x + this.rect.x;
+		rect.y = (view.y + this.rect.y);
+		rect.x2 = rect.x + rect.width;
+		rect.y2 = rect.y + rect.height;
 	}
 });

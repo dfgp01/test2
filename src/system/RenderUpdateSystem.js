@@ -19,10 +19,10 @@ RenderUpdateSystem = System.extend({
 	 * 更新帧
 	 */
 	renderFrame : function(viewProperty){
-		if(viewProperty.vx != 0){
-			//unit.viewCom.sprite._scaleX = 1;
+		if(viewProperty.lastVx != viewProperty.vx){
+			//unit.viewCom.sprite._scaleX = viewProperty.vx;
 			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
-			viewProperty.vx = 0;
+			viewProperty.lastVx = viewProperty.vx;
 		}
 		if(viewProperty.frame != null){
 			EngineUtil.setFrame(viewProperty.body, viewProperty.frame);

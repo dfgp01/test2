@@ -160,9 +160,7 @@ WalkCommandComponent = CommandComponent.extend({
 	update : function(dt, unitCmdCom){
 		
 		if(unitCmdCom.direction == 0){
-			//这里应调用end，而不是直接钦定stand_action
-			//ActionUtil.next(gameObj, gameObj.template.actions.stand);
-			unitCmdCom.owner.action.endFlag = true;
+			unitCmdCom.owner.actions.endFlag = true;
 			return;
 		}
 		
