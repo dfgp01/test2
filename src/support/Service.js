@@ -35,8 +35,8 @@ Service = {
 	},
 	
 	initialize : function(data){
-		ObjectManager.initTeams(data.collides);
 		ObjectManager.init();
+		ObjectManager.initCollides(data.collides);
 		for(var i in data.characters){
 			GameObjectFactory.createCharacter(data.characters[i]);
 		}

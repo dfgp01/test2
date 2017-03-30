@@ -1,8 +1,41 @@
 /**
 *	只是用来堆放很啰嗦的代码的地方
 *	CreateBy Hugo-Fu 2015.12.05
+*	UpdateBy Hugo-Fu 2017.03.30
 */
 GameUtil = {
+		
+		max : function(num1, num2){
+			return num1 > num2 ? num1 : num2;
+		},
+		
+		min : function(num1, num2){
+			return num1 < num2 ? num1 : num2;
+		},
+		
+		distance : function(num1, num2){
+			return num1 > num2 ? num1 - num2 : num2 - num1;
+		},
+		
+		calcCollideRect : function(rect1, rect2){
+			var rect1 = this.actualRect(collidePro1.rect, collidePro1.owner.view);
+			var rect2 = this.actualRect(collidePro2.rect, collidePro2.owner.view);
+			var x1 = this.max(rect1.x, rect2.x);
+			var x2 = this.min(rect1.x + rect1.width, rect2.x + rect2.width);
+			var z1 = this.max(rect1.x, rect2.x);
+			var z2 = this.min(rect1.z + rect1.height, rect2.z + rect2.height);
+			if(x2 > x1 && z2 > z1){
+				var rect = new Rect();
+				rect.x = x1;
+				rect.xMax = x2;
+				rect.z = z1;
+				rect.zMax = z2;
+				rect.width = x2 - x1;
+				rect.height = z2 - z1;
+				return rect;
+			}
+			return null;
+		},
 		
 		/**
 		 * 凡是涉及移动、更新位置的统一调用这方法。
@@ -11,7 +44,7 @@ GameUtil = {
 		 * @param dy
 		 * @returns
 		 */
-		move : function(unit, dx, dy, dz){
+		move : function(unit, dx, dz, vx){
 			unit.view.x += dx;
 			unit.view.y += dy;
 			unit.view.z += dz;

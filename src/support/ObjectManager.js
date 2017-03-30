@@ -10,6 +10,7 @@ ObjectManager = {
 	collideTeams : null,
 	
 	init : function(){
+		NodeManager.init();
 		SystemManager.init();
 		ActionManager.init();
 		ActionStackManager.init();
@@ -20,13 +21,16 @@ ObjectManager = {
 		this.templates = {};
 	},
 	
-	initTeams : function(teams){
-		this.collideTeams = [];
+	initCollides : function(data){
+		var teams = data.teams;
 		for(var i in teams){
-			var collideTeam = new CollideTeam();
-			collideTeam.type = teams[i].type;
-			collideTeam.mask = teams[i].mask;
-			this.collideTeams.push(collideTeam);
+			this.nodes.addTeam(teams[i]);
+		}
+		var masks = data.masks;
+		for(var i in masks){
+			for(var j in masks[i].mask){
+				this.nodes.addMask(masks[i].type, masks[i].mask[j]);
+			}
 		}
 	},
 
@@ -75,11 +79,11 @@ NodeManager = {
 		while(this._rmList.length > 0){
 			_node = this._rmList.pop();
 			if(_node.name=='actions'){
-				removeActionsNode(_node);
+				this.removeActionsNode(_node);
 			}else if(_node.name=='view'){
-				removeViewNode(_node);
+				this.removeViewNode(_node);
 			}else if(_node.name=='collide'){
-				removeCollideNode(_node);
+				this.removeCollideNode(_node);
 			}
 		}
 	},
@@ -112,13 +116,17 @@ NodeManager = {
 		}
 	},
 	
+	actions : null,
+	view : null,
+	collideTypes : {},
+	init : function(){
+		this.actions = new NodeLinks();
+		this.view = new NodeLinks();
+	},
+	
 	/**
 	 * 动作组件链表系列操作
 	 */
-	actions : {
-		head : null,
-		tail : null
-	},
 	addActionsNode : function(node){
 		this._add(node, this.actions);
 	},
@@ -132,10 +140,6 @@ NodeManager = {
 	/**
 	 * 显示组件链表系列操作
 	 */
-	view : {
-		head : null,
-		tail : null
-	},
 	addViewNode : function(node){
 		this._add(node, this.view);
 	},
@@ -149,31 +153,27 @@ NodeManager = {
 	/**
 	 * 碰撞组件链表
 	 */
-	collide : {
-		head : null,
-		tail : null
+	addTeam : function(type){
+		var team = new CollideTeam();
+		team.type = type;
+		this.collideTypes[type] = team;
 	}
+	addMask : function(type1, type2){
+		this.collideTypes[type1].mask |= type2;
+		this.collideTypes[type2].mask |= type1;
+	},
+	removeMask : function(type1, type2){
+		this.collideTypes[type1].mask &= !(type2);
+		this.collideTypes[type2].mask &= !(type1);
+	},
 	addCollideNode : function(node){
-		this._add(node, this.collide);
+		this._add(node, this.collideTypes[node.type]);
 	},
 	removeCollideNode : function(node){
-		this._remove(node, this.collide);
+		this._remove(node, this.collideTypes[node.type]);
 	},
-	getFirstCollideNode : function(){
-		return this.collide.head;
-	},
-	
-	/**
-	 * 受击组件链表系列操作
-	 */
-	addHurtNode : function(node, teamNo){
-		this._add(node, this.teams.hurt[teamNo]);
-	},
-	removeHurtNode : function(node, teamNo){
-		this._remove(node, this.teams.hurt[teamNo]);
-	},
-	getFirstHurtNode : function(teamNo){
-		return this.teams.hurt[teamNo].head;
+	getFirstCollideNode : function(type){
+		return this.collideTypes[type].head;
 	}
 };
 

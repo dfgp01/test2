@@ -3,29 +3,27 @@
  */
 EventDispatcher = {
 	listeners : {},
+	idleQuene : [],
 	evtQuene : [],
 	
-	/**
-	 * 仅用于JS方式创建监听器
-	 */
-	createEventListener : function(func){
-		var listener = new EventListener();
-		listener.execute = func;
-	},
-	
-	addEventListener : function(type, listener){
+	addEventListener : function(type, func){
 		var nodeList = this.listeners[type];
 		if(!nodeList){
 			nodeList = [];
 			this.listeners[type] = nodeList;
 		}
-		if(listener==Function){
-			listener = this.createEventListener(listener);
-		}
+		//这样写是为了以后方便移植别的语言（尤其是面向接口编程的语言）
+		var listener = new EventListener();
+		listener.execute = func;
 		nodeList.push(listener);
 	},
 	
-	send : function(evt){
+	send : function(type, sender, args){
+		var evt = this.idleQuene.length > 0 ? this.idleQuene.pop() : new Event();
+		evt.type = parseInt(type / 100) * 100;
+		evt.subType = type;
+		evt.sender = sender;
+		evt.args = args;
 		evtQuene.push(evt);
 	},
 	
@@ -41,6 +39,7 @@ EventDispatcher = {
 			for(var i in nodeList){
 				nodeList[i].execute(evt);
 			}
+			this.idleQuene.push(evt);
 		}
 	},
 	

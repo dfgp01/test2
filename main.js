@@ -79,19 +79,16 @@ cc.game.onStart = function(){
     	cc.spriteFrameCache.addSpriteFrames(res.deep_2_plist);
     	
     	Service.initialize({
-    		collides : [{
-		    			type : Constant.COLLIDE_TYPE_BLOCK,
-		    			mask : Constant.COLLIDE_TYPE_BODY
-		    		},{
-		    			type : Constant.COLLIDE_TYPE_BODY,
-		    			mask : Constant.COLLIDE_TYPE_BLOCK
-		    		},{
-		    			type : Constant.COLLIDE_TYPE_HIT,
-		    			mask : Constant.COLLIDE_TYPE_HURT
-		    		},{
-		    			type : Constant.COLLIDE_TYPE_HURT,
-		    			mask : Constant.COLLIDE_TYPE_HIT
-		    		}],
+    		collides : {
+    			teams : [Constant.COLLIDE_TYPE_BLOCK, Constant.COLLIDE_TYPE_BODY, Constant.COLLIDE_TYPE_HIT, Constant.COLLIDE_TYPE_HURT],
+    			masks : [{
+    				type : Constant.COLLIDE_TYPE_BLOCK,
+    				mask : [Constant.COLLIDE_TYPE_BODY]
+    			},{
+    				type : Constant.COLLIDE_TYPE_HIT,
+    				mask : [Constant.COLLIDE_TYPE_HURT]
+    			}]
+    		},
     		characters : [characterData],
     		player : {
     			templateName : "deep",
