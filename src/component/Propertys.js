@@ -8,8 +8,9 @@
  */
 Property = Node.extend({
 	name : "property",
-	owner : null,		//所属unit
-	init : function(data){},	//初始化函数，一般在创建template时调用，注意data对象可能是空的，必须做好判断
+	type : 0,				//具体分类
+	owner : null,			//宿主,unit类型
+	init : function(data){},		//初始化函数，一般在创建template时调用，注意data对象可能是空的，必须做好判断
 	clone : function(property){}	//数据克隆，一般在创建GameObject时调用
 });
 
@@ -19,18 +20,18 @@ Property = Node.extend({
 ViewProperty = Property.extend({
 	name : "view",
 	title : "unname",			//显示的名字
-	frameIndex : 0,
-	interval : 0,
-	body : null,			//cc.Sprite的引用
-	frame : null,			//cc.SpriteFrame的引用
-
-	x : 0,					//处于世界的x坐标，非屏幕坐标
-	y : 0,					//处于世界的Y坐标，非屏幕坐标
+	frameIndex : 0,			//动画帧索引下标
+	interval : 0,			//动画帧间隔
+	sprite : null,			//cc.Sprite的引用
+	nextFrame : null,		//cc.SpriteFrame的引用，用于渲染判断
+	x : 0,					//本地世界的x坐标，非屏幕坐标
+	y : 0,					//本地世界的Y坐标，非屏幕坐标
 	z : 0,					//高度值，用于空中状态落地判断
 	vx : 1,					//面向，1为右边，-1为左边
-	lastVx : 1,				//转向标记，用于渲染
-	dx : 0,					//x偏移量，用于渲染
-	dy : 0					//y偏移量，用于渲染
+	lastVx : 1,				//转向标记，用于渲染判断
+	dx : 0,					//x偏移量，用于渲染判断
+	dy : 0,					//同上
+	dz : 0					//同上
 });
 
 /**
@@ -138,9 +139,9 @@ CommandProperty = Property.extend({
 CollideProperty = Property.extend({
 	name : "collide",
 	type : 0,
-	team : 0,
 	num : 0,			//当前与之交叠的矩形个数（此帧）
 	total : 0,			//累计交叠个数（所有帧）
 	targets : null,		//中招的人记录在这里 -_-0，以id为key，value存什么都可以，用于检测是否重复计算碰撞
-	rect : null		//需要经过计算的实际矩形区域
+	rect : null,		//需要经过计算的实际矩形区域
+	time : 0			//计时，每帧累加dt，用于计算碰撞间隔
 });

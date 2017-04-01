@@ -23,6 +23,14 @@ CollideTeam = NodeLinks.extend({
 });
 
 /**
+ * 碰撞记录信息，用于计算重复判断
+ */
+CollideInfo = Node.extend({
+	time : 0,	//上次计算时间
+	target : null	//unit
+});
+
+/**
  * 碰撞区域计算对象(2D仿3D模拟)
  */
 Rect = cc.Class.extend({

@@ -3,7 +3,7 @@
  */
 Constant = {
 	/**
-	 * 数值范围
+	 * 常用数值范围
 	 */
 	HIGHEST : 9999,
 	LOWEST : 1,
@@ -17,6 +17,9 @@ Constant = {
 	COLLIDE_TYPE_BODY = 2;		//单位身体
 	COLLIDE_TYPE_HIT = 4;		//攻击（红框）
 	COLLIDE_TYPE_HURT = 8;		//受击（蓝框）
+	COLLIDE_TYPE_PLAYER = 16;	//玩家
+	COLLIDE_TYPE_HERO = 32;		//主要角色
+	COLLIDE_TYPE_TOUCH = 64;	//通过触碰触发
 	
 	/**
 	 * 动作状态（暂定）
