@@ -8,11 +8,9 @@ ActionFactory = {
 		 * param
 		 * 	data 	 数据DNA
 		 * 	actions	 动作集合{}，创建某些action时需要引用其他action
-		 * 	actClass  ActionState的子类，可缺省
-		 *  2016.03.05 有改动，详见 ActionState.init()注释
 		 */
 		createAction : function(data, actions){
-			if(!DataUtil.checkNotNull(data) && !DateUtil.checkIsString(data.name)){
+			if(!DataUtil.validateAction(data)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
@@ -33,35 +31,30 @@ ActionFactory = {
 				}
 				actionState = this.createSequence(data.sequence, actions);
 			}
-			if(actionState==null){
-				//actionState = new ActionState();
-				cc.log("ActionFactory.createAction error. 无法创建匹配的action.");
-				return null;
-			}
 			actionState.name = data.name;
 			actionState.components = [];
-			actionState.init(data);
 			this._bulid(data, actionState);
 			return actionState;
 		},
 		
-		createSequence : function(data, actions){
-			if(!DataUtil.checkArrayNotNull(data.actions)){
-				cc.log("ActionFactory.createSequence error. actions is empty.");
+		/**
+		 * 创建动作序列
+		 */
+		createSequence : function(baseName, sequence, actions){
+			if(!DataUtil.validateSequence(sequence)){
 				return null;
 			}
 			var action = new SequenceAction();
 			action.actions = [];
-			for(var i in data.actions){
-				var act = data.actions[i];
-				var type = this._availableDataType(act)
-				if(type=='string'){
+			for(var i in sequence){
+				var act = sequence[i];
+				if(typeof act == 'string'){
 					action.actions.push(this._findByName(actions, act));
 				}
 				else{
 					// is a object/json
 					if(!DataUtil.checkIsString(act.name)){
-						act.name = data.name + "_action"+i;//默认名
+						act.name = baseName + "_action"+i;	//默认名
 					}
 					action.actions.push(this.createAction(act, actions));
 				}
@@ -70,44 +63,25 @@ ActionFactory = {
 			return action;
 		},
 		
-		createRepeat : function(data, actions){
-			var type = this._availableDataType(data.action);
-			if(type==null){
+		/**
+		 * 创建重复动作
+		 */
+		createRepeat : function(baseName, repeat, actions){
+			if(!DataUtil.validateRepeat(repeat)){
 				return null;
 			}
 			var action = new RepeatAction();
-			if(type=='string'){
-				action.action = this._findByName(actions, data.action);
+			if(typeof repeat.action == 'string'){
+				action.action = this._findByName(actions, repeat.action);
 			}else{
-				if(!DataUtil.checkIsString(data.action.name)){
-					data.action.name = data.name + "_action";//默认名
+				if(!DataUtil.checkIsString(repeat.action.name)){
+					repeat.action.name = baseName + "_action";	//默认名
 				}
-				action.action = this.createAction(data.action, actions);
+				action.action = this.createAction(repeat.action, actions);
 			}
-			action.count = DataUtil.checkIsInt(data.count) ? data.count : 0;
+			action.count = data.count;
 			action.input = action.action.input;
 			return action;
-		},
-		
-		/**
-		 * 判断传入的data.action字段类型，只有string和object是允许的
-		 * string类型是指一个actionName,
-		 * object类型是指一个action的构造数据基因。
-		 * 返回值有 null, string, object
-		 */
-		_availableDataType : function(data){
-			if(!DataUtil.checkNotNull(data)){
-				cc.log("ActionFactory._availableDataType error. param is empty.");
-				return null;
-			}
-			if(DataUtil.checkIsString(data)){
-				return 'string';
-			}
-			if(DataUtil.checkIsObject(data)){
-				return 'object';
-			}
-			cc.log("ActionFactory._availableDataType error. please check your param data_type.");
-			return null;
 		},
 		
 		_findByName : function(actions, name){

@@ -9,7 +9,7 @@ ActionState = cc.Class.extend({
 	components : null,
 	
 	/**
-	 * 因目前暂时搞不清楚JS的反射创建实例相关的技术，所以，ActionState的子类统一用 new 创建 然后调用init()
+	 * 因目前暂时搞不清楚JS的反射创建实例相关的技术，所以无法用工厂形式统一创建ActionState及其子类然后统一调用init()
 	 * @param data
 	 * @param template
 	 */
