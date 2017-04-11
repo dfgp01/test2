@@ -10,38 +10,51 @@ ActionFactory = {
 		 * 	actions	 动作集合{}，创建某些action时需要引用其他action
 		 */
 		createAction : function(data, actions){
-			if(!DataUtil.validateAction(data)){
+			if(!this._validateAction(data)){
 				cc.log("create ActionState error, lack of necessary data!");
 				return null;
 			}
 			//data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.ACTION_TYPE_DEFAULT;
 			var actionState = null;
-			cc.log("info: creating action:[" + data.name + "].");
-			if(data.view){
-				actionState = new GameAction();
-				actionState.view = ComponentFactory.createView(data.view);
-			}else if(data.repeat){
-				if(!DataUtil.checkIsString(data.repeat.name)){
-					data.repeat.name = data.name + "_repeat";
-				}
-				actionState = this.createRepeat(data.repeat, actions);
+			if(data.repeat){
+				data.name += "_rept";
+				actionState = this.createRepeat(data.name, data.repeat, actions);
 			}else if(data.sequence){
-				if(!DataUtil.checkIsString(data.sequence.name)){
-					data.sequence.name = data.name + "_sequence";
-				}
-				actionState = this.createSequence(data.sequence, actions);
+				data.name += "_seq";
+				actionState = this.createSequence(data.name, data.sequence, actions);
+			}else if(data.view){
+				actionState = this.createUnitAction(data);
+			}
+			if(!action){
+				cc.log("create ActionState exception, see the log!");
+				return null;
 			}
 			actionState.name = data.name;
 			actionState.components = [];
-			this._bulid(data, actionState);
+			if(this._bulid(data, actionState)){
+				cc.log("info: action:[" + data.name + "] has been created.");
+			}
 			return actionState;
+		},
+		
+		/**
+		 * 创建角色动作
+		 */
+		createUnitAction : function(data){
+			var view = ComponentFactory.createView(data.view);
+			if(!view){
+				return null;
+			}
+			var action = new GameAction();
+			actionState.view = view;
+			return action;
 		},
 		
 		/**
 		 * 创建动作序列
 		 */
 		createSequence : function(baseName, sequence, actions){
-			if(!DataUtil.validateSequence(sequence)){
+			if(!this._validateSeq(sequence)){
 				return null;
 			}
 			var action = new SequenceAction();
@@ -53,9 +66,7 @@ ActionFactory = {
 				}
 				else{
 					// is a object/json
-					if(!DataUtil.checkIsString(act.name)){
-						act.name = baseName + "_action"+i;	//默认名
-					}
+					act.name = baseName + "_act"+i;	//默认名
 					action.actions.push(this.createAction(act, actions));
 				}
 			}
@@ -67,16 +78,14 @@ ActionFactory = {
 		 * 创建重复动作
 		 */
 		createRepeat : function(baseName, repeat, actions){
-			if(!DataUtil.validateRepeat(repeat)){
+			if(!this._validateRept(repeat)){
 				return null;
 			}
 			var action = new RepeatAction();
 			if(typeof repeat.action == 'string'){
 				action.action = this._findByName(actions, repeat.action);
 			}else{
-				if(!DataUtil.checkIsString(repeat.action.name)){
-					repeat.action.name = baseName + "_action";	//默认名
-				}
+				repeat.action.name = baseName + "_act";	//默认名
 				action.action = this.createAction(repeat.action, actions);
 			}
 			action.count = data.count;
@@ -151,5 +160,59 @@ ActionFactory = {
 			var action = this.createAction(data, actions);
 			action.input = Constant.CMD_AI_ATTACK;
 			return action;
+		},
+		
+		/**
+		 * 验证一般action
+		 */
+		_valAct : null,
+		_validateAction : function(data){
+			if(!this._valAct){
+				this._valAct = [Validator.create({
+					field : "name",
+					type : "string",
+					required : true
+				})];
+			}
+			return (data.view||data.repeat||data.sequence) &&
+			Validator.validateObject(data, this._valAct);
+		},
+		
+		/**
+		 * 验证动作序列
+		 */
+		_valSeq : null,
+		_validateSeq : function(data){
+			if(!this._valSeq){
+				this._valSeq = [Validator.create({
+					type : "array",
+					required : true,
+					range : [1,99]
+				}),Validator.create({
+					type : "array-action,string",
+					required : true
+				})];
+			}
+			return Validator.validateObject(data, this._valSeq);
+		},
+		
+		/**
+		 * 验证重复动作
+		 */
+		_valRept : null,
+		_validateRept : function(){
+			if(!this._valRept){
+				this._valRept = [Validator.create({
+					field : "action",
+					type : "string,object",
+					required : true
+				}),Validator.create({
+					field : "count",
+					type : "int",
+					required : true,
+					range : [1,99]
+				})];
+			}
+			return Validator.validateObject(data, this._valSeq);
 		}
 };

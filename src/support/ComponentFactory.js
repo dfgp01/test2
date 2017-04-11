@@ -68,8 +68,15 @@ ComponentFactory = {
 	 * 显示组件
 	 */
 	createView : function(data){
+		if(!DateUtil.validateObject(data)){
+			return null;
+		}
+		var animate = this.createAnimate(data.animate);
+		if(!animate){
+			return null;
+		}
 		var view = new ViewComponent();
-		view.animate = this.createAnimate(data.animate);
+		view.animate = animate;
 		return view;
 	},
 	
@@ -77,6 +84,9 @@ ComponentFactory = {
 	 * 创建动画组件
 	 */
 	createAnimate : function(data){
+		DataUtil.validateObject(data, [Validate.create({
+			
+		})]);
 		if(!DataUtil.checkNotNull(data)){
 			cc.log("createAnimate error. lack of necessary data!");
 			return null;

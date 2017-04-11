@@ -45,10 +45,13 @@ Rect = cc.Class.extend({
 	range : 0	//Y轴的上下半径范围
 });
 
-Position2D = {
+/**
+ * 2D坐标类
+ */
+Position2D = cc.Class.extend({
 	x : 0,
 	y : 0
-};
+});
 
 /**
  * 事件基类
@@ -74,19 +77,16 @@ Validate = cc.Class.extend({
 	field : null,	//字段名称,string类型
 	type : null,	//数据类型,string类型
 	required : false,	//是否必填，默认否
-	length : 99,		//最大数，数值类型为最大值，string类型为字符串长度，array为数组长度
-	_default : null		//默认值
+	range : [0,99],		//数值范围，数值类型为区间值，string类型为字符串长度，array为数组长度
+	defaultValue : null		//默认值
 });
 
-Validate.prototype.create = function(validateJson){
-	if(!DataUtil.checkIsString(validateJson.type)){
-		cc.log("validete.type must string only.");
-		return null;
-	}
-	var v = new Validate();
-	v.field = validateJson.field;
-	v.type = validateJson.type;
-	v.required = v.required || !!validateJson.required;	//简易写法
-	v.length = DataUtil.checkIsInt(validateJson.length) ? validateJson.length : v.length;
-	return v;
-};
+/**
+ * 帧
+ */
+Frame = cc.Class.extend({
+	name : null,
+	position : null,		//相对sprite的位置
+	time : 1,		//持续时间
+	rect : null		//碰撞矩形
+});
