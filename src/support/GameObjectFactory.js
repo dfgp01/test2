@@ -66,7 +66,7 @@ GameObjectFactory = {
 		return;
 	},
 	
-	createProperty : function(name, data){
+	createProperty : function(name, owner, data){
 		var p = null;
 		if(name=="actions"){
 			p = new ActionsProperty();
@@ -78,6 +78,7 @@ GameObjectFactory = {
 			p = new CommandProperty();
 		}else if(name=='view'){
 			p = new ViewProperty();
+			p.frames = this._createFrameProperties(5, owner);
 			p.body = EngineUtil.newSprite();
 		}else if(name=='collide'){
 			p = this._createCollide(data);
@@ -85,7 +86,18 @@ GameObjectFactory = {
 			p = new HitProperty();
 			p.collide = this._createCollide(data);
 		}
+		p.owner = owner;
 		return p;
+	},
+	
+	_createFrameProperties : function(num, owner){
+		var fs = [];
+		for(var i=0; i<num; i++){
+			var f = new FrameProperty();
+			f.owner = owner;
+			fs.push(f);
+		}
+		return fs;
 	},
 	
 	cloneProperty : function(name, property, unit){
@@ -100,6 +112,7 @@ GameObjectFactory = {
 			p = new CommandProperty();
 		}else if(name=='view'){
 			p = new ViewProperty();
+			//p.frames = this.createFrameProperties();
 			p.body = EngineUtil.newSprite();
 		}else if(name=='collide'){
 			p = this._createCollide(data, properties);

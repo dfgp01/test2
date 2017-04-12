@@ -20,10 +20,7 @@ Property = Node.extend({
 ViewProperty = Property.extend({
 	name : "view",
 	title : "unname",			//显示的名字
-	frameIndex : 0,			//动画帧索引下标
-	interval : 0,			//动画帧间隔
-	sprite : null,			//cc.Sprite的引用
-	nextFrame : null,		//cc.SpriteFrame的引用，用于渲染判断
+	frames : null,			//FrameProperty数组
 	x : 0,					//本地世界的x坐标，非屏幕坐标
 	y : 0,					//本地世界的Y坐标，非屏幕坐标
 	z : 0,					//高度值，用于空中状态落地判断
@@ -32,6 +29,17 @@ ViewProperty = Property.extend({
 	dx : 0,					//x偏移量，用于渲染判断
 	dy : 0,					//同上
 	dz : 0					//同上
+});
+
+/**
+ * 帧数据储存器，供view管理
+ */
+FrameProperty = Property.extend({
+	name : "frame",
+	index : 0,			//动画帧索引下标
+	interval : 0,		//动画帧间隔
+	sprite : null,		//cc.Sprite的引用
+	next : null			//cc.SpriteFrame的引用，用于渲染判断
 });
 
 /**

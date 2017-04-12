@@ -35,6 +35,7 @@ Service = {
 	},
 	
 	initialize : function(data){
+		Validator.init();
 		ObjectManager.init();
 		ObjectManager.initCollides(data.collides);
 		for(var i in data.characters){

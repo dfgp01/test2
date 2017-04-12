@@ -77,8 +77,7 @@ Validate = cc.Class.extend({
 	field : null,	//字段名称,string类型
 	type : null,	//数据类型,string类型
 	required : false,	//是否必填，默认否
-	range : [0,99],		//数值范围，数值类型为区间值，string类型为字符串长度，array为数组长度
-	defaultValue : null		//默认值
+	range : [0,99]		//数值范围，数值类型为区间值，string类型为字符串长度，array为数组长度
 });
 
 /**

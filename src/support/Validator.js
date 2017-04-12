@@ -2,11 +2,57 @@
  * 数据验证类
  */
 Validator = {
+	
+	/**
+	 * 初始化
+	 * 一些公共的自定义类型数据验证写在这里
+	 */
+	init : function(){
+		//矩形数据校验
+		this.addType("rect",function(val){
+			return DataUtil.checkArrayNotNull(val) && val.length==4 &&
+				DataUtil.checkIsNumber(val[0]) && DataUtil.checkIsNumber(val[1]) &&
+				DataUtil.checkIsNumber(val[2]) && val[2] > 0 &&
+				DataUtil.checkIsNumber(val[3]) && val[3] > 0 ? null : " not a rect data.";
+		});
+		
+		//帧数据校验
+		/*var _valFr = Validator.creates([{
+			field : "name",
+			type : "string",
+			range : [1,99],
+			required : true
+		},{
+			field : "time",
+			type : "number",
+			required : true
+		},{
+			field : "position",
+			type : "array",
+			range : [2,2]
+		},{
+			field : "position",
+			type : "array-number"
+		},{
+			field : "rect",
+			type : "rect"
+		},{
+			field : "type",
+			type : "int",
+			range : [Constant.ANIMATE_STATIC,Constant.ANIMATE_SCROLL]
+		}]);
+		this.addType("frame",function(val){
+			return Validator.validateObject(val, _valFr);
+		});*/
+	},
+	
 	/**
 	 * 建立一个验证器
 	 */
 	create : function(json){
-		if(!this.validateObject(json, this._getSelfCheck())){
+		var msg = this._selfCheck(json);
+		if(msg){
+			cc.log(msg);
 			return null;
 		}
 		var v = new Validate();
@@ -14,46 +60,37 @@ Validator = {
 		v.type = json.type;
 		v.required = v.required || !!json.required;	//简易写法
 		v.range = json.range ? json.range : v.range;
-		v.defaultValue = json.defaultValue;
 		return v;
+	},
+	
+	creates : function(jsonArr){
+		if(!DataUtil.checkArrayNotNull(jsonArr)){
+			cc.log("create validates error.");
+			return null;
+		}
+		var validate = null;
+		var validates = [];
+		for(var i in jsonArr){
+			validate = this.create(jsonArr[i]);
+			if(!validate){
+				return null;
+			}
+			validates.push(validate);
+		}
+		return validates;
 	},
 	
 	/**
 	 * 自我审查-_-0
 	 */
-	_selfChk : null,
-	_getSelfCheck : function(){
-		if(!this._selfChk){
-			var fieldCheck = new Validate();
-			fieldCheck.field = "field";
-			fieldCheck.type = "string";
-			var typeCheck = new Validate();
-			typeCheck.field = "type";
-			typeCheck.type = "string";
-			var requiredCheck = new Validate();
-			requiredCheck.field = "required";
-			requiredCheck.type = "boolean";
-			var rangeCheck = new Validate();
-			rangeCheck.field = "range";
-			rangeCheck.type = "array";
-			rangeCheck.range = [2,2];
-			var rangeValueCheck = new Validate();
-			rangeValueCheck.field = "range";
-			rangeCheck.type = "array-number";
-			rangeCheck.range = [-9999,9999];
-			this._selfChk = [fieldCheck, typeCheck, requiredCheck, rangeCheck, rangeValueCheck];
-		}
-		return this._selfChk;
-	},
-	
 	_selfCheck : function(json){
 		var msg = null;
 		if(!DataUtil.checkNotNull(json)){
-			return " json data is null.";
+			return "json data is null.";
 		}
-		if(!DataUtil.checkIsString(json.field)){
+		/*if(!DataUtil.checkIsString(json.field)){
 			return "field is necessary.";
-		}
+		}*/
 		if(!DataUtil.checkIsString(json.type)){
 			return "type is necessary.";
 		}
@@ -64,33 +101,15 @@ Validator = {
 		return null;
 	},
 	
-	validate : function(val, validateObj){
-		var type = validate.type;
-		var isNotNull = DataUtil.checkNotNull(val);
-		if(validate.required && !isNotNull){
-			return " must not null.";
-		}
-		if(isNotNull){
-			return this._assertType(val, type);
-		}
-		return null;
-	},
-	
 	/**
-	 * 校验对象数据
-	 * 若没有校验器，则只做对象的非空检测。
+	 * 校验object类型数据
 	 */
 	validateObject : function(data, validates){
 		if(!this.checkNotNull(data)){
-			cc.log("data-object is null.");
-			return false;
-		}
-		if(!validates){
-			return true;
+			return "data-object is null.";
 		}
 		if(!this.checkArrayNotNull(validates)){
-			cc.log("validates error.");
-			return false;
+			return "validates error.";
 		}
 		var field = null;
 		var msg = null;
@@ -98,15 +117,36 @@ Validator = {
 			field = validates[i].field;
 			msg = this.validate(data[field], validates[i]);
 			if(msg){
-				cc.log("field:"+field+" "+msg);
-				return false;
+				return "field:"+field+" "+msg;
 			}
 		}
-		return true;
+		return null;
 	},
 	
 	/**
-	 * 断言判断，加上提示语句。
+	 * 数据校验
+	 */
+	validate : function(val, validate){
+		if(!validate){
+			return "validate is undefind or null.";
+		}
+		
+		//非空校验
+		var isNotNull = DataUtil.checkNotNull(val);
+		if(validate.required && !isNotNull){
+			return " must not null.";
+		}
+		//如果允许为空，但又填了数据的，也要进行合法校验
+		if(isNotNull){
+			//类型检测是必须的，否则无法往下进行校验
+			return this._assertType(val, validate.type) ||
+				validate.range ? this._assertRange(val, type, validate.range) : null;	//范围检测
+		}
+		return null;
+	},
+	
+	/**
+	 * 类型判断，返回错误提示语句，如通过，则返回空
 	 */
 	_assertType : function(val, type){
 		if(!type || type==null){
@@ -153,6 +193,15 @@ Validator = {
 			msg = t(val);
 		}
 		return msg;
+	},
+	
+	/**
+	 * 范围判断，返回错误提示语句，如通过，则返回空
+	 */
+	_assertRange : function(val, type, range){
+		//目前只有 string,number,array支持range判断
+		val = type=='number' ? val : type=='string'||type=='array' ? val.length : null;
+		return val==null ? null : val >= range[0] && val <= range[1] ? null : "val:"+val+ " out of range.";
 	},
 	
 	/**

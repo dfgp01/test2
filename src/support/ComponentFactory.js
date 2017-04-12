@@ -18,25 +18,22 @@ ComponentFactory = {
 	 * 移动组件
 	 */
 	createMove : function(data){
-		if(!DataUtil.checkNotNull(data)){
-			cc.log("createMove error. lack of necessary data!");
+		var msg = ComponentValidator.validateMove(data);
+		if(msg){
+			cc.log("createMove error. " + msg);
 			return null;
 		}
-		if(!DataUtil.checkIsNumber(data.dx) || !DataUtil.checkIsNumber(data.dy)){
-			cc.log("createMove error. dx or dy must be number.");
-			return null;
-		}
-		data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.MOVE_NORMAL;
-		
+		data.type = data.type ? data.type : Constant.MOVE_NORMAL;
 		var move = null;
 		switch(data.type){
 		case Constant.MOVE_NORMAL:
 			move = new MoveComponent();
 			break;
 		}
-		
-		move.dx = data.dx * Service.Gobal.logicTick;
-		move.dy = data.dy * Service.Gobal.logicTick;
+		//x,y,z的移动向量是以每秒移动xx为单位的，所以要换成以每毫秒移动xx。
+		move.dx = data.dx ? data.dx / 1000 : 0;
+		move.dy = data.dy ? data.dy / 1000 : 0;
+		move.dz = data.dz ? data.dz / 1000 : 0;
 		return move;
 	},
 	
@@ -46,7 +43,7 @@ ComponentFactory = {
 	createCommand : function(data){
 		data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.COMMAND_DEFAULT;
 		var command = null;
-		switch(data.rype){
+		switch(data.type){
 		case Constant.COMMAND_DEFAULT:
 			command = new CommandComponent();
 			break;
@@ -68,15 +65,21 @@ ComponentFactory = {
 	 * 显示组件
 	 */
 	createView : function(data){
-		if(!DateUtil.validateObject(data)){
+		var msg = ComponentValidator.validateView(data);
+		if(msg){
+			cc.log("createView error. " + msg);
 			return null;
 		}
-		var animate = this.createAnimate(data.animate);
-		if(!animate){
-			return null;
+		var animates = [];
+		for(var i in data.animates){
+			var anm = this.createAnimate(data.animates[i]);
+			if(!anm){
+				return null;
+			}
+			animates.push(anm);
 		}
 		var view = new ViewComponent();
-		view.animate = animate;
+		view.animates = animates;
 		return view;
 	},
 	
@@ -84,18 +87,12 @@ ComponentFactory = {
 	 * 创建动画组件
 	 */
 	createAnimate : function(data){
-		DataUtil.validateObject(data, [Validate.create({
-			
-		})]);
-		if(!DataUtil.checkNotNull(data)){
-			cc.log("createAnimate error. lack of necessary data!");
+		var msg = ComponentValidator.validateAnimate(data);
+		if(msg){
+			cc.log("createAnimate error. " + msg);
 			return null;
 		}
-		if(!DataUtil.checkArrayNotNull(data.frames)){
-			cc.log("createAnimate error. animate.frames error.");
-			return null;
-		}
-		data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.ANIMATE_ONCE;
+		data.type = data.type ? data.type : Constant.ANIMATE_ONCE;
 		
 		var animate = null;
 		switch(data.type){
@@ -112,38 +109,35 @@ ComponentFactory = {
 		
 		animate.frames = [];
 		for(var i in data.frames){
-			var frame = cc.spriteFrameCache.getSpriteFrame(data.frames[i]);
-			if(frame){
-				animate.frames.push(frame);
-			}else{
-				cc.log("frame:" + animate.frames[i] + " not found");
+			var frame = this.createFrame(data.frames[i]);
+			if(!frame){
 				return null;
 			}
-		}
-
-		//设置每帧延时
-		//interval或intervals属性必须有其中一个，否则用默认的间隔
-		animate.intervals = [];
-		if(DataUtil.checkIsNumber(data.interval)){
-			for(var i=0; i<data.frames.length; i++){
-				animate.intervals.push(data.interval);
-			}
-		}else if(DataUtil.checkArrayNotNull(data.intervals,"data.intervals")){
-			if(data.intervals.length != data.frames.length){
-				cc.log("animate.intervals 数组和frame数量不对等.");
-				return null;
-			}
-			for(var i=0; i<data.frames.length; i++){
-				animate.intervals.push(data.intervals[i]);
-			}
-		}else{
-			for(var i=0; i<data.frames.length; i++){
-				//设置默认动画帧时长
-				animate.intervals.push(
-						GameSetting.Default.animateFrameTick);
-			}
+			animate.frames.push(frame);
 		}
 		return animate;
+	},
+	
+	/**
+	 * 创建帧
+	 */
+	createFrame : function(data){
+		var msg = ComponentValidator.validateFrame(data);
+		if(msg){
+			cc.log("createFrame error. " + msg);
+			return null;
+		}
+		var sf = cc.spriteFrameCache.getSpriteFrame(data.name);
+		if(!sf){
+			cc.log("frame:" + data.name + " not found");
+			return null;
+		}
+		var frame = new Frame();
+		frame.name = data.name;
+		frame.time = data.time;
+		frame.spriteFrame = sf;
+		frame.position = data.position;
+		frame.rect = data.rect;
 	},
 	
 	/**

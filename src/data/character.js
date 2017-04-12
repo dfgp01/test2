@@ -5,10 +5,21 @@ characterData = {
 
 	stand : {
 		view : {
-			animate : {
-				frames : ["deep_stand_0.png","deep_stand_1.png","deep_stand_2.png","deep_stand_3.png"],
-				intervals : [2,2,2,2]
-			}
+			animates : [{
+				frames : [{
+					name : "deep_stand_0.png",
+					time : 2
+				},{
+					name : "deep_stand_1.png",
+					time : 2
+				},{
+					name : "deep_stand_2.png",
+					time : 2
+				},{
+					name : "deep_stand_3.png",
+					time : 2
+				},]
+			}]
 		},
 		command : {
 			list:["hit","crossCutA","roundCutA"]
