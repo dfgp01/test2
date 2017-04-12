@@ -7,11 +7,17 @@ ViewComponent = Component.extend({
 	section : null,		//区段，用于标识动画的三个阶段：前摇、攻击、后摇
 	
 	start : function(viewProperty){
-		this.animate.start(viewProperty);
+		for(var i in this.animates){
+			viewProperty._frame = viewProperty.frames[i];
+			this.animates[i].start(viewProperty);
+		}
 	},
 	
 	update : function(dt, viewProperty){
-		this.animate.update(dt, viewProperty);
+		for(var i in this.animates){
+			viewProperty._frame = viewProperty.frames[i];
+			this.animates[i].update(dt, viewProperty);
+		}
 	}
 });
 
@@ -21,21 +27,20 @@ ViewComponent = Component.extend({
 AnimateComponent = Component.extend({
 	name : "animate",
 	frames : null,
-	intervals : null,
-	
-	start : function(viewCom){
-		viewCom.frame = this.frames[0];
-		viewCom.frameIndex = 0;
-		viewCom.interval = 0;
+
+	start : function(viewProperty){
+		viewProperty._frame.index = 0;
+		viewProperty._frame.interval = 0;
+		viewProperty._frame.next = this.frames[0].spriteFrame;
 	},
 	
-	update : function(dt, viewCom){
-		viewCom.interval += dt;
-		if(viewCom.interval >= this.intervals[viewCom.frameIndex]){
-			viewCom.interval -= this.intervals[viewCom.frameIndex];
-			viewCom.frameIndex++;
-			if(viewCom.frameIndex < this.frames.length){
-				viewCom.frame = this.frames[viewCom.frameIndex];
+	update : function(dt, viewProperty){
+		viewProperty._frame.interval += dt;
+		if(viewProperty._frame.interval > this.frames[viewProperty._frame.index].time){
+			viewProperty._frame.interval -= this.frames[viewProperty._frame.index].time;
+			viewProperty._frame.index++;
+			if(viewProperty._frame.index < this.frames.length){
+				viewProperty._frame.next = this.frames[viewProperty._frame.index].spriteFrame;
 				//ObjectManager.coms.addViewNode(viewCom);
 			}
 		}
@@ -56,14 +61,14 @@ AnimateStaticComponent = AnimateComponent.extend({
  */
 AnimateScrollComponent = AnimateComponent.extend({
 	update : function(dt, viewCom){
-		viewCom.interval += dt;
-		if(viewCom.interval >= this.intervals[viewCom.frameIndex]){
-			viewCom.interval -= this.intervals[viewCom.frameIndex];
-			viewCom.frameIndex++;
-			if(viewCom.frameIndex >= this.frames.length){
-				viewCom.frameIndex = 0;
+		viewProperty._frame.interval += dt;
+		if(viewProperty._frame.interval > this.frames[viewProperty._frame.index].time){
+			viewProperty._frame.interval -= this.frames[viewProperty._frame.index].time;
+			viewProperty._frame.index++;
+			if(viewProperty._frame.index >= this.frames.length){
+				viewProperty._frame.index = 0;
 			}
-			viewCom.frame = this.frames[viewCom.frameIndex];
+			viewProperty._frame.next = this.frames[viewProperty._frame.index].spriteFrame;
 			//ObjectManager.coms.addViewNode(viewCom);
 		}
 	}

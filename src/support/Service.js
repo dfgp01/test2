@@ -58,6 +58,7 @@ Service = {
 	},
 	
 	update : function(dt){
+		dt *= 1000;
 		this.gameTime += dt;
 		this.mainSystem.update(dt);
 	}

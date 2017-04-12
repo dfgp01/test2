@@ -27,8 +27,8 @@ MoveComponent = Component.extend({
 	},
 	
 	update : function(dt, unitMoveCom){
-		unitMoveCom.dx += this.dx * unitMoveCom.vx;
-		unitMoveCom.dy += this.dy;
+		unitMoveCom.dx += this.dx * dt * unitMoveCom.vx;
+		unitMoveCom.dy += this.dy * dt;
 	},
 	
 	end : function(unitMoveCom){

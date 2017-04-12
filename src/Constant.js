@@ -118,7 +118,7 @@ Constant = {
 	/**
 	 * 帧时间
 	 */
-	TICK_FPS60 : 0.0166,
+	/*TICK_FPS60 : 0.0166,
 	TICK_FPS48 : 0.02,
 	TICK_FPS36 : 0.027,
 	TICK_FPS30 : 0.0333,
@@ -127,7 +127,18 @@ Constant = {
 	TICK_FPS20 : 0.05,
 	TICK_FPS12 : 0.083,
 	TICK_FPS10 : 0.1,
-	TICK_FPS05 : 0.2,
+	TICK_FPS05 : 0.2,*/
+	
+	TICK_FPS60 : 16.6,
+	TICK_FPS48 : 20,
+	TICK_FPS36 : 27,
+	TICK_FPS30 : 33.3,
+	TICK_FPS25 : 40,
+	TICK_FPS24 : 41,
+	TICK_FPS20 : 50,
+	TICK_FPS12 : 83,
+	TICK_FPS10 : 100,
+	TICK_FPS05 : 200,
 	
 	/**
 	 * 攻击类型

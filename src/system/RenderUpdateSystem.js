@@ -24,9 +24,11 @@ RenderUpdateSystem = System.extend({
 			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
 			viewProperty.lastVx = viewProperty.vx;
 		}
-		if(viewProperty.frame != null){
-			EngineUtil.setFrame(viewProperty.body, viewProperty.frame);
-			viewProperty.frame = null;
+		for(var i in viewProperty.frames){
+			if(viewProperty.frames[i].next != null){
+				EngineUtil.setFrame(viewProperty.frames[i].sprite, viewProperty.frames[i].next);
+				viewProperty.frames[i].next = null;
+			}
 		}
 	},
 	
