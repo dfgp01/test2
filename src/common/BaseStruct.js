@@ -87,5 +87,16 @@ Frame = cc.Class.extend({
 	name : null,
 	position : null,		//相对sprite的位置
 	time : 1,		//持续时间
-	rect : null		//碰撞矩形
+	rect : null,		//碰撞矩形
+	view : null		//ccSpriteFrame类型
+});
+
+/**
+ * 状态转换参数
+ */
+StateSwitchParam = cc.Class.extend({
+	state : 0,		//目标状态
+	actionId : 0,	//目标action
+	type : 0,		//事件触发类型，控制器输入、指令输入等
+	value : 0		//具体的输入指令值
 });

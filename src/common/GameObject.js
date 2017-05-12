@@ -4,6 +4,7 @@
 GameObject = cc.Class.extend({
 	id : null,			//自增序列号
 	name : null,		//名称
+	state : 0,			//状态值，身处的状态区间
 	actions : null,		//action组件是必须有的，不需要放在propertys中
 	view : null,		//同上
 	collide : null,		//同上

@@ -4,9 +4,9 @@
  */
 ActionState = cc.Class.extend({
 	name : null,
-	next : null,			//改用直接后驱节点（未实行）
-	input : 0,				//需由指令触发
 	components : null,
+	
+	_input : null,		//存储转出状态的输入指令<int, StateSwitchParam>
 	
 	/**
 	 * 因目前暂时搞不清楚JS的反射创建实例相关的技术，所以无法用工厂形式统一创建ActionState及其子类然后统一调用init()
@@ -46,6 +46,10 @@ ActionState = cc.Class.extend({
 					unit.propertys[this.components[i].name]);
 			}
 		}
+	},
+	
+	handleInput : function(input, type, unit){
+		
 	},
 	
 	getStackInfo : function(unit){
