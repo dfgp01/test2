@@ -1,5 +1,23 @@
 /**
- * 数据验证类
+* 数据校验实体
+*/
+Validate = cc.Class.extend({
+	field : null,	//字段名称,string类型
+	type : null,	//数据类型,string类型
+	required : false,	//是否必填，默认否
+	range : [0,99]		//数值范围，数值类型为区间值，string类型为字符串长度，array为数组长度
+});
+
+/**
+ * 验证返回结果
+ */
+ValidateResult = cc.Class.extend({
+	isSuccess : true,
+	message : null
+});
+
+/**
+ * 数据验证器
  */
 Validator = {
 	
@@ -8,6 +26,7 @@ Validator = {
 	 * 一些公共的自定义类型数据验证写在这里
 	 */
 	init : function(){
+		this._addBasicType();
 		//矩形数据校验
 		this.addType("rect",function(val){
 			return DataUtil.checkArrayNotNull(val) && val.length==4 &&
@@ -145,24 +164,39 @@ Validator = {
 		return null;
 	},
 	
+	_addBasicType : function(){
+		this.addType(Constant.DATA_TYPE_INT, function(val){
+			return typeof(val) == "number" && parseInt(val) == val;
+		});
+		this.addType(Constant.DATA_TYPE_NUMBER, function(val){
+			return typeof(val) == "number";
+		});
+		this.addType(Constant.DATA_TYPE_STRING, function(val){
+			return typeof(val) == "string";
+		});
+		this.addType(Constant.DATA_TYPE_OBJECT, function(val){
+			return typeof(val) == "object";
+		});
+		this.addType(Constant.DATA_TYPE_ARRAY, function(val){
+			return typeof(val) == "array";
+		});
+	},
+	
+	_addBasicRange : function(){
+		this.addRange(Constant.DATA_TYPE_INT, function(val, min, max){
+			return val >= min && val <= max;
+		});
+		this.addRange(Constant.DATA_TYPE_NUMBER, function(val, min, max){
+			return val >= min && val <= max;
+		});
+	}
+	
 	/**
 	 * 类型判断，返回错误提示语句，如通过，则返回空
 	 */
 	_assertType : function(val, type){
-		if(!type || type==null){
-			return " type error.";
-		}
-		var msg = null;
-		//基础类型判断
-		if((type=='number'||type=='string'||type=='object'||type=='array') && typeof(val) != type){
-			msg = " value:"+val+" is not "+type+".");
-		}
-		//整型判断
-		else if(type=='int' && !(typeof(val) == "number" && parseInt(val) == val)){
-			msg = " value:"+val+" is not "+type+".");
-		}
 		//多类型递归判断
-		else if(type.indexOf(",") > -1){
+		if(type.indexOf(",") > -1){
 			var types = type.split(",");
 			for(var i in types){
 				msg = this._assertType(val, types[i]);
@@ -170,29 +204,30 @@ Validator = {
 					return null;
 				}
 			}
+			return " value:"+val+" is not in("+types+").");"
 		}
 		//数组内类型判断
-		else if(type.indexOf("array-") > -1){
-			if(!DataUtil.checkArrayNotNull(val)){
+		else if(type.indexOf(Constant.DATA_TYPE_ARRAY + "-") > -1){
+			var msg = this._assertType(val, Constant.DATA_TYPE_ARRAY);
+			if(!msg || val.length==0){
 				return " not an array or array is null.";
 			}
 			type = type.substring(type.indexOf("array-"));
 			for(var i in val){
 				msg = this._assertType(val[i], type);
-				if(!msg){//验证通过
-					return null;
+				if(msg){//验证不通过
+					return " value:"+val+" is not array-"+type+".");"
 				}
 			}
+			return null;
 		}
-		//自定义类型判断
-		else{
-			var t = this.types[type];
-			if(!t){
-				return " type:"+type + " not exists.";
-			}
-			msg = t(val);
+		
+		//自定义类型或基础类型判断
+		var func = this._types[type];
+		if(!func){
+			return "type:"+type+" has not validator.";
 		}
-		return msg;
+		return func(val) ? null : " value:"+val+" is not "+type+".");
 	},
 	
 	/**
@@ -204,15 +239,30 @@ Validator = {
 		return val==null ? null : val >= range[0] && val <= range[1] ? null : "val:"+val+ " out of range.";
 	},
 	
+	_types : {},
+	_ranges : {},
+	
 	/**
 	 * 自定义类型验证
 	 */
 	addType : function(type, func){
-		var t = this.types[type];
+		var t = this._types[type];
 		if(t){
 			cc.log("Validator.addType error. type:"+type+" exists.");
 			return;
 		}
-		this.types[type] = func;
+		this._types[type] = func;
+	},
+	
+	/**
+	 * 自定义范围验证
+	 */
+	addRange : function(type, func){
+		var t = this._ranges[type];
+		if(t){
+			cc.log("Validator.addRange error. type:"+type+" exists.");
+			return;
+		}
+		this._ranges[type] = func;
 	}
 };

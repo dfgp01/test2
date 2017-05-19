@@ -3,7 +3,9 @@
  * ECS模式中，我更倾向于将ActionState看成是System容器
  */
 ActionState = cc.Class.extend({
+	id : 0,
 	name : null,
+	state : 0,
 	components : null,
 	
 	_input : null,		//存储转出状态的输入指令<int, StateSwitchParam>
