@@ -28,12 +28,8 @@ Validator = {
 	init : function(){
 		this._addBasicType();
 		//矩形数据校验
-		this.addType("rect",function(val){
-			return DataUtil.checkArrayNotNull(val) && val.length==4 &&
-				DataUtil.checkIsNumber(val[0]) && DataUtil.checkIsNumber(val[1]) &&
-				DataUtil.checkIsNumber(val[2]) && val[2] > 0 &&
-				DataUtil.checkIsNumber(val[3]) && val[3] > 0 ? null : " not a rect data.";
-		});
+		this._initRectCheck();
+		
 		
 		//帧数据校验
 		/*var _valFr = Validator.creates([{
@@ -64,21 +60,169 @@ Validator = {
 			return Validator.validateObject(val, _valFr);
 		});*/
 	},
+
+	/**
+ 	* 	非空校验
+ 	*/
+	assertNotNull : function(val, label){
+		//因为js的0和""是一样的(""==0 为true)，所以要分开判断
+		if(val == 0){
+			return true;
+		}
+		if(val == undefined || val == null || val == ""){
+			cc.log(label + " must not null.");
+			return false;
+		}
+		return true;
+	},
+
+	assertArrayNotNull : function(val, label){
+		if(this.assertNotNull(val, label)){
+			if(typeof(val) != "array"){
+				cc.log(label + " is not array.");
+				return false;
+			}
+			if(val.length <= 0){
+				cc.log("array:"+label+" is empty.");
+				return false;
+			}
+			return true;
+		}
+		return false;
+	},
+
+	assertObject : function(val, label){
+		if(!this.assertNotNull(val, label)){
+			return false;
+		}
+		if(typeof(val) == 'object'){
+			return true;
+		}
+		cc.log(label + " is not object.");
+		return false;
+	},
+
+	assertNumber : function(val, label){
+		if(!this.assertNotNull(val, label)){
+			return false;
+		}
+		if(typeof(val) == 'number'){
+			return true;
+		}
+		cc.log(label + " is not number.");
+		return false;
+	},
+
+	assertInt : function(val, label){
+		if(!this.assertNotNull(val, label)){
+			return false;
+		}
+		if(typeof(val) == 'number' && parseInt(val) == val){
+			return true;
+		}
+		cc.log(label + " is not int.");
+		return false;
+	},
+
+	assertString : function(){
+		if(!this.assertNotNull(val, label)){
+			return false;
+		}
+		if(typeof(val) == 'string'){
+			return true;
+		}
+		cc.log(label + " is not string");
+		return false;
+	},
+
+	/**
+	 * 数值范围判断，如果超出许可范围，则在控制台输出信息
+	 */
+	assertNumberRange : function(val, min, max, label){
+		if(!this.assertNotNull(val, label)){
+			return false;
+		}
+		if(val < min){
+			cc.log(label + " value:" + val + " could not less then " + min + ".");
+			return false;
+		}
+		if(val < max){
+			cc.log(label + " value:" + val + " could not bigger then " + max + ".");
+			return false;
+		}
+		return true;
+	},
+
+	assertArrayContentType : function(arr, type, label){
+		if(!this.assertArrayNotNull(val, label)){
+			return false;
+		}
+		for(var i=0; i<arr.length; i++){
+			if(!this._assertType(arr[i], type, label+"["+i+"]")){
+				return false;
+			}
+		}
+		return true;
+	},
+
+	/**
+	 * 类型判断，返回错误提示语句，如通过，则返回空
+	 */
+	assertType : function(val, type, label){
+		if(!this.assertNotNull(val, label)){
+			return false;
+		}
+		//数组内类型判断
+		if(type.indexOf("array-") > -1){
+			type = type.substring(type.indexOf("array-"));
+			return this.assertArrayContentType(val, type, label);
+		}
+		if(this._isBasicType(type)){
+			return this._checkBasicType(val, type, label);
+		}
+		//自定义类型或基础类型判断
+		var func = this._types[type];
+		if(!func){
+			cc.log("type:"+type+" has not validator.");
+			return false;
+		}
+		return func(val, label, param);
+	},
+
+
+
+	_addRectCheck : function () {
+		//矩形数据一定是一个长度为4的数组，数组内只能是数字，且宽高必须大于0.
+		this.addType("rect",function(val, label, param){
+			if(!this.assertArrayNotNull(val, label)){
+				return false;
+			}
+			var widthMin = 0;
+			var widthMax = 0;
+			var heightMin = 0;
+			var heightMax = 0;
+			if(param){
+				widthMin = param.widthMin && this._assertType(param.widthMin, "number", "widthMin") ? param.widthMin : 1;
+				widthMax = param.widthMax && this._assertType(param.widthMax, "number", "widthMax") ? param.widthMax : 1;
+				heightMin = param.heightMin && this._assertType(param.heightMin, "number", "heightMin") ? param.heightMin : 1;
+				heightMax = param.heightMax && this._assertType(param.heightMax, "number", "heightMax") ? param.heightMax : 1;
+			}
+			return this.assertNumberRange(val.length, 4, 4, label+"-length") &&
+				this.assertArrayContentType(val, "number", label) &&
+				this.assertNumberRange(val[2], widthMin, widthMax) &&
+				this.assertNumberRange(val[3], heightMin, heightMax);
+		});
+	},
 	
 	/**
 	 * 建立一个验证器
 	 */
-	create : function(json){
-		var msg = this._selfCheck(json);
-		if(msg){
-			cc.log(msg);
-			return null;
-		}
+	create : function(field, type, isRequired, rangeMin, rangeMax){
 		var v = new Validate();
-		v.field = json.field;
-		v.type = json.type;
-		v.required = v.required || !!json.required;	//简易写法
-		v.range = json.range ? json.range : v.range;
+		v.field = field;
+		v.type = type;
+		v.required = isRequired;
+		v.range = [rangeMin, rangeMax];
 		return v;
 	},
 	
@@ -189,7 +333,7 @@ Validator = {
 		this.addRange(Constant.DATA_TYPE_NUMBER, function(val, min, max){
 			return val >= min && val <= max;
 		});
-	}
+	},
 	
 	/**
 	 * 类型判断，返回错误提示语句，如通过，则返回空
@@ -204,7 +348,7 @@ Validator = {
 					return null;
 				}
 			}
-			return " value:"+val+" is not in("+types+").");"
+			return " value:"+val+" is not in("+types+").";
 		}
 		//数组内类型判断
 		else if(type.indexOf(Constant.DATA_TYPE_ARRAY + "-") > -1){
@@ -216,7 +360,7 @@ Validator = {
 			for(var i in val){
 				msg = this._assertType(val[i], type);
 				if(msg){//验证不通过
-					return " value:"+val+" is not array-"+type+".");"
+					return " value:"+val+" is not array-"+type+".";
 				}
 			}
 			return null;
@@ -227,7 +371,7 @@ Validator = {
 		if(!func){
 			return "type:"+type+" has not validator.";
 		}
-		return func(val) ? null : " value:"+val+" is not "+type+".");
+		return func(val) ? null : " value:"+val+" is not "+type+".";
 	},
 	
 	/**
