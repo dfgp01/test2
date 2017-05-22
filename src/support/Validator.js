@@ -70,24 +70,20 @@ Validator = {
 			return true;
 		}
 		if(val == undefined || val == null || val == ""){
-			cc.log(label + " must not null.");
+			cc.log(label + " is null.");
 			return false;
 		}
 		return true;
 	},
-
-	assertArrayNotNull : function(val, label){
-		if(this.assertNotNull(val, label)){
-			if(typeof(val) != "array"){
-				cc.log(label + " is not array.");
-				return false;
-			}
-			if(val.length <= 0){
-				cc.log("array:"+label+" is empty.");
-				return false;
-			}
+	
+	assertArray : function(val, label){
+		if(!this.assertNotNull(val, label)){
+			return false;
+		}
+		if(typeof(val) == 'array'){
 			return true;
 		}
+		cc.log(label + " is not array.");
 		return false;
 	},
 
@@ -124,7 +120,7 @@ Validator = {
 		return false;
 	},
 
-	assertString : function(){
+	assertString : function(val, label){
 		if(!this.assertNotNull(val, label)){
 			return false;
 		}
@@ -152,13 +148,36 @@ Validator = {
 		}
 		return true;
 	},
+	
+	assertStringRange : function(val, min, max, label){
+		return this.assertString(val, label) && this.assertNumberRange(val.length, min, max, label+"-length");
+	},
+	
+	assertArrayRange : function(val, min, max, label){
+		return this.assertArray(val, label) && this.assertNumberRange(val.length, min, max, label+"-length");
+	},
+	
+	assertArrayNotNull : function(val, label){
+		if(this.assertNotNull(val, label)){
+			if(typeof(val) != "array"){
+				cc.log(label + " is not array.");
+				return false;
+			}
+			if(val.length <= 0){
+				cc.log("array:"+label+" is empty.");
+				return false;
+			}
+			return true;
+		}
+		return false;
+	},
 
-	assertArrayContentType : function(arr, type, label){
+	assertArrayContentType : function(arr, type, min, max, label, param){
 		if(!this.assertArrayNotNull(val, label)){
 			return false;
 		}
 		for(var i=0; i<arr.length; i++){
-			if(!this._assertType(arr[i], type, label+"["+i+"]")){
+			if(!this.assertType(arr[i], type, min, max, label+"["+i+"]", param)){
 				return false;
 			}
 		}
@@ -166,21 +185,21 @@ Validator = {
 	},
 
 	/**
-	 * 类型判断，返回错误提示语句，如通过，则返回空
+	 * 主方法
 	 */
-	assertType : function(val, type, label){
+	assertType : function(val, type, rangeMin, rangeMax, label, param){
 		if(!this.assertNotNull(val, label)){
 			return false;
 		}
 		//数组内类型判断
 		if(type.indexOf("array-") > -1){
 			type = type.substring(type.indexOf("array-"));
-			return this.assertArrayContentType(val, type, label);
+			return this.assertArrayContentType(val, type, rangeMin, rangeMax, label, param);
 		}
 		if(this._isBasicType(type)){
-			return this._checkBasicType(val, type, label);
+			return this._checkBasicType(val, type, label) && this._checkBasicRange(val, type, rangeMin, rangeMax, label);
 		}
-		//自定义类型或基础类型判断
+		//自定义类型判断
 		var func = this._types[type];
 		if(!func){
 			cc.log("type:"+type+" has not validator.");
@@ -188,8 +207,62 @@ Validator = {
 		}
 		return func(val, label, param);
 	},
+	
+	_isBasicType : function(type){
+		return type=='number'||type=='int'||type=='string'||type=='object'||type=='array';
+	},
+	
+	_checkBasicType(val, type, label){
+		if(type=='number'||type=='string'||type=='object'||type=='array'){
+			return typeof(val)==type;
+		}
+		else if(type=='int'){
+			return typeof(val)=='number' && parseInt(val) == val;
+		}
+		else{
+			cc.log(label+" basic_type check error.");
+			return false;
+		}
+	},
+	
+	_checkBasicRange(val, type, min, max, label){
+		if(type=='number'||type=='int'){
+			return this.assertNumberRange(val, min, max, label);
+		}
+		else if(type=='string'){
+			return this.assertStringRange(val, min, max, label);
+		}
+		else if(type=='array'){
+			return this.assertArrayRange(val, min, max, label);
+		}else if(type=='object'){
+			return true;
+		}else{
+			cc.log(label+" basic_range check error.");
+			return false;
+		}
+	}
 
-
+	/**
+	 * 入口函数
+	 */
+	validate : function(val, validate, label, param){
+		if(!validate){
+			cc.log(label + " validate is undefind or null.");
+			return false;
+		}
+		
+		//非空校验
+		var isNotNull = (val == undefined || val == null);
+		if(validate.required && !isNotNull){
+			cc.log(label + " is null or undefind.");
+			return false;
+		}
+		//如果允许为空，但又填了数据的，也要进行合法校验
+		if(isNotNull){
+			return this.assertType(val, validate.type, label, param);
+		}
+		return true;
+	},
 
 	_addRectCheck : function () {
 		//矩形数据一定是一个长度为4的数组，数组内只能是数字，且宽高必须大于0.
@@ -218,6 +291,16 @@ Validator = {
 	 * 建立一个验证器
 	 */
 	create : function(field, type, isRequired, rangeMin, rangeMax){
+		if(!this.assertString(type, "type")){
+			cc.log("Validator.create error.");
+			return null;
+		}
+		if(!(rangeMin && this.assertNumber(rangeMin, "rangeMin"))){
+			rangeMin = 1;	//常量以后再定，先占位
+		}
+		if(!(rangeMin && this.assertNumber(rangeMax, "rangeMax"))){
+			rangeMax = 1;	//常量以后再定，先占位
+		}
 		var v = new Validate();
 		v.field = field;
 		v.type = type;
@@ -226,86 +309,29 @@ Validator = {
 		return v;
 	},
 	
-	creates : function(jsonArr){
-		if(!DataUtil.checkArrayNotNull(jsonArr)){
-			cc.log("create validates error.");
-			return null;
-		}
-		var validate = null;
-		var validates = [];
-		for(var i in jsonArr){
-			validate = this.create(jsonArr[i]);
-			if(!validate){
-				return null;
-			}
-			validates.push(validate);
-		}
-		return validates;
-	},
-	
-	/**
-	 * 自我审查-_-0
-	 */
-	_selfCheck : function(json){
-		var msg = null;
-		if(!DataUtil.checkNotNull(json)){
-			return "json data is null.";
-		}
-		/*if(!DataUtil.checkIsString(json.field)){
-			return "field is necessary.";
-		}*/
-		if(!DataUtil.checkIsString(json.type)){
-			return "type is necessary.";
-		}
-		if(DataUtil.checkNotNull(json.range) && (
-				!DataUtil.checkArrayNotNull(json.range) || json.range.length != 2 || !DataUtil.checkIsNumber(json.range[0]) || !DataUtil.checkIsNumber(json.range[1]))){
-			return "range error.";
-		}
-		return null;
-	},
-	
 	/**
 	 * 校验object类型数据
 	 */
-	validateObject : function(data, validates){
-		if(!this.checkNotNull(data)){
-			return "data-object is null.";
+	validateObject : function(data, params){
+		if(!this.assertNotNull(data, "data")){
+			return false;
 		}
-		if(!this.checkArrayNotNull(validates)){
-			return "validates error.";
+		if(!this.assertArrayNotNull(params, "params")){
+			return false;
 		}
 		var field = null;
 		var msg = null;
-		for(var i in validates){
-			field = validates[i].field;
-			msg = this.validate(data[field], validates[i]);
-			if(msg){
-				return "field:"+field+" "+msg;
+		for(var i in params){
+			var param = params[i];
+			if(!this.validate(
+					data[param.field],
+					this.create(param.field, param.type, param.required, param.rangeMin, param.rangeMax),
+					param.field,
+					param)){
+				return false;
 			}
 		}
-		return null;
-	},
-	
-	/**
-	 * 数据校验
-	 */
-	validate : function(val, validate){
-		if(!validate){
-			return "validate is undefind or null.";
-		}
-		
-		//非空校验
-		var isNotNull = DataUtil.checkNotNull(val);
-		if(validate.required && !isNotNull){
-			return " must not null.";
-		}
-		//如果允许为空，但又填了数据的，也要进行合法校验
-		if(isNotNull){
-			//类型检测是必须的，否则无法往下进行校验
-			return this._assertType(val, validate.type) ||
-				validate.range ? this._assertRange(val, type, validate.range) : null;	//范围检测
-		}
-		return null;
+		return true;
 	},
 	
 	_addBasicType : function(){
