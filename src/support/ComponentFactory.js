@@ -2,6 +2,47 @@
  * 用于建造组件的工厂类
  */
 ComponentFactory = {
+		
+	init : function(){
+		this._initFrameCheck();
+		this._initAnimateCheck();
+		this._initViewCheck();
+	},
+	
+	_initFrameCheck : function(){
+		var frVldts = [
+		   this.create("name", "string", true, 1, 50),
+		   this.create("duration", "number", true, 0.016, 999),
+		   this.create("position", "position2D", true),
+		   this.create("body", "rect", false)
+		];
+		Validator.addType("frame",function(val, label){
+			return Validator.validateObject(val, frVldts, label);
+		});
+	},
+	
+	/**
+	 * 常量后期再补
+	 */
+	_anmtVldts : null,
+	_initAnimateCheck : function(){
+		this._anmtVldts = [
+		      Validator.create("frames","array",true, 1, 99),
+		      Validator.create("isLoop","int",false, NumericalConstant.BOOLEAN_FALSE, NumericalConstant.BOOLEAN_TRUE)];
+		Validator.addType("animate",function(val, label){
+			return Validator.validateObject(val, this._anmtVldts, label) &&
+				Validator.assertArrayContentType(val.frames, "frame", label+"-animate.frames");
+		});
+	},
+	
+	_viewVldts : null,
+	_initViewCheck : function(){
+		this._viewVldts = [Validator.create("animates","array",true)];
+		Validator.addType("view",function(val, label){
+			return Validator.validateObject(val, this._viewVldts, label) &&
+				Validator.assertArrayContentType(val.animates, "animate", label+"-animates");
+		});
+	},
 	
 	addComponent : function(action, component){
 		for(var i in action.components){
@@ -65,9 +106,8 @@ ComponentFactory = {
 	 * 显示组件
 	 */
 	createView : function(data){
-		var msg = ComponentValidator.validateView(data);
-		if(msg){
-			cc.log("createView error. " + msg);
+		if(!Validator.assertType(data, "view", "view")){
+			cc.log("createView error.");
 			return null;
 		}
 		var animates = [];
@@ -87,9 +127,8 @@ ComponentFactory = {
 	 * 创建动画组件
 	 */
 	createAnimate : function(data){
-		var msg = ComponentValidator.validateAnimate(data);
-		if(msg){
-			cc.log("createAnimate error. " + msg);
+		if(!Validator.assertType(data, "animate", "animate")){
+			cc.log("createAnimate error.");
 			return null;
 		}
 		data.type = data.type ? data.type : Constant.ANIMATE_ONCE;
@@ -121,23 +160,18 @@ ComponentFactory = {
 	/**
 	 * 创建帧
 	 */
-	createFrame : function(data){
-		var msg = ComponentValidator.validateFrame(data);
-		if(msg){
-			cc.log("createFrame error. " + msg);
-			return null;
-		}
-		var sf = cc.spriteFrameCache.getSpriteFrame(data.name);
+	_createFrame : function(data){
+		var sf = EngineUtil.getFrame(data.name)
 		if(!sf){
 			cc.log("frame:" + data.name + " not found");
 			return null;
 		}
 		var frame = new Frame();
 		frame.name = data.name;
-		frame.time = data.time;
+		frame.duration = data.duration;
 		frame.spriteFrame = sf;
-		frame.position = data.position;
 		frame.rect = data.rect;
+		frame.position = position2D.create(data.position[0], data.position[1]);
 	},
 	
 	/**

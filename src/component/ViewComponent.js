@@ -8,15 +8,40 @@ ViewComponent = Component.extend({
 	
 	start : function(viewProperty){
 		for(var i in this.animates){
-			viewProperty._frame = viewProperty.frames[i];
-			this.animates[i].start(viewProperty);
+			this._animateStart(this.animates[i], viewProperty.framePropertys[i]);
 		}
+	},
+	
+	_animateStart : function(animate, frameProperty){
+		frameProperty.index = 0;
+		frameProperty.duration = 0;
+		frameProperty.next = animate.frames[0].view;
+		frameProperty.isEnd = false;		
 	},
 	
 	update : function(dt, viewProperty){
 		for(var i in this.animates){
-			viewProperty._frame = viewProperty.frames[i];
-			this.animates[i].update(dt, viewProperty);
+			this._animateUpdate(dt, this.animates[i], viewProperty.framePropertys[i]);
+		}
+	},
+	
+	_animateUpdate : function(dt, animate, frameProperty){
+		if(frameProperty.isEnd){
+			return;
+		}
+		frameProperty.duration += dt;
+		if(frameProperty.duration > animate.frames[frameProperty.index].duration){
+			frameProperty.duration -= animate.frames[frameProperty.index].duration;
+			frameProperty.index++;
+			if(frameProperty.index >= animate.frames.length){
+				if(animate.isLoop == NumericalConstant.BOOLEAN_TRUE){
+					frameProperty.index = 0;
+				}else{
+					frameProperty.isEnd = true;
+					return;
+				}
+			}
+			frameProperty.next = animate.frames[frameProperty.index].view;
 		}
 	}
 });

@@ -75,10 +75,10 @@ EventListener = cc.Class.extend({
  */
 Frame = cc.Class.extend({
 	name : null,
-	position : null,		//相对sprite的位置
-	time : 1,		//持续时间
-	rect : null,		//碰撞矩形
-	view : null		//ccSpriteFrame类型
+	position : null,	//相对sprite的位置,Position2D类型
+	duration : 0.1,		//持续时间
+	body : null,		//身体碰撞矩形，非必填
+	view : null			//ccSpriteFrame类型
 });
 
 /**
