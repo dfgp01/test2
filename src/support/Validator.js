@@ -30,6 +30,7 @@ Validator = {
 		//矩形数据校验
 		this._initRectCheck();
 		//坐标数据校验
+		this._initPositionCheck();
 		//动作数据校验
 	},
 	
@@ -269,7 +270,7 @@ Validator = {
 		}
 	},
 
-	_initRectCheck : function () {
+	_initRectCheck : function(){
 		//矩形数据一定是一个长度为4的数组，数组内只能是数字，且宽高必须大于0.
 		this.addType("rect",function(val, label){
 			if(!this.assertArrayNotNull(val, label)){
@@ -285,6 +286,14 @@ Validator = {
 				this.assertArrayContentType(val, "number", label) &&
 				this.assertNumberRange(val[2], 0.1, 99999, label+"-width") &&
 				this.assertNumberRange(val[3], 0.1, 99999, label+"-height");
+		});
+	},
+	
+	_initPositionCheck : function(){
+		this.addType("position2D", function(val, label){
+			return this.assertArrayNotNull(val, label) &&
+				this.assertArrayRange(val, 2, 2, label) &&
+				this.assertArrayContentType(val, "number", label);
 		});
 	},
 	

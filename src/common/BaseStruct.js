@@ -90,3 +90,11 @@ StateSwitchParam = cc.Class.extend({
 	type : 0,		//事件触发类型，控制器输入、指令输入等
 	value : 0		//具体的输入指令值
 });
+
+/**
+ * 单位的动作栈
+ */
+ActionStack = cc.Class.extend({
+	id : 0,
+	value : 0
+});

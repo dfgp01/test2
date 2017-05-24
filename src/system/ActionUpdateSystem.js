@@ -4,6 +4,15 @@
 ActionUpdateSystem = System.extend({
 	name : "action",
 	tick : Constant.TICK_FPS30,
+	
+	start : function(){
+		EventDispatcher.addEventListener("unitInput", function(evt, inputParam){
+			var unit = evt.sender;
+			for(var i=unit.actions.stack.length-1; i>=0; i--){
+				unit.actions.stack[i].findInput(unit, inputParam);
+			}
+		});
+	},
 
 	update : function(dt){
 		this._curr = ObjectManager.propertys.getFirstActionsNode();

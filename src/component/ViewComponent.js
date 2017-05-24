@@ -7,41 +7,52 @@ ViewComponent = Component.extend({
 	section : null,		//区段，用于标识动画的三个阶段：前摇、攻击、后摇
 	
 	start : function(viewProperty){
+		this._addFramePro(viewProperty);
 		for(var i in this.animates){
-			this._animateStart(this.animates[i], viewProperty.framePropertys[i]);
+			this._animateStart(this.animates[i], viewProperty.frameStates[i]);
 		}
 	},
 	
-	_animateStart : function(animate, frameProperty){
-		frameProperty.index = 0;
-		frameProperty.duration = 0;
-		frameProperty.next = animate.frames[0].view;
-		frameProperty.isEnd = false;		
+	/**
+	 * 如果当前动画列表超出接收者的列表，接收者追加数量
+	 */
+	_addFramePro : function(viewProperty){
+		if(this.animates.length > viewProperty.frameStates.length){
+			var newAdds = this.animates.length - viewProperty.frameStates.length;
+			GameObjectFactory.addFrameState(viewProperty, newAdds);
+		}
+	},
+	
+	_animateStart : function(animate, frameState){
+		frameState.index = 0;
+		frameState.duration = 0;
+		frameState.next = animate.frames[0].view;
+		frameState.isEnd = false;
 	},
 	
 	update : function(dt, viewProperty){
 		for(var i in this.animates){
-			this._animateUpdate(dt, this.animates[i], viewProperty.framePropertys[i]);
+			this._animateUpdate(dt, this.animates[i], viewProperty.frameStates[i]);
 		}
 	},
 	
-	_animateUpdate : function(dt, animate, frameProperty){
-		if(frameProperty.isEnd){
+	_animateUpdate : function(dt, animate, frameStates){
+		if(frameStates.isEnd){
 			return;
 		}
-		frameProperty.duration += dt;
-		if(frameProperty.duration > animate.frames[frameProperty.index].duration){
-			frameProperty.duration -= animate.frames[frameProperty.index].duration;
-			frameProperty.index++;
-			if(frameProperty.index >= animate.frames.length){
+		frameStates.duration += dt;
+		if(frameStates.duration > animate.frames[frameStates.index].duration){
+			frameStates.duration -= animate.frames[frameStates.index].duration;
+			frameStates.index++;
+			if(frameStates.index >= animate.frames.length){
 				if(animate.isLoop == NumericalConstant.BOOLEAN_TRUE){
-					frameProperty.index = 0;
+					frameStates.index = 0;
 				}else{
-					frameProperty.isEnd = true;
+					frameStates.isEnd = true;
 					return;
 				}
 			}
-			frameProperty.next = animate.frames[frameProperty.index].view;
+			frameStates.next = animate.frames[frameStates.index].view;
 		}
 	}
 });

@@ -78,8 +78,8 @@ GameObjectFactory = {
 			p = new CommandProperty();
 		}else if(name=='view'){
 			p = new ViewProperty();
-			p.frames = this._createFrameProperties(5, owner);
-			p.body = EngineUtil.newSprite();
+			p.frameProperties = [];
+			addFrameState(p, 1, owner);
 		}else if(name=='collide'){
 			p = this._createCollide(data);
 		}else if(name=='hit'){
@@ -90,14 +90,18 @@ GameObjectFactory = {
 		return p;
 	},
 	
-	_createFrameProperties : function(num, owner){
-		var fs = [];
+	addFrameState : function(viewProperty, num, owner){
+		if(!(Validator.assertNotNull(viewProperty, "viewProperty") && 
+				Validator.assertArrayNotNull(viewProperty.frameStates, "viewProperty.frameStates") &&
+				Validator.assertNumberRange(num, 1, 15, "num"))){
+			return;
+		}
 		for(var i=0; i<num; i++){
 			var f = new FrameProperty();
-			f.owner = owner;
-			fs.push(f);
+			f.owner = owner ? owner : viewProperty.owner;
+			f.sprite = EngineUtil.newSprite();
+			viewProperty.frameStates.push(f);
 		}
-		return fs;
 	},
 	
 	cloneProperty : function(name, property, unit){

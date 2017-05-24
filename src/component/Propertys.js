@@ -19,8 +19,8 @@ Property = Node.extend({
  */
 ViewProperty = Property.extend({
 	name : "view",
-	title : "unname",			//显示的名字
-	frames : null,			//FrameProperty数组
+	title : "unname",		//显示的名字
+	FrameStates : null,		//FrameState数组，因为一个单位可以由多个图层的sprite组成
 	x : 0,					//本地世界的x坐标，非屏幕坐标
 	y : 0,					//本地世界的Y坐标，非屏幕坐标
 	z : 0,					//高度值，用于空中状态落地判断
@@ -34,10 +34,10 @@ ViewProperty = Property.extend({
 /**
  * 帧数据储存器，供view管理
  */
-FrameProperty = Property.extend({
+FrameState = Property.extend({
 	name : "frame",
-	index : 0,			//动画帧索引下标
-	interval : 0,		//动画帧间隔
+	index : 0,			//当前动画帧索引下标
+	duration : 0,		//当前动画帧已经过时长
 	sprite : null,		//cc.Sprite的引用
 	next : null			//cc.SpriteFrame的引用，用于渲染判断
 });

@@ -11,23 +11,31 @@ RenderUpdateSystem = System.extend({
 	},
 	
 	execute : function(dt, unitViewNode){
+		this.renderOrientation(unitViewNode);
 		this.renderFrame(unitViewNode);
 		this.renderPosition(unitViewNode);
 	},
 	
 	/**
-	 * 更新帧
+	 * 更新面向
 	 */
-	renderFrame : function(viewProperty){
-		if(viewProperty.lastVx != viewProperty.vx){
+	_renderOrientation : function(viewProperty){
+		if(viewProperty.nextVx != null){
+			viewProperty.vx = viewProperty.nextVx;
+			viewProperty.nextVx = null;
 			//unit.viewCom.sprite._scaleX = viewProperty.vx;
 			//unit.viewCom.sprite.setFlippedX(false);	//不知道哪个生效
-			viewProperty.lastVx = viewProperty.vx;
 		}
-		for(var i in viewProperty.frames){
-			if(viewProperty.frames[i].next != null){
-				EngineUtil.setFrame(viewProperty.frames[i].sprite, viewProperty.frames[i].next);
-				viewProperty.frames[i].next = null;
+	},
+	
+	/**
+	 * 更新帧
+	 */
+	_renderFrame : function(viewProperty){
+		for(var i in viewProperty.frameStates){
+			if(viewProperty.frameStates[i].next != null){
+				EngineUtil.setFrame(viewProperty.frameStates[i].sprite, viewProperty.frameStates[i].next);
+				viewProperty.frameStates[i].next = null;
 			}
 		}
 	},
@@ -36,14 +44,11 @@ RenderUpdateSystem = System.extend({
 	 * 更新位置
 	 */
 	renderPosition : function(viewProperty){
-		/*var moveProperty = viewProperty.owner.propertys.move;
-		if(moveProperty){
-			viewProperty.dx += moveProperty.dx;
-			viewProperty.dy += moveProperty.dy;
-		}*/
-		if(viewProperty.dx!=0 || viewProperty.dy!=0){
-			EngineUtil.setPosition(viewProperty.body, viewProperty);
-			viewProperty.dx = viewProperty.dy = 0;
+		if(viewProperty.dx!=0 || viewProperty.dy!=0 || viewProperty.dz!=0){
+			for(var i in viewProperty.frameStates){
+				EngineUtil.setPosition(viewProperty.frameStates[i], viewProperty);
+				viewProperty.dx = viewProperty.dy = viewProperty.dz = 0;
+			}
 		}
 	}
 });
