@@ -5,8 +5,7 @@ ValidateParam = cc.Class.extend({
 	field : null,	//字段名称,string类型
 	type : null,	//数据类型,string类型
 	required : false,	//是否必填，默认否
-	rangeMin : 0,		//数值范围，数值类型为区间值，string类型为字符串长度，array为数组长度
-	rangeMax : 99999
+	range : [0,99]		//数值范围，数值类型为区间值，string类型为字符串长度，array为数组长度
 });
 
 /**
@@ -32,6 +31,14 @@ Validator = {
 		//坐标数据校验
 		this._initPositionCheck();
 		//动作数据校验
+		//帧数据校验
+		this._initFrameCheck();
+		//动画数据校验
+		this._initAnimateCheck();
+		//显示组件数据校验
+		this._initViewCheck();
+		//人物角色数据校验
+		this._initCharacterCheck();
 	},
 	
 	/**
@@ -269,33 +276,6 @@ Validator = {
 			return true;
 		}
 	},
-
-	_initRectCheck : function(){
-		//矩形数据一定是一个长度为4的数组，数组内只能是数字，且宽高必须大于0.
-		this.addType("rect",function(val, label){
-			if(!this.assertArrayNotNull(val, label)){
-				return false;
-			}
-			/*if(param){
-				widthMin = param.widthMin && this._assertType(param.widthMin, "number", "widthMin") ? param.widthMin : 1;
-				widthMax = param.widthMax && this._assertType(param.widthMax, "number", "widthMax") ? param.widthMax : 1;
-				heightMin = param.heightMin && this._assertType(param.heightMin, "number", "heightMin") ? param.heightMin : 1;
-				heightMax = param.heightMax && this._assertType(param.heightMax, "number", "heightMax") ? param.heightMax : 1;
-			}*/
-			return this.assertArrayRange(val, 4, 4, label) &&
-				this.assertArrayContentType(val, "number", label) &&
-				this.assertNumberRange(val[2], 0.1, 99999, label+"-width") &&
-				this.assertNumberRange(val[3], 0.1, 99999, label+"-height");
-		});
-	},
-	
-	_initPositionCheck : function(){
-		this.addType("position2D", function(val, label){
-			return this.assertArrayNotNull(val, label) &&
-				this.assertArrayRange(val, 2, 2, label) &&
-				this.assertArrayContentType(val, "number", label);
-		});
-	},
 	
 	/**
 	 * 建立一个验证器
@@ -315,7 +295,7 @@ Validator = {
 				rangeMax = 1;	//常量以后再定，先占位
 			}
 		}
-		var v = new Validate();
+		var v = new ValidateParam();
 		v.field = field;
 		v.type = type;
 		v.required = isRequired;
@@ -338,7 +318,7 @@ Validator = {
 			}
 		}
 		return true;
-	}
+	},
 	
 	/**
 	 * 类型判断，返回错误提示语句，如通过，则返回空
@@ -378,4 +358,74 @@ Validator = {
 		}
 		return func(val) ? null : " value:"+val+" is not "+type+".";
 	},*/
+	
+	_initRectCheck : function(){
+		//矩形数据一定是一个长度为4的数组，数组内只能是数字，且宽高必须大于0.
+		this.addType("rect",function(val, label){
+			if(!this.assertArrayNotNull(val, label)){
+				return false;
+			}
+			/*if(param){
+				widthMin = param.widthMin && this._assertType(param.widthMin, "number", "widthMin") ? param.widthMin : 1;
+				widthMax = param.widthMax && this._assertType(param.widthMax, "number", "widthMax") ? param.widthMax : 1;
+				heightMin = param.heightMin && this._assertType(param.heightMin, "number", "heightMin") ? param.heightMin : 1;
+				heightMax = param.heightMax && this._assertType(param.heightMax, "number", "heightMax") ? param.heightMax : 1;
+			}*/
+			return this.assertArrayRange(val, 4, 4, label) &&
+				this.assertArrayContentType(val, "number", label) &&
+				this.assertNumberRange(val[2], 0.1, 99999, label+"-width") &&
+				this.assertNumberRange(val[3], 0.1, 99999, label+"-height");
+		});
+	},
+	
+	_initPositionCheck : function(){
+		this.addType("position2D", function(val, label){
+			return this.assertArrayNotNull(val, label) &&
+				this.assertArrayRange(val, 2, 2, label) &&
+				this.assertArrayContentType(val, "number", label);
+		});
+	},
+	
+	_initFrameCheck : function(){
+		var frVldts = [
+		   this.create("name", "string", true, 1, 50),
+		   this.create("duration", "number", true, 0.016, 999),
+		   this.create("position", "position2D", true),
+		   this.create("body", "rect", false)
+		];
+		this.addType("frame",function(val, label){
+			return this.validateObject(val, frVldts, label);
+		});
+	},
+	
+	/**
+	 * 常量后期再补
+	 */
+	_initAnimateCheck : function(){
+		var anmtVldts = [
+		      this.create("frames","array",true, 1, 99),
+		      this.create("isLoop","int",false, NumericalConstant.BOOLEAN_FALSE, NumericalConstant.BOOLEAN_TRUE)];
+		this.addType("animate",function(val, label){
+			return this.validateObject(val, anmtVldts, label) &&
+			this.assertArrayContentType(val.frames, "frame", label+"-animate.frames");
+		});
+	},
+	
+	_initViewCheck : function(){
+		var viewVldts = [this.create("animates","array",true)];
+		this.addType("view",function(val, label){
+			return this.validateObject(val, viewVldts, label) &&
+			this.assertArrayContentType(val.animates, "animate", label+"-animates");
+		});
+	},
+	
+	_initCharacterCheck : function(){
+		var chrcVldts = [
+		      this.create("stand","action",true),
+		      this.create("walk","action",false),
+		      this.create("hit","action",false)];
+		Validator.addType("character",function(val, label){
+			return this.validateObject(val, chrcVldts, label);
+		});
+	}
 };

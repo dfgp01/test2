@@ -10,18 +10,17 @@ ActionFactory = {
 		 * 	actions	 动作集合{}，创建某些action时需要引用其他action
 		 */
 		createAction : function(data, actions){
-			if(!this._validateAction(data)){
-				cc.log("create ActionState error, lack of necessary data!");
+			if(!Validator.assertType(data, "action", data.name)){
+				cc.log("createAction error.");
 				return null;
 			}
-			//data.type = DataUtil.checkIsInt(data.type) ? data.type : Constant.ACTION_TYPE_DEFAULT;
 			var actionState = null;
 			if(data.repeat){
 				data.name += "_rept";
-				actionState = this.createRepeat(data.name, data.repeat, actions);
+				actionState = this.createRepeat(data.name, data.repeat);
 			}else if(data.sequence){
 				data.name += "_seq";
-				actionState = this.createSequence(data.name, data.sequence, actions);
+				actionState = this.createSequence(data.name, data.sequence);
 			}else if(data.view){
 				actionState = this.createUnitAction(data);
 			}
@@ -40,7 +39,7 @@ ActionFactory = {
 		/**
 		 * 创建角色动作
 		 */
-		createUnitAction : function(data){
+		_createUnitAction : function(data){
 			var view = ComponentFactory.createView(data.view);
 			if(!view){
 				return null;
@@ -53,22 +52,16 @@ ActionFactory = {
 		/**
 		 * 创建动作序列
 		 */
-		createSequence : function(baseName, sequence, actions){
-			if(!this._validateSeq(sequence)){
+		_createSequence : function(baseName, sequence){
+			if(!Validator.assertType(data, "sequenceAction", data.name)){
+				cc.log("createSequenceAction error.");
 				return null;
 			}
 			var action = new SequenceAction();
 			action.actions = [];
 			for(var i in sequence){
-				var act = sequence[i];
-				if(typeof act == 'string'){
-					action.actions.push(this._findByName(actions, act));
-				}
-				else{
-					// is a object/json
-					act.name = baseName + "_act"+i;	//默认名
-					action.actions.push(this.createAction(act, actions));
-				}
+				var actId = sequence[i];
+				action.actions.push(actId);
 			}
 			action.input = action.actions[0].input;
 			return action;
@@ -77,17 +70,13 @@ ActionFactory = {
 		/**
 		 * 创建重复动作
 		 */
-		createRepeat : function(baseName, repeat, actions){
-			if(!this._validateRept(repeat)){
+		_createRepeat : function(baseName, repeat){
+			if(!Validator.assertType(data, "repeatAction", data.name)){
+				cc.log("createRepeatAction error.");
 				return null;
 			}
 			var action = new RepeatAction();
-			if(typeof repeat.action == 'string'){
-				action.action = this._findByName(actions, repeat.action);
-			}else{
-				repeat.action.name = baseName + "_act";	//默认名
-				action.action = this.createAction(repeat.action, actions);
-			}
+			action.action = repeat.action;
 			action.count = data.count;
 			action.input = action.action.input;
 			return action;

@@ -7,38 +7,31 @@ GameObjectFactory = {
 	 * 初始化人物模板
 	 */
 	createCharacter : function(data){
-		//人物必须要有stand动作
-		if(!data.stand){
-			cc.log("initCharacter error. stand action is necessary.");
+		if(!Validator.assertType(data, "character", "character")){
+			cc.log("createCharacter error.");
 			return null;
 		}
 		var template = this.createTemplate(data);
-		var action = ObjectManager.actions.boot[Constant.GAMEOBJECT_CHARACTER];
-		template.actions.boot = action;
+		var asm = new ActionStateManager();
+		asm.init();
+		template.actionStateManager = asm;
 		
-		this.addActionAndProperty(
-			template, ActionFactory.createStandAction(data.stand, template.actions));
+		this.addActionAndProperty(asm, ActionFactory.createStandAction(data.stand));
 		if(data.walk){
-			this.addActionAndProperty(
-				template, ActionFactory.createWalkAction(data.walk, template.actions));
+			this.addActionAndProperty(asm, ActionFactory.createWalkAction(data.walk));
 		}
 		if(data.hit){
-			this.addActionAndProperty(
-				template, ActionFactory.createHitAction(data.hit, template.actions));
+			this.addActionAndProperty(asm, ActionFactory.createHitAction(data.hit));
 		}
-		this.buildCommand(template.actions);
+		//this.buildCommand(template.actions);
 		ObjectManager.templates[template.name] = template;
 		return template;
-	}
+	},
 
 	/**
 	 * 初始化一个单位模板
 	 */
 	createTemplate : function(data){
-		if(!DataUtil.checkNotNull(data) || !DataUtil.checkIsString(data.name)){
-			cc.log("createTemplate error, lack of necessary data!");
-			return null;
-		}
 		var template = new GameObjectTemplate();
 		template.init(data);
 		//动作集合
@@ -53,13 +46,14 @@ GameObjectFactory = {
 		return template;
 	},
 	
-	addActionAndProperty : function(template, action){
-		template.actions[action.name] = action;
-		if(action.components.length > 0){
-			for(var i in action.components){
-				var component = action.components[i];
-				if(!template.propertys[component.name]){
-					template.propertys[component.name] = this.createProperty(component.name);
+	addActionAndProperty : function(actionStateManager, action){
+		if(actionStateManager.registered(action)){
+			if(action.components.length > 0){
+				for(var i in action.components){
+					var component = action.components[i];
+					if(!template.propertys[component.name]){
+						template.propertys[component.name] = this.createProperty(component.name);
+					}
 				}
 			}
 		}
@@ -126,7 +120,7 @@ GameObjectFactory = {
 			p.body = unit.collide;
 		}
 		return p;
-	}
+	},
 	
 	_createCollide : function(data){
 		var p = new CollideProperty();

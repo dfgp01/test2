@@ -17,14 +17,14 @@ ActionStateManager = cc.Class.extend({
 	registered : function(action){
 		if(!action || !action.id){
 			cc.log("registered error. action or id is null.");
-			return;
+			return false;
 		}
 		if(this.map[action.id]){
 			cc.log("registered error. action id:"+action.id+" exists.");
-			return;
+			return false;
 		}
 		this.map[action.id] = action;
-		return;
+		return true;
 	},
 	
 	getAction : function(id){

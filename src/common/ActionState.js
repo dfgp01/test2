@@ -7,6 +7,8 @@ ActionState = cc.Class.extend({
 	name : null,
 	state : 0,
 	components : null,
+	cost : null,
+	duartion : 1,
 	
 	_input : null,		//存储转出状态的输入指令<int, StateSwitchParam>
 	
@@ -19,9 +21,21 @@ ActionState = cc.Class.extend({
 		//cc.log("info: creating action:[" + this.name + "].");
 	},
 	
+	/**
+	 * 进入此action前判断，是否持有足够消耗的量。
+	 */
+	checkCost : function(unit){
+		return false;
+	},
+	
+	calcCost : function(unit){
+		
+	},
+	
 	//加载时
 	start : function(unit){
-		unit.actions.endFlag = false;
+		calcCost(unit);
+		unit.actions.duration = 0;
 		if(this.components.length > 0){
 			for(var i in this.components){
 				this.components[i].start(
@@ -32,11 +46,16 @@ ActionState = cc.Class.extend({
 	
 	//运行时
 	update : function(dt, unit){
-		if(this.components.length > 0){
-			for(var i in this.components){
-				this.components[i].update(dt,
-					unit.propertys[this.components[i].name]);
+		unit.actions.duration += dt;
+		if(this.duration > unit.duration){
+			if(this.components.length > 0){
+				for(var i in this.components){
+					this.components[i].update(dt,
+						unit.propertys[this.components[i].name]);
+				}
 			}
+		}else{
+			EventDispatcher.send("actionEnd", unit);	//没写完
 		}
 	},
 
@@ -48,19 +67,6 @@ ActionState = cc.Class.extend({
 					unit.propertys[this.components[i].name]);
 			}
 		}
-	},
-	
-	handleInput : function(input, type, unit){
-		
-	},
-	
-	getStackInfo : function(unit){
-		var stackInfo = unit.actions.stacks[this.name];
-		if(!stackInfo){
-			stackInfo = ObjectManager.getActionStackInfo();
-			unit.actions.stacks[this.name] = stackInfo;
-		}
-		return stackInfo;
 	},
 	
 	findComponent : function(name){

@@ -1,8 +1,8 @@
 /**
- * 输入事件
+ * 单位接收输入指令事件
  */
-InputEvent = Event.extend({
-	type : Constant.EVT_INPUT,
-	subType : 0,
-	command : 0
+UnitInputEvent = Event.extend({
+	type : EventConstant.UNIT_INPUT,
+	inputType : 0,
+	value : 0
 });

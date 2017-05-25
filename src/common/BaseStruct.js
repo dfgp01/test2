@@ -58,9 +58,7 @@ Position2D = cc.Class.extend({
  */
 Event = cc.Class.extend({
 	type : 0,
-	subType : 0,
-	sender : null,
-	args : null		//事件参数表,map<string,object>类型
+	source : null
 });
 
 /**
@@ -85,7 +83,7 @@ Frame = cc.Class.extend({
  * 状态转换参数
  */
 StateSwitchParam = cc.Class.extend({
-	state : 0,		//目标状态
+	currState : 0,	//状态转换前的当前状态
 	actionId : 0,	//目标action
 	type : 0,		//事件触发类型，控制器输入、指令输入等
 	value : 0		//具体的输入指令值
@@ -97,4 +95,14 @@ StateSwitchParam = cc.Class.extend({
 ActionStack = cc.Class.extend({
 	id : 0,
 	value : 0
+});
+
+/**
+ * 动作状态消耗量
+ */
+ActionCost = cc.Class.extend({
+	type : 0,	//二进制组合式枚举
+	hp : 0,		//healthy_point
+	en : 0,		//energy
+	item : 0	//指定物品数量
 });

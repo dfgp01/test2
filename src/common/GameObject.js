@@ -35,7 +35,6 @@ GameObjectTemplate = cc.Class.extend({
 		this.name = data.name;
 		this.availableList = [];
 		this.propertys = {};
-		this.actions = {};
 		this.frame = EngineUtil.getFrame(data.frame);
 	}
 });

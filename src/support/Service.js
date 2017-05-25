@@ -35,17 +35,26 @@ Service = {
 	},
 	
 	initialize : function(data){
+		//验证器初始化
 		Validator.init();
+		//共享对象池初始化
 		ObjectManager.init();
-		ObjectManager.initCollides(data.collides);
-		for(var i in data.characters){
-			GameObjectFactory.createCharacter(data.characters[i]);
-		}
-		this.setPlayer(this.newUnit(data.player.templateName, 1, data.player.posX, data.player.posY, data.player.posZ));
+		//组件工厂类初始化
+		ComponentFactory.init();
+		//ObjectManager.initCollides(data.collides);
+		//人物角色初始化
+		_initCharacter();
+		this.setPlayer();
 		this.mainSystem = ObjectManager.systems.main;
 	},
 	
-	setPlayer : function(unit){
+	_initCharacter : function(){
+		GameObjectFactory.createCharacter(characterData);
+		var unit = this.newUnit("deep", 1, 100, 100, 20);
+		//this._setPlayer(unit);
+	},
+	
+	_setPlayer : function(unit){
 		unit.collide.type |= Constant.COLLIDE_TYPE_PLAYER;
 		var evt = new Event();
 		evt.type = Constant.EVT_PLAYER_INITIALIZED;
@@ -58,7 +67,7 @@ Service = {
 	},
 	
 	update : function(dt){
-		dt *= 1000;
+		//dt *= 1000;
 		this.gameTime += dt;
 		this.mainSystem.update(dt);
 	}

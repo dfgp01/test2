@@ -2,48 +2,7 @@
  * 用于建造组件的工厂类
  */
 ComponentFactory = {
-		
-	init : function(){
-		this._initFrameCheck();
-		this._initAnimateCheck();
-		this._initViewCheck();
-	},
-	
-	_initFrameCheck : function(){
-		var frVldts = [
-		   this.create("name", "string", true, 1, 50),
-		   this.create("duration", "number", true, 0.016, 999),
-		   this.create("position", "position2D", true),
-		   this.create("body", "rect", false)
-		];
-		Validator.addType("frame",function(val, label){
-			return Validator.validateObject(val, frVldts, label);
-		});
-	},
-	
-	/**
-	 * 常量后期再补
-	 */
-	_anmtVldts : null,
-	_initAnimateCheck : function(){
-		this._anmtVldts = [
-		      Validator.create("frames","array",true, 1, 99),
-		      Validator.create("isLoop","int",false, NumericalConstant.BOOLEAN_FALSE, NumericalConstant.BOOLEAN_TRUE)];
-		Validator.addType("animate",function(val, label){
-			return Validator.validateObject(val, this._anmtVldts, label) &&
-				Validator.assertArrayContentType(val.frames, "frame", label+"-animate.frames");
-		});
-	},
-	
-	_viewVldts : null,
-	_initViewCheck : function(){
-		this._viewVldts = [Validator.create("animates","array",true)];
-		Validator.addType("view",function(val, label){
-			return Validator.validateObject(val, this._viewVldts, label) &&
-				Validator.assertArrayContentType(val.animates, "animate", label+"-animates");
-		});
-	},
-	
+
 	addComponent : function(action, component){
 		for(var i in action.components){
 			if(component.priority > action.components[i].priority){

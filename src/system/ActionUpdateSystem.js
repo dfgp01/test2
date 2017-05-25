@@ -6,11 +6,46 @@ ActionUpdateSystem = System.extend({
 	tick : Constant.TICK_FPS30,
 	
 	start : function(){
-		EventDispatcher.addEventListener("unitInput", function(evt, inputParam){
-			var unit = evt.sender;
+		//处理输入的指令，查找是否有下一状态
+		EventDispatcher.addEventListener("unitInput", function(inputEvt){
+			var unit = evt.source;
+			var action = null;
 			for(var i=unit.actions.stack.length-1; i>=0; i--){
-				unit.actions.stack[i].findInput(unit, inputParam);
+				action = unit.actions.stack[i].getNextByInput(unit, inputEvt.value);
+				if(action){
+					//发起
+					return;
+				}
 			}
+		});
+		//动作状态切换事件处理
+		EventDispatcher.addEventListener("actionSwitch", function(actionEvt){
+			var unit = evt.source;
+			var action = actionEvt.target;
+			//消耗检测
+			if(action.checkCost(unit)){
+				var cur = null;
+				var stack = unit.actions.stack;
+				while(cur=stack.pop()){
+					cur.end(unit);
+				}
+				stack.push(action);
+				action.start(unit);
+			}
+		});
+		//动作结束事件处理
+		EventDispatcher.addEventListener("actionEnd", function(actionEvt){
+			var action = actionEvt.source;
+			var unit = actionEvt.target;
+			action.end(unit);
+			unit.actions.stack.pop();
+		});
+		//动作开始事件处理
+		EventDispatcher.addEventListener("actionStart", function(actionEvt){
+			var action = actionEvt.source;
+			var unit = actionEvt.target;
+			action.start(unit);
+			unit.actions.stack.push(action);
 		});
 	},
 
@@ -20,7 +55,7 @@ ActionUpdateSystem = System.extend({
 	},
 	
 	execute : function(dt, unitActions){
-		if(unitActions.endFlag){
+		/*if(unitActions.endFlag){
 			if(unitActions.next){
 				unitActions.current = unitActions.next;
 				unitActions.current.start(unitActions.owner);
@@ -31,6 +66,11 @@ ActionUpdateSystem = System.extend({
 			//unitActions.current.end(unitActions.owner);
 		}else{
 			unitActions.current.update(dt, unitActions.owner);
+		}*/
+		if(unitActions.stack.length > 0){
+			unitActions.stack[unitActions.stack.length - 1].update(dt, unitActions.owner);
+		}else{
+			unitActions.owner.template.actionStateManager.update(unitActions.owner);
 		}
 	}
 });
