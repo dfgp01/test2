@@ -69,17 +69,6 @@ EventListener = cc.Class.extend({
 });
 
 /**
- * 帧
- */
-Frame = cc.Class.extend({
-	name : null,
-	position : null,	//相对sprite的位置,Position2D类型
-	duration : 0.1,		//持续时间
-	body : null,		//身体碰撞矩形，非必填
-	view : null			//ccSpriteFrame类型
-});
-
-/**
  * 状态转换参数
  */
 StateSwitchParam = cc.Class.extend({

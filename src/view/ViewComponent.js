@@ -57,6 +57,17 @@ ViewComponent = Component.extend({
 	}
 });
 
+var viewVldts = null;
+ViewComponent.prototype.create = function(data){
+	if(!viewVldts){
+		viewVldts = [this.create("animates","array",true)];
+		this.addType("viewComponent",function(val, label){
+			return this.validateObject(val, viewVldts, label) &&
+			this.assertArrayContentType(val.animates, "animate", label+"-animates");
+		});
+	}
+};
+
 /**
  * 	普通动画组件
  */

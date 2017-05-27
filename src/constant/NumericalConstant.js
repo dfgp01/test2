@@ -46,5 +46,10 @@ NumericalConstant = {
 	TICK_FPS20 : 50,
 	TICK_FPS12 : 83,
 	TICK_FPS10 : 100,
-	TICK_FPS05 : 200
+	TICK_FPS05 : 200,
+	
+	/**
+	 * 移动速度
+	 */
+	MAX_MOVE_VAL_PERSECOND : 500	//每秒最大移动量
 };
