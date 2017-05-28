@@ -13,13 +13,13 @@ var frVldts = null;
 Frame.prototype.create = function(data){
 	if(!frVldts){
 		frVldts = [
-	    		   this.create("name", "string", true, 1, 50),
-	    		   this.create("duration", "number", true, 0.016, 999),
-	    		   this.create("position", "position2D", true),
-	    		   this.create("body", "rect", false)
+	    		   Validator.create("name", "string", true, 1, 50),
+	    		   Validator.create("duration", "number", true, NumericalConstant.MIN_FPS_TICK, 99),
+	    		   Validator.create("position", "position2D", true),
+	    		   Validator.create("body", "rect", false)
 	    		];
-		this.addType("frame",function(val, label){
-			return this.validateObject(val, frVldts, label);
+		Validator.addType("frame",function(val, label){
+			return Validator.validateObject(val, frVldts, label);
 		});
 	}
 	var sf = EngineUtil.getFrame(data.name)
@@ -33,4 +33,5 @@ Frame.prototype.create = function(data){
 	frame.spriteFrame = sf;
 	frame.rect = data.rect;
 	frame.position = position2D.create(data.position[0], data.position[1]);
+	return frame;
 };

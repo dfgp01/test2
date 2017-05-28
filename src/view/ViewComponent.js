@@ -45,7 +45,7 @@ ViewComponent = Component.extend({
 			frameStates.duration -= animate.frames[frameStates.index].duration;
 			frameStates.index++;
 			if(frameStates.index >= animate.frames.length){
-				if(animate.isLoop == NumericalConstant.BOOLEAN_TRUE){
+				if(animate.isLoop){
 					frameStates.index = 0;
 				}else{
 					frameStates.isEnd = true;
@@ -60,12 +60,24 @@ ViewComponent = Component.extend({
 var viewVldts = null;
 ViewComponent.prototype.create = function(data){
 	if(!viewVldts){
-		viewVldts = [this.create("animates","array",true)];
-		this.addType("viewComponent",function(val, label){
-			return this.validateObject(val, viewVldts, label) &&
-			this.assertArrayContentType(val.animates, "animate", label+"-animates");
+		viewVldts = [Validator.create("animates","array",true)];
+		Validator.addType("viewComponent",function(val, label){
+			return Validator.validateObject(val, viewVldts, label) &&
+			Validator.assertArrayContentType(val.animates, "animate", label+"-animates");
 		});
 	}
+	var animates = [];
+	for(var i in data.animates){
+		var anm = Animate.create(data.animates[i]);
+		if(!anm){
+			cc.log("ViewComponent.create error.");
+			return null;
+		}
+		animates.push(anm);
+	}
+	var view = new ViewComponent();
+	view.animates = animates;
+	return view;
 };
 
 /**

@@ -27,113 +27,14 @@ GameObjectFactory = {
 		ObjectManager.templates[template.name] = template;
 		return template;
 	},
-
-	/**
-	 * 初始化一个单位模板
-	 */
-	createTemplate : function(data){
-		var template = new GameObjectTemplate();
-		template.init(data);
-		//动作集合
-		if(DataUtil.checkArrayNotNull(data.actions,"data.actions")){
-			for(var i in data.actions){
-				this.addActionAndProperty(template,
-						ActionFactory.createAction(
-								data.actions[i]));
-			}
-		}
-		//初始化属性
-		return template;
-	},
-	
-	addActionAndProperty : function(actionStateManager, action){
-		if(actionStateManager.registered(action)){
-			if(action.components.length > 0){
-				for(var i in action.components){
-					var component = action.components[i];
-					if(!template.propertys[component.name]){
-						template.propertys[component.name] = this.createProperty(component.name);
-					}
-				}
-			}
-		}
-		return;
-	},
-	
-	createProperty : function(name, owner, data){
-		var p = null;
-		if(name=="actions"){
-			p = new ActionsProperty();
-			p.stacks = {};
-		}else if(name=='move'){
-			p = new MoveProperty();
-			p.coefficient = DataUtil.checkIsNumber(data.coefficient) ? data.coefficient : p.coefficient;
-		}else if(name=='command'){
-			p = new CommandProperty();
-		}else if(name=='view'){
-			p = new ViewProperty();
-			/*p.frameProperties = [];
-			addFrameState(p, 1, owner);*/
-		}else if(name=='collide'){
-			p = this._createCollide(data);
-		}else if(name=='hit'){
-			p = new HitProperty();
-			p.collide = this._createCollide(data);
-		}
-		p.owner = owner;
-		return p;
-	},
-	
-	cloneProperty : function(name, property, unit){
-		var p = null;
-		if(name=="actions"){
-			p = new ActionsProperty();
-			p.stacks = {};
-		}else if(name=='move'){
-			p = new MoveProperty();
-			p.coefficient = property.coefficient;
-		}else if(name=='command'){
-			p = new CommandProperty();
-		}else if(name=='view'){
-			p = new ViewProperty();
-			//p.frames = this.createFrameProperties();
-			p.body = EngineUtil.newSprite();
-		}else if(name=='collide'){
-			p = this._createCollide(data, properties);
-		}else if(name=='hit'){
-			p = new HitProperty();
-			p.collide = this._createCollide(data);
-			p.body = unit.collide;
-		}
-		return p;
-	},
 	
 	_createCollide : function(data){
 		var p = new CollideProperty();
 		p.targets = {};
 		p.rect = [0,0,0,0];
 		return p;
-	}
-	
-	createGameObject : function(template){
-		var unit = new GameObject();
-		unit.id = template.nextId++
-		unit.name = template.name;
-		unit.template = template;
-		unit.view = this.createProperty("view");
-		//unit.view.body = EngineUtil.newSprite(template.frame);
-		unit.view.owner = unit;
-		unit.actions = this.createProperty("actions");
-		unit.actions.owner = unit;
-		unit.propertys = {};
-		for(var i in template.propertys){
-			var property = this.cloneProperty(template.propertys[i], unit);
-			property.owner = unit;
-			unit.propertys[property.name] = property;
-		}
-		return unit;
 	},
-	
+
 	buildCommand : function(actions){
 		for(var i in actions){
 			var act = actions[i];

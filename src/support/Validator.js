@@ -30,13 +30,6 @@ Validator = {
 		this._initRectCheck();
 		//坐标数据校验
 		this._initPositionCheck();
-		//动作数据校验
-		//帧数据校验
-		this._initFrameCheck();
-		//动画数据校验
-		this._initAnimateCheck();
-		//显示组件数据校验
-		this._initViewCheck();
 		//人物角色数据校验
 		this._initCharacterCheck();
 	},
@@ -383,39 +376,6 @@ Validator = {
 			return this.assertArrayNotNull(val, label) &&
 				this.assertArrayRange(val, 2, 2, label) &&
 				this.assertArrayContentType(val, "number", label);
-		});
-	},
-	
-	_initFrameCheck : function(){
-		var frVldts = [
-		   this.create("name", "string", true, 1, 50),
-		   this.create("duration", "number", true, 0.016, 999),
-		   this.create("position", "position2D", true),
-		   this.create("body", "rect", false)
-		];
-		this.addType("frame",function(val, label){
-			return this.validateObject(val, frVldts, label);
-		});
-	},
-	
-	/**
-	 * 常量后期再补
-	 */
-	_initAnimateCheck : function(){
-		var anmtVldts = [
-		      this.create("frames","array",true, 1, 99),
-		      this.create("isLoop","int",false, NumericalConstant.BOOLEAN_FALSE, NumericalConstant.BOOLEAN_TRUE)];
-		this.addType("animate",function(val, label){
-			return this.validateObject(val, anmtVldts, label) &&
-			this.assertArrayContentType(val.frames, "frame", label+"-animate.frames");
-		});
-	},
-	
-	_initViewCheck : function(){
-		var viewVldts = [this.create("animates","array",true)];
-		this.addType("view",function(val, label){
-			return this.validateObject(val, viewVldts, label) &&
-			this.assertArrayContentType(val.animates, "animate", label+"-animates");
 		});
 	},
 	
