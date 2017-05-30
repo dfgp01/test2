@@ -69,6 +69,24 @@ ActionState = cc.Class.extend({
 		}
 	},
 	
+	addComponent : function(component){
+		if(!Validator.assertNotNull(component,"ActionState.addComponent:component")){
+			cc.log("ActionState.addComponent error.");
+			return;
+		}
+		if(!DataUtil.checkArrayNotNull(this.components)){
+			this.components = [];
+		}
+		for(var i in this.components){
+			if(component.priority > this.components[i].priority){
+				this.components.splice(i, 0, component);
+				return;
+			}
+		}
+		//上面的循环未return时，说明优先级是最小的，要补加到列表尾
+		this.components.push(component);
+	},
+
 	findComponent : function(name){
 		if(!DataUtil.checkIsString(name)){
 			return null;

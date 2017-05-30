@@ -39,8 +39,6 @@ Service = {
 		Validator.init();
 		//共享对象池初始化
 		ObjectManager.init();
-		//组件工厂类初始化
-		ComponentFactory.init();
 		//ObjectManager.initCollides(data.collides);
 		//人物角色初始化
 		_initCharacter();

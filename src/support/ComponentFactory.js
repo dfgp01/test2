@@ -2,17 +2,6 @@
  * 用于建造组件的工厂类
  */
 ComponentFactory = {
-
-	addComponent : function(action, component){
-		for(var i in action.components){
-			if(component.priority > action.components[i].priority){
-				this.systemList.splice(i, 0, system);
-				return;
-			}
-		}
-		//上面的循环未return时，说明优先级是最小的，要补加到列表尾
-		action.components.push(component);
-	},
 	
 	/**
 	 * 动作指令组件

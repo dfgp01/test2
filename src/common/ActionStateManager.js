@@ -7,14 +7,13 @@ ActionStateManager = cc.Class.extend({
 	
 	enter : function(unit){},
 	
-	init : function(){
-		this.map = {};
-	},
-	
 	/**
 	 * 注册action-子状态，添加进map管理
 	 */
 	registered : function(action){
+		if(!this.map){
+			this.map = {};
+		}
 		if(!action || !action.id){
 			cc.log("registered error. action or id is null.");
 			return;

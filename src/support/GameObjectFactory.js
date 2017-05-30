@@ -11,21 +11,26 @@ GameObjectFactory = {
 			cc.log("createCharacter error.");
 			return null;
 		}
-		var template = this.createTemplate(data);
+		var template = Template.create(data);
 		var asm = new ActionStateManager();
-		asm.init();
 		template.actionStateManager = asm;
-		
-		this.addActionAndProperty(asm, ActionFactory.createStandAction(data.stand));
+		this._addActAndChkProp(template, Action.create(data.stand));
 		if(data.walk){
-			this.addActionAndProperty(asm, ActionFactory.createWalkAction(data.walk));
+			this._addActAndChkProp(template, Action.create(data.walk));
 		}
 		if(data.hit){
-			this.addActionAndProperty(asm, ActionFactory.createHitAction(data.hit));
+			this._addActAndChkProp(template, Action.create(data.hit));
 		}
 		//this.buildCommand(template.actions);
 		ObjectManager.templates[template.name] = template;
 		return template;
+	},
+
+	_addActAndChkProp : function(template, action){
+		var asm = template.actionStateManager;
+		asm.registered(action);
+		template.checkProperty(action);
+		return;
 	},
 	
 	_createCollide : function(data){
