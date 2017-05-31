@@ -24,3 +24,28 @@ RepeatAction = ActionState.extend({
 		}
 	}
 });
+
+var rptActVldt = null;
+RepeatAction.prototype.create = function(data, actionManager){
+	if(!rptActVldt){
+		//初始化添加验证
+		rptActVldt = [Validator.create("name", "string", true, 1, 50),
+		            Validator.create("count", "int", true, 1, 99)];
+		this.addType("repeatAction", function(val, label){
+			return this.validateObject(val, mvVldt, label);
+		});
+	}
+	if(!Validator.assertType(data, "repeatAction", "RepeatAction")){
+		cc.log("RepeatAction.create error.");
+		return null;
+	}
+	var rpt = new RepeatAction();
+	rpt.name = data.name;
+	rpt.count = data.count;
+	if(data.action_ref){
+		rpt.action = actionManager.getAction(data.action_ref);
+	}else{
+		rpt.action = ActionFactory.create(data.action);
+	}
+	return rpt;
+};

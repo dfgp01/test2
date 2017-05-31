@@ -63,7 +63,7 @@ ActionStackManager = {
 	recycle : function(stackInfo){
 		this.quene.push(stackInfo);
 	}
-}
+};
 
 /**
  * 节点队列

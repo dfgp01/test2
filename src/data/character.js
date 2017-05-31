@@ -8,22 +8,20 @@ characterData = {
 			animates : [{
 				frames : [{
 					name : "deep_stand_0.png",
-					time : 2
+					duration : 1.5
 				},{
 					name : "deep_stand_1.png",
-					time : 2
+					duration : 1.5
 				},{
 					name : "deep_stand_2.png",
-					time : 2
+					duration : 1.5
 				},{
 					name : "deep_stand_3.png",
-					time : 2
+					duration : 1.5
 				},]
 			}]
 		},
-		command : {
-			list:["hit","crossCutA","roundCutA"]
-		}
+		transferable : ["hit","crossCutA","roundCutA"]
 	},
 	walk : {
 		view : {

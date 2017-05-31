@@ -23,3 +23,30 @@ SequenceAction = ActionState.extend({
 		}
 	}
 });
+
+var seqActVldt = null;
+SequenceAction.prototype.create = function(data, actionManager){
+	if(!seqActVldt){
+		//初始化添加验证
+		seqActVldt = [Validator.create("name", "string", true, 1, 50),
+		            Validator.create("list", "array", true, 1, 99)];
+		this.addType("sequenceAction", function(val, label){
+			return Validator.validateObject(val, mvVldt, label);
+		});
+	}
+	if(!Validator.assertType(data, "sequenceAction", "SequenceAction")){
+		cc.log("SequenceAction.create error.");
+		return null;
+	}
+	var seq = new SequenceAction();
+	seq.name = data.name;
+	seq.actions = [];
+	for(var i=0; i<data.list.length; i++){
+		if(data.list[i].action_ref){
+			seq.actions[i] = actionManager.getAction(data.list[i].action_ref);
+		}else{
+			seq.actions[i] = ActionFactory.create(data.list[i]);
+		}
+	}
+	return seq;
+};

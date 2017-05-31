@@ -9,31 +9,30 @@ ActionFactory = {
 		 * 	data 	 数据DNA
 		 * 	actions	 动作集合{}，创建某些action时需要引用其他action
 		 */
-		createAction : function(data, actions){
-			if(!Validator.assertType(data, "action", data.name)){
+		createAction : function(data, actionManager){
+			if(!Validator.assertNotNull(data, "data")){
 				cc.log("createAction error.");
 				return null;
 			}
-			var actionState = null;
 			if(data.repeat){
 				data.name += "_rept";
-				actionState = this.createRepeat(data.name, data.repeat);
+				return RepeatAction.create(data.repeat, actionManager);
 			}else if(data.sequence){
 				data.name += "_seq";
-				actionState = this.createSequence(data.name, data.sequence);
-			}else if(data.view){
-				actionState = this.createUnitAction(data);
+				return SequenceAction.create(data.sequence, actionManager);
+			}else{
+				return UnitAction.create(data);
 			}
-			if(!action){
+			
+			/*if(!action){
 				cc.log("create ActionState exception, see the log!");
 				return null;
 			}
 			actionState.name = data.name;
-			actionState.components = [];
 			if(this._bulid(data, actionState)){
 				cc.log("info: action:[" + data.name + "] has been created.");
 			}
-			return actionState;
+			return actionState;*/
 		},
 		
 		/**
@@ -82,42 +81,10 @@ ActionFactory = {
 			return action;
 		},
 		
-		_findByName : function(actions, name){
-			var action = actions[name];
-			if(!action){
-				cc.log("ActionFactory.findByName error. actions["+name+"] not found");
-				return null;
-			}
-			return action;
-		},
-		
-		/**
-		 * 组成动作的组件系统
-		 */
-		_bulid : function(data, action){
-			if(!data){
-				return;
-			}
-			//穷举组件检测
-			if(DataUtil.checkNotNull(data.move)){
-				ComponentFactory.addComponent(action,
-					ComponentFactory.createMove(data.move));
-			}
-			if(DataUtil.checkNotNull(data.command)){
-				ComponentFactory.addComponent(action,
-					ComponentFactory.createCommand(data.command));
-			}
-			if(DataUtil.checkNotNull(data.hit)){
-				ComponentFactory.addComponent(action,
-					ComponentFactory.createHit(data.hit));
-			}
-			return;
-		},
-		
 		/**
 		 * 创建站立动作节点
 		 */
-		createStandAction : function(data, actions){
+		createStand : function(data, actions){
 			data.name = "stand";
 			data.view.animate.type = data.view.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
 			if(data.command){
@@ -129,7 +96,7 @@ ActionFactory = {
 		/**
 		 * 创建走路/奔跑动作节点
 		 */
-		createWalkAction : function(data, actions){
+		createWalk : function(data, actions){
 			data.name = "walk";
 			data.view.animate.type = data.view.animate.frames.length > 1 ? Constant.ANIMATE_SCROLL : Constant.ANIMATE_STATIC;
 			if(data.command){
@@ -141,7 +108,7 @@ ActionFactory = {
 		/**
 		 * 创建普通攻击动作节点
 		 */
-		createHitAction : function(data, actions){
+		createHit : function(data, actions){
 			data.name = "hit";
 			if(data.command){
 				data.command.type = Constant.COMMAND_CHARACTER_ATTACK;

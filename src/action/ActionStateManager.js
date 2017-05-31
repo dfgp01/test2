@@ -27,8 +27,8 @@ ActionStateManager = cc.Class.extend({
 	},
 	
 	getAction : function(id){
-		if(!id){
-			cc.log("getAction error. id is null.");
+		if(!Validator.assertInt(id,"id")){
+			cc.log("getAction error.");
 			return null;
 		}
 		var action = this.map[id];

@@ -8,7 +8,7 @@ ActionState = cc.Class.extend({
 	state : 0,
 	components : null,
 	cost : null,
-	duartion : 1,
+	duartion : 1,		//总时长
 	
 	_input : null,		//存储转出状态的输入指令<int, StateSwitchParam>
 	

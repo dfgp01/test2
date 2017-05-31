@@ -6,7 +6,7 @@
  */
 GameObjectTemplate = cc.Class.extend({
 
-	availableList : null,	//对象池
+	availableList : null,	//对象池，可用列表
 	name : null,
 	frame : null,				//初始frame
 	featureCode : 0,
@@ -30,21 +30,22 @@ GameObjectTemplate.prototype.create = function(data){
 	//动作集合
     if(DataUtil.checkArrayNotNull(data.actions,"data.actions")){
         for(var i in data.actions){
-            GameObjectTemplate.addActionAndProperty(template,
-                    Action.create(data.actions[i]));
+            GameObjectTemplate.addActionAndProperty(
+            		template, ActionFactory.create(data.actions[i]));
         }
     }
     //初始化属性
     return template;
 };
 
-GameObjectTemplate.prototype.addActionAndProperty = function(actionStateManager, action){
-    actionStateManager.registered(action);
+GameObjectTemplate.prototype.addActionAndProperty = function(template, action){
+	var asm = template.actionStateManager;
+	asm.registered(action);
     if(action.components.length > 0){
         for(var i in action.components){
             var component = action.components[i];
             if(!template.propertys[component.name]){
-                template.propertys[component.name] = this.createProperty(component.name);
+                template.propertys[component.name] = GameObjectTemplate.createProperty(component.name);
             }
         }
     }
