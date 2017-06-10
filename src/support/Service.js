@@ -16,9 +16,9 @@ Service = {
 	},
 	
 	/**
-	 * 从指定模板中创建新单位
+	 * 从指定模板中创建新单位（待删）
 	 */
-	newUnit : function(templateName, teamNo, posX, posY, posZ){
+	/*newUnit : function(templateName, teamNo, posX, posY, posZ){
 		var template = ObjectManager.templates[templateName];
 		var unit = null;
 		if(template.availableList.length > 0){
@@ -32,7 +32,7 @@ Service = {
 		unit.view.z = posZ;
 		template.actions.boot.start(unit);
 		return unit;
-	},
+	},*/
 	
 	initialize : function(data){
 		//验证器初始化
@@ -47,7 +47,10 @@ Service = {
 	},
 	
 	_initCharacter : function(){
-		GameObjectFactory.createCharacter(characterData);
+		//初始化场景元素
+		//初始化玩家配置、人物数据、HUD
+		ObjectManager.addTemplate(
+				GameObjectFactory.createCharacter(characterData));
 		var unit = this.newUnit("deep", 1, 100, 100, 20);
 		//this._setPlayer(unit);
 	},

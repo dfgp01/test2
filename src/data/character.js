@@ -18,10 +18,10 @@ characterData = {
 				},{
 					name : "deep_stand_3.png",
 					duration : 1.5
-				},]
+				}]
 			}]
 		},
-		transferable : ["hit","crossCutA","roundCutA"]
+		inputConnect : ["hit","crossCutA","roundCutA"]
 	},
 	walk : {
 		view : {

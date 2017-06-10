@@ -15,13 +15,11 @@ ActionFactory = {
 				return null;
 			}
 			if(data.repeat){
-				data.name += "_rept";
 				return RepeatAction.create(data.repeat, actionManager);
 			}else if(data.sequence){
-				data.name += "_seq";
 				return SequenceAction.create(data.sequence, actionManager);
 			}else{
-				return UnitAction.create(data);
+				return ParallelAction.create(data);
 			}
 			
 			/*if(!action){

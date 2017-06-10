@@ -153,7 +153,7 @@ DataUtil = {
 				return true;
 			}
 			return false;
-		}
+		},
 		
 		/**
 		 * 用于检查的

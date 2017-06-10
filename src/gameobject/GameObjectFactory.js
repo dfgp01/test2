@@ -11,7 +11,7 @@ GameObjectFactory = {
 			cc.log("createCharacter error.");
 			return null;
 		}
-		var template = Template.create(data);
+		var template = GameObjectTemplate.create(data);
 		var asm = new ActionStateManager();
 		template.actionStateManager = asm;
 		GameObjectTemplate.addActionAndProperty(template, ActionFactory.createStandAction(data.stand));
@@ -21,7 +21,6 @@ GameObjectFactory = {
 		if(data.hit){
 			GameObjectTemplate.addActionAndProperty(template, ActionFactory.createHitAction(data.hit));
 		}
-		ObjectManager.templates[template.name] = template;
 		return template;
 	},
 	

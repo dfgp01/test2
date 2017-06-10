@@ -13,13 +13,13 @@ Constant = {
 	/**
 	 * 碰撞刚体类型
 	 */
-	COLLIDE_TYPE_BLOCK = 1;		//障碍物
-	COLLIDE_TYPE_BODY = 2;		//单位身体
-	COLLIDE_TYPE_HIT = 4;		//攻击（红框）
-	COLLIDE_TYPE_HURT = 8;		//受击（蓝框）
-	COLLIDE_TYPE_PLAYER = 16;	//玩家
-	COLLIDE_TYPE_HERO = 32;		//主要角色
-	COLLIDE_TYPE_TOUCH = 64;	//通过触碰触发
+	COLLIDE_TYPE_BLOCK : 1,		//障碍物
+	COLLIDE_TYPE_BODY : 2,		//单位身体
+	COLLIDE_TYPE_HIT : 4,		//攻击（红框）
+	COLLIDE_TYPE_HURT : 8,		//受击（蓝框）
+	COLLIDE_TYPE_PLAYER : 16,	//玩家
+	COLLIDE_TYPE_HERO : 32,		//主要角色
+	COLLIDE_TYPE_TOUCH : 64,	//通过触碰触发
 	
 	/**
 	 * 动作状态（暂定）

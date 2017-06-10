@@ -21,6 +21,31 @@ ObjectManager = {
 		this.templates = {};
 	},
 	
+	/**
+	 * 单位自增ID
+	 */
+	_unitIdSeq : 1,
+	nextUnitId : function(){
+		return this._unitIdSeq++;
+	},
+	
+	getUnit : function(tempId){
+		var template = this.templates[templateName];
+		var unit = null;
+		if(template.availableList.length > 0){
+			unit = template.availableList.pop();
+		}else{
+			unit = GameObject.create(template);
+			unit.id = this.nextUnitId();
+		}
+		/*unit.collide.team = teamNo;
+		unit.view.x = posX;
+		unit.view.y = posY;
+		unit.view.z = posZ;
+		template.actionManager.getAction().start(unit);*/
+		return unit;
+	},
+	
 	initCollides : function(data){
 		var teams = data.teams;
 		for(var i in teams){
@@ -157,7 +182,8 @@ NodeManager = {
 		var team = new CollideTeam();
 		team.type = type;
 		this.collideTypes[type] = team;
-	}
+	},
+	
 	addMask : function(type1, type2){
 		this.collideTypes[type1].mask |= type2;
 		this.collideTypes[type2].mask |= type1;

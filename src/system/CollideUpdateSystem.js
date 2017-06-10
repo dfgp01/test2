@@ -3,7 +3,7 @@
  */
 CollideUpdateSystem = System.extend({
 	name : "collide",
-	_collideMap : {};
+	_collideMap : {},
 	
 	start : function(){
 		var ts = ObjectManager.collideTeams;
