@@ -48,9 +48,9 @@ GameUtil = {
 			unit.view.x += dx;
 			unit.view.y += dy;
 			unit.view.z += dz;
-			unit.view.dx += dx;
+			/*unit.view.dx += dx;
 			unit.view.dy += dy+dz;
-			this.moveRect(unit.body.rect, dx, dy+dz);
+			this.moveRect(unit.body.rect, dx, dy+dz);*/
 		},
 		
 		moveRect : function(rect, dx, dy){

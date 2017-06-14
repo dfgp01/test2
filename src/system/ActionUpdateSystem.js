@@ -5,9 +5,13 @@ ActionUpdateSystem = System.extend({
 	name : "action",
 	tick : Constant.TICK_FPS30,
 	
+	linkList : null,	//单位活动列表，暂时由这里维护，如果有多个地方需要使用，则换到ObjectManager中
+	
 	start : function(){
+		this.linkList = new LinkList();
+		this._initUnitAddStage();
 		//处理输入的指令，查找是否有下一状态
-		EventDispatcher.addEventListener("unitInput", function(inputEvt){
+		/*EventDispatcher.addEventListener("unitInput", function(inputEvt){
 			var unit = evt.source;
 			var action = null;
 			for(var i=unit.actions.stack.length-1; i>=0; i--){
@@ -17,40 +21,12 @@ ActionUpdateSystem = System.extend({
 					return;
 				}
 			}
-		});
-		//动作状态切换事件处理
-		EventDispatcher.addEventListener("actionSwitch", function(actionEvt){
-			var unit = evt.source;
-			var action = actionEvt.target;
-			//消耗检测
-			if(action.checkCost(unit)){
-				var cur = null;
-				var stack = unit.actions.stack;
-				while(cur=stack.pop()){
-					cur.end(unit);
-				}
-				stack.push(action);
-				action.start(unit);
-			}
-		});
-		//动作结束事件处理
-		EventDispatcher.addEventListener("actionEnd", function(actionEvt){
-			var action = actionEvt.source;
-			var unit = actionEvt.target;
-			action.end(unit);
-			unit.actions.stack.pop();
-		});
-		//动作开始事件处理
-		EventDispatcher.addEventListener("actionStart", function(actionEvt){
-			var action = actionEvt.source;
-			var unit = actionEvt.target;
-			action.start(unit);
-			unit.actions.stack.push(action);
-		});
+		});*/
 	},
 
 	update : function(dt){
-		this._curr = ObjectManager.propertys.getFirstActionsNode();
+		//this._curr = ObjectManager.propertys.getFirstActionsNode();
+		this._curr = this.linkList();
 		this._super(dt);
 	},
 	
@@ -71,6 +47,46 @@ ActionUpdateSystem = System.extend({
 			unitActions.stack[unitActions.stack.length - 1].update(dt, unitActions.owner);
 		}else{
 			unitActions.owner.template.actionStateManager.update(unitActions.owner);
+		}
+	},
+	
+	_initUnitAddStage : function(){
+		var _that = this;
+		EventManager.addListener(EventConstant.UNIT_ENTER_STAGE, function(unitEvt){
+			var unit = unitEvt.source;
+			unit.template.resetAction(unit);
+			_that.linkList.add(unit);
+		});
+	},
+	
+	actionStart : function(actionEvt){
+		var action = actionEvt.source;
+		var unit = actionEvt.target;
+		unit.actions.stack.push(action);
+		action.start(unit);
+		EventManager.send(EventConstant.ACTION_START, actionEvt);
+	},
+	
+	actionEnd : function(actionEvt){
+		var action = actionEvt.source;
+		var unit = actionEvt.target;
+		action.end(unit);
+		unit.actions.stack.pop();
+		EventManager.send(EventConstant.ACTION_END, actionEvt);
+	},
+	
+	actionSwitch : function(actionEvt){
+		var unit = evt.source;
+		var action = actionEvt.target;
+		//消耗检测
+		if(action.checkCost(unit)){
+			var cur = null;
+			var stack = unit.actions.stack;
+			while(cur=stack.pop()){
+				cur.end(unit);
+			}
+			stack.push(action);
+			action.start(unit);
 		}
 	}
 });

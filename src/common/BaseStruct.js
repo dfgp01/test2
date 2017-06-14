@@ -1,20 +1,4 @@
 /**
- * 基础数据结构体
- */
-Node = cc.Class.extend({
-	prep : null,
-	next : null
-});
-
-/**
- * 对象链表
- */
-NodeLinks = cc.Class.extend({
-	head : null,
-	tail : null
-});
-
-/**
  * 碰撞组
  */
 CollideTeam = NodeLinks.extend({

@@ -1,24 +1,24 @@
 /**
  * 事件管理器
  */
-EventDispatcher = {
+EventManager = {
 	listeners : {},
 	idleQuene : [],
 	evtQuene : [],
 	
-	addEventListener : function(type, func){
+	addListener : function(type, func){
 		var nodeList = this.listeners[type];
 		if(!nodeList){
-			nodeList = [];
+			nodeList = new linkList();
 			this.listeners[type] = nodeList;
 		}
 		//这样写是为了以后方便移植别的语言（尤其是面向接口编程的语言）
 		var listener = new EventListener();
 		listener.execute = func;
-		nodeList.push(listener);
+		nodeList.append(listener);
 	},
 	
-	send : function(type, sender, args){
+	send : function(type, evt0){
 		var evt = this.idleQuene.length > 0 ? this.idleQuene.pop() : new Event();
 		evt.type = parseInt(type / 100) * 100;
 		evt.subType = type;

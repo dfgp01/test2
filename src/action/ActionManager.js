@@ -1,7 +1,7 @@
 /**
  * 动作状态机管理
  */
-ActionStateManager = cc.Class.extend({
+ActionManager = cc.Class.extend({
 	
 	map : null,
 	

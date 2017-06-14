@@ -12,14 +12,17 @@ GameObjectFactory = {
 			return null;
 		}
 		var template = GameObjectTemplate.create(data);
-		var asm = new ActionStateManager();
-		template.actionStateManager = asm;
-		GameObjectTemplate.addActionAndProperty(template, ActionFactory.createStandAction(data.stand));
+		var asm = new ActionManager();
+		template.actionManager = asm;
+		GameObjectTemplate.addAction(template, ActionFactory.createStandAction(data.stand));
+		GameObjectTemplate.createProperty(template, data.stand);
 		if(data.walk){
-			GameObjectTemplate.addActionAndProperty(template, ActionFactory.createWalkAction(data.walk));
+			GameObjectTemplate.addAction(template, ActionFactory.createWalkAction(data.walk));
+			GameObjectTemplate.createProperty(template, data.walk);
 		}
 		if(data.hit){
-			GameObjectTemplate.addActionAndProperty(template, ActionFactory.createHitAction(data.hit));
+			GameObjectTemplate.addAction(template, ActionFactory.createHitAction(data.hit));
+			GameObjectTemplate.createProperty(template, data.hit);
 		}
 		return template;
 	},

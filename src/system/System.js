@@ -33,7 +33,7 @@ System = cc.Class.extend({
  * unitCom = unit.coms[comName]
  * actionCom = action.coms[comName]
  */
-ActionSystem = cc.Class.extend({
+/*ActionSystem = cc.Class.extend({
 	name : null,
 	type : 0,		//因为每种逻辑的actionsystem都有多种类型，所以默认为0
 	priority : 0,
@@ -41,12 +41,10 @@ ActionSystem = cc.Class.extend({
 	update : function(dt, unitCom, actionCom){return;},
 	end : function(unitCom, actionCom){return;},
 	
-	/**
-	 * 将单位组件加入到主系统遍历链表内
-	 */
+	//将单位组件加入到主系统遍历链表内
 	addToLink : function(node){
 		if(node.prep==null && node.next==null){
 			GameUtil.systems[this.name].addComponentNode(node);	
 		}
 	}
-});
+});*/

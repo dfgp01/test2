@@ -16,23 +16,19 @@ Service = {
 	},
 	
 	/**
-	 * 从指定模板中创建新单位（待删）
+	 * 从指定模板中创建新单位
 	 */
-	/*newUnit : function(templateName, teamNo, posX, posY, posZ){
+	newUnit : function(templateName, teamNo, pos3D){
 		var template = ObjectManager.templates[templateName];
-		var unit = null;
-		if(template.availableList.length > 0){
-			unit = template.availableList.pop();
-		}else{
-			unit = GameObjectFactory.createGameObject(template);
-		}
+		var unit = GameObjectTemplate.getNewUnit(template);
 		unit.collide.team = teamNo;
-		unit.view.x = posX;
-		unit.view.y = posY;
-		unit.view.z = posZ;
-		template.actions.boot.start(unit);
+		ViewProperty.setPostion(unit.view, pos3D);
+		/*unit.view.x = pos3D.x;
+		unit.view.y = pos3D.y;		放在上面那个方法里
+		unit.view.z = pos3D.z;*/
+		EventManager.send(EventConstant.UNIT_ENTER_STAGE,unitEvt);
 		return unit;
-	},*/
+	},
 	
 	initialize : function(data){
 		//验证器初始化

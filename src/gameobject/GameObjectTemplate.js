@@ -13,7 +13,7 @@ GameObjectTemplate = cc.Class.extend({
 	featureCode : 0,
 
 	actionManager : null,	//状态机管理
-	property : null,	//属性集合
+	property : null,	//可选属性集合
 
 	init : function(data){
 		this.name = data.name;
@@ -23,20 +23,38 @@ GameObjectTemplate = cc.Class.extend({
 	}
 });
 
+GameObjectTemplate.prototype.getNewUnit = function(template){
+	template.availableList = template.availableList || [];
+	return template.availableList.length > 0 ? 
+			template.availableList.pop() : GameObject.create(template);
+};
+
 GameObjectTemplate.prototype.create = function(data){
     var template = new GameObjectTemplate();
 	template.init(data);
 	//动作集合
     if(DataUtil.checkArrayNotNull(data.actions,"data.actions")){
-    	var asm = template.actionStateManager;
         for(var i in data.actions){
-        	asm.registered(ActionFactory.createAction(data.actions[i]));
-            /*GameObjectTemplate.addActionAndProperty(
-            		template, ActionFactory.createAction(data.actions[i]));*/
+        	GameObjectTemplate.addAction(template, ActionFactory.createAction(data.actions[i]));
+        	GameObjectTemplate.createProperty(template, data.actions[i]);
         }
     }
     //初始化属性
     return template;
+};
+
+GameObjectTemplate.prototype.addAction = function(template, action){
+	if(!(template && template.actionManager && action)){
+		cc.log("GameObjectTemplate.addAction error.");
+		return;
+	}
+	var asm = template.actionManager;
+	asm.registered(action);
+	return;
+};
+
+GameObjectTemplate.prototype.createProperty = function(template, data){
+	
 };
 
 GameObjectTemplate.prototype.addView = function(template){
