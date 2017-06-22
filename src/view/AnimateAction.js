@@ -1,34 +1,35 @@
 /**
- * 动画类
+ * 基础动画逻辑
  */
 AnimateAction = Action.extend({
-	isLoop : false, //是否循环播放
     frames : null,   //帧列表
     duration : 0,      //持续时长=frames总时长
 
 	start : function(unit){
-		//在池中拿一个view，根据ID和unit关联，以便在update中可以根据unit获取
+		this.onStart(unit.view);
+	},
+	
+	onStart : function(view){
+		ViewComponent.reset(view);
+		//EngineUtil.setFrame(view, this.frames[0]);
+		//add to render list
 	},
 
 	update : function(dt, unit){
-		var viewPro = unit.view;
-		var frameStates = viewPro.fr;	//这里拿到显示对象，规则后面补。
-		if(frameStates.isEnd){
-			return;
-		}
-		frameStates.duration += dt;
-		if(frameStates.duration > this.frames[frameStates.index].duration){
-			frameStates.duration -= this.frames[frameStates.index].duration;
-			frameStates.index++;
-			if(frameStates.index >= this.frames.length){
-				if(this.isLoop){
-					frameStates.index = 0;
-				}else{
-					frameStates.isEnd = true;
-					return;
-				}
+		this.onUpdate(dt, unit.view);
+	},
+	
+	onUpdate : function(dt, view){
+		view.duration += dt;
+		if(view.duration > this.frames[view.index].duration){
+			view.index++;
+			if(view.index >= this.frames.length){
+				//end
+				return;
 			}
-			frameStates.next = this.frames[frameStates.index].frame;
+			view.duration -= this.frames[view.index].duration;
+			//view.next = this.frames[view.index].frame;
+			//add to render list
 		}
 	},
 
@@ -40,15 +41,13 @@ AnimateAction = Action.extend({
 var anmtVldts = null;
 AnimateAction.prototype.create = function(data){
     if(!anmtVldts){
-        anmtVldts = [this.create("frames","array",true, 1, 99),
-		            this.create("isLoop","int",false, NumericalConstant.BOOLEAN_FALSE, NumericalConstant.BOOLEAN_TRUE)];
+        anmtVldts = [this.create("frames","array",true, 1, 99)];
 		this.addType("AnimateAction",function(val, label){
 			return this.validateObject(val, anmtVldts, label);
             //&& this.assertArrayContentType(val.frames, "frame", label+"-animate.frames");
 		});
     }
     var animate = new AnimateAction();
-    animate.isLoop = data.isLoop && data.isLoop == NumericalConstant.BOOLEAN_TRUE ? true : false;
     animate.frames = [];
     var fr = null;
     for(var i in data.frames){
