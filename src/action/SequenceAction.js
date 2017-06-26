@@ -5,22 +5,26 @@ SequenceAction = ActionState.extend({
 	actions : null,
 	
 	start : function(unit){
-		var stackInfo = getStackInfo(unit);
-		stackInfo.index = 0;
-		this._super(unit);
+		//this._super(unit);
+		this.getCacheValue(unit).index = 0;
 		this.actions[0].start(unit);
 	},
 
 	update : function(dt, unit){
-		this._super(dt, unit);
-		var stackInfo = getStackInfo(unit);
-		this.actions[stackInfo.index].update(dt, unit);
-		if(unit.actions.endFlag){
-			stackInfo.index++;
-			if(stackInfo.index < this.actions.length){
-				this.actions[stack.index].start(unit);
+		//this._super(dt, unit);
+		var cache = this.getCacheValue(unit);
+		if(this.actions[cache.index].checkEnd(unit)){
+			cache.index++;
+			if(index < this.actions.length){
+				this.actions[cache.index].start(unit);
 			}
+		}else{
+			this.actions[cache.index].update(dt, unit);
 		}
+	},
+	
+	checkEnd : function(unit){
+		return this.getCacheValue(unit).index >= this.actions.length;
 	}
 });
 

@@ -6,22 +6,26 @@ RepeatAction = ActionState.extend({
 	count : 0,
 
 	start : function(unit){
-		var stackInfo = getStackInfo(unit);
-		stackInfo.repeat = 0;
-		this._super(unit);
+		//this._super(unit);
+		this.getCacheValue(unit).count = 0;
 		this.action.start(unit);
 	},
 
 	update : function(dt, unit){
-		this._super(dt, unit);
-		this.action.update(dt, unit);
-		if(unit.actions.endFlag){
-			var stackInfo = getStackInfo(unit);
-			if(stackInfo.repeat < this.repeat){
-				stackInfo.repeat++;
+		//this._super(dt, unit);
+		if(this.action.checkEnd(unit)){
+			var cache = this.getCacheValue(unit);
+			if(cache.count < this.count){
+				cache.count++;
 				this.action.start(unit);
 			}
+		}else{
+			this.action.update(dt, unit);
 		}
+	},
+	
+	checkEnd : function(unit){
+		return this.getCacheValue(unit).count > this.count;
 	}
 });
 

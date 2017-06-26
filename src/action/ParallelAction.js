@@ -1,7 +1,7 @@
 /**
- * 并行运行的Action
+ * 并行运行的Action，其中一个子逻辑结束，即主逻辑结束
  */
-ParallelAction = Action.extend({
+ParallelActionTypeA = Action.extend({
 	actions : null,	//同时运行的逻辑组件
 	
 	//加载时
@@ -25,37 +25,51 @@ ParallelAction = Action.extend({
 		}
 	},
 	
-	addComponent : function(component){
-		if(!Validator.assertNotNull(component,"ActionState.addComponent:component")){
-			cc.log("ActionState.addComponent error.");
-			return;
-		}
-		if(!DataUtil.checkArrayNotNull(this.components)){
-			this.components = [];
-		}
-		for(var i in this.components){
-			if(component.priority > this.components[i].priority){
-				this.components.splice(i, 0, component);
-				return;
+	checkEnd : function(unit){
+		for(var i in this.actions){
+			if(this.actions[i].checkEnd(unit)){
+				return true;
 			}
 		}
-		//上面的循环未return时，说明优先级是最小的，要补加到列表尾
-		this.components.push(component);
+		return false;
+	}
+});
+
+/**
+ * 并行运行的Action，所有子逻辑结束，主逻辑才算结束
+ */
+ParallelActionTypeB = Action.extend({
+	actions : null,	//同时运行的逻辑组件
+	
+	//加载时
+	start : function(unit){
+		for(var i in this.actions){
+			this.actions[i].start(unit);
+		}
+	},
+	
+	//运行时
+	update : function(dt, unit){
+		for(var i in this.actions){
+			if(!this.actions[i].checkEnd(unit)){
+				this.actions[i].update(dt, unit);
+			}
+		}
 	},
 
-	findComponent : function(name){
-		if(!DataUtil.checkIsString(name)){
-			return null;
+	//结束时
+	end : function(unit){
+		for(var i in this.actions){
+			this.actions[i].end(unit);
 		}
-		var com = null;
-		if(DataUtil.checkArrayNotNull(this.components)){
-			for(var i in this.components){
-				if(this.components[i].name == name){
-					com = this.components[i];
-					break;
-				}
+	},
+	
+	checkEnd : function(unit){
+		for(var i in this.actions){
+			if(!this.actions[i].checkEnd(unit)){
+				return false;
 			}
 		}
-		return com;
+		return true;
 	}
 });

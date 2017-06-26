@@ -1,49 +1,32 @@
 /**
- * 基础动画逻辑，大致上和SequenceAction相同
+ * 帧逻辑
  */
-AnimateAction = Action.extend({
-    frames : null,   //帧列表,FrameAction类型
-    duration : 0,      //持续时长=frames总时长
+FrameAction = Action.extend({
+    frame : null,   //ccSpriteFrame类型
+    duration : 0,   //持续时长
+    
+    action : null,	//额外的action
 
 	start : function(unit){
 		var view = unit.components.view;
-		view.index = 0;
-		this.frames[0].start(unit);
+		view.duration = 0;
+		ViewComponent.setFrame(unit, this.frame);
+		//add to view-com list
+		if(this.action){
+			this.action.start(unit);
+		}
 	},
 
 	update : function(dt, unit){
 		var view = unit.components.view;
-		if(this.frames[view.index].checkEnd(unit)){
-			view.index++;
-			if(view.index < this.frames.length){
-				this.frames[view.index].start(unit);
-			}
-		}else{
-			this.frames[view.index].update(dt, unit);
-		}
-	},
-	
-	onUpdate : function(dt, view){
-		
 		view.duration += dt;
-		if(view.duration > this.frames[view.index].duration){
-			view.index++;
-			if(view.index >= this.frames.length){
-				//end
-				return;
-			}
-			view.duration -= this.frames[view.index].duration;
-			//view.next = this.frames[view.index].frame;
-			//add to render list
+		if(this.action){
+			this.action.update(dt, unit);
 		}
-	},
-
-	end : function(unit){
-		//解除和unit的关系
 	},
 	
 	checkEnd : function(unit){
-		return unit.component.view.index >= this.frames.length;
+		return unit.components.duration >= this.duration;
 	}
 });
 

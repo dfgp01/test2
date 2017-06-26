@@ -6,16 +6,20 @@
 AdditionalAnimateAction = AnimateAction.extend({
 
 	start : function(unit){
-		//获取一个新的view组件，和unit关联
-		var view = ViewComponent.getInstance();
-		unit.action.stack[this.id] = view;
+		//获取一个普通独立单位，用于执行动画
+		var cache = this.getCacheValue(unit);
+		cache.unit = GameObjectFactory.getNewEntity(
+						GameObjectConstant.templateId.PUBLIC);
+		this._super(cache.unit);
 	},
 
 	update : function(dt, unit){
-		//取出相关联的view来计算
+		//取出关联的普通独立单位继续执行
+		this._super(dt, this.getCacheValue(unit).unit);
 	},
-
-	end : function(unit){
-		//回收资源，解除和unit的关联，隐藏显示
+	
+	exit : function(unit){
+		GameObjectFactory.recycle(
+			this.getCacheValue(unit).unit);
 	}
 });

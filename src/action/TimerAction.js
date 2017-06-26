@@ -1,26 +1,25 @@
 /**
- * 定时器动作，经过指定时间后运行，需要子类实现逻辑。
+ * 定时器动作，经过指定时间后运行。
  */
 TimerAction = Action.extend({
 
 	timeout : 0,
 	
+	action : null,
+	
 	start : function(unit){
-		
+		this.getCacheValue(unit).timeout = 0;
 	},
 
 	update : function(dt, unit){
-		if(unit.dt >= this.dt){
-			return;
-		}
-		unit.dt += dt;
-		if(unit.dt >= this.dt){
-			this.onTimeout(unit);
+		var cache = this.getCacheValue(unit);
+		cache.timeout += dt;
+		if(cache.timeout >= this.timeout){
+			this.action.start(unit);
 		}
 	},
 	
-	/**
-	 * 子类实现逻辑
-	 */
-	onTimeout : function(unit){}
+	checkEnd : function(unit){
+		return this.getCacheValue(unit).timeout >= this.timeout;
+	}
 });
