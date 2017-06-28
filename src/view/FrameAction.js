@@ -10,8 +10,7 @@ FrameAction = Action.extend({
 	start : function(unit){
 		var view = unit.components.view;
 		view.duration = 0;
-		ViewComponent.setFrame(unit, this.frame);
-		//add to view-com list
+		view.frame = this.frame;
 		if(this.action){
 			this.action.start(unit);
 		}

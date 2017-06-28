@@ -4,24 +4,14 @@
 Quene = NodeCollection.extend({
 	
 	push : function(value){
-		var node = this.getNewNode();
-		node.value = value;
-		if(this.size==0){
-			this.head = this.tail = node;
-		}else{
-			this.tail.next = node;
-			this.tail = node;
-		}
-		this.size++;
+		this.inserLast(value.node);
 	},
 	
 	pop : function(){
-		var node = this.head;
-		if(node==null)return null;
-		var value = node.value;
-		this.head = node.next;
+		var node = this.head.next;
+		if(node==this.tail)return null;
 		this.removeNode(node);
-		return value;
+		return node.value;
 	},
 	
 	iterator : function(callback){

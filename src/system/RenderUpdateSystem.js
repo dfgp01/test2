@@ -5,15 +5,28 @@ RenderUpdateSystem = System.extend({
 	name : "view",
 	tick : Constant.TICK_FPS24,
 	
+	list : null,
+	
+	start : function(){
+		this.list = ObjectManager.getViewComList();
+	},
+	
 	update : function(dt){
-		this._curr = ObjectManager.propertys.getFirstViewNode();
-		this._super(dt);
+		//this._curr = ObjectManager.propertys.getFirstViewNode();
+		//this._super(dt);
+		this.list.iterator(this._callback);
+	},
+	
+	_callback : function(viewComponent){
+		this.renderOrientation(viewComponent);
+		this.renderFrame(viewComponent);
+		this.renderPosition(viewComponent);
 	},
 	
 	execute : function(dt, unitViewNode){
-		this.renderOrientation(unitViewNode);
-		this.renderFrame(unitViewNode);
-		this.renderPosition(unitViewNode);
+		this._renderOrientation(unitViewNode);
+		this._renderFrame(unitViewNode);
+		this._renderPosition(unitViewNode);
 	},
 	
 	/**
@@ -43,7 +56,7 @@ RenderUpdateSystem = System.extend({
 	/**
 	 * 更新位置
 	 */
-	renderPosition : function(viewProperty){
+	_renderPosition : function(viewProperty){
 		if(viewProperty.dx!=0 || viewProperty.dy!=0 || viewProperty.dz!=0){
 			for(var i in viewProperty.frameStates){
 				EngineUtil.setPosition(viewProperty.frameStates[i], viewProperty);

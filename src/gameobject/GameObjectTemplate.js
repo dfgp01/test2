@@ -8,7 +8,6 @@
 GameObjectTemplate = cc.Class.extend({
 
 	availableList : null,	//对象池，可用列表
-	name : null,
 	frame : null,				//初始frame
 	featureCode : 0,
 
@@ -16,7 +15,6 @@ GameObjectTemplate = cc.Class.extend({
 	property : null,	//可选属性集合
 
 	init : function(data){
-		this.name = data.name;
 		this.availableList = [];
 		this.property = {};
 		this.frame = EngineUtil.getFrame(data.frame);
