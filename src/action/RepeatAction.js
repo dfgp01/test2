@@ -1,7 +1,7 @@
 /**
  * 重复执行动作
  */
-RepeatAction = ActionState.extend({
+RepeatAction = Action.extend({
 	action : null,
 	count : 0,
 

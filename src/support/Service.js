@@ -34,10 +34,10 @@ Service = {
 		//验证器初始化
 		Validator.init();
 		//共享对象池初始化
-		ObjectManager.init();
+		//ObjectManager.init();
 		//ObjectManager.initCollides(data.collides);
 		//人物角色初始化
-		_initCharacter();
+		this._initCharacter();
 		this.setPlayer();
 		this.mainSystem = ObjectManager.systems.main;
 	},
@@ -45,7 +45,7 @@ Service = {
 	_initCharacter : function(){
 		//初始化场景元素
 		//初始化玩家配置、人物数据、HUD
-		ObjectManager.addTemplate(
+		GameObjectFactory.addTemplate(
 				GameObjectFactory.createCharacter(characterData));
 		var unit = this.newUnit("deep", 1, 100, 100, 20);
 		//this._setPlayer(unit);

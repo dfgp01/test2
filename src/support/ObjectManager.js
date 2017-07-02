@@ -2,48 +2,30 @@
  * 对象管理器，缓存游戏中所有系统对象（非游戏元素对象）
  */
 ObjectManager = {
-	nodes : null,
-	systems : null,
-	actions : null,
-	actionStacks : null,
-	templates : null,
-	collideTeams : null,
 	
-	init : function(){
-		NodeManager.init();
-		SystemManager.init();
-		ActionManager.init();
-		ActionStackManager.init();
-		this.nodes = NodeManager;
-		this.systems = SystemManager;
-		this.actions = ActionManager;
-		this.actionStacks = ActionStackManager;
-		this.templates = {};
+	//组件链表
+	viewComList : new LinkList(),
+	actComList : new LinkList(),
+	
+	//主系统
+	mainSys : new MainSystem(),
+	actionSys : new ActionUpdateSystem(),
+	viewSys : new RenderUpdateSystem(),
+	
+	getViewComList : function(){
+		return this.viewComList;
 	},
 	
-	/**
-	 * 单位自增ID
-	 */
-	_unitIdSeq : 1,
-	nextUnitId : function(){
-		return this._unitIdSeq++;
+	getActComList : function(){
+		return this.actComList;
 	},
 	
-	getUnit : function(tempId){
-		var template = this.templates[templateName];
-		var unit = null;
-		if(template.availableList.length > 0){
-			unit = template.availableList.pop();
-		}else{
-			unit = GameObject.create(template);
-			unit.id = this.nextUnitId();
-		}
-		/*unit.collide.team = teamNo;
-		unit.view.x = posX;
-		unit.view.y = posY;
-		unit.view.z = posZ;
-		template.actionManager.getAction().start(unit);*/
-		return unit;
+	addViewCom : function(viewComponent){
+		this.viewComList.append(viewComponent);
+	},
+	
+	removeViewCom : function(viewComponent){
+		this.viewComList.remove(viewComponent);
 	},
 	
 	initCollides : function(data){
@@ -57,41 +39,11 @@ ObjectManager = {
 				this.nodes.addMask(masks[i].type, masks[i].mask[j]);
 			}
 		}
-	},
-
-	getActionStackInfo : function(){
-		return this.actionStacks.getStack();
-	},
-	recycleActionStackInfo : function(stackInfo){
-		this.actionStacks.recycle(stackInfo);
 	}
 };
 
 /**
- * 动作栈对象缓存队列
- */
-ActionStackManager = {
-	quene : null,
-	init : function(){
-		this.quene = [];
-	},
-	getStack : function(){
-		var stack = this.quene.pop();
-		if(!stack){
-			stack = new Object();
-		}
-		stack.index = 0;
-		stack.repeat = 0;
-		stack.status = 0;
-		return stack;
-	},
-	recycle : function(stackInfo){
-		this.quene.push(stackInfo);
-	}
-};
-
-/**
- * 节点队列
+ * 节点链表管理器，暂时不用
  */
 NodeManager = {
 	
@@ -200,38 +152,5 @@ NodeManager = {
 	},
 	getFirstCollideNode : function(type){
 		return this.collideTypes[type].head;
-	}
-};
-
-SystemManager = {
-	main : null,
-	move : null,
-	action : null,
-	view : null,
-	collide : null,
-	
-	init : function(data){
-		//初始化主系统
-		this.main = new MainSystem();
-		//this.move = new MotionUpdateSystem();
-		this.action = new ActionUpdateSystem();
-		this.view = new RenderUpdateSystem();
-		this.collide = new CollideUpdateSystem();
-	}
-};
-
-/**
- * 公共动作对象
- */
-ActionManager = {
-	
-	//公共action缓存
-	boot:[],
-
-	init : function(){
-		var action = new CharacterBootAction();
-		action.init(null);
-		//this.actions.start[Constant.GAMEOBJECT_TILE] = Factory.createAction(null, TileStartAction);
-		this.boot[Constant.GAMEOBJECT_CHARACTER] = action;
 	}
 };

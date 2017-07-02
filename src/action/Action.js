@@ -3,6 +3,13 @@
  */
 Action = cc.Class.extend({
     id : 0,
+	name : null,
+    priority : 0,
+    
+    onCreated : function(){
+    	
+    },
+    
     start : function(unit){},
     
     update : function(dt, unit){},
@@ -22,13 +29,18 @@ Action = cc.Class.extend({
      */
     exit : function(unit){},
     
+    setCacheValue : function(key, value){
+    	var cache = unit.action.cache[this.id];
+    	if(!cache){
+    		cache = unit.action.cache[this.id] = {};
+    	}
+    	cache[key] = value;
+    },
+    
     /**
      * 获取此动作节点临时存储的变量值
      */
     getCacheValue : function(unit){
-    	if(!unit.action.cache[this.id]){
-    		unit.action.cache[this.id] = {};
-    	}
     	return unit.action.cache[this.id]; 
     },
     

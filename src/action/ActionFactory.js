@@ -1,49 +1,58 @@
 /**
+ * 基础动作数据验证
+ */
+var _actVldt =  [Validator.create("name","string",true, 1, 150)];
+Validator.addType("Action",function(val, label){
+	return Validator.validateObject(val, _actVldt, label);
+});
+
+/**
  * 用于建造动作的工厂类
  */
 ActionFactory = {
 		
+		//自增ID号
+		idSeq : 0,
+		
 		/**
-		 * 创建一个动作节点
-		 * param
-		 * 	data 	 数据DNA
-		 * 	actions	 动作集合{}，创建某些action时需要引用其他action
+		 * 供外部调用的创建动作接口
 		 */
-		createAction : function(data, actionManager){
-			if(!Validator.assertNotNull(data, "data")){
-				cc.log("createAction error.");
-				return null;
+		create : function(data, actionManager){
+			if(!Validator.assertType(data, "Action", "action")){
+				return;
 			}
-			if(data.repeat){
-				return RepeatAction.create(data.repeat, actionManager);
-			}else if(data.sequence){
-				return SequenceAction.create(data.sequence, actionManager);
-			}else{
-				return ParallelAction.create(data);
-			}
-			
-			/*if(!action){
-				cc.log("create ActionState exception, see the log!");
-				return null;
-			}
-			actionState.name = data.name;
-			if(this._bulid(data, actionState)){
-				cc.log("info: action:[" + data.name + "] has been created.");
-			}
-			return actionState;*/
+			var action = this._createAction(data, actionManager);
+			actionManager.registered(action);
+			return action;
 		},
 		
 		/**
-		 * 创建角色动作
+		 * 创建一个动作节点
 		 */
-		_createUnitAction : function(data){
-			var view = ComponentFactory.createView(data.view);
-			if(!view){
+		_createAction : function(data, actionManager){
+			var action = null;
+			if(data.frame){
+				action = FrameAction.create(data.frame, actionManager);
+			}else if(data.animate){
+				action = AnimateAction.create(data.animate, actionManager);
+			}else if(data.move){
+				action = MoveAction.create(data.move, actionManager);
+			}else if(data.repeat){
+				action = RepeatAction.create(data.repeat, actionManager);
+			}else if(data.sequence){
+				action = SequenceAction.create(data.sequence, actionManager);
+			}else if(data.parallel){
+				action = this.createParallel(data.parallel, actionManager);
+			}else{
+				cc.log("ActionFactory._createAction error.");
 				return null;
 			}
-			var action = new GameAction();
-			actionState.view = view;
+			action.id = this.idSeq++;
 			return action;
+		},
+		
+		createParallel : function(data, actionManager){
+			return ParallelActionTypeA.create(data, actionManager);
 		},
 		
 		/**

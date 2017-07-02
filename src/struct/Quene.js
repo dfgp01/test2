@@ -1,7 +1,7 @@
 /**
  * 队列
  */
-Quene = NodeCollection.extend({
+Quene = BaseLinkCollection.extend({
 	
 	push : function(value){
 		this.inserLast(value.node);

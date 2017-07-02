@@ -275,7 +275,7 @@ Validator = {
 	 * 如果不是基础类型，则不需要填rangeMin, rangeMax参数
 	 * 如果field为空，则默认校验当前整体对象。
 	 */
-	createValidateParam : function(field, type, isRequired, rangeMin, rangeMax){
+	create : function(field, type, isRequired, rangeMin, rangeMax){
 		if(!this.assertString(type, "type")){
 			cc.log("Validator.create error. type must not null.");
 			return null;
@@ -299,14 +299,14 @@ Validator = {
 	/**
 	 * 校验对象数据
 	 */
-	validateObject : function(val, validateParam, label){
-		if(!(this.assertNotNull(data, label) && this.assertArrayNotNull(validateParams, label+"-validateParams"))){
+	validateObject : function(val, validateParams, label){
+		if(!(this.assertNotNull(val, label) && this.assertArrayNotNull(validateParams, label+"-validateParams"))){
 			return false;
 		}
 		for(var i in validateParams){
-			var param = validateParam[i];
+			var param = validateParams[i];
 			if(!this.validate(
-					data[param.field], param, param.field)){
+					val[param.field], param, param.field)){
 				return false;
 			}
 		}
@@ -385,7 +385,7 @@ Validator = {
 		      this.create("walk","action",false),
 		      this.create("hit","action",false)];
 		Validator.addType("character",function(val, label){
-			return this.validateObject(val, chrcVldts, label);
+			return Validator.validateObject(val, chrcVldts, label);
 		});
 	}
 };

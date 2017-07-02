@@ -18,9 +18,9 @@ RenderUpdateSystem = System.extend({
 	},
 	
 	_callback : function(viewComponent){
-		this.renderOrientation(viewComponent);
-		this.renderFrame(viewComponent);
-		this.renderPosition(viewComponent);
+		this._renderOrientation(viewComponent);
+		this._renderFrame(viewComponent);
+		this._renderPosition(viewComponent);
 	},
 	
 	execute : function(dt, unitViewNode){

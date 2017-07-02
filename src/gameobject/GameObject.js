@@ -27,5 +27,14 @@ GameObject.prototype.create = function(template){
 		property.owner = unit;
 		unit.propertys[property.name] = property;
 	}
+	unit.id = GameObject.nextUnitId();
 	return unit;
+};
+
+/**
+ * 单位自增ID
+ */
+var _unitIdSeq = 1;
+GameObject.prototype.nextEntityId = function(){
+	return _unitIdSeq++;
 };

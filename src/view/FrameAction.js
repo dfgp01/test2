@@ -29,59 +29,13 @@ FrameAction = Action.extend({
 	}
 });
 
-var anmtVldts = null;
-AnimateAction.prototype.create = function(data){
-    if(!anmtVldts){
-        anmtVldts = [this.create("frames","array",true, 1, 99)];
-		this.addType("AnimateAction",function(val, label){
-			return this.validateObject(val, anmtVldts, label);
-            //&& this.assertArrayContentType(val.frames, "frame", label+"-animate.frames");
-		});
-    }
-    var animate = new AnimateAction();
-    animate.frames = [];
-    var fr = null;
-    for(var i in data.frames){
-        fr = Frame.create(data.frames[i]);
-        if(!fr){
-            cc.log("AnimateAction.create error.");
-            return null;
-        }
-        animate.frames.push(fr);
-    }
-    return animate;
-};
+var frVldts =  [Validator.create("frame","string",true, 1, 99)];
+Validator.addType("FrameAction",function(val, label){
+	return Validator.validateObject(val, frVldts, label)
+});
 
-/**
-	 * 创建动画组件
-	
-	createAnimate : function(data){
-		if(!Validator.assertType(data, "animate", "animate")){
-			cc.log("createAnimate error.");
-			return null;
-		}
-		data.type = data.type ? data.type : Constant.ANIMATE_ONCE;
-		
-		var animate = null;
-		switch(data.type){
-		case Constant.ANIMATE_STATIC:
-			animate = new AnimateStaticComponent();
-			break;
-		case Constant.ANIMATE_ONCE:
-			animate = new AnimateComponent();
-			break;
-		case Constant.ANIMATE_SCROLL:
-			animate = new AnimateScrollComponent();
-			break;
-		}
-		
-		animate.frames = [];
-		for(var i in data.frames){
-			var frame = this.createFrame(data.frames[i]);
-			if(!frame){
-				return null;
-			}
-			animate.frames.push(frame);
-		}
-		return animate;
-	}, */
+FrameAction.prototype.create = function(data){
+    var frameAction = new FrameAction();
+    frameAction.frame = EngineUtil.getFrame(data.frame);
+    return frameAction;
+};

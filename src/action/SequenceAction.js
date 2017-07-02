@@ -1,7 +1,7 @@
 /**
  * 连续序列动作，也称动作组或复合动作
  */
-SequenceAction = ActionState.extend({
+SequenceAction = Action.extend({
 	actions : null,
 	
 	start : function(unit){

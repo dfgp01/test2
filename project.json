@@ -11,40 +11,44 @@
     "cocos2d"
   ],
   "jsList": [
+  
+  	"src/Constant.js",
+    "src/constant/ActionConstant.js",
+    "src/constant/NumericalConstant.js",
+    
+  	"src/struct/LinkNode.js",
+  	"src/struct/LinkList.js",
+    "src/struct/Quene.js",
+    
+    "src/system/System.js",
+    "src/system/ActionUpdateSystem.js",
+    "src/system/RenderUpdateSystem.js",
+    "src/system/MainSystem.js",
+    
+  	"src/support/ObjectManager.js",
+    "src/support/Service.js",
+    "src/support/Validator.js",
+    
   	"src/action/Action.js",
+  	"src/action/ActionFactory.js",
   	"src/action/ActionManager.js",
+  	"src/action/ParallelAction.js",
     "src/action/RepeatAction.js",
     "src/action/SequenceAction.js",
-    "src/action/ParallelAction.js",
-    
-    "src/Constant.js",
-    "src/constant/NumericalConstant.js",
+    "src/action/TimerAction.js",
     
     "src/data/character.js",
     "src/data/gobal.js",
     
     "src/event/EventManager.js",
     
+    "src/gameobject/Component.js",
     "src/gameobject/GameObject.js",
     "src/gameobject/GameObjectFactory.js",
     "src/gameobject/GameObjectTemplate.js",
     
     "src/move/MoveAction.js",
     "src/move/MoveComponent.js",
-    
-    "src/struct/LinkList.js",
-    "src/struct/Node.js",
-    "src/struct/Quene.js",
-    
-    "src/support/ActionFactory.js",
-    "src/support/ObjectManager.js",
-    "src/support/Service.js",
-    "src/support/Validator.js",
-    
-    "src/system/System.js",
-    "src/system/ActionUpdateSystem.js",
-    "src/system/RenderUpdateSystem.js",
-    "src/system/MainSystem.js",
     
     "src/ui/ControllerLayer.js",
     "src/ui/ControlSystem.js",
@@ -55,7 +59,7 @@
     "src/util/GameUtil.js",
     
     "src/view/AnimateAction.js",
-    "src/view/Frame.js",
+    "src/view/FrameAction.js",
     "src/view/ViewComponent.js",
     
     "src/resource.js",

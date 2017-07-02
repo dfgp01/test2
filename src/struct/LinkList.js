@@ -1,7 +1,7 @@
 /**
  * 单链表
  */
-LinkList = NodeCollection.extend({
+LinkList = BaseLinkCollection.extend({
 	
 	/**
 	 * 追加到尾部，并返回最新节点
